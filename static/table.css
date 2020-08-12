@@ -1,0 +1,61 @@
+table.kontakt {
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+}
+table.kontakt tr {
+    background: white;
+    border-bottom: 1px solid #d2d2d2;
+}
+table.kontakt tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+table.kontakt tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+table.kontakt th, table.kontakt td {
+    padding: 10px 20px;
+}
+table.kontakt td:before {
+    content: '';
+    background: #eee;
+    color: dimgrey;
+    display: none;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px;
+    position: absolute;
+    text-transform: uppercase;
+    top: 0;
+    left: 0;
+}
+
+/* Simple CSS for flexbox table.kontakt on mobile */
+@media(max-width: 760px) {
+    table.kontakt thead {
+        left: -9999px;
+        position: absolute;
+        visibility: hidden;
+    }
+    table.kontakt tr {
+        background: #fff !important;
+        border-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 11px;
+        justify-content: flex-end;
+    }
+    table.kontakt td {
+        border: 1px solid #d2d2d2;
+        margin: 0 -1px -1px 0;
+        padding-top: 35px;
+        position: relative;
+        max-width: 37%;
+        flex: 37% 0;
+    }
+    table.kontakt td:before {
+        content: attr(data-title);
+        display: block;
+    }
+}
