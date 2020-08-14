@@ -1,55 +1,36 @@
 <script context="module">
     import * as api from 'api.js';
     import { videos } from '../../stores/videoStore';
+    import { crud } from '../../stores/crudStore';
+
+    let the_user;
 
 	export async function preload( { path }, { user }) {
 
+        the_user = user;
 		const res = await api.get( 'videos', user && user.token );
 
         if( res.success ) {
-            // console.log(res.data)
             videos.update( res.data );
         } else {
             videos.set( [] );
         }
 
-	}
-</script>
-
-<script>
-    import { goto, stores } from '@sapper/app';
-    import { onMount, getContext, setContext } from 'svelte';
-    import { fly } from 'svelte/transition';
-    import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
-    import Fab, {Icon} from '@smui/fab';
-    import { Label } from '@smui/common';
-    import Paper, {Title, Subtitle, Content} from '@smui/paper';
-	import VideoList from '../_components/_VideoList.svelte';
-	import VideoCard from '../_components/_VideoCard.svelte';
-    import VideoUploader from '../_components/_VideoUploader.svelte';
-    import { crud } from '../../stores/crudStore';
-    import { urls } from '../../stores/urlStore';
-    import { currentVideo } from '../../stores/currentVideoStore';
-
-    const { session } = stores();
-    const { open } = getContext('simple-modal');
-
-    let user;
+    }
 
     async function put(item) {
         
-        const response = await api.put(`videos/${item.id}`, item, user.token);
+        const response = await api.put(`videos/${item.id}`, item, the_user && the_user.token);
         if(response && response.success) {
-            // get();
             videos.put( item )
         }
     }
+
     async function get() {
         
-        const res = await api.get( 'videos', user && user.token );
+        const res = await api.get( 'videos', the_user && the_user.token );
 
         if( res.success ) {
-            // console.log(res.data)
             videos.update( res.data );
         }
     }
@@ -57,10 +38,8 @@
     urls.subscribe( (items) => {
         console.log( 'because I subscribed:', items )
     } )
-    session.subscribe(sess => {
-        user = sess.user;
-    })
     crud.subscribe( t => {
+        console.log('subscribing', t)
         if( 'post' === t.method ) {
             post(t.data)
         }
@@ -74,6 +53,31 @@
             del(t)
         }
     } )
+
+</script>
+
+<script>
+    import { goto, stores } from '@sapper/app';
+    import { onMount, getContext, setContext } from 'svelte';
+    import { fly } from 'svelte/transition';
+    import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+    import Fab, {Icon} from '@smui/fab';
+    import { Label } from '@smui/common';
+    import Paper, {Title, Subtitle, Content} from '@smui/paper';
+	import VideoList from '../_components/_VideoList.svelte';
+	import VideoCard from '../_components/_VideoCard.svelte';
+    import VideoUploader from '../_components/_VideoUploader.svelte';
+    import { urls } from '../../stores/urlStore';
+    import { currentVideo } from '../../stores/currentVideoStore';
+    
+    const { session } = stores();
+    const { open } = getContext('simple-modal');
+
+    let user;
+    
+    session.subscribe(sess => {
+        user = sess.user;
+    })
 
     let openUploader = () => {
         open( VideoUploader, {}, {
@@ -101,11 +105,11 @@
 
 {#if user = $session.user }
     {#if $videos.length }
-        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-center">
+        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
             {#each $videos as video (video.id)}
                 <div class="flex m-1">
                     <VideoCard
-                        on:Video:lastSelected={setCurrentVideo}
+                        on:Video:current={setCurrentVideo}
                         {video}
                         {user}
                     />

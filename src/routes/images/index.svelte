@@ -7,13 +7,13 @@
 		const res = await api.get( 'images', user && user.token );
 
         if( res.success ) {
-            // console.log(res.data)
             images.update( res.data );
         } else {
             images.set( [] );
         }
 
-	}
+    }
+    
 </script>
 
 <script>
@@ -27,7 +27,7 @@
 	import ImageList from '../_components/_ImageList.svelte';
 	import ImageCard from '../_components/_ImageCard.svelte';
     import ImageUploader from '../_components/_ImageUploader.svelte';
-    import { crud } from '../../stores/crudStore';
+    
     import { urls } from '../../stores/urlStore';
     import { currentImage } from '../../stores/currentImageStore';
 
@@ -35,45 +35,6 @@
     const { open } = getContext('simple-modal');
 
     let user;
-
-    async function put(item) {
-        
-        const response = await api.put(`images/${item.id}`, item, user.token);
-        if(response && response.success) {
-            // get();
-            images.put( item )
-        }
-    }
-    async function get() {
-        
-        const res = await api.get( 'images', user && user.token );
-
-        if( res.success ) {
-            // console.log(res.data)
-            images.update( res.data );
-        }
-    }
-
-    urls.subscribe( (items) => {
-        console.log( 'because I subscribed:', items )
-    } )
-    session.subscribe(sess => {
-        user = sess.user;
-    })
-    crud.subscribe( t => {
-        if( 'post' === t.method ) {
-            post(t.data)
-        }
-        if( 'put' === t.method ) {
-            put(t.data)
-        }
-        if( 'get' === t.method ) {
-            get(t.data)
-        }
-        if( 'del' === t.method ) {
-            del(t)
-        }
-    } )
 
     let openUploader = () => {
         open( ImageUploader, {}, {
@@ -101,7 +62,7 @@
 
 {#if user = $session.user }
     {#if $images.length }
-        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-center">
+        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
             {#each $images as image (image.id)}
                 <div class="flex m-1">
                     <ImageCard

@@ -1,7 +1,7 @@
 <script>
     import { Header, Modal } from '@sveltejs/site-kit';
 
-    // export let segment;
+    export let segment;
 </script>
 
 <Header h=2 mdc class="my-8">Video Layout</Header>

@@ -5,25 +5,61 @@
 
 	let component;
 	let className = '';
-	let acceptedFiles = ['video/*'];
-	let paramName = 'Video';
-	let parallelUploads = 20;
-	let path = 'videos';
+	let options = {
+		acceptedFiles: ['video/*'],
+		paramName: 'Video',
+		uploadMultiple: true,
+		parallelUploads: 20,
+		maxFiles: 20,
+		path: 'videos'
+	}
+	let count = 0;
 
 	export {className as class};
 
-	function onSuccessmultiple(e) {
-		videos.add(e.detail.data)
-	}
+	function onAddedfile(image) {
+        ++count;
+    }
+    function onRemovedfile(image) {
+        --count;
+    }
+	function onSuccess(e) {
+        if(options['uploadMultiple']) return;
+        let uploads = e.detail.data;
+        handleUpload(uploads);
+    }
+    function onSuccessmultiple(e) {
+        let uploads = e.detail.data;
+        handleUpload(uploads);
+    }
+    function handleUpload(uploads) {
+        let video;
+
+        videos.add(uploads);
+    }
 	
 </script>
 
 <style>
-
+	.subheader {
+        font-size: .8rem;
+    }
 
 </style>
 
 <div class="uploader-wrapper {className}" bind:this={component}>
-	<Header h=5 mdc>Video Uploader</Header>
-	<Uploader on:Uploader:successmultiple={onSuccessmultiple} {acceptedFiles} {paramName} {path} {parallelUploads}/>
+	<Header h=5 mdc>
+		Video Uploader
+		<div class="subheader">
+            <span>Queue:{count}</span>
+            <span>Max:{options.maxFiles}</span>
+        </div>
+	</Header>
+	<Uploader
+		on:Uploader:successmultiple={onSuccessmultiple}
+		on:Uploader:success={onSuccess}
+        on:Uploader:addedfile={onAddedfile}
+        on:Uploader:removedfile={onRemovedfile}
+		{...options}
+	/>
 </div>

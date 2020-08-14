@@ -15,27 +15,45 @@
     let options = {
         acceptedFiles: ["image/*"],
         paramName: "Image",
-        parallelUploads: 1,
+        uploadMultiple: false,
+        parallelUploads: 12,
+        maxFiles: get(currentVideo) ? 1 : 12,
         path: "images"
     };
+    let count = 0;
 
     export { className as class };
 
     function onAddedfile(image) {
-        
+        ++count;
+    }
+    function onRemovedfile(image) {
+        --count;
     }
 
+    function onSuccess(e) {
+        if(options['uploadMultiple']) return;
+        let uploads = e.detail.data;
+        handleUpload(uploads);
+    }
     function onSuccessmultiple(e) {
         let uploads = e.detail.data;
-        let video = get(currentVideo);
+        handleUpload(uploads);
+        
+    }
+    function handleUpload(uploads) {
+        let video;
 
         images.add(uploads);
+
+        // do we have a associated video?
         if(video = get(currentVideo)) {
             let image_id = uploads.slice(-1)[0].id; // take the last element for poster
             // only required for cakes customized finder methods
             // eg "findWithImages" which return assoziated models
             // video.image = null;
             video.image_id = image_id;
+            
             crud.dispatch({
                 method: 'put',
                 data: video
@@ -45,13 +63,23 @@
 </script>
 
 <style>
-
+    .subheader {
+        font-size: .8rem;
+    }
 </style>
 
 <div class="uploader-wrapper {className}" bind:this={component}>
-    <Header h="5" mdc>Image Uploader</Header>
+    <Header h="5" mdc>
+        Image Uploader
+        <div class="subheader">
+            <span>Queue:{count}</span>
+            <span>Max:{options.maxFiles}</span>
+        </div>
+    </Header>
     <Uploader
         on:Uploader:successmultiple={onSuccessmultiple}
+        on:Uploader:success={onSuccess}
         on:Uploader:addedfile={onAddedfile}
+        on:Uploader:removedfile={onRemovedfile}
         {...options} />
 </div>

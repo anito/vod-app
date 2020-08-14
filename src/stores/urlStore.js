@@ -1,22 +1,14 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
 function createStore() {
 
-    const { subscribe, update, set, get } = writable( [], (  ) => {} )
-    let find = ( id, items ) => {
-        return items.findIndex( itm => itm.id == id )
-    }
+    const { subscribe, update, set } = writable( {}, (  ) => {} )
+    let items;
     return {
         subscribe,
-        add: ( val ) => update( items => {
-            return find( val.id, items ) == -1 && [ ...items, val ] || items;
-        }),
-        del: ( id ) => update( items => items.filter( ( cur ) => cur.id !== id ) ),
-        put: ( id ) => update( items => {
-            const index = find( id, items )
-            return [...items.slice(0, index), { ...items[index], ...item }, ...items.slice(index + 1)]
-        } ),
-        update: ( val ) => update( () => val ),
+        add: ( item ) => update( items => !items[item.id] && { ...items, ...item} || items),
+        del: (id) => update(items => items[id] && delete items[id] && items || items),
+        put: (item) => update(items => items[item.id] && { ...items, ...item } || items),
         set
     }
 

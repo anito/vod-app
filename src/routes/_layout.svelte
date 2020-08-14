@@ -38,11 +38,10 @@
 
 <form on:submit|preventDefault={logout} method="post">
 	<Nav {segment} {page} logo="logo-sticky.svg">
-		<NavItem segment="images">Images</NavItem>
 		<NavItem segment="videos">Videos</NavItem>
+		<NavItem segment="images">Posters</NavItem>
 		<NavItem segment="blog">Blog</NavItem>
 		<NavItem segment="about">About</NavItem>
-		<NavItem segment="faq">FAQ</NavItem>
 
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
 

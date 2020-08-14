@@ -2,20 +2,16 @@
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
     import { Preview } from '@vime-js/preview';
+    import { getExt } from 'utils.js';
     
-    export let media;
+    export let media = {};
     export let src = '';
     export let poster = `https://via.placeholder.com/320x180.png?text=`;
     export let headline = 'A headline';
     export let subtitle = 'A subtitle';
 
     let preview;
-    $: poster = src || poster + getExt(media.src);
-
-    let getExt = ( fn ) => {
-        let match = fn.match( /[A-Za-z0-9]+$/);
-        return match.length && match[0].toLowerCase();
-    }
+    $: poster = src || poster + getExt(media.src) || '';
 
     onMount(() => {
         /**

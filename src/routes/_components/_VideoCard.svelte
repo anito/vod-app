@@ -1,10 +1,12 @@
 <script>
 	import * as api from 'api.js';
 	import { goto, stores } from '@sapper/app';
-	import { onMount, getContext, createEventDispatcher } from 'svelte';
+	import { get } from 'svelte/store';
+	import { onMount, onDestroy, getContext, createEventDispatcher } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { videos } from '../../stores/videoStore';
 	import { urls } from '../../stores/urlStore';
+	import { cache } from 'utils.js';
 
 	import MediaPreview from './_MediaPreview.svelte';
 	import VideoUploader from './_ImageUploader.svelte';
@@ -17,26 +19,31 @@
 	export let video;
 	export let user;
 
-	let token = user.token;
-	let menuPoster;
-	let isopen = false;
-	let dispatch = createEventDispatcher();
-
-	$: if(isopen) {
-		dispatch('Video:lastSelected', video);
-	}
 	const { open } = getContext('simple-modal');
 
+	let token = user.token;
+	let menuPoster;
+	let dispatch = createEventDispatcher();
+	let src;
+
+	onDestroy(() => {
+		dispatch('Video:current', null);
+	})
+	
 	async function remove( id ) {
 
 		const result = await api.del( `videos/${id}`, user && user.token )
 
 		if( result.success ) {
+			urls.del(id)
 			videos.del( id )
 		}
 	}
 
 	function createPoster(e) {
+
+		dispatch('Video:current', video);
+
 		open( VideoUploader, {}, {
             transitionWindow: fly,
 			transitionWindowProps: {
@@ -60,6 +67,7 @@
 
 	async function uri(video) {
 		// posters in preview component are images, so we don't handle video uri here 
+		// get the poster image for the video if we have one
 		if(!video.image_id) return
 
 		var id= video.image_id;
@@ -67,12 +75,11 @@
 		var h = 300;
 		var sq = 0;
 		var query = `?width=${w}&height=${h}&square=${sq}`;
-		var type = 'i';
 		// const result = await api.get( `u/${id}/?width=${w}&height=${h}&square=${sq}`, user && user.token );
-		const result = await api.get( `u/${type}/${id}/${query}`, user && user.token );
+		const result = await api.get( `u/i/${id}/${query}`, user && user.token );
 		if(result.success) {
 			urls.add( result.data );
-			return `${result.data.url}/?token=${user.token}`;
+			return `${result.data[id]}/?token=${user.token}`;
 		}
 		return ''
 	}
@@ -84,12 +91,16 @@
 </style>
 
 <Card style="width: 260px;" class="flex content-between">
-	<PrimaryAction on:click={() => uri(video.id)}>
-		{#await video.image_id && uri(video)}
-		<MediaPreview media={video}/>
-		{:then src}
-		<MediaPreview media={video} {src}/>
+	<PrimaryAction on:click={() => uri(video)}>
+		{#if src = cache(video.image_id, user)}
+			<MediaPreview media={video} {src}/>
+		{:else}
+			{#await uri(video)}
+				<MediaPreview media={video}/>
+			{:then src}
+				<MediaPreview media={video} {src}/>
 		{/await}
+		{/if}
 		<Content class="mdc-typography--body2">
 			<div>{video.src}</div>
 		</Content>
@@ -108,7 +119,7 @@
 				<IconButton class="material-icons" on:click={() => menuPoster.setOpen(true)} toggle aria-label="Add to favorites" title="Add to favorites">
 					more_vert
 				</IconButton>
-				<Menu bind:open={isopen} bind:this={menuPoster}>
+				<Menu bind:this={menuPoster}>
 					<List>
 						<Item on:click={() => createPoster()}><Text>New Poster</Text></Item>
 						<Item on:SMUI:action={() => selectPoster(video.id)}><Text>Select Poster</Text></Item>
