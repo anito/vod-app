@@ -1,7 +1,20 @@
 .DS_Store
-/node_modules/
+
+
+/node_modules/*
+!/node_modules/@sveltejs
+
+!/wp-content/
+/wp-content/*
+
+# my child themes
+!/wp-content/themes
+/wp-content/themes/*
+!/wp-content/themes/*-child
+
 /src/node_modules/@sapper/
 yarn-error.log
 /cypress/screenshots/
 /__sapper__/
 /.sessions/
+package-lock.json
