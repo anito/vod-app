@@ -1,3 +1,6 @@
 [submodule "node_modules/@sveltejs/svelte-kit"]
 	path = node_modules/@sveltejs/svelte-kit
 	url = git@github.com:anito/site-kit.git
+[submodule "node_modules/@sveltejs/site-kit"]
+	path = node_modules/@sveltejs/site-kit
+	url = git@github.com:anito/site-kit.git
