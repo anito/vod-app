@@ -2,13 +2,19 @@ import { writable, get } from 'svelte/store';
 
 function createStore() {
 
-    const { subscribe, update, set } = writable( {}, (  ) => {} )
-    let items;
+    const { subscribe, update, set } = writable( new Map(), (  ) => {} )
+    let param = (items, item) => {
+        let value = items.has(item.id) && items.get(item.id) || {[item.params]: item.url};
+        !value[item.params] && (value[item.params] = item.url);
+        items.set(item.id, value);
+        console.log(items)
+        return items;
+    }
     return {
         subscribe,
-        add: ( item ) => update( items => !items[item.id] && { ...items, ...item} || items),
-        del: (id) => update(items => items[id] && delete items[id] && items || items),
-        put: (item) => update(items => items[item.id] && { ...items, ...item } || items),
+        add: (item) => update( items => param(items, item)),
+        del: (id) => update(items => items.delete(id) && items || items),
+        put: (item) => update(items => items.has(item.id) && items.set(item.id, item) && items || items),
         set
     }
 

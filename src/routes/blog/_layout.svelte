@@ -4,5 +4,5 @@
     export let segment;
 </script>
 
-<Header h=2 mdc class="my-8">Blog Layout</Header>
+<Header h=2 mdc class="my-8 segment-{segment}">Blog Layout</Header>
 <slot></slot>

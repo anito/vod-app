@@ -1,6 +1,7 @@
 <script context="module">
     import * as api from 'api.js';
     import { videos } from '../../stores/videoStore';
+    import { images } from '../../stores/imageStore';
     import { crud } from '../../stores/crudStore';
 
     let the_user;
@@ -8,12 +9,20 @@
 	export async function preload( { path }, { user }) {
 
         the_user = user;
-		const res = await api.get( 'videos', user && user.token );
+        let res;
+        res = await api.get( 'videos', user && user.token );
 
         if( res.success ) {
             videos.update( res.data );
         } else {
             videos.set( [] );
+        }
+		res = await api.get( 'images', user && user.token );
+
+        if( res.success ) {
+            images.update( res.data );
+        } else {
+            images.set( [] );
         }
 
     }
@@ -111,6 +120,7 @@
                     <VideoCard
                         on:Video:current={setCurrentVideo}
                         {video}
+                        {images}
                         {user}
                     />
                 </div>

@@ -12,7 +12,7 @@
 
     let preview;
     $: poster = src || poster + getExt(media.src) || '';
-
+    
     onMount(() => {
         /**
          * If you need to call any methods, you have access 

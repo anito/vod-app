@@ -5,7 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import { images } from '../../stores/imageStore';
 	import { urls } from '../../stores/urlStore';
-	import { cache } from 'utils.js';
+	import { cache, cachedImage } from 'utils.js';
 
 	import MediaPreview from './_MediaPreview.svelte';
 	import ImageUploader from './_ImageUploader.svelte';
@@ -82,15 +82,11 @@
 
 <Card style="width: 260px;" class="flex content-between">
 	<PrimaryAction on:click={() => uri(image)}>
-		{#if src = cache(image.id, user)}
-			<MediaPreview media={image} {src}/>
-		{:else}
-			{#await uri(image)}
+			{#await cachedImage(image.id, user, {})}
 				<MediaPreview media={{}}/>
 			{:then src}
 				<MediaPreview media={image} {src}/>
 			{/await}
-		{/if}
 		<Content class="mdc-typography--body2">
 			<div>{image.src}</div>
 		</Content>
@@ -98,9 +94,6 @@
 	<div class="flex flex-col justify-end" style="flex:1 0 auto">
 		<Actions>
 			<ActionButtons>
-				<Button on:click={() => {} }>
-					<Label>Url</Label>
-				</Button>
 				<Button on:click={()=>remove(image.id)}>
 					<Label>Delete</Label>
 				</Button>
