@@ -23,23 +23,10 @@
 </script>
 
 <style>
-    .text-wrapper {
-        position: absolute;
-        bottom: 16px;
-        left: 16px;
-        z-index: 2;
-    }
-    .text-wrapper h2, .text-wrapper h3 {
-        color: var(--text-light);
-    }
 
 </style>
 <Media aspectRatio="16x9">
     <MediaContent style="z-index: 0;">
-        <div class="text-wrapper">
-            <h2 class="mdc-typography--headline6" style="margin: 0;">{headline || media.title}</h2>
-            <h3 class="mdc-typography--subtitle2" style="margin: 0;">{subtitle || media.subscription}</h3>
-        </div>
         <Preview bind:this={preview} {poster}/>
     </MediaContent>
 </Media>

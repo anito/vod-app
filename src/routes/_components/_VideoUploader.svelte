@@ -34,7 +34,6 @@
     }
     function handleUpload(uploads) {
         let video;
-
         videos.add(uploads);
     }
 	

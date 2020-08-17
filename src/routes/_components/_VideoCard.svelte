@@ -7,7 +7,7 @@
 	import { videos } from '../../stores/videoStore';
 	import { urls } from '../../stores/urlStore';
 	import { crud } from '../../stores/crudStore';
-	import { cache, cachedImage } from 'utils.js';
+	import { cachedImage } from 'utils.js';
 
 	import MediaPreview from './_MediaPreview.svelte';
 	import VideoUploader from './_ImageUploader.svelte';
@@ -49,6 +49,22 @@
 		}
 	}
 
+	function linkPoster( id ) {
+		video.image_id = id;
+		crud.dispatch({
+			method: 'put',
+			data: video
+		})
+	}
+
+	function removePoster() {
+		video.image_id = null;
+		crud.dispatch({
+			method: 'put',
+			data: video
+		})
+	}
+
 	function createPoster(e) {
 
 		dispatch('Video:current', video);
@@ -66,58 +82,35 @@
 		alert( `Selecting Poster for : ${video.id}` )
 	}
 
-	function removePoster() {
-		video.image_id = null;
-		crud.dispatch({
-			method: 'put',
-			data: video
-		})
-	}
-
 	function doAction( action ) {
 		alert( `Youd did an action: ${action}` )
 	}
 
-	async function uri(video) {
-		// posters in preview component are images, so we don't handle video uri here 
-		// get the poster image for the video if we have one
-		if(!video.image_id) return
-
-		var id= video.image_id;
-		var w = 300;
-		var h = 300;
-		var sq = 0;
-		var query = `?width=${w}&height=${h}&square=${sq}`;
-		// const result = await api.get( `u/${id}/?width=${w}&height=${h}&square=${sq}`, user && user.token );
-		const result = await api.get( `u/i/${id}/${query}`, user && user.token );
-		if(result.success) {
-			urls.add( result.data );
-			return `${result.data[id]}/?token=${user.token}`;
-		}
-		return ''
-	}
-	async function getCache(id) {
+	async function getCachedImage(id) {
 		let res = await cachedImage(id, user, {width:100, height:100, square: 1});
+		return res;
+	}
+	async function getCachedVideoPreview(id) {
+		if(!id) return false;
+		let res = await cachedImage(id, user, {width:300, height:300, square: 0});
 		return res;
 	}
 </script>
 
 <style>
 
-
+	:global(.preview-image) {
+		cursor: pointer;
+	}
 </style>
 
 	<Card style="width: 260px;" class="flex content-between">
-		<PrimaryAction on:click={() => uri(video)}>
-			{#if src = cache(video.image_id, user)}
-				<MediaPreview media={video} {src}/>
-			{:else}
-				{#await uri(video)}
+		<PrimaryAction>
+				{#await getCachedVideoPreview(video.image_id)}
 					<MediaPreview media={video}/>
 				{:then src}
 					<MediaPreview media={video} {src}/>
 				{/await}
-			{/if}
 			<Content class="mdc-typography--body2">
 				<div>{video.src}</div>
 			</Content>
@@ -141,7 +134,7 @@
 					<Menu bind:this={cardMenu}>
 						<List>
 							<Item on:click={() => createPoster()}><Text>New Poster</Text></Item>
-							<Item on:click={() => imageList.setOpen(true)}><Text>Select Poster</Text></Item>
+							<Item disabled={!$images.length} on:click={() => imageList.setOpen(true)}><Text>Select Poster</Text></Item>
 							<Separator />
 							<Item disabled={!video.image_id} on:SMUI:action={() => removePoster()}><Text>Delete Poster</Text></Item>
 							<Item on:SMUI:action={() => del()}><Text>Delete</Text></Item>
@@ -151,14 +144,14 @@
 						<MenuSurface bind:this={imageList} anchor={false} bind:anchorElement={imageListAnchor}>
 							<ImageList class="menu-surface-image-list">
 								{#each $images as image, i (image.id)}
-								{#await getCache(image.id)}
+								{#await getCachedImage(image.id)}
 									<div></div>
 								{:then src}
-								<ImageListItem>
-									<ImageAspectContainer>
-										<Image src="{src}" />
-									</ImageAspectContainer>
-								</ImageListItem>
+									<ImageListItem>
+										<ImageAspectContainer>
+											<Image class="preview-image" on:click={()=>linkPoster(image.id)} {src}/>
+										</ImageAspectContainer>
+									</ImageListItem>
 								{/await}
 								{/each}
 							</ImageList>

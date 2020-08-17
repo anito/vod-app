@@ -5,9 +5,9 @@
 	import { fly } from 'svelte/transition';
 	import { images } from '../../stores/imageStore';
 	import { urls } from '../../stores/urlStore';
-	import { cache, cachedImage } from 'utils.js';
+	import { cachedImage } from 'utils.js';
 
-	import MediaPreview from './_MediaPreview.svelte';
+	import MediaImagePreview from './_MediaImagePreview.svelte';
 	import ImageUploader from './_ImageUploader.svelte';
 	import Card, {Content, PrimaryAction, Actions, ActionButtons, ActionIcons} from '@smui/card';
 	import Button, {Label} from '@smui/button';
@@ -81,15 +81,12 @@
 </style>
 
 <Card style="width: 260px;" class="flex content-between">
-	<PrimaryAction on:click={() => uri(image)}>
-			{#await cachedImage(image.id, user, {})}
-				<MediaPreview media={{}}/>
-			{:then src}
-				<MediaPreview media={image} {src}/>
-			{/await}
-		<Content class="mdc-typography--body2">
-			<div>{image.src}</div>
-		</Content>
+	<PrimaryAction>
+		{#await cachedImage(image.id, user, {})}
+			<MediaImagePreview media={{}}/>
+		{:then src}
+			<MediaImagePreview media={image} {src}/>
+		{/await}
 	</PrimaryAction>
 	<div class="flex flex-col justify-end" style="flex:1 0 auto">
 		<Actions>
@@ -110,9 +107,6 @@
 						<Item on:SMUI:action={() => deletePoster()}><Text>Delete Poster</Text></Item>
 					</List>
 				</Menu>
-				<IconButton class="material-icons" on:click={() => doAction('share')} title="Share">
-					share
-				</IconButton>
 			</ActionIcons>
 		</Actions>
 	</div>
