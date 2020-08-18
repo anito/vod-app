@@ -7,8 +7,6 @@
     export let media = {};
     export let src = null;
     export let poster = `https://via.placeholder.com/320x180.png?text=`;
-    export let headline = 'A headline';
-    export let subtitle = 'A subtitle';
 
     let preview;
     $: poster = src || poster + getExt(media.src) || '';

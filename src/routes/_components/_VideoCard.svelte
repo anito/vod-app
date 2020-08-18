@@ -7,7 +7,7 @@
 	import { videos } from '../../stores/videoStore';
 	import { urls } from '../../stores/urlStore';
 	import { crud } from '../../stores/crudStore';
-	import { cachedImage } from 'utils.js';
+	import { getImage } from 'utils.js';
 
 	import MediaPreview from './_MediaPreview.svelte';
 	import VideoUploader from './_ImageUploader.svelte';
@@ -29,10 +29,12 @@
 	let image;
 	let token = user.token;
 	let cardMenu;
+	let deleteMenu;
 	let dispatch = createEventDispatcher();
 	let src;
 	let imageList;
 	let imageListAnchor;
+	let edit;
 
 	onDestroy(() => {
 		dispatch('Video:current', null);
@@ -87,12 +89,12 @@
 	}
 
 	async function getCachedImage(id) {
-		let res = await cachedImage(id, user, {width:100, height:100, square: 1});
+		let res = await getImage(id, user, {width:100, height:100, square: 1});
 		return res;
 	}
 	async function getCachedVideoPreview(id) {
 		if(!id) return false;
-		let res = await cachedImage(id, user, {width:300, height:300, square: 0});
+		let res = await getImage(id, user, {width:300, height:300, square: 0});
 		return res;
 	}
 </script>
@@ -109,7 +111,7 @@
 				{#await getCachedVideoPreview(video.image_id)}
 					<MediaPreview media={video}/>
 				{:then src}
-					<MediaPreview media={video} {src}/>
+					<MediaPreview media={video} {src} {edit}/>
 				{/await}
 			<Content class="mdc-typography--body2">
 				<div>{video.src}</div>
@@ -118,11 +120,11 @@
 		<div class="flex flex-col justify-end" style="flex:1 0 auto">
 			<Actions>
 				<ActionButtons>
-					<Button color="primary" class="">
+					<Button color="primary" class="" on:click={()=>edit=!edit}>
 						<Label>Edit</Label>
 						<Icon class="material-icons">edit</Icon>
 					</Button>
-					<Button color="primary" class="" on:click={() => del()}>
+					<Button color="primary" class="" on:click={() => deleteMenu.setOpen(true)}>
 						<Label>Delete</Label>
 						<Icon class="material-icons">delete</Icon>
 					</Button>
@@ -136,8 +138,13 @@
 							<Item on:click={() => createPoster()}><Text>New Poster</Text></Item>
 							<Item disabled={!$images.length} on:click={() => imageList.setOpen(true)}><Text>Select Poster</Text></Item>
 							<Separator />
-							<Item disabled={!video.image_id} on:SMUI:action={() => removePoster()}><Text>Delete Poster</Text></Item>
-							<Item on:SMUI:action={() => del()}><Text>Delete</Text></Item>
+							<Item disabled={!video.image_id} on:SMUI:action={() => removePoster()}><Text>Remove Poster</Text></Item>
+							<Item on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
+						</List>
+					</Menu>
+					<Menu bind:this={deleteMenu}>
+						<List>
+							<Item on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
 						</List>
 					</Menu>
 					<div use:Anchor bind:this={imageListAnchor}>

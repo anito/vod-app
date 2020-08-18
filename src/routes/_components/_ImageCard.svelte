@@ -5,7 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import { images } from '../../stores/imageStore';
 	import { urls } from '../../stores/urlStore';
-	import { cachedImage } from 'utils.js';
+	import { getImage } from 'utils.js';
 
 	import MediaImagePreview from './_MediaImagePreview.svelte';
 	import ImageUploader from './_ImageUploader.svelte';
@@ -25,8 +25,8 @@
 
 	const { open } = getContext('simple-modal');
 
-	async function remove( id ) {
-
+	async function del() {
+		const id = image.id;
 		const result = await api.del( `images/${id}`, user && user.token )
 
 		if( result.success ) {
@@ -82,7 +82,7 @@
 
 <Card style="width: 260px;" class="flex content-between">
 	<PrimaryAction>
-		{#await cachedImage(image.id, user, {})}
+		{#await getImage(image.id, user, {})}
 			<MediaImagePreview media={{}}/>
 		{:then src}
 			<MediaImagePreview media={image} {src}/>
@@ -91,8 +91,9 @@
 	<div class="flex flex-col justify-end" style="flex:1 0 auto">
 		<Actions>
 			<ActionButtons>
-				<Button on:click={()=>remove(image.id)}>
+				<Button color="primary" on:click={()=>menuPoster.setOpen(true)}>
 					<Label>Delete</Label>
+					<Icon class="material-icons">delete</Icon>
 				</Button>
 			</ActionButtons>
 			<ActionIcons style="position: relative;">
@@ -101,10 +102,7 @@
 				</IconButton>
 				<Menu bind:this={menuPoster}>
 					<List>
-						<Item on:click={() => createPoster()}><Text>New Poster</Text></Item>
-						<Item on:SMUI:action={() => selectPoster(image.id)}><Text>Select Poster</Text></Item>
-						<Separator />
-						<Item on:SMUI:action={() => deletePoster()}><Text>Delete Poster</Text></Item>
+						<Item on:SMUI:action={() => del()}><Text>Delete Poster</Text></Item>
 					</List>
 				</Menu>
 			</ActionIcons>
