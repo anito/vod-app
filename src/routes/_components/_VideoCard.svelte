@@ -34,23 +34,20 @@
 	let src;
 	let imageList;
 	let imageListAnchor;
-	let edit = false;
+	let activeEditor = false;
 	let title;
 	let description;
 	let editing;
 
-	$: if(edit) {
-		editing = 'Save';
-		// title = video.title.slice();
-		// description = video.description;
-	} else {
-		editing = 'Edit';
-	}
+	$: editing = activeEditor ? 'Save' : 'Edit';
+
 	onDestroy(() => {
 		dispatch('Video:current', null);
 	})
 	
-	function doSave() {
+	function save() {
+		console.log(description)
+		console.log(video.description)
 		if(description !== video.description || title !== video.title) {
 			video.title = title;
 			video.description = description;
@@ -61,10 +58,11 @@
 		};
 		return true;
 	}
-	function doEdit() {
+	function edit() {
 		console.log('editing...')
-		title = video.title;
-		description = video.description;
+		console.log(video.title)
+		title = video.title || '';
+		description = video.description || '';
 		return true;
 	}
 	async function del() {
@@ -119,7 +117,7 @@
 		let res = await getImage(id, user, {width:100, height:100, square: 1});
 		return res;
 	}
-	async function getCachedVideoPreview(id) {
+	async function getVideoPreview(id) {
 		if(!id) return false;
 		let res = await getImage(id, user, {width:300, height:300, square: 0});
 		return res;
@@ -135,7 +133,7 @@
 
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction>
-				{#await getCachedVideoPreview(video.image_id)}
+				{#await getVideoPreview(video.image_id)}
 					<MediaPreview
 						media={video}
 					/>
@@ -145,7 +143,7 @@
 						bind:title={title}
 						bind:description={description}
 						{src}
-						{edit}
+						{activeEditor}
 					/>
 				{/await}
 			<Content class="mdc-typography--body2">
@@ -155,9 +153,9 @@
 		<div class="flex flex-col justify-end" style="flex:1 0 auto">
 			<Actions>
 				<ActionButtons>
-					<Button color="primary" on:click={() => (edit=!edit && doEdit()) || doSave()}>
+					<Button color="primary" on:click={() => (activeEditor=!activeEditor && edit()) || save()}>
 						<Label>{editing}</Label>
-						<Icon class="material-icons">edit</Icon>
+						<Icon class="material-icons">activeEditor</Icon>
 					</Button>
 					<Button color="primary" on:click={() => deleteMenu.setOpen(true)}>
 						<Label>Delete</Label>
