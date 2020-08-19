@@ -38,14 +38,25 @@
 	let title;
 	let description;
 	let editing;
+	const labelEdit = 'edit';
+	const labelSave = 'save';
+	const labelDelete = 'delete';
+	const labelCancel = 'cancel';
+	let labelMode_1;
+	let labelMode_2;
 	let dateOptions = {
 		weekday: 'long',
 		year: 'numeric',
 		month: '2-digit',
-		day: 'numeric'
+		day: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric'
 	}
 
-	$: editing = activeEditor ? 'Save' : 'Edit';
+	$: mode_1 = activeEditor ? 'Save' : 'Edit';
+	$: mode_2 = activeEditor ? 'Cancel' : 'Delete';
+	$: labelMode_1 = activeEditor ? labelSave : labelEdit;
+	$: labelMode_2 = activeEditor ? labelCancel : labelDelete;
 
 	onDestroy(() => {
 		dispatch('Video:current', null);
@@ -71,6 +82,10 @@
 		description = video.description || '';
 		return true;
 	}
+	function setDeleteMenuOpen(b) {
+		deleteMenu.setOpen(b)
+		return false;
+	}
 	async function del() {
 
 		let id = video.id;
@@ -82,7 +97,7 @@
 		}
 	}
 
-	function linkPoster( id ) {
+	function linkPoster(id) {
 		video.image_id = id;
 		crud.dispatch({
 			method: 'put',
@@ -160,7 +175,7 @@
 					/>
 				{/await}
 			<div class:activeEditor>
-				<Content class="mdc-typography--body2 {activeEditor}">
+				<Content class="mdc-typography--body2">
 					<div class="text-xs text-inherit">
 						<Icon class="material-icons">cloud_upload</Icon>
 						<span>{new Date(video.created).toLocaleDateString('de-DE', dateOptions)}</span>
@@ -172,12 +187,12 @@
 			<Actions>
 				<ActionButtons>
 					<Button color="primary" on:click={() => (activeEditor=!activeEditor && edit()) || save()}>
-						<Label>{editing}</Label>
-						<Icon class="material-icons">edit</Icon>
+						<Label>{mode_1}</Label>
+						<Icon class="material-icons">{labelMode_1}</Icon>
 					</Button>
-					<Button color="primary" on:click={() => deleteMenu.setOpen(true)}>
-						<Label>Delete</Label>
-						<Icon class="material-icons">delete</Icon>
+					<Button color="primary" on:click={() => (activeEditor=!activeEditor && setDeleteMenuOpen(true))}>
+						<Label>{mode_2}</Label>
+						<Icon class="material-icons">{labelMode_2}</Icon>
 					</Button>
 				</ActionButtons>
 				<ActionIcons style="position: relative;">
@@ -190,12 +205,12 @@
 							<Item disabled={!$images.length} on:click={() => imageList.setOpen(true)}><Text>Select Poster</Text></Item>
 							<Separator />
 							<Item disabled={!video.image_id} on:SMUI:action={() => removePoster()}><Text>Remove Poster</Text></Item>
-							<Item on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
+							<Item class="text-red-700" on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
 						</List>
 					</Menu>
 					<Menu bind:this={deleteMenu}>
 						<List>
-							<Item on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
+							<Item class="text-red-700" on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
 						</List>
 					</Menu>
 					<div use:Anchor bind:this={imageListAnchor}>

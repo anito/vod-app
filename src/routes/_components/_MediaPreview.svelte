@@ -37,20 +37,22 @@
     .text-wrapper h2, .text-wrapper h3 {
         color: var(--text-light);
     }
-    .editor > :global(*:not(:last-child)) {
-        margin-bottom: 10px;
+    .editor > :global(*) {
+        display: flex;
+        flex-flow: column;
+        margin: 5px;
     }
 
 
 </style>
 <Media aspectRatio="16x9">
     <MediaContent style="z-index: 0;">
-        <div class="text-wrapper">
-            <div class="" class:activeEditor>
-                <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
-                <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
-            </div>
-            <div class="editor" class:activeEditor={!activeEditor}>
+        <div class="text-wrapper activeEditor" class:activeEditor>
+            <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
+            <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
+        </div>
+        <div class:activeEditor={!activeEditor}>
+            <div class="editor">
                 <Textfield variant="outlined" dense bind:value={title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
                 <Textfield textarea variant="outlined" bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
