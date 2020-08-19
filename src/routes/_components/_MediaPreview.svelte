@@ -10,7 +10,10 @@
     export let poster = `https://via.placeholder.com/320x180.png?text=`;
     export let headline = 'A headline';
     export let subtitle = 'A subtitle';
+    export let title = '';
+    export let description = '';
     export let edit = false;
+
 
     let preview;
     $: poster = src || poster + getExt(media.src) || '';
@@ -51,8 +54,8 @@
                 <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
             </div>
             <div class="editor" class:edit ={!edit}>
-                <Textfield variant="outlined" dense bind:value={media.title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
-                <Textfield variant="outlined" dense bind:value={media.description} label="Description" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
+                <Textfield variant="outlined" dense bind:value={title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
+                <Textfield variant="outlined" dense bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
         </div>
         <div class:edit >

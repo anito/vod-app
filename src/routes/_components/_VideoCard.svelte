@@ -34,12 +34,39 @@
 	let src;
 	let imageList;
 	let imageListAnchor;
-	let edit;
+	let edit = false;
+	let title;
+	let description;
+	let editing;
 
+	$: if(edit) {
+		editing = 'Save';
+		// title = video.title.slice();
+		// description = video.description;
+	} else {
+		editing = 'Edit';
+	}
 	onDestroy(() => {
 		dispatch('Video:current', null);
 	})
 	
+	function doSave() {
+		if(description !== video.description || title !== video.title) {
+			video.title = title;
+			video.description = description;
+			crud.dispatch({
+				method: 'put',
+				data: video
+			})
+		};
+		return true;
+	}
+	function doEdit() {
+		console.log('editing...')
+		title = video.title;
+		description = video.description;
+		return true;
+	}
 	async function del() {
 
 		let id = video.id;
@@ -109,9 +136,17 @@
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction>
 				{#await getCachedVideoPreview(video.image_id)}
-					<MediaPreview media={video}/>
+					<MediaPreview
+						media={video}
+					/>
 				{:then src}
-					<MediaPreview media={video} {src} {edit}/>
+					<MediaPreview
+						media={video}
+						bind:title={title}
+						bind:description={description}
+						{src}
+						{edit}
+					/>
 				{/await}
 			<Content class="mdc-typography--body2">
 				<div>{video.src}</div>
@@ -120,11 +155,11 @@
 		<div class="flex flex-col justify-end" style="flex:1 0 auto">
 			<Actions>
 				<ActionButtons>
-					<Button color="primary" class="" on:click={()=>edit=!edit}>
-						<Label>Edit</Label>
+					<Button color="primary" on:click={() => (edit=!edit && doEdit()) || doSave()}>
+						<Label>{editing}</Label>
 						<Icon class="material-icons">edit</Icon>
 					</Button>
-					<Button color="primary" class="" on:click={() => deleteMenu.setOpen(true)}>
+					<Button color="primary" on:click={() => deleteMenu.setOpen(true)}>
 						<Label>Delete</Label>
 						<Icon class="material-icons">delete</Icon>
 					</Button>
