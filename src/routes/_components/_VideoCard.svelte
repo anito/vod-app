@@ -38,6 +38,12 @@
 	let title;
 	let description;
 	let editing;
+	let dateOptions = {
+		weekday: 'long',
+		year: 'numeric',
+		month: '2-digit',
+		day: 'numeric'
+	}
 
 	$: editing = activeEditor ? 'Save' : 'Edit';
 
@@ -129,6 +135,13 @@
 	:global(.preview-image) {
 		cursor: pointer;
 	}
+	.text-inherit > :global(*) {
+		font-size: inherit;
+	}
+    :global(.activeEditor) {
+        display: none;
+    }
+
 </style>
 
 	<Card style="width: 260px;" class="flex content-between">
@@ -146,16 +159,21 @@
 						{activeEditor}
 					/>
 				{/await}
-			<Content class="mdc-typography--body2">
-				<div>{video.src}</div>
-			</Content>
+			<div class:activeEditor>
+				<Content class="mdc-typography--body2 {activeEditor}">
+					<div class="text-xs text-inherit">
+						<Icon class="material-icons">cloud_upload</Icon>
+						<span>{new Date(video.created).toLocaleDateString('de-DE', dateOptions)}</span>
+					</div>
+				</Content>
+			</div>
 		</PrimaryAction>
 		<div class="flex flex-col justify-end" style="flex:1 0 auto">
 			<Actions>
 				<ActionButtons>
 					<Button color="primary" on:click={() => (activeEditor=!activeEditor && edit()) || save()}>
 						<Label>{editing}</Label>
-						<Icon class="material-icons">activeEditor</Icon>
+						<Icon class="material-icons">edit</Icon>
 					</Button>
 					<Button color="primary" on:click={() => deleteMenu.setOpen(true)}>
 						<Label>Delete</Label>

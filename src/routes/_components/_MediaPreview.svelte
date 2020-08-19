@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
-    import Textfield from '@smui/textfield';
+    import Textfield, {Textarea} from '@smui/textfield';
     import { Preview } from '@vime-js/preview';
     import { getExt } from 'utils.js';
     
@@ -40,9 +40,6 @@
     .editor > :global(*:not(:last-child)) {
         margin-bottom: 10px;
     }
-    .activeEditor {
-        display: none;
-    }
 
 
 </style>
@@ -55,7 +52,7 @@
             </div>
             <div class="editor" class:activeEditor={!activeEditor}>
                 <Textfield variant="outlined" dense bind:value={title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
-                <Textfield variant="outlined" dense bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
+                <Textfield textarea variant="outlined" bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
         </div>
         <div class:activeEditor >
