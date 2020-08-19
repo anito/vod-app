@@ -80,6 +80,7 @@
 	onMount( async () => {
 		options = {
 			url: `${base}/${path}/?token=${$session.user.token}`,
+			timeout: 3600 * 1000,
 			uploadMultiple,
 			maxFiles,
 			paramName,
