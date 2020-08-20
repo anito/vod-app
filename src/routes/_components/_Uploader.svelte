@@ -1,7 +1,6 @@
 <script>
 	import { goto, stores } from '@sapper/app';
 	import { onMount, createEventDispatcher, getContext } from 'svelte';
-	import ListErrors from '../_components/ListErrors.svelte';
 	import PreviewTemplate from '../_components/_PreviewTemplate.svelte';
 	import Button, {Label, Icon} from '@smui/button';
 	import LinearProgress from '@smui/linear-progress';

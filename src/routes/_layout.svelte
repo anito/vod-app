@@ -10,9 +10,13 @@
 	import { post } from 'utils.js';
 	import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
 	import Breadcrumb from './_components/_Breadcrumb.svelte';
+	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
+	// import ListErrors from './_components/ListErrors.svelte';
 
 	const { page, preloading, session } = stores();
 	let root;
+	let snackbar;
+	let message = '';
 
 	export let segment;
 
@@ -26,7 +30,19 @@
 
 	async function logout() {
 		const r = await post(`auth/logout`);
-		if (r.success) $session.user = null;
+		if (r.success) {
+			$session.user = null;
+			message = r.data.message;
+			snackbar.open();
+		}
+	}
+
+	function handleClosed() {
+		message = '';
+	}
+
+	function gotoLogin() {
+		goto('login')
 	}
 </script>
 
@@ -85,3 +101,10 @@
 	</GridItem>
 	{/if}
 </LayoutGrid>
+
+<Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
+	<SnackbarLabel></SnackbarLabel>
+	<Actions>
+        <Button on:click={() => gotoLogin()}>Goto Login</Button>
+	</Actions>
+</Snackbar>
