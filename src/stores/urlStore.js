@@ -7,7 +7,6 @@ function createStore() {
         let value = items.has(item.id) && items.get(item.id) || {[item.params]: item.url};
         !value[item.params] && (value[item.params] = item.url);
         items.set(item.id, value);
-        console.log(items)
         return items;
     }
     return {

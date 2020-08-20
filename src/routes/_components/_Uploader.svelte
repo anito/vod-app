@@ -3,7 +3,8 @@
 	import { onMount, createEventDispatcher, getContext } from 'svelte';
 	import ListErrors from '../_components/ListErrors.svelte';
 	import PreviewTemplate from '../_components/_PreviewTemplate.svelte';
-    import Button, {Label, Icon} from '@smui/button';
+	import Button, {Label, Icon} from '@smui/button';
+	import LinearProgress from '@smui/linear-progress';
 	import { post } from 'utils.js';
 	import { base } from 'api.js';
 	import { slide } from 'svelte/transition';
@@ -36,6 +37,10 @@
 	let count = 0;
 
 	$: hasFiles = !!count;
+	$: closed = !hasFiles;
+	$: opened = hasFiles;
+	$: if(!hasFiles) progress = 0; // reset progress when removing last file
+
 
 	let html = ( el ) => {
 		let child = el.childNodes[0];
@@ -66,7 +71,8 @@
 		} )
 		this.on( "totaluploadprogress", ( val ) => {
 			dispatch('Uploader:totaluploadprogress', val);
-			progress = val;
+			console.log(val)
+			progress = val / 100;
 		} )
 		this.on( "complete", ( file ) => {
 			dropzone.removeFile(file);
@@ -80,7 +86,7 @@
 	onMount( async () => {
 		options = {
 			url: `${base}/${path}/?token=${$session.user.token}`,
-			timeout: 3600 * 1000,
+			timeout: 180 * 1000, // 3min
 			uploadMultiple,
 			maxFiles,
 			paramName,
@@ -145,7 +151,7 @@
 				dropzoneEvents={{ init }}
 				{ options }
 			>
-				<p class:hasFiles class="fileAdded dz-message">Drop your file(s) here or click to add file</p>
+				<p class:hasFiles={hasFiles} class="fileAdded dz-message">Drop your file(s) here or click to add file</p>
 			</Dropzone>
 			<div use:html class="files-table files" bind:this={preview}>
 				<PreviewTemplate/>
@@ -154,6 +160,7 @@
 				<Label>Upload</Label>
 				<Icon class="material-icons">cloud_upload</Icon>
 			</Button>
+			<LinearProgress {progress} {opened} {closed} />
 		</form>
 	</div>
 </div>

@@ -102,7 +102,7 @@
 				</IconButton>
 				<Menu bind:this={menuPoster}>
 					<List>
-						<Item on:SMUI:action={() => del()}><Text>Delete Poster</Text></Item>
+						<Item class="text-red-700" on:SMUI:action={() => del()}><Text>Delete Poster</Text></Item>
 					</List>
 				</Menu>
 			</ActionIcons>
