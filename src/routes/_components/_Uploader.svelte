@@ -21,8 +21,6 @@
 
 	const { close } = getContext('simple-modal');
 	const dispatch = createEventDispatcher()
-	const addedfile = file => console.log(file);
-	const drop = event => console.log(event.target);
 	const { session } = stores();
 
 	let component;
@@ -38,7 +36,6 @@
 
 	$: hasFiles = !!count;
 	$: closed = !hasFiles;
-	$: opened = hasFiles;
 	$: if(!hasFiles) progress = 0; // reset progress when removing last file
 
 
@@ -71,7 +68,6 @@
 		} )
 		this.on( "totaluploadprogress", ( val ) => {
 			dispatch('Uploader:totaluploadprogress', val);
-			console.log(val)
 			progress = val / 100;
 		} )
 		this.on( "complete", ( file ) => {
@@ -79,7 +75,7 @@
 			close();
 		} )
 		this.on( "maxfilesreached", ( files ) => {
-			console.log(files);
+			
 		} )
 	}
 
@@ -108,9 +104,6 @@
 
 <style>
 
-	.content {
-		margin-bottom: 1rem;
-	}
 	.content .content-inner {
 		z-index: 6;
 		position: relative;
@@ -136,7 +129,10 @@
 		width: 100%;
 	}
 	:global(.btn-upload) {
-		margin-top: 1rem;
+		margin: 1rem 0;
+	}
+	.progressbar {
+		position: absolute;
 	}
 
 </style>
@@ -160,7 +156,7 @@
 				<Label>Upload</Label>
 				<Icon class="material-icons">cloud_upload</Icon>
 			</Button>
-			<LinearProgress {progress} {opened} {closed} />
+			<LinearProgress class="progressbar" {progress} {closed} />
 		</form>
 	</div>
 </div>

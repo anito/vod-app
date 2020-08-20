@@ -63,8 +63,6 @@
 	})
 	
 	function save() {
-		console.log(description)
-		console.log(video.description)
 		if(description !== video.description || title !== video.title) {
 			video.title = title;
 			video.description = description;
@@ -75,9 +73,7 @@
 		};
 		return true;
 	}
-	function edit() {
-		console.log('editing...')
-		console.log(video.title)
+		function edit() {
 		title = video.title || '';
 		description = video.description || '';
 		return true;

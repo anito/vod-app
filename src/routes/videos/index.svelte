@@ -45,10 +45,10 @@
     }
 
     urls.subscribe( (items) => {
-        console.log( 'because I subscribed:', items )
+        // console.log( 'because I subscribed:', items )
     } )
     crud.subscribe( t => {
-        console.log('subscribing', t)
+        
         if( 'post' === t.method ) {
             post(t.data)
         }
