@@ -161,27 +161,25 @@
 
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction>
-				{#await getVideoPreview(video.image_id)}
-					<MediaPreview
-						media={video}
-					/>
-				{:then src}
-					<MediaPreview
-						media={video}
-						bind:title={title}
-						bind:description={description}
-						{src}
-						{activeEditor}
-					/>
-				{/await}
-			<div class:activeEditor>
-				<Content class="mdc-typography--body2">
-					<div class="text-xs text-inherit">
-						<Icon class="material-icons">cloud_upload</Icon>
-						<span>{new Date(video.created).toLocaleDateString('de-DE', dateOptions)}</span>
-					</div>
-				</Content>
-			</div>
+			{#await getVideoPreview(video.image_id)}
+				<MediaPreview
+					media={video}
+				/>
+			{:then src}
+				<MediaPreview
+					media={video}
+					bind:title={title}
+					bind:description={description}
+					{src}
+					{activeEditor}
+				/>
+			{/await}
+			<Content class="mdc-typography--body2">
+				<div class="text-xs text-inherit">
+					<Icon class="material-icons">cloud_upload</Icon>
+					<span>{new Date(video.created).toLocaleDateString('de-DE', dateOptions)}</span>
+				</div>
+			</Content>
 		</PrimaryAction>
 		<div class="flex flex-col justify-end" style="flex:1 0 auto">
 			<Actions>
