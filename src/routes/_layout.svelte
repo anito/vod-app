@@ -79,7 +79,7 @@
 	</Nav>
 </form>
 
-<LayoutGrid {segment}>
+<LayoutGrid {segment} stretch>
 	<GridItem name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}
