@@ -1,6 +1,10 @@
 <script>
+    import { goto, stores } from '@sapper/app';
+
+    const { page } = stores();
 
     export let segment;
+    $: slug = $page.params && $page.params.slug ? `/ ${$page.params.slug}` : '';
 
 </script>
 
@@ -16,4 +20,4 @@
 
 </style>
 
-<div class="breadcrumb"><a href=".">home</a> / {segment}</div>
+<div class="breadcrumb"><a href=".">home</a> / {segment} {slug}</div>

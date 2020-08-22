@@ -1,13 +1,20 @@
 <script context="module">
     import * as api from 'api.js';
     import { images } from '../../stores/imageStore';
+    import {get as receive} from 'svelte/store';
+    import {equals} from 'utils';
 
 	export async function preload( { path }, { user }) {
 
+        let imgs;
+        let data;
 		const res = await api.get( 'images', user && user.token );
 
         if( res.success ) {
-            images.update( res.data );
+            imgs = receive(images)
+            data = res.data;
+            if(!equals(imgs, data)) images.set( data );
+            
         } else {
             images.set( [] );
         }

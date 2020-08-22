@@ -42,4 +42,4 @@
     }
 </script>
 
-<Display data={data}/>
+<Display {data}/>

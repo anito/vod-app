@@ -1,8 +1,10 @@
 <script context="module">
     import * as api from 'api.js';
-    import { videos } from '../../stores/videoStore';
-    import { images } from '../../stores/imageStore';
-    import { crud } from '../../stores/crudStore';
+    import {videos} from '../../stores/videoStore';
+    import {images} from '../../stores/imageStore';
+    import {crud} from '../../stores/crudStore';
+    import {get as receive} from 'svelte/store';
+    import {equals} from 'utils';
 
     let the_user;
 
@@ -10,17 +12,25 @@
 
         the_user = user;
         let res;
+        let vids;
+        let imgs;
+        let data;
+
         res = await api.get( 'videos', user && user.token );
 
         if( res.success ) {
-            videos.update( res.data );
+            vids = receive(videos)
+            data = res.data;
+            if(!equals(vids, data)) videos.set( data );
         } else {
             videos.set( [] );
         }
 		res = await api.get( 'images', user && user.token );
 
         if( res.success ) {
-            images.update( res.data );
+            imgs = receive(images)
+            data = res.data;
+            if(!equals(imgs, data)) images.set( data );
         } else {
             images.set( [] );
         }

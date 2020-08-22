@@ -93,7 +93,7 @@
 	</Nav>
 </form>
 
-<Layout {segment}>
+<Layout {segment} {page}>
 	<slot></slot>
 	<div slot="side">
 		Sidebar
