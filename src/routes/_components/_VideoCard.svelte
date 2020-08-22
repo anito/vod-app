@@ -71,9 +71,8 @@
 				data: video
 			})
 		};
-		return true;
 	}
-		function edit() {
+	function edit() {
 		title = video.title || '';
 		description = video.description || '';
 		return true;
@@ -93,7 +92,7 @@
 		}
 	}
 
-	function linkPoster(id) {
+	function selectPoster(id) {
 		video.image_id = id;
 		crud.dispatch({
 			method: 'put',
@@ -122,14 +121,6 @@
         } )
 	}
 
-	function selectPoster() {
-		alert( `Selecting Poster for : ${video.id}` )
-	}
-
-	function doAction( action ) {
-		alert( `Youd did an action: ${action}` )
-	}
-
 	async function getCachedImage(id) {
 		let res = await getImage(id, user, {width:100, height:100, square: 1});
 		return res;
@@ -156,7 +147,7 @@
 </style>
 
 	<Card style="width: 260px;" class="flex content-between">
-		<PrimaryAction on:click={() => goto(`/videos/${video.id}`)}>
+		<PrimaryAction on:click={() => !activeEditor && goto(`/videos/${video.id}`)}>
 			{#await getVideoPreview(video.image_id)}
 				<MediaPreview
 					media={video}
@@ -216,7 +207,7 @@
 								{:then src}
 									<ImageListItem>
 										<ImageAspectContainer>
-											<Image class="preview-image" on:click={()=>linkPoster(image.id)} {src}/>
+											<Image class="preview-image" on:click={()=>selectPoster(image.id)} {src}/>
 										</ImageAspectContainer>
 									</ImageListItem>
 								{/await}
