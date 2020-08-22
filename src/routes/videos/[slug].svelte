@@ -16,7 +16,19 @@
 
 <script>
     import Display from '../_components/_Display.svelte';
-    export const data = {
+
+    export let id;
+    export let image_id;
+    export let title;
+    export let description;
+    export let src;
+    export let filesize;
+    export let user_id;
+    export let sequence;
+    export let modified;
+    export let created;
+    
+    const {...data} = {
         id,
         image_id,
         title,
@@ -27,9 +39,7 @@
         sequence,
         modified,
         created
-    };
-
+    }
 </script>
 
-<Display {data}/>
-
+<Display data={data}/>
