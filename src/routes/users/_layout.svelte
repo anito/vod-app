@@ -4,7 +4,7 @@
     export let segment = '';
 </script>
 
-<Header h=2 mdc class="my-8">Video Layout</Header>
+<Header h=2 mdc class="my-8">Users Layout</Header>
 <div class="m-8 segment-{segment}">
     <Modal>
         <slot></slot>

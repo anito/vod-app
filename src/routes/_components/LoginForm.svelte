@@ -52,13 +52,13 @@
     <span class="inline">
         <span class="inline-item">
             <Textfield variant="outlined" withLeadingIcon bind:value={email} label="Email" input$aria-controls="helper-text-outlined-email" input$aria-describedby="helper-text-outlined-email" >
-                <Icon class="material-icons">event</Icon>
+                <Icon class="material-icons">mail</Icon>
             </Textfield>
             <HelperText id="helper-text-outlined-email">Helper Text</HelperText>
         </span>
         <span class="inline-item">
             <Textfield variant="outlined" type="password" withTrailingIcon bind:value={password} label="Password" input$aria-controls="helper-text-outlined-password" input$aria-describedby="helper-text-outlined-password" >
-                <Icon class="material-icons">delete</Icon>
+                <Icon class="material-icons">login</Icon>
             </Textfield>
             <HelperText id="helper-text-outlined-password">Helper Text</HelperText>
         </span>

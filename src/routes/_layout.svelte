@@ -8,15 +8,27 @@
 	import { Label } from '@smui/common';
 	import Fab, { Icon } from '@smui/fab';
 	import { post } from 'utils.js';
+	import Tags from './_components/Tags.svelte';
+	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
 	import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
 	import Breadcrumb from './_components/_Breadcrumb.svelte';
-	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
+	import Layout from './layout.svelte';
 	// import ListErrors from './_components/ListErrors.svelte';
 
 	const { page, preloading, session } = stores();
 	let root;
 	let snackbar;
 	let message = '';
+	const adTags = [
+		'aaa',
+		'bbb',
+		'ccc'
+	]
+	const footerTags = [
+		'ddd',
+		'eee',
+		'fff'
+	]
 
 	export let segment;
 
@@ -55,10 +67,12 @@
 <form on:submit|preventDefault={logout} method="post">
 	<Nav {segment} {page} logo="logo-sticky.svg">
 		<NavItem segment="videos">Videos</NavItem>
+		<NavItem segment="users">Users</NavItem>
 		<NavItem segment="images">Posters</NavItem>
 		<NavItem segment="blog">Blog</NavItem>
 		<NavItem segment="about">About</NavItem>
 
+		<NavItem blank external="http://localhost:3001">Svelte</NavItem>
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
 
 		<NavItem external="chat" title="Discord Chat">
@@ -79,28 +93,18 @@
 	</Nav>
 </form>
 
-<LayoutGrid {segment} stretch>
-	<GridItem name="content" let:inner>
-		<div class="{inner}">
-			{#if segment}
-			<Breadcrumb {segment}/>
-			{/if}
-			<slot></slot>
-		</div>
-	</GridItem>
-	{#if segment}
-	<GridItem name="footer" let:inner>
-		<div class="{inner}">
-			<slot name="footer">Footer</slot>
-		</div>
-	</GridItem>
-	<GridItem name="ad" let:inner>
-		<div class="{inner}">
-			<slot name="ad">Advertisement</slot>
-		</div>
-	</GridItem>
-	{/if}
-</LayoutGrid>
+<Layout {segment}>
+	<slot></slot>
+	<div slot="side">
+		Sidebar
+	</div>
+	<div slot="ad">
+		Ads
+	</div>
+	<div slot="footer">
+		Footer
+	</div>
+</Layout>
 
 <Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
 	<SnackbarLabel></SnackbarLabel>

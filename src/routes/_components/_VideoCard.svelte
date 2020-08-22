@@ -156,7 +156,7 @@
 </style>
 
 	<Card style="width: 260px;" class="flex content-between">
-		<PrimaryAction>
+		<PrimaryAction on:click={() => goto(`/videos/${video.id}`)}>
 			{#await getVideoPreview(video.image_id)}
 				<MediaPreview
 					media={video}
