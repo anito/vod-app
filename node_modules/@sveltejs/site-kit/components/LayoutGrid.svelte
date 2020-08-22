@@ -37,7 +37,7 @@
             "content"
             "ad"
             "footer";
-        height: calc(100vh - var(--nav-h));
+        height: calc(99vh - var(--nav-h));
     }
     .grid.users {
         grid-template-columns: 1fr;
