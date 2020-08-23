@@ -20,47 +20,28 @@
 
 <Blurb>
 	<a href="blog/write-less-code" slot="one">
-		<h2>Write less code</h2>
-		<p>Build boilerplate-free components using languages you already know — HTML, CSS and JavaScript</p>
+		<h2>Test 1</h2>
+		<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus animi labore maxime quos architecto, dolore ducimus vero molestiae dicta? Repellat accusantium dignissimos assumenda at voluptas rerum exercitationem explicabo asperiores sed?</p>
 
 		<span class="learn-more">learn more</span>
 	</a>
 
 	<a href="blog/virtual-dom-is-pure-overhead" slot="two">
-		<h2>No virtual DOM</h2>
-		<p>Svelte compiles your code to tiny, framework-less vanilla JS — your app starts fast and stays fast</p>
-
-		<span class="learn-more">learn more</span>
-	</a>
-
-	<a href="blog/svelte-3-rethinking-reactivity" slot="three">
-		<h2>Truly reactive</h2>
-		<p>No more complex state management libraries — Svelte brings reactivity to JavaScript itself</p>
+		<h2>Test 2</h2>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita eum dolorem, est perspiciatis laborum nihil veniam pariatur tempore voluptas quia debitis ut iste, officiis non explicabo accusamus mollitia quos quasi?</p>
 
 		<span class="learn-more">learn more</span>
 	</a>
 
 	<div class="description" slot="what">
-		<p>Svelte is a radical new approach to building user interfaces. Whereas traditional frameworks like React and Vue do the bulk of their work in the <em>browser</em>, Svelte shifts that work into a <em>compile step</em> that happens when you build your app.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti.</p>
 
-		<p>Instead of using techniques like virtual DOM diffing, Svelte writes code that surgically updates the DOM when the state of your app changes.</p>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur.</p>
 
-		<p><a href="blog/svelte-3-rethinking-reactivity">Read the introductory blog post</a> to learn more.</p>
 	</div>
 
 	<div style="grid-area: start; display: flex; flex-direction: column; min-width: 0" slot="how">
-		<pre class="language-bash" style="margin: 0 0 1em 0; min-width: 0; min-height: 0">
-npx degit <a href="https://github.com/sveltejs/template" style="user-select: initial;">sveltejs/template</a> my-svelte-project
-<span class="token comment"># or download and extract <a href="https://github.com/sveltejs/template/archive/master.zip">this .zip file</a></span>
-cd my-svelte-project
-
-npm install
-npm run dev
-		</pre>
-
-		<p style="flex: 1">See the <a href="blog/the-easiest-way-to-get-started">quickstart guide</a> for more information.</p>
-
-		<p class="cta"><a rel="prefetch" href="tutorial">Learn Svelte</a></p>
+		<p style="margin: 0 0 1em 0; min-width: 0; min-height: 0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi.</p>
 	</div>
 </Blurb>
 

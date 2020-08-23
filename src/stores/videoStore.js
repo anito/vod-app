@@ -7,10 +7,6 @@ function createStore() {
     let findIndexById = ( id, items ) => {
         return items.findIndex( itm => itm.id == id )
     }
-    let findItemById = ( id, items ) => {
-        let idx = items.findIndex(itm => itm.id == id)
-        return items[idx] 
-    }
 
     return {
         subscribe,

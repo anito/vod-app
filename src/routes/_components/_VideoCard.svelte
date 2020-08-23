@@ -31,7 +31,8 @@
 	let cardMenu;
 	let deleteMenu;
 	let dispatch = createEventDispatcher();
-	let src;
+	// let src;
+	let src = 'https://physio.mbp/api/q/Ry81WlAjJC4uMCAsUCkiKDNXPFQxUyQoU1YkLjMiLjBFWjgoOyIiIjQrJigmNCZRNy0gLDcnIEEkLTlzdnU0Zzt7Y3svd3A6M2MmLzswIShjOSlxYHQ5ZHctdXhjdy9jNns3NCUlIzswNiY0JiguIColPSAyPiE1OQ,,/20200823:131014_1597731288.jpg/?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOjIzLCJ1c2VybmFtZSI6ImF4ZWwiLCJuYW1lIjoiQXhlbCIsImVtYWlsIjoiaW5mb0B3ZWJwcmVtaWVyZS5kZXYiLCJhY3RpdmUiOnRydWUsImdyb3VwX2lkIjoxLCJsYXN0X2xvZ2luIjoiMjAyMC0wNy0wOVQxNDo1MTo1MSswMjowMCIsImNyZWF0ZWQiOiIyMDE5LTA3LTMxVDIzOjIwOjI1KzAyOjAwIiwibW9kaWZpZWQiOiIyMDIwLTA4LTAzVDEzOjQwOjIxKzAyOjAwIn0sImV4cCI6MTU5ODc3NDM2Nn0.QoQYA1Ez5e_LGbiqx7YAXlzbgpC4bpXxIhbvtNuH4cc';
 	let imageList;
 	let imageListAnchor;
 	let activeEditor = false;
@@ -125,9 +126,9 @@
 		let res = await getImage(id, user, {width:100, height:100, square: 1});
 		return res;
 	}
-	async function getVideoPreview(id) {
+	function getVideoPreview(id) {
 		if(!id) return false;
-		let res = await getImage(id, user, {width:300, height:300, square: 0});
+		let res = getImage(id, user, {width:300, height:300, square: 0});
 		return res;
 	}
 </script>
@@ -148,11 +149,11 @@
 
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction on:click={() => !activeEditor && goto(`/videos/${video.id}`)}>
-			{#await getVideoPreview(video.image_id)}
+			{#if !(src = getVideoPreview(video.image_id))}
 				<MediaPreview
 					media={video}
 				/>
-			{:then src}
+			{:else}
 				<MediaPreview
 					media={video}
 					bind:title={title}
@@ -160,7 +161,7 @@
 					{src}
 					{activeEditor}
 				/>
-			{/await}
+			{/if}
 			<Content class="mdc-typography--body2">
 				<div class="text-xs text-inherit">
 					<Icon class="material-icons">cloud_upload</Icon>

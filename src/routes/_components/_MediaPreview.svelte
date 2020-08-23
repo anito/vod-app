@@ -72,7 +72,11 @@
             </div>
         </div>
         <div class="preview-wrapper">
-            <Preview bind:this={preview} {poster}/>
+            <Preview
+                bind:this={preview}
+                showPlayIcon
+                {poster}
+            />
         </div>
     </MediaContent>
 </Media>
