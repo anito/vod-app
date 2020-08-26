@@ -4,7 +4,7 @@
     import Textfield, {Textarea} from '@smui/textfield';
     import VimePlayer from './_VimePlayer.svelte';
     import { Preview } from '@vime-js/preview';
-    import { getExt, getImage } from 'utils.js';
+    import { getExt, getImage, getVideo } from 'utils.js';
     import { crud } from '../../stores/crudStore.js';
     import { videos } from '../../stores/videoStore.js';
     
@@ -18,27 +18,38 @@
     export let activeEditor = false;
     export let user;
 
-    const defaultPoster = `${posterUrl}${getExt(media.src)}`;
 
+    let type = getExt(media.src);
+    const defaultPoster = `${posterUrl}${type}`;
     let preview;
     let player;
     let poster = defaultPoster;
+    let src;
 
-    async function getPreview(id) {
+
+    async function getPreviewSrc(id) {
         if(!id) {
             poster = defaultPoster;   
             return;
         }
 		let res = await getImage(id, user, {width:300, height:300, square: 0});
-		if(res)  poster = res
+        if(res)  poster = res;
     }
     
-    getPreview(media.image_id);
+    async function getVideoSrc(id) {
+        let res = await getVideo(id, user, {square: 2});
+		if(res)  {
+            src = res;
+        }
+    }
+
+    getPreviewSrc(media.image_id);
+    getVideoSrc(media.id);
 
     crud.subscribe(item => {
         item.data &&
         item.data.id === media.id &&
-        getPreview(media.image_id);
+        getPreviewSrc(media.image_id);
     })
 
     onMount(() => {
@@ -95,11 +106,11 @@
             </div>
         </div>
         <div class="preview-wrapper">
-            
             <VimePlayer
                 bind:this={player}
                 bind:poster={poster}
-                src={media.src}
+                bind:src={src}
+                {type}
             />
         </div>
     </MediaContent>
