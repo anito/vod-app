@@ -2,21 +2,44 @@
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
     import Textfield, {Textarea} from '@smui/textfield';
+    import VimePlayer from './_VimePlayer.svelte';
     import { Preview } from '@vime-js/preview';
-    import { getExt } from 'utils.js';
+    import { getExt, getImage } from 'utils.js';
+    import { crud } from '../../stores/crudStore.js';
+    import { videos } from '../../stores/videoStore.js';
     
+    const posterUrl = `https://via.placeholder.com/320x180.png?text=`;
+
     export let media = {};
-    export let src = null;
-    export let poster = `https://via.placeholder.com/320x180.png?text=`;
     export let headline = 'A headline';
     export let subtitle = 'A subtitle';
     export let title = '';
     export let description = '';
     export let activeEditor = false;
+    export let user;
 
+    const defaultPoster = `${posterUrl}${getExt(media.src)}`;
 
     let preview;
-    $: poster = src || poster + getExt(media.src) || '';
+    let player;
+    let poster = defaultPoster;
+
+    async function getPreview(id) {
+        if(!id) {
+            poster = defaultPoster;   
+            return;
+        }
+		let res = await getImage(id, user, {width:300, height:300, square: 0});
+		if(res)  poster = res
+    }
+    
+    getPreview(media.image_id);
+
+    crud.subscribe(item => {
+        item.data &&
+        item.data.id === media.id &&
+        getPreview(media.image_id);
+    })
 
     onMount(() => {
         /**
@@ -72,10 +95,11 @@
             </div>
         </div>
         <div class="preview-wrapper">
-            <Preview
-                bind:this={preview}
-                showPlayIcon
-                {poster}
+            
+            <VimePlayer
+                bind:this={player}
+                bind:poster={poster}
+                src={media.src}
             />
         </div>
     </MediaContent>

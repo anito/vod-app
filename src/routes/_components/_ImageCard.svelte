@@ -26,15 +26,7 @@
 	const { open } = getContext('simple-modal');
 
 	async function del() {
-		const id = image.id;
-		const result = await api.del( `images/${id}`, user && user.token )
-
-		if( result.success ) {
-			urls.del(id)
-			// at this point associated videos are not updated yet
-			// however we fetch a fresh set on preload when changing to video page
-			images.del(id)
-		}
+		
 	}
 
 	function createPoster(e) {
@@ -47,16 +39,16 @@
         } )
 	}
 
-	function selectPoster( id ) {
-		alert( `Selecting Poster for : ${id}` )
-	}
+	async function deletePoster() {
+		const id = image.id;
+		const result = await api.del( `images/${id}`, user && user.token )
 
-	function deletePoster( action ) {
-		alert( `Youd did an action: ${action}` )
-	}
-
-	function doAction( action ) {
-		alert( `Youd did an action: ${action}` )
+		if( result.success ) {
+			urls.del(id)
+			// at this point associated videos are not updated yet
+			// however we fetch a fresh set on preload when changing to video page
+			images.del(id)
+		}
 	}
 
 	async function uri(image) {
@@ -82,11 +74,10 @@
 
 <Card style="width: 260px;" class="flex content-between">
 	<PrimaryAction>
-		{#await getImage(image.id, user, {})}
-			<MediaImagePreview media={{}}/>
-		{:then src}
-			<MediaImagePreview media={image} {src}/>
-		{/await}
+		<MediaImagePreview
+			media={image}
+			{user}
+		/>
 	</PrimaryAction>
 	<div class="flex flex-col justify-end" style="flex:1 0 auto">
 		<Actions>
@@ -102,7 +93,7 @@
 				</IconButton>
 				<Menu bind:this={menuPoster}>
 					<List>
-						<Item class="text-red-700" on:SMUI:action={() => del()}><Text>Delete Poster</Text></Item>
+						<Item class="text-red-700" on:SMUI:action={() => deletePoster()}><Text>Delete Poster</Text></Item>
 					</List>
 				</Menu>
 			</ActionIcons>

@@ -25,24 +25,22 @@
 	export let images;
 
 	const { open } = getContext('simple-modal');
+	const labelEdit = 'edit';
+	const labelSave = 'save';
+	const labelDelete = 'delete';
+	const labelCancel = 'cancel';
 
 	let image;
 	let token = user.token;
 	let cardMenu;
 	let deleteMenu;
 	let dispatch = createEventDispatcher();
-	// let src;
-	let src = 'https://physio.mbp/api/q/Ry81WlAjJC4uMCAsUCkiKDNXPFQxUyQoU1YkLjMiLjBFWjgoOyIiIjQrJigmNCZRNy0gLDcnIEEkLTlzdnU0Zzt7Y3svd3A6M2MmLzswIShjOSlxYHQ5ZHctdXhjdy9jNns3NCUlIzswNiY0JiguIColPSAyPiE1OQ,,/20200823:131014_1597731288.jpg/?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOjIzLCJ1c2VybmFtZSI6ImF4ZWwiLCJuYW1lIjoiQXhlbCIsImVtYWlsIjoiaW5mb0B3ZWJwcmVtaWVyZS5kZXYiLCJhY3RpdmUiOnRydWUsImdyb3VwX2lkIjoxLCJsYXN0X2xvZ2luIjoiMjAyMC0wNy0wOVQxNDo1MTo1MSswMjowMCIsImNyZWF0ZWQiOiIyMDE5LTA3LTMxVDIzOjIwOjI1KzAyOjAwIiwibW9kaWZpZWQiOiIyMDIwLTA4LTAzVDEzOjQwOjIxKzAyOjAwIn0sImV4cCI6MTU5ODc3NDM2Nn0.QoQYA1Ez5e_LGbiqx7YAXlzbgpC4bpXxIhbvtNuH4cc';
 	let imageList;
 	let imageListAnchor;
 	let activeEditor = false;
 	let title;
 	let description;
 	let editing;
-	const labelEdit = 'edit';
-	const labelSave = 'save';
-	const labelDelete = 'delete';
-	const labelCancel = 'cancel';
 	let labelMode_1;
 	let labelMode_2;
 	let dateOptions = {
@@ -109,7 +107,7 @@
 		})
 	}
 
-	function createPoster(e) {
+	function createPoster() {
 
 		dispatch('Video:current', video);
 
@@ -122,15 +120,11 @@
         } )
 	}
 
-	async function getCachedImage(id) {
-		let res = await getImage(id, user, {width:100, height:100, square: 1});
+	function getCachedImage(id) {
+		let res = getImage(id, user, {width:100, height:100, square: 1});
 		return res;
 	}
-	function getVideoPreview(id) {
-		if(!id) return false;
-		let res = getImage(id, user, {width:300, height:300, square: 0});
-		return res;
-	}
+	
 </script>
 
 <style>
@@ -149,19 +143,13 @@
 
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction on:click={() => !activeEditor && goto(`/videos/${video.id}`)}>
-			{#if !(src = getVideoPreview(video.image_id))}
-				<MediaPreview
-					media={video}
-				/>
-			{:else}
-				<MediaPreview
-					media={video}
-					bind:title={title}
-					bind:description={description}
-					{src}
-					{activeEditor}
-				/>
-			{/if}
+			<MediaPreview
+				media={video}
+				bind:title={title}
+				bind:description={description}
+				{activeEditor}
+				{user}
+			/>
 			<Content class="mdc-typography--body2">
 				<div class="text-xs text-inherit">
 					<Icon class="material-icons">cloud_upload</Icon>

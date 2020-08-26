@@ -2,21 +2,23 @@
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
     import { Preview } from '@vime-js/preview';
-    import { getExt } from 'utils.js';
+    import { getExt, getImage } from 'utils.js';
     
+    const posterUrl = `https://via.placeholder.com/320x180.png?text=`;
+
     export let media = {};
-    export let src = null;
-    export let poster = `https://via.placeholder.com/320x180.png?text=`;
+    export let user;
 
     let preview;
-    $: poster = src || poster + getExt(media.src) || '';
+    let poster = `${posterUrl}${getExt(media.src)}`;
 
-    onMount(() => {
-        /**
-         * If you need to call any methods, you have access 
-         * to the preview instance here.
-         **/
-    });
+    async function getPreview(id) {
+        if(!id) return false;
+		let res = await getImage(id, user, {width:300, height:300, square: 0});
+		if(res) poster = res;
+    }
+
+    getPreview(media.id);
 
 </script>
 
