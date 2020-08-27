@@ -27,7 +27,6 @@
 </script>
 
 <div id="container">
-    {#if src}
 	<vime-player
 		on:vPlaybackReady={onPlaybackReady}
 		bind:this={player}
@@ -41,7 +40,6 @@
 			<TapSidesToSeek />
 		</vime-default-ui>
 	</vime-player>
-    {/if}
 </div>
 
 <style>

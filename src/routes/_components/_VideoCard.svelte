@@ -16,6 +16,7 @@
 	import IconButton, {Icon} from '@smui/icon-button';
 	import Menu from '@smui/menu';
 	import MenuSurface, {Anchor} from '@smui/menu-surface';
+	import Chip, {Set, Checkmark} from '@smui/chips';
 	import ImageList, {Item as ImageListItem, ImageAspectContainer, Image} from '@smui/image-list';
 	import List, {Item, Separator, Text, PrimaryText, SecondaryText, Graphic} from '@smui/list';
 	import './menu-surface.scss';
@@ -54,6 +55,7 @@
 		minute: 'numeric'
 	}
 	let isHardcoded;
+	let choice = "Hardcoded";
 
 	$: isHardcoded = video.hardcoded;
 	$: mode_1 = activeEditor ? 'Save' : 'Edit';
@@ -153,6 +155,11 @@
     :global(.activeEditor) {
         display: none;
     }
+	.chip {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
 
 </style>
 
@@ -166,6 +173,13 @@
 				{activeEditor}
 				{user}
 			/>
+			{#if isHardcoded}
+			<div class="text-xs text-inherit chip">
+				<Set chips={['Hardcoded']} let:chip choise bind:selected={choice} >
+					<Chip tabindex="0"><Text>{chip}</Text><Icon class="material-icons" trailing tabindex="0">construction</Icon></Chip>
+				</Set>
+			</div>
+			{/if}
 			<Content class="mdc-typography--body2">
 				<div class="text-xs text-inherit">
 					<Icon class="material-icons">cloud_upload</Icon>
