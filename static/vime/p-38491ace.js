@@ -1,0 +1,1 @@
+import{P as o}from"./p-d8000c6e.js";import{w as s}from"./p-e9fb6631.js";const p=p=>s(p,[o.Autoplay,o.Controls,o.Language,o.Muted,o.Debug,o.Loop,o.Playsinline]);export{p as w}

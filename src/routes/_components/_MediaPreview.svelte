@@ -17,17 +17,28 @@
     export let description = '';
     export let activeEditor = false;
     export let user;
+    export let isHardcoded;
 
+    const hardcoded = {
+        poster: "agent_327.png",
+        src: "agent_327.mp4",
+    }
 
     let type = getExt(media.src);
     const defaultPoster = `${posterUrl}${type}`;
     let preview;
     let player;
-    let poster = defaultPoster;
+    let poster;
     let src;
+    
 
 
-    async function getPreviewSrc(id) {
+    async function getPosterSrc(id) {
+
+        if(media.hardcoded) {
+            poster = hardcoded.poster;
+            return;
+        }
         if(!id) {
             poster = defaultPoster;   
             return;
@@ -37,19 +48,23 @@
     }
     
     async function getVideoSrc(id) {
+        if(media.hardcoded) {
+            src = hardcoded.src;
+            return;
+        }
         let res = await getVideo(id, user, {square: 2});
 		if(res)  {
             src = res;
         }
     }
 
-    getPreviewSrc(media.image_id);
-    getVideoSrc(media.id);
+    getPosterSrc(media.image_id)
+    getVideoSrc(media.id)
 
     crud.subscribe(item => {
         item.data &&
         item.data.id === media.id &&
-        getPreviewSrc(media.image_id);
+        getPosterSrc(media.image_id);
     })
 
     onMount(() => {
@@ -95,7 +110,7 @@
 </style>
 <Media aspectRatio="16x9">
     <MediaContent style="z-index: 0;">
-        <div class="text-wrapper" class:activeEditor>
+        <div class="text-wrapper hidden" class:activeEditor>
             <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
             <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
         </div>
