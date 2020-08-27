@@ -17,7 +17,6 @@
     export let description = '';
     export let activeEditor = false;
     export let user;
-    export let isHardcoded;
 
     const hardcoded = {
         poster: "agent_327.png",
@@ -58,9 +57,6 @@
         }
     }
 
-    getPosterSrc(media.image_id)
-    getVideoSrc(media.id)
-
     crud.subscribe(item => {
         item.data &&
         item.data.id === media.id &&
@@ -68,10 +64,8 @@
     })
 
     onMount(() => {
-        /**
-         * If you need to call any methods, you have access 
-         * to the preview instance here.
-         **/
+        getPosterSrc(media.image_id)
+        getVideoSrc(media.id)
     });
 
 </script>
@@ -121,12 +115,14 @@
             </div>
         </div>
         <div class="preview-wrapper">
+            {#if src}
             <VimePlayer
                 bind:this={player}
                 bind:poster={poster}
                 bind:src={src}
                 {type}
             />
+            {/if}
         </div>
     </MediaContent>
 </Media>

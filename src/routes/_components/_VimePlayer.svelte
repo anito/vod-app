@@ -7,8 +7,8 @@
 	// Obtain a ref if you need to call any methods.
     let player = null;
 
-    export let poster = '';
-    export let src = '';
+    export let poster;
+    export let src;
     export let type;
 
 	/**
@@ -27,6 +27,7 @@
 </script>
 
 <div id="container">
+    {#if src}
 	<vime-player
 		on:vPlaybackReady={onPlaybackReady}
 		bind:this={player}
@@ -40,6 +41,7 @@
 			<TapSidesToSeek />
 		</vime-default-ui>
 	</vime-player>
+    {/if}
 </div>
 
 <style>
