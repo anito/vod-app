@@ -2,8 +2,7 @@
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
     import Textfield, {Textarea} from '@smui/textfield';
-    import VimePlayer from './_VimePlayer.svelte';
-    import { Preview } from '@vime-js/preview';
+    import VideoPlayer from './_VideoPlayer.svelte';
     import { getExt, getImage, getVideo } from 'utils.js';
     import { crud } from '../../stores/crudStore.js';
     import { videos } from '../../stores/videoStore.js';
@@ -32,7 +31,7 @@
     
 
 
-    async function getPosterSrc(id) {
+    async function getPosterUrl(id) {
 
         if(media.hardcoded) {
             poster = hardcoded.poster;
@@ -46,7 +45,7 @@
         if(res)  poster = res;
     }
     
-    async function getVideoSrc(id) {
+    async function getVideoUrl(id) {
         if(media.hardcoded) {
             src = hardcoded.src;
             return;
@@ -60,12 +59,12 @@
     crud.subscribe(item => {
         item.data &&
         item.data.id === media.id &&
-        getPosterSrc(media.image_id);
+        getPosterUrl(media.image_id);
     })
 
     onMount(() => {
-        getPosterSrc(media.image_id)
-        getVideoSrc(media.id)
+        getPosterUrl(media.image_id)
+        getVideoUrl(media.id)
     });
 
 </script>
@@ -116,10 +115,10 @@
         </div>
         <div class="preview-wrapper">
             {#if src}
-            <VimePlayer
+            <VideoPlayer
                 bind:this={player}
-                bind:poster={poster}
-                bind:src={src}
+                {poster}
+                {src}
                 {type}
             />
             {/if}

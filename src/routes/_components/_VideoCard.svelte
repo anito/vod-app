@@ -9,7 +9,7 @@
 	import { crud } from '../../stores/crudStore';
 	import { getImage } from 'utils.js';
 
-	import MediaPreview from './_MediaPreview.svelte';
+	import MediaItem from './_MediaItem.svelte';
 	import VideoUploader from './_ImageUploader.svelte';
 	import Card, {Content, PrimaryAction, Actions, ActionButtons, ActionIcons} from '@smui/card';
 	import Button, {Label} from '@smui/button';
@@ -165,11 +165,10 @@
 
 	<Card style="width: 260px;" class="flex content-between">
 		<PrimaryAction>
-			<MediaPreview
+			<MediaItem
 				media={video}
 				bind:title
 				bind:description
-				bind:isHardcoded
 				{activeEditor}
 				{user}
 			/>

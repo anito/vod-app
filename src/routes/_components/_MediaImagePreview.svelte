@@ -1,7 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { Media, MediaContent } from '@smui/card';
-    import { Preview } from '@vime-js/preview';
+    import { Media } from '@smui/card';
     import { getExt, getImage } from 'utils.js';
     
     const posterUrl = `https://via.placeholder.com/320x180.png?text=`;
@@ -12,21 +11,17 @@
     let preview;
     let poster = `${posterUrl}${getExt(media.src)}`;
 
-    async function getPreview(id) {
+    async function getPosterUrl(id) {
         if(!id) return false;
 		let res = await getImage(id, user, {width:300, height:300, square: 0});
 		if(res) poster = res;
     }
 
-    getPreview(media.id);
+    getPosterUrl(media.id);
 
 </script>
 
 <style>
 
 </style>
-<Media aspectRatio="16x9">
-    <MediaContent style="z-index: 0;">
-        <Preview bind:this={preview} {poster}/>
-    </MediaContent>
-</Media>
+<Media aspectRatio="16x9" style="background-image:url({poster})"/>

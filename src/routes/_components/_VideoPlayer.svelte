@@ -1,5 +1,10 @@
 <script>
-	import { usePlayerStore } from '@vime/svelte';
+	import {
+		VimePlayer,
+		VimeVideo, 
+		VimeDefaultUi,
+		usePlayerStore,
+	} from '@vime/svelte';
 
 	// Custom UI component.
 	import TapSidesToSeek from './TapSidesToSeek.svelte';
@@ -7,8 +12,8 @@
 	// Obtain a ref if you need to call any methods.
     let player = null;
 
-    export let poster;
-    export let src;
+    export let poster = '';
+    export let src = '';
     export let type;
 
 	/**
@@ -27,34 +32,22 @@
 </script>
 
 <div id="container">
-	<vime-player
+	<VimePlayer
 		on:vPlaybackReady={onPlaybackReady}
 		bind:this={player}
 	>
-		<vime-video cross-origin="true" {poster}>
-			<source {src} type="video/{type}">
-		</vime-video>
+		<VimeVideo cross-origin="true" {poster}>
+			<source data-src={src} type="video/{type}">
+		</VimeVideo>
 
-		<vime-default-ui>
+		<VimeDefaultUi>
 			<!-- Custom UI component. -->
 			<TapSidesToSeek />
-		</vime-default-ui>
-	</vime-player>
+		</VimeDefaultUi>
+	</VimePlayer>
 </div>
 
 <style>
-	:global(html),
-	:global(body) {
-		width: 100%;
-		height: 100%;
-	}
-
-	:global(body) {
-		margin: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
 
 	#container {
 		width: 100%;

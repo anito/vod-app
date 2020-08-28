@@ -84,7 +84,6 @@
     import Fab, {Icon} from '@smui/fab';
     import { Label } from '@smui/common';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
-	import VideoList from '../_components/_VideoList.svelte';
 	import VideoCard from '../_components/_VideoCard.svelte';
     import VideoUploader from '../_components/_VideoUploader.svelte';
     import { urls } from '../../stores/urlStore';
