@@ -1,0 +1,1 @@
+const a=a=>null===a,s=a=>void 0===a,o=o=>a(o)||s(o),n=a=>o(a)?void 0:a.constructor,e=a=>n(a)===Object,i=a=>n(a)===Number&&!Number.isNaN(a),r=a=>n(a)===String,t=a=>n(a)===Boolean,c=a=>n(a)===Function,b=a=>Array.isArray(a),l=(a,s)=>Boolean(a&&s&&a instanceof s);export{o as a,r as b,b as c,s as d,l as e,c as f,a as g,i as h,e as i,t as j}

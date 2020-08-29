@@ -7,8 +7,6 @@
     import { crud } from '../../stores/crudStore.js';
     import { videos } from '../../stores/videoStore.js';
     
-    const posterUrl = `https://via.placeholder.com/320x180.png?text=`;
-
     export let media = {};
     export let headline = 'A headline';
     export let subtitle = 'A subtitle';
@@ -23,9 +21,6 @@
     }
 
     let type = getExt(media.src);
-    const defaultPoster = `${posterUrl}${type}`;
-    let preview;
-    let player;
     let poster;
     let src;
     
@@ -38,7 +33,7 @@
             return;
         }
         if(!id) {
-            poster = defaultPoster;   
+            poster = null;   
             return;
         }
 		let res = await getImage(id, user, {width:300, height:300, square: 0});
@@ -62,9 +57,9 @@
         getPosterUrl(media.image_id);
     })
 
+    getPosterUrl(media.image_id)
+    getVideoUrl(media.id)
     onMount(() => {
-        getPosterUrl(media.image_id)
-        getVideoUrl(media.id)
     });
 
 </script>
@@ -94,7 +89,7 @@
     .editor > :global(*) {
         margin-bottom: 4px;
     }
-    .preview-wrapper {
+    .player-container {
         position: relative;
         z-index: 0;
     }
@@ -113,10 +108,9 @@
                 <Textfield textarea variant="outlined" bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
         </div>
-        <div class="preview-wrapper">
+        <div class="player-container">
             {#if src}
             <VideoPlayer
-                bind:this={player}
                 {poster}
                 {src}
                 {type}

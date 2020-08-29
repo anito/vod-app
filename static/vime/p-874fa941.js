@@ -1,0 +1,1 @@
+class s{constructor(s=[]){this.dispose=s}add(s){this.dispose.push(s)}empty(){this.dispose.forEach(s=>s()),this.dispose=[]}}export{s as D}
