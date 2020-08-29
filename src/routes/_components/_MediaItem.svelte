@@ -8,8 +8,8 @@
     import { videos } from '../../stores/videoStore.js';
     
     export let media = {};
-    export let headline = 'A headline';
-    export let subtitle = 'A subtitle';
+    export let headline = '';
+    export let subtitle = '';
     export let title = '';
     export let description = '';
     export let activeEditor = false;
@@ -67,7 +67,7 @@
 <style>
     .text-wrapper {
         position: absolute;
-        bottom: 16px;
+        top: 10px;
         left: 16px;
         z-index: 2;
     }
@@ -98,7 +98,7 @@
 </style>
 <Media aspectRatio="16x9">
     <MediaContent style="z-index: 0;">
-        <div class="text-wrapper hidden" class:activeEditor>
+        <div class="text-wrapper" class:activeEditor>
             <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
             <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
         </div>
