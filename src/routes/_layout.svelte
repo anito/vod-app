@@ -69,19 +69,9 @@
 		<NavItem segment="videos">Videos</NavItem>
 		<NavItem segment="users">Users</NavItem>
 		<NavItem segment="images">Posters</NavItem>
-		<NavItem segment="blog">Blog</NavItem>
-		<NavItem segment="about">About</NavItem>
 
 		<NavItem blank external="http://localhost:3001">Svelte</NavItem>
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
-
-		<NavItem external="chat" title="Discord Chat">
-			<SvelteIcon name="message-square"/>
-		</NavItem>
-
-		<NavItem external="https://github.com/sveltejs/svelte" title="GitHub Repo">
-			<SvelteIcon name="github"/>
-		</NavItem>
 
 		<NavItem title="Login">
 		{#if $session.user}
