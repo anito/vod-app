@@ -67,8 +67,8 @@
 <form on:submit|preventDefault={logout} method="post">
 	<Nav {segment} {page} logo="logo-sticky.svg">
 		<NavItem segment="videos">Videos</NavItem>
-		<NavItem segment="users">Users</NavItem>
 		<NavItem segment="images">Posters</NavItem>
+		<NavItem segment="users">Users</NavItem>
 
 		<NavItem blank external="http://localhost:3001">Svelte</NavItem>
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
