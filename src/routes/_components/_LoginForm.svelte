@@ -10,13 +10,16 @@
     import Icon from '@smui/textfield/icon/index';
     import HelperText from '@smui/textfield/helper-text';
     import { Label } from '@smui/common';
+    import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
 
     const { session } = stores();
 
-    let password = "kakadax";
-    let email = "info@webpremiere.dev";
+    let snackbar;
+    let password = "Test@005";
+    let email = "test@webpremiere.de";
     let errors;
     let message;
+    let timeout;
 
     $: username = email;
 
@@ -35,11 +38,20 @@
 		message = response.data.message;
 
 		if (response.success && response.data.user) {
-			$session.user = response.data.user;
-			goto('/videos');
+            $session.user = response.data.user;
+            message += '. Redirecting...';
+            snackbar.open();
+			timeout = window.setTimeout(redirect, 5000, '/videos');
 		}
     };
+    function redirect(p) {
+        snackbar.close();
+		goto(p);
+	}
 
+    function handleClosed() {
+		//
+	}
 </script>
 
 <style>
@@ -67,3 +79,7 @@
         </div>
     </span>
 </form>
+
+<Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
+	<SnackbarLabel></SnackbarLabel>
+</Snackbar>

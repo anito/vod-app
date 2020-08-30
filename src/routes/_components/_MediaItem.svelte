@@ -23,6 +23,7 @@
     let type = getExt(media.src);
     let poster;
     let src;
+    let isPlaying;
     
 
 
@@ -59,9 +60,10 @@
 
     getPosterUrl(media.image_id)
     getVideoUrl(media.id)
-    onMount(() => {
-    });
 
+    let onPaused = (e) => {
+        isPlaying = !e.detail;
+    }
 </script>
 
 <style>
@@ -69,7 +71,13 @@
         position: absolute;
         top: 10px;
         left: 16px;
+        right: inherit;
         z-index: 2;
+        transform: translateX(0);
+        transform-origin: 0 center;
+        transition-property: transform;
+        transition-duration: 1s;
+        transition-timing-function: ease-in-out;
     }
     .text-wrapper h2, .text-wrapper h3 {
         color: var(--text-light);
@@ -93,12 +101,21 @@
         position: relative;
         z-index: 0;
     }
+    .isPlaying {
+        opacity: 0;
+        right: 20px;
+        transform: translate(100%);
+        transform-origin: 100% center;
+        transition-property: opacity, transform;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-in-out;
+    }
 
 
 </style>
 <Media aspectRatio="16x9">
     <MediaContent style="z-index: 0;">
-        <div class="text-wrapper" class:activeEditor>
+        <div class="text-wrapper" class:activeEditor class:isPlaying>
             <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
             <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
         </div>
@@ -111,6 +128,7 @@
         <div class="player-container">
             {#if src}
             <VideoPlayer
+                on:vPausedChange={onPaused}
                 {poster}
                 {src}
                 {type}

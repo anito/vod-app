@@ -1,7 +1,7 @@
 <script>
 	import ListErrors from '../_components/ListErrors.svelte';
-	import ListMessages from '../_components/ListMessages.svelte';
-    import LoginForm from '../_components/LoginForm.svelte';
+	import ListMessages from '../_components/_ListMessages.svelte';
+    import LoginForm from '../_components/_LoginForm.svelte';
     import { Header } from '@sveltejs/site-kit';
 
     let errors = null;

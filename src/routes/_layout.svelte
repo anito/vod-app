@@ -50,11 +50,12 @@
 	}
 
 	function handleClosed() {
-		message = '';
+		//
 	}
 
-	function gotoLogin() {
-		goto('login')
+	function redirect(p) {
+		snackbar.close();
+		goto(p)
 	}
 </script>
 
@@ -99,6 +100,6 @@
 <Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
 	<SnackbarLabel></SnackbarLabel>
 	<Actions>
-        <Button on:click={() => gotoLogin()}>Goto Login</Button>
+        <Button on:click={() => redirect('/login')}>Goto Login</Button>
 	</Actions>
 </Snackbar>

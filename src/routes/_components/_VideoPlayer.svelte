@@ -5,35 +5,33 @@
 		VimeDefaultUi,
 		usePlayerStore,
 	} from '@vime/svelte';
-	import {onMount} from 'svelte';
+	import {createEventDispatcher} from 'svelte';
 
 	// Custom UI component.
 	import TapSidesToSeek from './TapSidesToSeek.svelte';
 
 	// Obtain a ref if you need to call any methods.
-    let player;
+	let player;
+	let dispatch = createEventDispatcher();
 
     export let poster;
     export let src;
 	export let type;
 
-	onMount(() => {
-		// console.log(player)
-		// console.log(poster)
-		// console.log(src)
-	})
-
 	/**
 	 * All player properties are available through the store. If you prefer, you could also pass 
 	 * properties directly to the player and listen for events.
 	 */
-	const { paused, language, languages, translations,  } = usePlayerStore(() => player);
+	const { paused, language, languages, translations, errors } = usePlayerStore(() => player);
 
 	translations.subscribe((items) => {
 		// console.log(items)
 	})
 
-	$: console.log($translations)
+	$: console.log('%cPlayer.language    : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $language);
+	$: console.log('%cPlayer.languages   : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $languages);
+	$: console.log('%cPlayer.translations: ', 'color: white; background: #229ed4; display: block; font-weight: bold', $translations);
+	$: console.log('%cPlayer.errors      : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $errors);
 
 	const onPlaybackReady = () => {
 		// console.log('playback ready')
@@ -42,16 +40,12 @@
 		console.log('Player destroyed')
 	};
 
-	$: console.log('language', language);
-	$: console.log('languages', languages);
-    $: console.log('paused:', $paused);
-    $: console.log('poster-src:', poster)
-    $: console.log('video-src:', src)
 </script>
 
 <VimePlayer
 	on:vPlaybackReady={onPlaybackReady}
 	on:vDestroyed={onDestroyed}
+	on:vPausedChange
 	bind:this={player}
 	debug
 >
