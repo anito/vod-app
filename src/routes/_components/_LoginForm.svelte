@@ -42,7 +42,9 @@
             message += '. Redirecting...';
             snackbar.open();
 			timeout = window.setTimeout(redirect, 5000, '/videos');
-		}
+		} else {
+            snackbar.open();
+        }
     };
     function redirect(p) {
         snackbar.close();
