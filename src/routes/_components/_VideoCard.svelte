@@ -163,7 +163,7 @@
 
 </style>
 
-	<Card style="width: 400px;" class="flex content-between">
+	<Card style="min-width: var(--player-min-w);" class="flex content-between">
 		<PrimaryAction>
 			<MediaItem
 				media={video}

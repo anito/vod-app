@@ -1,67 +1,54 @@
+<script context="module">
+	let players = new Set();
+</script>
+
 <script>
-	import {
-		VimePlayer,
-		VimeVideo, 
-		VimeDefaultUi,
-		usePlayerStore,
-	} from '@vime/svelte';
-	import {createEventDispatcher} from 'svelte';
-
-	// Custom UI component.
-	import TapSidesToSeek from './TapSidesToSeek.svelte';
-
-	// Obtain a ref if you need to call any methods.
-	let player;
-	let dispatch = createEventDispatcher();
+	import {Video} from '../_components/Video';
+	import {onMount, createEventDispatcher} from 'svelte';
 
     export let poster;
     export let src;
-	export let type;
+    export let type;
+	
+	let video;
+	let player;
+	let controls = false;
+	let showControls = true;
+	let paused = true;
+	let muted = false;
+	let preload = 'none';
+	let autoplay = false;
+	let duration;
+	let time = 0;
+	let width = '100%';
+	let className = '';
 
-	/**
-	 * All player properties are available through the store. If you prefer, you could also pass 
-	 * properties directly to the player and listen for events.
-	 */
-	const { paused, language, languages, translations, errors } = usePlayerStore(() => player);
+	export {className as class};
 
-	translations.subscribe((items) => {
-		// console.log(items)
+	onMount(_ => {
+		players.add(video)
 	})
 
-	$: console.log('%cPlayer.language    : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $language);
-	$: console.log('%cPlayer.languages   : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $languages);
-	$: console.log('%cPlayer.translations: ', 'color: white; background: #229ed4; display: block; font-weight: bold', $translations);
-	$: console.log('%cPlayer.errors      : ', 'color: white; background: #229ed4; display: block; font-weight: bold', $errors);
-
-	const onPlaybackReady = () => {
-		// console.log('playback ready')
-	};
-	const onDestroyed = () => {
-		console.log('Player destroyed')
-	};
-
+	$: ((playing) => {
+		playing &&
+		players.forEach(player => {
+			(player !== video) && player.pause()
+		})
+	})(!paused);
 </script>
 
-<VimePlayer
-	on:vPlaybackReady={onPlaybackReady}
-	on:vDestroyed={onDestroyed}
-	on:vPausedChange
-	bind:this={player}
-	debug
+<Video class={className}
+	bind:paused
+	bind:video
+	{poster}
+	{preload}
+	{src}
+	{type}
+	{controls}
+	{showControls}
 >
-	<VimeVideo cross-origin="true" {poster}>
-		<source data-src={src} type="video/{type}">
-	</VimeVideo>
-
-	<VimeDefaultUi>
-		<!-- Custom UI component. -->
-		<TapSidesToSeek />
-	</VimeDefaultUi>
-</VimePlayer>
+</Video>
 
 <style>
 
-	:global(vime-player) {
-		min-width: var(--player-min-w);
-	}
 </style>

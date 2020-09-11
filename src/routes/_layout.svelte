@@ -15,10 +15,9 @@
 	import Layout from './layout.svelte';
 	// import ListErrors from './_components/ListErrors.svelte';
 
+	export let segment;
+	
 	const { page, preloading, session } = stores();
-	let root;
-	let snackbar;
-	let message = '';
 	const adTags = [
 		'aaa',
 		'bbb',
@@ -30,7 +29,10 @@
 		'fff'
 	]
 
-	export let segment;
+
+	let root;
+	let snackbar;
+	let message = '';
 
 	onMount( () => {
 		root = document.documentElement;

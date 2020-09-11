@@ -6,7 +6,8 @@
 	let component;
 	let className = '';
 	let options = {
-		acceptedFiles: ['video/*'],
+		acceptedFiles: 'video/*',
+		// acceptedFiles: '.mov .mp4 .m4a .m4v .3gp .3g2 .webm',
 		paramName: 'Video',
 		uploadMultiple: true,
 		parallelUploads: 20,

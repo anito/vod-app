@@ -5,7 +5,6 @@
     import VideoPlayer from './_VideoPlayer.svelte';
     import { getExt, getImage, getVideo } from 'utils.js';
     import { crud } from '../../stores/crudStore.js';
-    import { videos } from '../../stores/videoStore.js';
     
     export let media = {};
     export let headline = '';
@@ -24,8 +23,6 @@
     let poster;
     let src;
     let isPlaying;
-    
-
 
     async function getPosterUrl(id) {
 
@@ -63,6 +60,10 @@
 
     let onPaused = (e) => {
         isPlaying = !e.detail;
+    }
+
+    let onPosterChange = (e) => {
+        console.log('Poster changed')
     }
 </script>
 
@@ -114,7 +115,7 @@
 
 </style>
 <Media aspectRatio="16x9">
-    <MediaContent style="z-index: 0;">
+    <MediaContent class="flex" style="display: flex; z-index: 0;">
         <div class="text-wrapper" class:activeEditor class:isPlaying>
             <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
             <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
@@ -125,15 +126,12 @@
                 <Textfield textarea variant="outlined" bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
         </div>
-        <div class="player-container">
-            {#if src}
-            <VideoPlayer
-                on:vPausedChange={onPaused}
+        <div class="player-container flex flex-1 bg-black">
+            <VideoPlayer class="video-player flex"
                 {poster}
                 {src}
                 {type}
             />
-            {/if}
         </div>
     </MediaContent>
 </Media>

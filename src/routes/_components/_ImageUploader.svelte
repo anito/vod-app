@@ -13,7 +13,7 @@
     let component;
     let className = "";
     let options = {
-        acceptedFiles: ["image/*"],
+        acceptedFiles: 'image/*',
         paramName: "Image",
         uploadMultiple: false,
         parallelUploads: 12,

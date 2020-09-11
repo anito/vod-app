@@ -91,7 +91,7 @@
 			thumbnailWidth: 80,
 			thumbnailHeight: 80,
 			clickable: true,
-			acceptedFiles: acceptedFiles.join(' '),
+			acceptedFiles,
 			maxFilesize: 256,
 			previewsContainer: preview,
 			previewTemplate: template,

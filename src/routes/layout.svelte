@@ -3,9 +3,10 @@
     import Breadcrumb from './_components/_Breadcrumb.svelte';
 
     export let segment;
+    export let page;
 </script>
 
-<LayoutGrid {segment} stretch>
+<LayoutGrid {segment} {page} stretch>
 	<GridItem name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}

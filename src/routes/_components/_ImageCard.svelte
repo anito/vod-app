@@ -25,20 +25,6 @@
 
 	const { open } = getContext('simple-modal');
 
-	async function del() {
-		
-	}
-
-	function createPoster(e) {
-		open( ImageUploader, {}, {
-            transitionWindow: fly,
-			transitionWindowProps: {
-				y: -200,
-				duration: 500
-			},
-        } )
-	}
-
 	async function deletePoster() {
 		const id = image.id;
 		const result = await api.del( `images/${id}`, user && user.token )
@@ -49,21 +35,6 @@
 			// however we fetch a fresh set on preload when changing to video page
 			images.del(id)
 		}
-	}
-
-	async function uri(image) {
-		var id= image.id;
-		var w = 300;
-		var h = 300;
-		var sq = 0;
-		var query = `?width=${w}&height=${h}&square=${sq}`;
-		
-		const result = await api.get( `u/i/${id}/${query}`, user && user.token );
-		if(result.success) {
-			urls.add( result.data );
-			return `${result.data[id]}/?token=${user.token}`;
-		}
-		return
 	}
 </script>
 
