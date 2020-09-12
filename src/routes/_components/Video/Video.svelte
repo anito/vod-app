@@ -7,6 +7,7 @@
     let showControlsTimeout;
     let className = '';
     let hydrated = false;
+    let hydrating = false;
 	let currentPoster;
 	let buffered;
 	let showControls;
@@ -75,18 +76,20 @@
 	}
 
 	function handlePlayPause() {
-		!hydrated && !playPromise && video.load();
+		!duration && video.load();
+		_src && (src = _src);
 		if(paused) {
-			playPromise = video.play();
-			if(playPromise) playPromise.then(_=>{playPromise = null}).catch(_=>{})
+			(playPromise = video.play()) && (video.promise = playPromise);
 		}
-		else !playPromise && video.pause();
+		else if(playPromise) playPromise.then(_=>video.pause()).catch(e=>{});
 	}
+
 	function handleRewind(e) {
 		let step = e.detail || 15;
 		let s;
 		time -= ((s = (time - step)) < 0) ? step + s : step;
 	}
+
 	function handleForeward(e) {
 		let step = e.detail || 15;
 		time += (time + step) > duration ? duration - time : step;
@@ -127,16 +130,25 @@
     }
     
     function handleCanplay(e) {
-        console.log('canplay', e)
+        //
     }
 
+    function handleLoadstart(e) {
+		hydrating = true;
+		hydrated = false;
+	}
+	
     function handleLoadedData(e) {
-        hydrated = true;
-        video.play();
+		hydrating = false;
+		hydrated = true;
 	}
 	
     function handleEmptied(e) {
         hydrated = false;
+	}
+	
+    function handleAborted(e) {
+		duration = undefined;
 	}
 	
     function handlePictureInPicture(e) {
@@ -157,12 +169,12 @@
 	}
 	
 	async function reset() {
-		if(!hydrated) return;
+		if(!duration) return;
 		video.pause();
 		_src = src;
 		src = '';
 		await tick();
-		video.load();
+		setTimeout(() => video.load(), 10);
 	}
 
 </script>
@@ -173,8 +185,10 @@
 		{preload}
 		{controls}
         {type}
+		on:loadstart={handleLoadstart}
 		on:loadeddata={handleLoadedData}
 		on:emptied={handleEmptied}
+		on:abort={handleAborted}
 		bind:currentTime={time}
 		bind:duration
 		bind:paused

@@ -22,6 +22,7 @@
 	let time = 0;
 	let width = '100%';
 	let className = '';
+	let dispatch = createEventDispatcher();
 
 	export {className as class};
 
@@ -32,7 +33,8 @@
 	$: ((playing) => {
 		playing &&
 		players.forEach(player => {
-			(player !== video) && player.pause()
+			(player !== video) &&
+			(player.promise && player.promise.then(() => player.pause()))
 		})
 	})(!paused);
 </script>
