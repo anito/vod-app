@@ -28,7 +28,6 @@
 
 	onMount(_ => {
 		players.add(video)
-		console.log(players)
 	})
 
 	$: ((playing) => {
