@@ -28,13 +28,14 @@
 
 	onMount(_ => {
 		players.add(video)
+		console.log(players)
 	})
 
 	$: ((playing) => {
 		playing &&
 		players.forEach(player => {
 			(player !== video) &&
-			(player.promise && player.promise.then(() => player.pause()))
+			((player.promise && player.promise.then(() => player.pause())) || player.pause());
 		})
 	})(!paused);
 </script>

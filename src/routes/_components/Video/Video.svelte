@@ -10,7 +10,6 @@
     let hydrating = false;
 	let currentPoster;
 	let buffered;
-	let showControls;
 	let playPromise;
 	let _src;
 	let allowScrubbing = false;
@@ -19,10 +18,11 @@
 
 	const showControlsLivespan = 2000;
 
-    export let video;
+	export let video;
 	export let src;
 	export let poster;
 	export let type;
+	export let showControls;
 	export let paused = false;
 	export let controls = true;
 	export let preload = 'auto';
@@ -76,10 +76,11 @@
 	}
 
 	function handlePlayPause() {
-		!duration && video.load();
+		(!duration && !video.promise) && video.load();
 		_src && (src = _src);
 		if(paused) {
 			(playPromise = video.play()) && (video.promise = playPromise);
+			playPromise.then(_=>delete video.promise);
 		}
 		else if(playPromise) playPromise.then(_=>video.pause()).catch(e=>{});
 	}
@@ -204,7 +205,6 @@
     </video>
 	<Ui
 		on:mousemove={handleMousemove}
-		on:mousedown={handleMousedown}
 		on:mouseenter={handleMouseenter}
 		on:mouseleave={handleMouseleave}
 		on:clearTimeout={handleClearTimeout}
