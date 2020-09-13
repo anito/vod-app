@@ -1,11 +1,10 @@
 <script>
-    import { Header, Modal } from '@sveltejs/site-kit';
+    import { Modal } from '@sveltejs/site-kit';
 
     export let segment;
 </script>
 
-<Header h=2 mdc class="my-8">Images Layout</Header>
-<div class="m-8 segment-{segment}">
+<div class:segment>
     <Modal>
         <slot></slot>
     </Modal>

@@ -34,6 +34,8 @@
 	import ImageList from '../_components/_ImageList.svelte';
 	import ImageCard from '../_components/_ImageCard.svelte';
     import ImageUploader from '../_components/_ImageUploader.svelte';
+    import Layout from './layout.svelte';
+    import { Header } from '@sveltejs/site-kit';
     
     import { urls } from '../../stores/urlStore';
     import { currentImage } from '../../stores/currentImageStore';
@@ -67,33 +69,44 @@
 	<title>Physiotherapy Online | Image-Kurse</title>
 </svelte:head>
 
-{#if user = $session.user }
-    {#if $images.length }
-        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
-            {#each $images as image (image.id)}
-                <div class="flex m-1">
-                    <ImageCard
-                        on:Image:lastSelected={setCurrentImage}
-                        {image}
-                        {user}
-                    />
+<Layout>
+    <Header h=2 mdc class="my-8">Images Layout</Header>
+    <div class="m-8">
+        {#if user = $session.user }
+            {#if $images.length }
+                <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
+                    {#each $images as image (image.id)}
+                        <div class="flex m-1">
+                            <ImageCard
+                                on:Image:lastSelected={setCurrentImage}
+                                {image}
+                                {user}
+                            />
+                        </div>
+                    {/each}
                 </div>
-            {/each}
-        </div>
-    {:else}
-        <div class="paper-container flex justify-center">
-            <Paper color="primary" class="paper-demo">
-                <Title style="color: var(--text-light)">No Images available</Title>
-                <Content><a href="/images" on:click|preventDefault={openUploader}>Upload</a> some images to your content</Content>
+            {:else}
+                <div class="paper-container flex justify-center">
+                    <Paper color="primary" class="paper-demo">
+                        <Title style="color: var(--text-light)">No Images available</Title>
+                        <Content><a href="/images" on:click|preventDefault={openUploader}>Upload</a> some images to your content</Content>
+                    </Paper>
+                </div>
+            {/if}
+            <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Image</Label><Icon class="material-icons">add</Icon></Fab>
+        {:else}
+            <div class="paper-container flex justify-center">
+            <Paper color="secondary" class="paper-demo">
+                <Title style="color: var(--text-light)">Not Authorized</Title>
+                <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
             </Paper>
-        </div>
-    {/if}
-    <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Image</Label><Icon class="material-icons">add</Icon></Fab>
-{:else}
-    <div class="paper-container flex justify-center">
-      <Paper color="secondary" class="paper-demo">
-        <Title style="color: var(--text-light)">Not Authorized</Title>
-        <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
-      </Paper>
+            </div>
+        {/if}
     </div>
-{/if}
+    <div slot="ad">
+        Images Ad
+    </div>
+    <div slot="footer">
+        Images Footer
+    </div>
+</Layout>

@@ -88,6 +88,8 @@
     import VideoUploader from '../_components/_VideoUploader.svelte';
     import { urls } from '../../stores/urlStore';
     import { currentVideo } from '../../stores/currentVideoStore';
+    import Layout from './layout.svelte';
+    import { Header } from '@sveltejs/site-kit';
     
     const { session } = stores();
     const { open } = getContext('simple-modal');
@@ -122,34 +124,45 @@
 	<title>Physiotherapy Online | Video-Kurse</title>
 </svelte:head>
 
-{#if user = $session.user }
-    {#if $videos.length }
-        <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
-            {#each $videos as video (video.id)}
-                <div class="flex m-1">
-                    <VideoCard
-                        on:Video:current={setCurrentVideo}
-                        {video}
-                        {images}
-                        {user}
-                    />
+<Layout>
+    <Header h=2 mdc class="my-8">Video Layout</Header>
+    <div class="m-8">
+        {#if user = $session.user }
+            {#if $videos.length }
+                <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
+                    {#each $videos as video (video.id)}
+                        <div class="flex m-1">
+                            <VideoCard
+                                on:Video:current={setCurrentVideo}
+                                {video}
+                                {images}
+                                {user}
+                            />
+                        </div>
+                    {/each}
                 </div>
-            {/each}
-        </div>
-    {:else}
-        <div class="paper-container flex justify-center">
-            <Paper color="primary" class="paper-demo">
-                <Title style="color: var(--text-light)">No Videos available</Title>
-                <Content><a href="/videos" on:click|preventDefault={openUploader}>Upload</a> some videos to your content</Content>
+            {:else}
+                <div class="paper-container flex justify-center">
+                    <Paper color="primary" class="paper-demo">
+                        <Title style="color: var(--text-light)">No Videos available</Title>
+                        <Content><a href="/videos" on:click|preventDefault={openUploader}>Upload</a> some videos to your content</Content>
+                    </Paper>
+                </div>
+            {/if}
+            <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
+        {:else}
+            <div class="paper-container flex justify-center">
+            <Paper color="secondary" class="paper-demo">
+                <Title style="color: var(--text-light)">Not Authorized</Title>
+                <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
             </Paper>
-        </div>
-    {/if}
-    <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
-{:else}
-    <div class="paper-container flex justify-center">
-      <Paper color="secondary" class="paper-demo">
-        <Title style="color: var(--text-light)">Not Authorized</Title>
-        <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
-      </Paper>
+            </div>
+        {/if}
     </div>
-{/if}
+    <div slot="ad">
+        Videos Ad
+    </div>
+    <div slot="footer">
+        Videos Footer
+    </div>
+</Layout>

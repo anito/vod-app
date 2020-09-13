@@ -1,7 +1,6 @@
 <script>
 	import { goto, stores } from '@sapper/app';
-	import { onMount } from 'svelte';
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { Icon as SvelteIcon, Icons, Nav, NavItem } from '@sveltejs/site-kit';
 
 	import Button from '@smui/button';
@@ -10,25 +9,13 @@
 	import { post } from 'utils.js';
 	import Tags from './_components/Tags.svelte';
 	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
-	import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
 	import Breadcrumb from './_components/_Breadcrumb.svelte';
-	import Layout from './layout.svelte';
+	
 	// import ListErrors from './_components/ListErrors.svelte';
 
 	export let segment;
 	
 	const { page, preloading, session } = stores();
-	const adTags = [
-		'aaa',
-		'bbb',
-		'ccc'
-	]
-	const footerTags = [
-		'ddd',
-		'eee',
-		'fff'
-	]
-
 
 	let root;
 	let snackbar;
@@ -86,18 +73,7 @@
 	</Nav>
 </form>
 
-<Layout {segment} {page}>
-	<slot></slot>
-	<div slot="side">
-		Sidebar
-	</div>
-	<div slot="ad">
-		Ads
-	</div>
-	<div slot="footer">
-		Footer
-	</div>
-</Layout>
+<slot></slot>
 
 <Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
 	<SnackbarLabel></SnackbarLabel>
