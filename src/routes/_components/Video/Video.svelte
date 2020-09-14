@@ -15,6 +15,7 @@
 	let allowScrubbing = false;
 	let scrubbing;
 	let target;
+	let hideControlsOnPause = true;
 
 	const showControlsLivespan = 2000;
 
@@ -35,7 +36,7 @@
 		}
 	})(poster)
 	$: showControls = paused;
-	$: if(paused) clearTimeout(showControlsTimeout);
+	$: (paused && !hideControlsOnPause) && clearTimeout(showControlsTimeout);
 
 	function handleMouseenter(e) {
 		e = e.detail;

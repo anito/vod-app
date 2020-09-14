@@ -20,9 +20,12 @@
     }
 
     let type = getExt(media.src);
+    let paused;
+    let isPlaying;
     let poster;
     let src;
-    let isPlaying;
+
+    $: isPlaying = !paused;
 
     async function getPosterUrl(id) {
 
@@ -70,18 +73,21 @@
 <style>
     .text-wrapper {
         position: absolute;
-        top: 10px;
-        left: 16px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
         right: inherit;
         z-index: 2;
         transform: translateX(0);
         transform-origin: 0 center;
         transition-property: transform;
-        transition-duration: 1s;
+        transition-duration: .3s;
         transition-timing-function: ease-in-out;
     }
-    .text-wrapper h2, .text-wrapper h3 {
+    .text-wrapper > * {
         color: var(--text-light);
+        padding: 5px 17px;
     }
     .editor-wrapper {
         position: absolute;
@@ -104,7 +110,7 @@
     }
     .isPlaying {
         opacity: 0;
-        right: 20px;
+        right: 2000px;
         transform: translate(100%);
         transform-origin: 100% center;
         transition-property: opacity, transform;
@@ -116,7 +122,7 @@
 </style>
 <Media aspectRatio="16x9">
     <MediaContent class="flex" style="display: flex; z-index: 0;">
-        <div class="text-wrapper" class:activeEditor class:isPlaying>
+        <div class="text-wrapper bg-gradient-to-b from-black" class:activeEditor class:isPlaying>
             <h2 class="mdc-typography--headline6" style="margin: 0;">{media.title || headline}</h2>
             <h3 class="mdc-typography--subtitle2" style="margin: 0;">{media.description || subtitle}</h3>
         </div>
@@ -128,6 +134,7 @@
         </div>
         <div class="player-container flex flex-1 bg-black">
             <VideoPlayer class="video-player flex"
+                bind:paused
                 {poster}
                 {src}
                 {type}

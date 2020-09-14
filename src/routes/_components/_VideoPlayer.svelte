@@ -8,13 +8,13 @@
 
     export let poster;
     export let src;
-    export let type;
+	export let type;
+	export let paused = true;
 	
 	let video;
 	let player;
 	let controls = false;
 	let showControls = true;
-	let paused = true;
 	let muted = false;
 	let preload = 'none';
 	let autoplay = false;
