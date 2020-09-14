@@ -28,7 +28,7 @@
     $: percentageTime = time * 100 / duration;
     $: percentageBuffer = buffered.length && (buffered[buffered.length-1].end * 100 / duration);
 
-    function format(seconds) {
+    function format(seconds, prefix='') {
 		if (isNaN(seconds)) return '...';
 
 		let minutes = Math.floor(seconds / 60);
@@ -36,7 +36,7 @@
 		if (minutes < 10) minutes = '0' + minutes;
 		if (seconds < 10) seconds = '0' + seconds;
 
-		return `${minutes}:${seconds}`;
+		return `${prefix}${minutes}:${seconds}`;
     }
 
     function dispatchMousemove(e) {
@@ -122,7 +122,7 @@
                     </div>
                     <input bind:value={time} type="range" min="0" max="{duration}" step="1" aria-valuetext="{time} Sekunden">
                 </div>
-                <div class="time-label" aria-label="Übrig: {Math.floor(duration - time)} Sekunden" style="flex: 1;">{format(duration - time)}</div>
+                <div class="time-label" aria-label="Übrig: {Math.floor(duration - time)} Sekunden" style="flex: 1;">{format((duration - time), '-')}</div>
             </div>
             <div class="buttons-container" style="flex: 1;">
                 <button bind:this={fullscreenButton} on:click={(e) => dispatch('fullscreen', e)} class="fullscreen bar" aria-label="Vollbildmodus ein" style="">
