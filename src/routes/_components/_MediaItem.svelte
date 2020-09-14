@@ -76,9 +76,9 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 70%;
+        height: 100%;
         right: inherit;
-        z-index: 2;
+        z-index: 1;
         transform: translateX(0);
         transform-origin: 0 center;
         transition-property: transform;
@@ -106,7 +106,6 @@
     }
     .player-container {
         position: relative;
-        z-index: 0;
     }
     .isPlaying {
         opacity: 0;
