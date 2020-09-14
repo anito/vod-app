@@ -1,8 +1,12 @@
 <script>
+    import { Modal } from '@sveltejs/site-kit';
+    
     export let segment;
     
 </script>
 
 <div class:segment>
-    <slot></slot>
+    <Modal>
+        <slot></slot>
+    </Modal>
 </div>
