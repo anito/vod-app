@@ -30,8 +30,6 @@
 	const labelSave = 'save';
 	const labelDelete = 'delete';
 	const labelCancel = 'cancel';
-	const labelRemoveHardcoded = 'Don\'t Hardcode';
-	const labelDoHardcoded = 'Hardcode';
 
 	let image;
 	let token = user.token;
@@ -54,15 +52,11 @@
 		hour: 'numeric',
 		minute: 'numeric'
 	}
-	let isHardcoded;
-	let choice = "Hardcoded";
 
-	$: isHardcoded = video.hardcoded;
 	$: mode_1 = activeEditor ? 'Save' : 'Edit';
 	$: mode_2 = activeEditor ? 'Cancel' : 'Delete';
 	$: labelMode_1 = activeEditor ? labelSave : labelEdit;
 	$: labelMode_2 = activeEditor ? labelCancel : labelDelete;
-	$: labelMode_3 = isHardcoded ? labelRemoveHardcoded : labelDoHardcoded;
 
 	onDestroy(() => {
 		dispatch('Video:current', null);
@@ -100,7 +94,6 @@
 
 	function selectPoster(id) {
 		video.image_id = id;
-		video.hardcoded = false;
 		crud.dispatch({
 			method: 'put',
 			data: video
@@ -109,7 +102,6 @@
 
 	function removePoster() {
 		video.image_id = null;
-		video.hardcoded = false;
 		crud.dispatch({
 			method: 'put',
 			data: video
@@ -132,14 +124,6 @@
 	function getCachedImage(id) {
 		let res = getImage(id, user, {width:100, height:100, square: 1});
 		return res;
-	}
-
-	function hardcode() {
-		video.hardcoded = !video.hardcoded;
-		crud.dispatch({
-			method: 'put',
-			data: video
-		})
 	}
 	
 </script>
@@ -172,13 +156,6 @@
 				{activeEditor}
 				{user}
 			/>
-			{#if isHardcoded}
-			<div class="text-xs text-inherit chip">
-				<Set chips={['Hardcoded']} let:chip choise bind:selected={choice} >
-					<Chip tabindex="0"><Text>{chip}</Text><Icon class="material-icons" trailing tabindex="0">construction</Icon></Chip>
-				</Set>
-			</div>
-			{/if}
 			<Content class="mdc-typography--body2">
 				<div class="text-xs text-inherit">
 					<Icon class="material-icons">cloud_upload</Icon>
@@ -207,7 +184,6 @@
 							<Item on:click={() => createPoster()}><Text>New Poster</Text></Item>
 							<Item disabled={!$images.length} on:click={() => imageList.setOpen(true)}><Text>Select Poster</Text></Item>
 							<Separator />
-							<Item on:SMUI:action={() => hardcode()}><Text>{isHardcoded ? labelRemoveHardcoded : labelDoHardcoded}</Text></Item>
 							<Item disabled={!video.image_id} on:SMUI:action={() => removePoster()}><Text>Remove Poster</Text></Item>
 							<Item class="text-red-700" on:SMUI:action={() => del()}><Text>Delete Video</Text></Item>
 						</List>

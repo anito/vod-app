@@ -1,6 +1,6 @@
 <script>
 	import { onMount, setContext } from 'svelte';
-    import { Header, Modal } from '@sveltejs/site-kit';
+    import { Header } from '@sveltejs/site-kit';
     import Layout from './layout.svelte';
     
 </script>

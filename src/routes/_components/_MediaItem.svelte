@@ -14,11 +14,6 @@
     export let activeEditor = false;
     export let user;
 
-    const hardcoded = {
-        poster: "agent_327.png",
-        src: "agent_327.mp4",
-    }
-
     let type = getExt(media.src);
     let paused;
     let isPlaying;
@@ -29,10 +24,6 @@
 
     async function getPosterUrl(id) {
 
-        if(media.hardcoded) {
-            poster = hardcoded.poster;
-            return;
-        }
         if(!id) {
             poster = null;   
             return;
@@ -42,10 +33,6 @@
     }
     
     async function getVideoUrl(id) {
-        if(media.hardcoded) {
-            src = hardcoded.src;
-            return;
-        }
         let res = await getVideo(id, user, {square: 2});
 		if(res)  {
             src = res;
