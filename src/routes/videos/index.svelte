@@ -125,7 +125,7 @@
 </svelte:head>
 
 <Layout>
-    <Header h=2 mdc class="my-8">Video Layout</Header>
+    <Header h=2 mdc class="m-2 lg:m-5">Video Layout</Header>
     <div class="lg:m-8">
         {#if user = $session.user }
             {#if $videos.length }

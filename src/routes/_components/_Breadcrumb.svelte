@@ -20,4 +20,4 @@
 
 </style>
 
-<div class="breadcrumb"><a href=".">home</a> / {segment} {slug}</div>
+<div class="breadcrumb lg:m-2"><a href=".">home</a> / {segment} {slug}</div>

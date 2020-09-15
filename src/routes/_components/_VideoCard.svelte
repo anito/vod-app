@@ -144,7 +144,7 @@
 
 </style>
 
-	<Card class="flex content-between card {className}" style="min-width: var(--player-min-w);">
+	<Card class="flex content-between card {className}" style="width: var(--player-w);">
 		<PrimaryAction>
 			<MediaItem
 				media={video}

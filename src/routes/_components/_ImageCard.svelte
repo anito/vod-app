@@ -17,7 +17,9 @@
 
 	export let image;
 	export let user;
+	export {className as class}
 
+	let className;
 	let token = user.token;
 	let menuPoster;
 	let dispatch = createEventDispatcher();
@@ -43,7 +45,7 @@
 
 </style>
 
-<Card style="width: 260px;" class="flex content-between">
+<Card class="flex content-between {className}" style="width: var(--player-w);">
 	<PrimaryAction>
 		<MediaImagePreview
 			media={image}

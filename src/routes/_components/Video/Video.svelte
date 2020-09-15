@@ -231,7 +231,7 @@
 
 	video {
 		width: 100%;
-		min-width: var(--player-min-w);
+		width: var(--player-w);
         object-position: center;
         object-fit: cover;
     }

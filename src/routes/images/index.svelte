@@ -70,11 +70,11 @@
 </svelte:head>
 
 <Layout>
-    <Header h=2 mdc class="my-8">Images Layout</Header>
-    <div class="m-8">
+    <Header h=2 mdc class="m-2 lg:m-5">Images Layout</Header>
+    <div class="lg:m-8">
         {#if user = $session.user }
             {#if $images.length }
-                <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
+                <div class="flex flex-wrap flex-row justify-center lg:justify-start">
                     {#each $images as image (image.id)}
                         <div class="flex m-1">
                             <ImageCard

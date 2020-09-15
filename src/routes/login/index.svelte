@@ -13,7 +13,7 @@
 <style></style>
 
 <Layout>
-    <Header h=2 mdc class="my-8">Login Layout</Header>
+    <Header h=2 mdc class="m-2 lg:m-5">Login Layout</Header>
     <div class="flex justify-center m-8">
         <div class="grid">
             <div class="cols-3">

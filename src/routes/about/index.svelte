@@ -10,7 +10,7 @@
 
 <div class="grid">
     <div class="cols-3">
-        <Header h=4 mdc>About this site</Header>
+        <Header h=4 mdc class="m-2 lg:m-5">About this site</Header>
     </div>
     <div class="cols-3">
         <Table />

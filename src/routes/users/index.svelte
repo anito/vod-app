@@ -6,7 +6,7 @@
 </script>
 
 <Layout sidebar>
-    <Header h=2 mdc class="my-8">Users Layout</Header>
+    <Header h=2 mdc class="m-2 lg:m-5">Users Layout</Header>
     <div class="m-8">
         <div>Content</div>
     </div>
