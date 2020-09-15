@@ -58,28 +58,53 @@
 
 <style>
 
+    .login-grid {
+        grid-row-gap: .5rem;
+    }
 
+    @media screen and (min-width: 840px) {
+
+        .login-grid {
+            grid-template-areas:
+                "email pass"
+                "button button";
+            grid-template-columns: repeat(2, 1fr);
+            grid-row-gap: 1rem;
+        }
+        
+        .email-area {
+            grid-area: email;
+        }
+    
+        .pass-area {
+            grid-area: pass;
+        }
+    
+        .button-area {
+            grid-area: button;
+        }
+    }
 
 </style>
 
 <form on:submit|preventDefault={submit} method="post">
-    <span class="inline">
-        <span class="inline-item">
+    <div class="grid login-grid">
+        <span class="email-area lg:mr-2">
             <Textfield variant="outlined" withLeadingIcon bind:value={email} label="Email" input$aria-controls="helper-text-outlined-email" input$aria-describedby="helper-text-outlined-email" >
                 <Icon class="material-icons">mail</Icon>
             </Textfield>
             <HelperText id="helper-text-outlined-email">Helper Text</HelperText>
         </span>
-        <span class="inline-item">
+        <span class="pass-area lg:ml-2">
             <Textfield variant="outlined" type="password" withTrailingIcon bind:value={password} label="Password" input$aria-controls="helper-text-outlined-password" input$aria-describedby="helper-text-outlined-password" >
                 <Icon class="material-icons">login</Icon>
             </Textfield>
             <HelperText id="helper-text-outlined-password">Helper Text</HelperText>
         </span>
-        <div>
-            <Button type="submit" variant="raised" disabled={!(email && password)}><Label>Submit</Label></Button>
+        <div class="button-area flex">
+            <Button class="flex-1" type="submit" variant="raised" disabled={!(email && password)}><Label>Submit</Label></Button>
         </div>
-    </span>
+    </div>
 </form>
 
 <Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>

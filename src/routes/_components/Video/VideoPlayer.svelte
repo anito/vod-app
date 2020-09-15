@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import {Video} from '../_components/Video';
+	import Video from './Video.svelte';
 	import {onMount, createEventDispatcher} from 'svelte';
 
     export let poster;

@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { Media, MediaContent } from '@smui/card';
     import Textfield, {Textarea} from '@smui/textfield';
-    import VideoPlayer from './_VideoPlayer.svelte';
+    import {VideoPlayer} from './Video';
     import { getExt, getImage, getVideo } from 'utils.js';
     import { crud } from '../../stores/crudStore.js';
     
@@ -80,16 +80,13 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        z-index: 1;
+        z-index: 2;
         background: rgba(255, 255, 255, .9);
     }
     .editor {
         display: flex;
         flex-direction: column;
         margin: 5px;
-    }
-    .editor > :global(*) {
-        margin-bottom: 4px;
     }
     .player-container {
         position: relative;
@@ -114,7 +111,7 @@
         </div>
         <div class="editor-wrapper" class:activeEditor={!activeEditor}>
             <div class="editor">
-                <Textfield variant="outlined" dense bind:value={title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
+                <Textfield class="mb-4" variant="outlined" dense bind:value={title} label="Title" input$aria-controls="helper-text-title" input$aria-describedby="helper-text-title" />
                 <Textfield textarea variant="outlined" bind:value={description} label="Description" input$aria-controls="helper-text-description" input$aria-describedby="helper-text-description" />
             </div>
         </div>

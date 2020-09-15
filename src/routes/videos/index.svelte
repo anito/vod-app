@@ -126,10 +126,10 @@
 
 <Layout>
     <Header h=2 mdc class="my-8">Video Layout</Header>
-    <div class="m-8">
+    <div class="lg:m-8">
         {#if user = $session.user }
             {#if $videos.length }
-                <div class="flex flex-wrap flex-row justify-start lg:justify-start sm:justify-start">
+                <div class="flex flex-wrap flex-row lg:justify-start justify-center">
                     {#each $videos as video (video.id)}
                         <div class="flex m-1">
                             <VideoCard

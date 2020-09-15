@@ -24,6 +24,7 @@
 	export let video;
 	export let user;
 	export let images;
+	export {className as class}
 
 	const { open } = getContext('simple-modal');
 	const labelEdit = 'edit';
@@ -32,6 +33,7 @@
 	const labelCancel = 'cancel';
 
 	let image;
+	let className;
 	let token = user.token;
 	let cardMenu;
 	let deleteMenu;
@@ -138,16 +140,11 @@
 	}
     :global(.activeEditor) {
         display: none;
-    }
-	.chip {
-		position: absolute;
-		right: 10px;
-		top: 10px;
 	}
 
 </style>
 
-	<Card style="min-width: var(--player-min-w);" class="flex content-between">
+	<Card class="flex content-between card {className}" style="min-width: var(--player-min-w);">
 		<PrimaryAction>
 			<MediaItem
 				media={video}

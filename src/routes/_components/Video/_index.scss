@@ -1,4 +1,10 @@
 :root {
-    --player-min-w: 400px;
+
+    --player-m-x: 1rem;
     --progress-h: 6px;
+    --player-min-w: calc(100vw - var(--player-m-x));
+
+    @media screen and (min-width: 768px) {
+        --player-min-w: 400px;
+    }
 }

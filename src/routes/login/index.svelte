@@ -17,7 +17,7 @@
     <div class="flex justify-center m-8">
         <div class="grid">
             <div class="cols-3">
-                <Header h=4 mdc>Login</Header>
+                <Header h=4 mdc class="m-2">Login</Header>
             </div>
             <div class="cols-3">
                 <LoginForm />
