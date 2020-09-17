@@ -1,8 +1,9 @@
 <script context="module">
     import * as api from 'api.js';
     import { images } from '../../stores/imageStore';
-    import {get as receive} from 'svelte/store';
-    import {equals} from 'utils';
+    import { get as receive } from 'svelte/store';
+    import { equals } from 'utils';
+    import { Unauthorized } from 'components';
 
 	export async function preload( { path }, { user }) {
 
@@ -31,9 +32,9 @@
     import Fab, {Icon} from '@smui/fab';
     import { Label } from '@smui/common';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
-	import ImageList from '../_components/_ImageList.svelte';
-	import ImageCard from '../_components/_ImageCard.svelte';
-    import ImageUploader from '../_components/_ImageUploader.svelte';
+	import { ImageList } from 'components';
+	import { ImageCard } from 'components';
+    import { ImageUploader } from 'components';
     import Layout from './layout.svelte';
     import { Header } from '@sveltejs/site-kit';
     
@@ -70,7 +71,7 @@
 </svelte:head>
 
 <Layout>
-    <Header h=2 mdc class="m-2 lg:m-5">Images Layout</Header>
+    <Header h=2 mdc class="m-2 lg:m-5">Posters</Header>
     <div class="lg:m-8">
         {#if user = $session.user }
             {#if $images.length }
@@ -96,10 +97,7 @@
             <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Image</Label><Icon class="material-icons">add</Icon></Fab>
         {:else}
             <div class="paper-container flex justify-center">
-            <Paper color="secondary" class="paper-demo">
-                <Title style="color: var(--text-light)">Not Authorized</Title>
-                <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
-            </Paper>
+                <Unauthorized />
             </div>
         {/if}
     </div>

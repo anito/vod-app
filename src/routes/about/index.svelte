@@ -1,6 +1,7 @@
 <script>
     import { Header } from '@sveltejs/site-kit';
-    import Table from '../_components/_Table.svelte';
+    import { Table } from 'components';
+    import Layout from './layout.svelte';
 
 </script>
 
@@ -8,11 +9,13 @@
 	<title>About</title>
 </svelte:head>
 
-<div class="grid">
-    <div class="cols-3">
-        <Header h=4 mdc class="m-2 lg:m-5">About this site</Header>
+<Layout>
+    <Header h=4 mdc class="m-2 lg:m-5">About this site</Header>
+    <div class="grid">
+        <div class="cols-3">
+            <Table />
+        </div>
     </div>
-    <div class="cols-3">
-        <Table />
-    </div>
-</div>
+    <div slot="ad">About Ad</div>
+    <div slot="footer">About Footer</div>
+</Layout>

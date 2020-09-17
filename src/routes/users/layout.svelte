@@ -1,9 +1,10 @@
 <script>
 	import { goto, stores } from '@sapper/app';
     import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
-    import Breadcrumb from '../_components/_Breadcrumb.svelte';
+    import { Breadcrumb } from 'components';
 
 	export let stretch = false;
+	export let sidebar = false;
 
 	const { page, preloading, session } = stores();
 
@@ -11,7 +12,7 @@
 
 </script>
 
-<LayoutGrid {segment} {stretch} sidebar>
+<LayoutGrid {segment} {stretch} {sidebar}>
 	<GridItem name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}
@@ -20,17 +21,17 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem name="side" let:inner>
+	<GridItem name="side" let:inner class="m-5">
 		<div class="{inner}">
 			<slot name="side">Sidebar</slot>
 		</div>
 	</GridItem>
-	<GridItem name="footer" let:inner>
+	<GridItem vcenter name="footer" let:inner>
 		<div class="{inner}">
 			<slot name="footer">Footer</slot>
 		</div>
 	</GridItem>
-	<GridItem name="ad" let:inner>
+	<GridItem vcenter name="ad" let:inner>
 		<div class="{inner}">
 			<slot name="ad">Advertisement</slot>
 		</div>

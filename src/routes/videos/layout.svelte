@@ -1,7 +1,7 @@
 <script>
 	import { goto, stores } from '@sapper/app';
     import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
-    import Breadcrumb from '../_components/_Breadcrumb.svelte';
+    import { Breadcrumb } from 'components';
 
 	export let stretch = false;
 
@@ -20,12 +20,12 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem name="footer" let:inner>
+	<GridItem vcenter name="footer" let:inner>
 		<div class="{inner}">
 			<slot name="footer">Footer</slot>
 		</div>
 	</GridItem>
-	<GridItem name="ad" let:inner>
+	<GridItem vcenter hcenter name="ad" let:inner>
 		<div class="{inner}">
 			<slot name="ad">Advertisement</slot>
 		</div>

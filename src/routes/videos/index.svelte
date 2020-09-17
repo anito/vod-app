@@ -1,10 +1,11 @@
 <script context="module">
     import * as api from 'api.js';
-    import {videos} from '../../stores/videoStore';
-    import {images} from '../../stores/imageStore';
-    import {crud} from '../../stores/crudStore';
-    import {get as receive} from 'svelte/store';
-    import {equals} from 'utils';
+    import { videos } from '../../stores/videoStore';
+    import { images } from '../../stores/imageStore';
+    import { crud } from '../../stores/crudStore';
+    import { get as receive } from 'svelte/store';
+    import { equals } from 'utils';
+    import { Unauthorized } from 'components';
 
     let the_user;
 
@@ -84,8 +85,8 @@
     import Fab, {Icon} from '@smui/fab';
     import { Label } from '@smui/common';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
-	import VideoCard from '../_components/_VideoCard.svelte';
-    import VideoUploader from '../_components/_VideoUploader.svelte';
+	import { VideoCard } from 'components';
+    import { VideoUploader } from 'components';
     import { urls } from '../../stores/urlStore';
     import { currentVideo } from '../../stores/currentVideoStore';
     import Layout from './layout.svelte';
@@ -95,9 +96,11 @@
     const { open } = getContext('simple-modal');
 
     let user;
+    let role
     
     session.subscribe(sess => {
-        user = sess.user;
+        user = sess && sess.user;
+        role = sess && sess.role;
     })
 
     let openUploader = () => {
@@ -125,7 +128,7 @@
 </svelte:head>
 
 <Layout>
-    <Header h=2 mdc class="m-2 lg:m-5">Video Layout</Header>
+    <Header h=2 mdc class="m-2 lg:m-5">Videos</Header>
     <div class="lg:m-8">
         {#if user = $session.user }
             {#if $videos.length }
@@ -152,10 +155,7 @@
             <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
         {:else}
             <div class="paper-container flex justify-center">
-            <Paper color="secondary" class="paper-demo">
-                <Title style="color: var(--text-light)">Not Authorized</Title>
-                <Content><a href="/login" on:click|preventDefault={() => goto('login')}>Login</a> to see content</Content>
-            </Paper>
+                <Unauthorized />
             </div>
         {/if}
     </div>

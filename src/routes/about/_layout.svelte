@@ -1,10 +1,7 @@
 <script>
-    import { Header } from '@sveltejs/site-kit';
-
     export let segment;
 </script>
 
-<Header h=2 mdc class="my-8" {segment}>About Layout</Header>
-<div class="flex justify-center">
+<div class:segment>
     <slot></slot>
 </div>

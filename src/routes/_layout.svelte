@@ -7,32 +7,26 @@
 	import { Label } from '@smui/common';
 	import Fab, { Icon } from '@smui/fab';
 	import { post } from 'utils.js';
-	import Tags from './_components/Tags.svelte';
+	import { Tags } from 'components';
 	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
-	import Breadcrumb from './_components/_Breadcrumb.svelte';
 	
-	// import ListErrors from './_components/ListErrors.svelte';
+	// import ListErrors from 'components';
 
 	export let segment;
 	
-	const { page, preloading, session } = stores();
+	const { page, session } = stores();
 
 	let root;
 	let snackbar;
 	let message = '';
-
-	onMount( () => {
-		root = document.documentElement;
-	} )
-
-	$: ( (seg) => {
-		root && ( seg && root.classList.remove( 'home' ) || !seg && root.classList.add( 'home' ) )
-	})(segment)
+	let delayedTimeout;
 
 	async function logout() {
 		const r = await post(`auth/logout`);
 		if (r.success) {
 			$session.user = null;
+			$session.role = null;
+
 			message = r.data.message;
 			snackbar.open();
 		}
@@ -41,11 +35,27 @@
 	function handleClosed() {
 		//
 	}
-
+	
 	function redirect(p) {
 		snackbar.close();
 		goto(p)
 	}
+
+	onMount( () => {
+		root = document.documentElement;
+		(!window.snackbar) && (window.snackbar = snackbar)
+	} )
+
+	function delayedReopen() {
+		clearTimeout(delayedTimeout);
+		delayedTimeout = setTimeout(() => snackbar.open(), 2000)
+	}
+
+	$: ( (seg) => {
+		root && ( seg && root.classList.remove( 'home' ) || !seg && root.classList.add( 'home' ) )
+	})(segment)
+
+	
 </script>
 
 <style>
@@ -58,7 +68,10 @@
 	<Nav {segment} {page} logo="logo-sticky.svg">
 		<NavItem segment="videos">Videos</NavItem>
 		<NavItem segment="images">Posters</NavItem>
+		{#if $session.role === "Administrators"}
 		<NavItem segment="users">Users</NavItem>
+		{/if}
+		<NavItem segment="about">About</NavItem>
 
 		<NavItem blank external="http://localhost:3001">Svelte</NavItem>
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
@@ -75,9 +88,9 @@
 
 <slot></slot>
 
-<Snackbar variant="stacked" bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
+<Snackbar timeoutMs=10000 bind:this={snackbar} labelText={message} on:MDCSnackbar:closed={handleClosed}>
 	<SnackbarLabel></SnackbarLabel>
 	<Actions>
-        <Button on:click={() => redirect('/login')}>Goto Login</Button>
+        <Button variant="raised" on:click={() => redirect('/login')}>Goto Login</Button>
 	</Actions>
 </Snackbar>

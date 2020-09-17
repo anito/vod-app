@@ -15,7 +15,7 @@
 </script>
 
 <script>
-    import Display from '../_components/_Display.svelte';
+    import { Display } from 'components';
 
     export let id;
     export let image_id;
