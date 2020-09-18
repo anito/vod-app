@@ -94,7 +94,7 @@
                     </Paper>
                 </div>
             {/if}
-            <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Image</Label><Icon class="material-icons">add</Icon></Fab>
+            <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Poster</Label><Icon class="material-icons">add</Icon></Fab>
         {:else}
             <div class="paper-container flex justify-center">
                 <Unauthorized />

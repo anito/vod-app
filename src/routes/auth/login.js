@@ -6,7 +6,9 @@ export function post(req, res) {
 	api.post('users/login', { ...user }).then(response => {
 
 		if (response.success && response.data.user) {
-			req.session.user = response.data.user;
+			// what will be saved in file session
+			response.data.user && (req.session.user = response.data.user);
+			response.data.role && (req.session.role = response.data.role);
 		}
 		res.setHeader('Content-Type', 'application/json');
 

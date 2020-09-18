@@ -20,7 +20,6 @@ polka() // You can also use Express
 		sirv('static', { dev }),
 		compression({ threshold: 0 }),
 		session({
-			name: 'physio.sid',
 			secret: 'SomeSecretStringThatIsNotInGithub',
 			resave: false,
 			saveUninitialized: true,
@@ -32,8 +31,10 @@ polka() // You can also use Express
 			})
 		}),
 		sapper.middleware({
-			session: req => ({
-				user: req.session && req.session.user,
+			session: req => (
+				req.session && {
+				user: req.session.user,
+				role: req.session.role,
 			})
 		})
 	)
