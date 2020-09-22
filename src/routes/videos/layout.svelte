@@ -25,8 +25,8 @@
 			<slot name="footer">Footer</slot>
 		</div>
 	</GridItem>
-	<GridItem vcenter hcenter name="ad" let:inner>
-		<div class="{inner}">
+	<GridItem vcenter name="ad" let:inner>
+		<div class="inner {inner}">
 			<slot name="ad">Advertisement</slot>
 		</div>
 	</GridItem>

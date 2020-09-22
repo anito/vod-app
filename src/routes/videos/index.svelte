@@ -78,10 +78,9 @@
 </script>
 
 <script>
-    import { goto, stores } from '@sapper/app';
-    import { onMount, getContext, setContext } from 'svelte';
+    import { stores } from '@sapper/app';
+    import { getContext } from 'svelte';
     import { fly } from 'svelte/transition';
-    import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
     import Fab, {Icon} from '@smui/fab';
     import { Label } from '@smui/common';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';

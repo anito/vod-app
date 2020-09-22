@@ -25,8 +25,8 @@
 </script>
 
 <script>
-    import { goto, stores } from '@sapper/app';
-    import { onMount, getContext, setContext } from 'svelte';
+    import { stores } from '@sapper/app';
+    import { getContext } from 'svelte';
     import { fly } from 'svelte/transition';
     import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
     import Fab, {Icon} from '@smui/fab';
@@ -38,7 +38,6 @@
     import Layout from './layout.svelte';
     import { Header } from '@sveltejs/site-kit';
     
-    import { urls } from '../../stores/urlStore';
     import { currentImage } from '../../stores/currentImageStore';
 
     const { session } = stores();
