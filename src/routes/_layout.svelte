@@ -1,5 +1,6 @@
 <script>
 	import { goto, stores } from '@sapper/app';
+	import isMobile from 'ismobilejs';
 	import { onMount, setContext } from 'svelte';
 	import { Icon as SvelteIcon, Icons, Nav, NavItem } from '@sveltejs/site-kit';
 
@@ -20,6 +21,7 @@
 	let snackbar;
 	let message = '';
 	let delayedTimeout;
+	let isMobileDevice;
 
 	async function logout() {
 		const r = await post(`auth/logout`);
@@ -44,6 +46,8 @@
 	onMount( () => {
 		root = document.documentElement;
 		(!window.snackbar) && (window.snackbar = snackbar)
+
+		isMobileDevice && root.classList.add('ismobile')
 	} )
 
 	function delayedReopen() {
@@ -54,6 +58,8 @@
 	$: ( (seg) => {
 		root && ( seg && root.classList.remove( 'home' ) || !seg && root.classList.add( 'home' ) )
 	})(segment)
+
+	$: isMobileDevice  = isMobile().any;
 
 	
 </script>
