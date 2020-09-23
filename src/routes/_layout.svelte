@@ -13,9 +13,9 @@
 	
 	// import ListErrors from 'components';
 
-	export let segment;
-	
 	const { page, session } = stores();
+
+	export let segment = $page.path.match(/\/([a-z_-]*)/)[1];;
 
 	let root;
 	let snackbar;
@@ -40,7 +40,8 @@
 	
 	function redirect(p) {
 		snackbar.close();
-		goto(p)
+		let query = segment ? `?redirect=${segment}` : ''
+		goto(`${p}${query}`)
 	}
 
 	onMount( () => {

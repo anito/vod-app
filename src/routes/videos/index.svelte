@@ -133,7 +133,7 @@
             {#if $videos.length }
                 <div class="flex flex-wrap flex-row lg:justify-start justify-center">
                     {#each $videos as video (video.id)}
-                        <div class="flex m-1">
+                        <div class="flex mx-1 my-2">
                             <VideoCard
                                 on:Video:current={setCurrentVideo}
                                 {video}
@@ -153,7 +153,7 @@
             {/if}
             <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
         {:else}
-            <div class="paper-container flex justify-center">
+            <div class="paper-container flex justify-center m-8">
                 <Unauthorized />
             </div>
         {/if}

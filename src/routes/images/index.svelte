@@ -87,7 +87,7 @@
                 </div>
             {:else}
                 <div class="paper-container flex justify-center">
-                    <Paper color="primary" class="paper-demo">
+                    <Paper color="primary">
                         <Title style="color: var(--text-light)">No Images available</Title>
                         <Content><a href="/images" on:click|preventDefault={openUploader}>Upload</a> some images to your content</Content>
                     </Paper>
@@ -95,7 +95,7 @@
             {/if}
             <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Poster</Label><Icon class="material-icons">add</Icon></Fab>
         {:else}
-            <div class="paper-container flex justify-center">
+            <div class="paper-container flex justify-center m-8">
                 <Unauthorized />
             </div>
         {/if}

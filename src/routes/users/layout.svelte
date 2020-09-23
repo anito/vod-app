@@ -21,7 +21,7 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem name="side" let:inner>
+	<GridItem vcenter name="side" let:inner>
 		<div class="{inner}">
 			<slot name="side">Sidebar</slot>
 		</div>
