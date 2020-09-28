@@ -67,10 +67,6 @@
                 </div>
             {/if}
             <Fab class="floating-fab" color="primary" on:click={()=> false} extended><Label>Add User</Label><Icon class="material-icons">add</Icon></Fab>
-        {:else}
-            <div class="paper-container flex justify-center">
-                <Unauthorized />
-            </div>
         {/if}
     </div>
     <div slot="ad">
