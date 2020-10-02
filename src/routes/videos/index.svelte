@@ -3,53 +3,24 @@
     import { videos } from '../../stores/videoStore';
     import { images } from '../../stores/imageStore';
     import { crud } from '../../stores/crudStore';
-    import { get as receive } from 'svelte/store';
-    import { equals } from 'utils';
-    import { Unauthorized } from 'components';
 
-    let the_user;
+    let _user;
 
-	export async function preload( { path }, { user }) {
-
-        the_user = user;
-        let res;
-        let vids;
-        let imgs;
-        let data;
-
-        res = await api.get( 'videos', user && user.token );
-
-        if( res.success ) {
-            vids = receive(videos)
-            data = res.data;
-            if(!equals(vids, data)) videos.set( data );
-        } else {
-            videos.set( [] );
-        }
-		res = await api.get( 'images', user && user.token );
-
-        if( res.success ) {
-            imgs = receive(images)
-            data = res.data;
-            if(!equals(imgs, data)) images.set( data );
-        } else {
-            images.set( [] );
-        }
-
+    export async function preload( page, { user } ) {
+        _user = user;
     }
 
     async function put(item) {
         
-        const response = await api.put(`videos/${item.id}`, item, the_user && the_user.token);
-        if(response && response.success) {
+        const res = await api.put(`videos/${item.id}`, item, _user && _user.token);
+        if(res && res.success) {
             videos.put( item )
         }
     }
 
     async function get() {
         
-        const res = await api.get( 'videos', the_user && the_user.token );
-
+        const res = await api.get( 'videos', _user && _user.token );
         if( res.success ) {
             videos.update( res.data );
         }
@@ -90,17 +61,17 @@
     import { currentVideo } from '../../stores/currentVideoStore';
     import Layout from './layout.svelte';
     import { Header } from '@sveltejs/site-kit';
+    import { Unauthorized } from 'components';
     
     const { session } = stores();
     const { open } = getContext('simple-modal');
 
-    let user;
-    let role
-    
-    session.subscribe(sess => {
-        user = sess && sess.user;
-        role = sess && sess.role;
-    })
+    // session.subscribe(sess => {
+    //     user = sess && sess.user;
+    //     role = sess && sess.role;
+    // })
+
+    $: user = $session.user;
 
     let openUploader = () => {
         open( VideoUploader, {}, {

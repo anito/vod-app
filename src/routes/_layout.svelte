@@ -1,14 +1,48 @@
+<script context="module">
+    import * as api from 'api.js';
+    import { videos } from '../stores/videoStore';
+    import { images } from '../stores/imageStore';
+    import { get as receive } from 'svelte/store';
+    import { equals } from 'utils';
+
+	export async function preload( { path }, { user }) {
+
+        let res;
+        let vids;
+        let imgs;
+        let data;
+
+        res = await api.get( 'videos', user && user.token );
+
+        if( res.success ) {
+            vids = receive(videos)
+            data = res.data;
+            if(!equals(vids, data)) videos.update( data );
+        } else {
+            videos.set( [] );
+        }
+		res = await api.get( 'images', user && user.token );
+
+        if( res.success ) {
+            imgs = receive(images)
+            data = res.data;
+            if(!equals(imgs, data)) images.set( data );
+        } else {
+            images.set( [] );
+        }
+
+	}
+</script>
+
 <script>
 	import { goto, stores } from '@sapper/app';
 	import isMobile from 'ismobilejs';
-	import { onMount, setContext } from 'svelte';
-	import { Icon as SvelteIcon, Icons, Nav, NavItem } from '@sveltejs/site-kit';
+	import { onMount } from 'svelte';
+	import { Icons, Nav, NavItem } from '@sveltejs/site-kit';
 
 	import Button from '@smui/button';
 	import { Label } from '@smui/common';
-	import Fab, { Icon } from '@smui/fab';
 	import { post } from 'utils.js';
-	import { Tags } from 'components';
 	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
 	
 	// import ListErrors from 'components';
@@ -20,7 +54,6 @@
 	let root;
 	let snackbar;
 	let message = '';
-	let delayedTimeout;
 	let isMobileDevice;
 
 	async function logout() {
@@ -48,13 +81,11 @@
 		root = document.documentElement;
 		(!window.snackbar) && (window.snackbar = snackbar)
 
-		isMobileDevice && root.classList.add('ismobile')
+		isMobileDevice && root.classList.add('ismobile');
 	} )
 
-	function delayedReopen() {
-		clearTimeout(delayedTimeout);
-		delayedTimeout = setTimeout(() => snackbar.open(), 2000)
-	}
+	$: root && (user => root.classList.toggle('loggedin', user))(!!$session.user);
+	$: root && (isAdmin => root.classList.toggle('admin', isAdmin))($session.role === 'Administrators');
 
 	$: ( (seg) => {
 		root && ( seg && root.classList.remove( 'home' ) || !seg && root.classList.add( 'home' ) )
@@ -62,14 +93,8 @@
 
 	$: isMobileDevice  = isMobile().any;
 
-	
 </script>
 
-<style>
-
-</style>
-
-<Icons/>
 
 <form on:submit|preventDefault={logout} method="post">
 	<Nav {segment} {page} logo="logo-sticky.svg">

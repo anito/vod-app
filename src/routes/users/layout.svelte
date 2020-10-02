@@ -6,14 +6,23 @@
 	export let stretch = false;
 	export let sidebar = false;
 
-	const { page, preloading, session } = stores();
+	const { page } = stores();
 
 	let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
 </script>
 
+<style>
+	:global(.has-grid) {
+		background: var(--back);
+	}
+	:global(.light-grey-background) {
+		background: var(--back-grid-item) !important;
+	}
+</style>
+
 <LayoutGrid {segment} {stretch} {sidebar}>
-	<GridItem name="content" let:inner>
+	<GridItem vcenter name="content" let:inner class="has-grid">
 		<div class="{inner}">
 			{#if segment}
 			<Breadcrumb {segment}/>

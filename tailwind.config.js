@@ -4,6 +4,8 @@ module.exports = {
     extend: {},
     // screens: {} // custom breakpoints
   },
-  variants: {},
+  variants: {
+    // backgroundColor: [ 'responsive', 'hover', 'focus', 'active']
+  },
   plugins: [],
 }
