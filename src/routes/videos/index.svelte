@@ -25,10 +25,6 @@
             videos.set( [] );
         }
 
-        res = await api.get( `users/${user.id}`, user && user.token );
-        if(res.success) {
-            // console.log(res)
-        }
     }
 
     async function put(item) {
