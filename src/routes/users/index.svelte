@@ -31,7 +31,6 @@
     let selectionVideoId;
     let tab = 1;
 
-    $: user = $session.user;
     $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1) && $users[selectionIndex].videos;
     $: videoIndex = userVideos && userVideos.findIndex(vid=>vid.id === selectionVideoId);
     $: selectedVideo = typeof videoIndex == 'number' && videoIndex > -1 && userVideos[videoIndex];
