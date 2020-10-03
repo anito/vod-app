@@ -11,7 +11,7 @@
     export async function preload( page, { user } ) {
         _user = user;
 
-        res = await api.get( 'videos', user && user.token );
+        const res = await api.get( 'videos', user && user.token );
 
         if( res.success ) {
             vids = receive(videos)
