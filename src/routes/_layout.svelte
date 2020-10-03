@@ -62,8 +62,12 @@
 
 <form on:submit|preventDefault={logout} method="post">
 	<Nav {segment} {page} logo="logo-sticky.svg">
+		{#if $session.role === "Administrators"}
 		<NavItem segment="videos">Videos</NavItem>
+		{/if}
+		{#if $session.role === "Administrators"}
 		<NavItem segment="images">Posters</NavItem>
+		{/if}
 		{#if $session.role === "Administrators"}
 		<NavItem segment="users">Users</NavItem>
 		{/if}
