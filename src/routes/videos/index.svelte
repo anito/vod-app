@@ -13,8 +13,9 @@
 
         let vids;
         let data;
+        let res;
         
-        const res = await api.get( 'videos', user && user.token );
+        res = await api.get( 'videos', user && user.token );
 
         if( res.success ) {
             vids = receive(videos)
@@ -22,6 +23,11 @@
             if(!equals(vids, data)) videos.update( data );
         } else {
             videos.set( [] );
+        }
+
+        res = await api.get( `users/${user.id}`, user && user.token );
+        if(res.success) {
+            // console.log(res)
         }
     }
 
