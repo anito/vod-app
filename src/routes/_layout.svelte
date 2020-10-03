@@ -1,39 +1,3 @@
-<script context="module">
-    import * as api from 'api.js';
-    import { videos } from '../stores/videoStore';
-    import { images } from '../stores/imageStore';
-    import { get as receive } from 'svelte/store';
-    import { equals } from 'utils';
-
-	export async function preload( { path }, { user }) {
-
-        let res;
-        let vids;
-        let imgs;
-        let data;
-
-        res = await api.get( 'videos', user && user.token );
-
-        if( res.success ) {
-            vids = receive(videos)
-            data = res.data;
-            if(!equals(vids, data)) videos.update( data );
-        } else {
-            videos.set( [] );
-        }
-		res = await api.get( 'images', user && user.token );
-
-        if( res.success ) {
-            imgs = receive(images)
-            data = res.data;
-            if(!equals(imgs, data)) images.set( data );
-        } else {
-            images.set( [] );
-        }
-
-	}
-</script>
-
 <script>
 	import { goto, stores } from '@sapper/app';
 	import isMobile from 'ismobilejs';

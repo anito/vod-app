@@ -1,16 +1,30 @@
 <script context="module">
     import * as api from 'api.js';
+    import { get } from 'svelte/store';
+    import { equals } from 'utils';
     import { users } from '../../stores/userStore';
+    import { videos } from '../../stores/videoStore';
 
-    let _user;
     export async function preload( { path}, { user } ) {
 
-        const res = await api.get( 'users', user && user.token );
+        let res, vids, data;
         
+        res = await api.get( 'users', user && user.token );
+
         if( res.success ) {
             users.update(res.data)
         } else {
             users.set([])
+        }
+
+        res = await api.get( 'videos', user && user.token );
+
+        if( res.success ) {
+            vids = get(videos)
+            data = res.data;
+            if(!equals(vids, data)) videos.update( data );
+        } else {
+            videos.set( [] );
         }
         
     }
@@ -33,7 +47,7 @@
     let selectionVideoId;
     let tab = 1;
 
-    $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1 && $users) && $users[selectionIndex].videos;
+    $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1 && $users.length) && $users[selectionIndex].videos;
     $: videoIndex = userVideos && userVideos.findIndex(vid=>vid.id === selectionVideoId);
     $: selectedVideo = typeof videoIndex == 'number' && videoIndex > -1 && userVideos[videoIndex];
 
@@ -83,9 +97,9 @@
             <div class="grid">
                 <div class="grid-item toolbar">
                     <Group variant="unelevated">
-                        <Button class="focus:outline-none focus:shadow-outline active:bg-indigo-600" disabled={!selectionUserId} on:click={() => tab = 0} variant={tab === 0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline active:bg-indigo-600" disabled={!selectionUserId} on:click={() => tab = 1} variant={tab === 1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline active:bg-indigo-600" disabled={!selectedVideo} on:click={() => tab = 2} variant={tab === 2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = 0} variant={tab === 0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = 1} variant={tab === 1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled on:click={() => tab = 2} variant={tab === 2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
                     </Group>
                 </div>
                 {#if tab === 0}
