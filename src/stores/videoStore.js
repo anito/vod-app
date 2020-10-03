@@ -17,7 +17,7 @@ function createStore() {
             const index = findIndexById( val.id, items )
             return [...items.slice(0, index), { ...items[index], ...val }, ...items.slice(index + 1)]
         } ),
-        del: ( id ) => update(items => items.filter( ( itm ) => itm.id !== id )),
+        del: ( id ) => update(items => items.filter( itm => itm.id !== id )),
         update: (val) => update(items => val),
         set
     }

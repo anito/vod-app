@@ -2,6 +2,7 @@
     import * as api from 'api.js';
     import { users } from '../../stores/userStore';
 
+    let _user;
     export async function preload( { path}, { user } ) {
 
         const res = await api.get( 'users', user && user.token );
@@ -11,6 +12,7 @@
         } else {
             users.set([])
         }
+        
     }
 
 </script>
@@ -42,6 +44,7 @@
     function setUser(user) {
         selectionVideoId = null;
         selectionUserId = user.id;
+
     }
     
 </script>
