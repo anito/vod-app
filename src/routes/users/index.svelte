@@ -34,7 +34,7 @@
 <script>
     import { stores } from '@sapper/app';
     import Layout from './layout.svelte';
-    import { SimpleVideoCard, VideosManager, Unauthorized } from 'components';
+    import { VideosManager, Unauthorized } from 'components';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
     import Button, { Group } from '@smui/button';
     import Fab, { Label, Icon } from '@smui/fab';
@@ -44,21 +44,10 @@
 
     let selectionUserId;
     let selectionIndex;
-    let selectionVideoId;
     let tab = 1;
 
-    $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1 && $users.length) && $users[selectionIndex].videos;
-    $: videoIndex = userVideos && userVideos.findIndex(vid=>vid.id === selectionVideoId);
-    $: selectedVideo = typeof videoIndex == 'number' && videoIndex > -1 && userVideos[videoIndex];
-
-    function videoSelectedHandler(e) {
-        selectionVideoId = e.detail.id;
-    }
-
     function setUser(user) {
-        selectionVideoId = null;
         selectionUserId = user.id;
-
     }
     
 </script>
@@ -112,7 +101,6 @@
                 {/if}
                 {#if tab === 1}
                     <VideosManager
-                        on:videoSelected={videoSelectedHandler}
                         {$users}
                         {selectionUserId}
                     />
