@@ -33,7 +33,7 @@
     let selectionVideoId;
     let tab = 1;
 
-    $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1) && $users[selectionIndex].videos;
+    $: userVideos = (typeof selectionIndex == 'number' && selectionIndex !== -1 && $users) && $users[selectionIndex].videos;
     $: videoIndex = userVideos && userVideos.findIndex(vid=>vid.id === selectionVideoId);
     $: selectedVideo = typeof videoIndex == 'number' && videoIndex > -1 && userVideos[videoIndex];
 
