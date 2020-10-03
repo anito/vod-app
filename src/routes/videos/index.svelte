@@ -1,13 +1,25 @@
 <script context="module">
     import * as api from 'api.js';
+    import { get  as receive} from 'svelte/store';
     import { videos } from '../../stores/videoStore';
     import { images } from '../../stores/imageStore';
     import { crud } from '../../stores/crudStore';
+    import { equals } from 'utils';
 
     let _user;
 
     export async function preload( page, { user } ) {
         _user = user;
+
+        res = await api.get( 'videos', user && user.token );
+
+        if( res.success ) {
+            vids = receive(videos)
+            data = res.data;
+            if(!equals(vids, data)) videos.update( data );
+        } else {
+            videos.set( [] );
+        }
     }
 
     async function put(item) {
@@ -65,11 +77,6 @@
     
     const { session } = stores();
     const { open } = getContext('simple-modal');
-
-    // session.subscribe(sess => {
-    //     user = sess && sess.user;
-    //     role = sess && sess.role;
-    // })
 
     $: user = $session.user;
 
