@@ -49,6 +49,12 @@
     function setUser(user) {
         selectionUserId = user.id;
     }
+
+    function handleOuterClick(e) {
+        e.stopPropagation();
+
+        alert('outer click')
+    }
     
 </script>
 
@@ -79,6 +85,10 @@
     }
 
 </style>
+
+<svelte:head>
+	<title>Physiotherapy Online | Users</title>
+</svelte:head>
 
 <Layout sidebar>
     <div class="flex flex-auto flex-col justify-center">
@@ -123,7 +133,14 @@
     <div slot="side">
         {#if $session.role === "Administrators"}
             {#if $users.length}
-                <List class="demo-list" twoLine avatarList singleSelection bind:selectedIndex={selectionIndex}>
+                <List
+                    class="demo-list"
+                    twoLine
+                    avatarList
+                    singleSelection
+                    bind:selectedIndex={selectionIndex}
+                    on:click={handleOuterClick}
+                >
                 {#each $users as user (user.id)}
                     <Item on:SMUI:action={() => setUser(user)} disabled={!user.active} selected={selectionUserId === user.id}>
                         <Graphic style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name.split(' ').map(val => val.substring(0, 1)).join('')});" />

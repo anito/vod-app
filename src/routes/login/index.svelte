@@ -12,6 +12,10 @@
 
 <style></style>
 
+<svelte:head>
+	<title>Physiotherapy Online | Login</title>
+</svelte:head>
+
 <Layout>
     <Header h=2 mdc class="m-2 lg:m-5">Login</Header>
     <div class="flex justify-center m-8">

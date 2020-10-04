@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Physiotherapy Online | About</title>
 </svelte:head>
 
 <Layout>

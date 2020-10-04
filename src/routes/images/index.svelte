@@ -66,7 +66,7 @@
 </style>
 
 <svelte:head>
-	<title>Physiotherapy Online | Image-Kurse</title>
+	<title>Physiotherapy Online | Posters</title>
 </svelte:head>
 
 <Layout>
