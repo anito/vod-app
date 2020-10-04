@@ -15,9 +15,11 @@
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
     "svelte-kit": "npm uninstall @sveltejs/site-kit && npm install anito/site-kit --save-dev",
+    "svelte-kit:uninstall": "npm uninstall @sveltejs/site-kit",
     "setup": "npm run setup:install && npm run setup:build",
     "setup:install": "pnpm install --filter @vime/core",
-    "setup:build": "pnpm run build --filter @vime/core"
+    "setup:build": "pnpm run build --filter @vime/core",
+    "node-sass": "npm i node-sass"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -25,7 +27,6 @@
     "express-session": "1.17.1",
     "formidable": "^1.2.2",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.14.1",
     "polka": "next",
     "session-file-store": "^1.4.0",
     "sirv": "^0.4.6"
@@ -50,6 +51,7 @@
     "@smui/button": "^1.0.0",
     "@sveltejs/site-kit": "github:anito/site-kit",
     "ismobilejs": "^1.1.1",
+    "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^7.1.2",
     "postcss-import": "^12.0.1",
