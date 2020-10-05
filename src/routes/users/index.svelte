@@ -5,7 +5,7 @@
     import { users } from '../../stores/userStore';
     import { videos } from '../../stores/videoStore';
 
-    export async function preload( { path}, { user } ) {
+    export async function preload( { path }, { user } ) {
 
         let res, vids, data;
         
@@ -34,25 +34,29 @@
 <script>
     import { stores } from '@sapper/app';
     import Layout from './layout.svelte';
-    import { VideosManager, Unauthorized } from 'components';
+    import { VideoManager, UserManager, Unauthorized } from 'components';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
     import Button, { Group } from '@smui/button';
     import Fab, { Label, Icon } from '@smui/fab';
     import List, { Item, Graphic, Meta, Separator, Subheader, Text, PrimaryText, SecondaryText } from '@smui/list';
 
     const { session } = stores();
+    const TAB_0 = 'manage-user';
+    const TAB_1 = 'manage-video';
+    const TAB_2 = 'manage-time';
 
     let selectionUserId;
     let selectionIndex;
-    let tab = 1;
+    let tab = TAB_0;
 
     function setUser(user) {
         selectionUserId = user.id;
     }
-    
-    function notifyHandler(e) {
-        console.log(e.detail)
+
+    function clickHandler(e) {
+        e.target.isSameNode(e.currentTarget) && (selectionUserId = null);
     }
+
 </script>
 
 <style>
@@ -60,12 +64,22 @@
         display: grid;
         grid-template-areas:
             "toolbar toolbar"
-            "user-videos videos";
+            "one one";
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: 1fr 9fr;
         grid-gap: 5px;
         height: 100%;
         align-items: center;
+    }
+    :global(.grid.manage-video) {
+        grid-template-areas:
+            "toolbar toolbar"
+            "one two";
+    }
+    :global(.grid.manage-time) {
+        grid-template-areas:
+            "toolbar toolbar"
+            "one two";
     }
     :global(.loggedin) .grid {
         align-items: initial;
@@ -87,40 +101,32 @@
 	<title>Physiotherapy Online | Users</title>
 </svelte:head>
 
-<Layout sidebar
-    on:notify={notifyHandler}
->
+<Layout sidebar>
     <div class="flex flex-auto flex-col justify-center">
-        {#if $session.role === "Administrators"}
-            <div class="grid">
+        {#if $session.role === "Administrator"}
+            <div class="grid {tab}">
                 <div class="grid-item toolbar">
                     <Group variant="unelevated">
-                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = 0} variant={tab === 0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = 1} variant={tab === 1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline" disabled on:click={() => tab = 2} variant={tab === 2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = TAB_0} variant={tab === TAB_0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = TAB_1} variant={tab === TAB_1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" disabled on:click={() => tab = TAB_2} variant={tab === TAB_2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
                     </Group>
                 </div>
-                {#if tab === 0}
-                <div class="grid-item user-videos">
-                    Nothing here
-                </div>
-                <div class="grid-item videos">
-                    Nothing here
-                </div>
+                {#if tab === TAB_0}
+                    <UserManager
+                        {selectionUserId}
+                    />
                 {/if}
-                {#if tab === 1}
-                    <VideosManager
+                {#if tab === TAB_1}
+                    <VideoManager
                         {$users}
                         {selectionUserId}
                     />
                 {/if}
-                {#if tab === 2}
-                <div class="grid-item user-videos">
-                    Nothing here
-                </div>
-                <div class="grid-item videos">
-                    Nothing here
-                </div>
+                {#if tab === TAB_2}
+                    <UserManager
+                        {selectionUserId}
+                    />
                 {/if}
             </div>
         {:else}
@@ -129,8 +135,10 @@
             </div>
         {/if}
     </div>
-    <div slot="side">
-        {#if $session.role === "Administrators"}
+    <div slot="side" style="flex: 1;"
+        on:click={clickHandler}
+    >
+        {#if $session.role === "Administrator"}
             {#if $users.length}
                 <List
                     class="demo-list"

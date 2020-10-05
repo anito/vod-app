@@ -6,7 +6,7 @@
 
 	import Button from '@smui/button';
 	import { Label } from '@smui/common';
-	import { post } from 'utils.js';
+	import { post } from 'utils';
 	import Snackbar, {Actions, Label as SnackbarLabel} from '@smui/snackbar';
 	
 	// import ListErrors from 'components';
@@ -49,7 +49,7 @@
 	} )
 
 	$: root && (user => root.classList.toggle('loggedin', user))(!!$session.user);
-	$: root && (isAdmin => root.classList.toggle('admin', isAdmin))($session.role === 'Administrators');
+	$: root && (isAdmin => root.classList.toggle('admin', isAdmin))($session.role === 'Administrator');
 
 	$: ( (seg) => {
 		root && ( seg && root.classList.remove( 'home' ) || !seg && root.classList.add( 'home' ) )
@@ -65,10 +65,10 @@
 		{#if $session.user}
 		<NavItem segment="videos">Videos</NavItem>
 		{/if}
-		{#if $session.role === "Administrators"}
+		{#if $session.role === "Administrator"}
 		<NavItem segment="images">Posters</NavItem>
 		{/if}
-		{#if $session.role === "Administrators"}
+		{#if $session.role === "Administrator"}
 		<NavItem segment="users">Users</NavItem>
 		{/if}
 		<NavItem segment="about">About</NavItem>

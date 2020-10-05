@@ -10,12 +10,6 @@
 
 	let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
-    function notifyHandler(e) {
-		let current = e.detail.current;
-		let target = e.detail.target;
-		console.log(current.isSameNode(target))
-    }
-
 </script>
 
 <style>
@@ -36,7 +30,7 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem vcenter name="side" let:inner on:notify={notifyHandler}>
+	<GridItem vcenter name="side" let:inner>
 		<div class="{inner}">
 			<slot name="side">Sidebar</slot>
 		</div>

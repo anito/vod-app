@@ -17,7 +17,7 @@
         
         res = await api.get( 'videos', user && user.token );
 
-        if( res.success ) {
+        if( res && res.success ) {
             vids = receive(videos)
             data = res.data;
             if(!equals(vids, data)) videos.update( data );
@@ -134,7 +134,9 @@
                     </Paper>
                 </div>
             {/if}
+            {#if $session.role === 'Administrator'}
             <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
+            {/if}
         {:else}
             <div class="paper-container flex justify-center m-8">
                 <Unauthorized />
