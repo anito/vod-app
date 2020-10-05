@@ -1,5 +1,5 @@
 <script>
-	import { goto, stores } from '@sapper/app';
+	import { stores } from '@sapper/app';
     import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
     import { Breadcrumb } from 'components';
 
@@ -9,6 +9,12 @@
 	const { page } = stores();
 
 	let segment = $page.path.match(/\/([a-z_-]*)/)[1];
+
+    function notifyHandler(e) {
+		let current = e.detail.current;
+		let target = e.detail.target;
+		console.log(current.isSameNode(target))
+    }
 
 </script>
 
@@ -30,7 +36,7 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem vcenter name="side" let:inner>
+	<GridItem vcenter name="side" let:inner on:notify={notifyHandler}>
 		<div class="{inner}">
 			<slot name="side">Sidebar</slot>
 		</div>

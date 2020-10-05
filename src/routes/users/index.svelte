@@ -49,13 +49,10 @@
     function setUser(user) {
         selectionUserId = user.id;
     }
-
-    function handleOuterClick(e) {
-        e.stopPropagation();
-
-        alert('outer click')
-    }
     
+    function notifyHandler(e) {
+        console.log(e.detail)
+    }
 </script>
 
 <style>
@@ -90,7 +87,9 @@
 	<title>Physiotherapy Online | Users</title>
 </svelte:head>
 
-<Layout sidebar>
+<Layout sidebar
+    on:notify={notifyHandler}
+>
     <div class="flex flex-auto flex-col justify-center">
         {#if $session.role === "Administrators"}
             <div class="grid">
@@ -139,7 +138,6 @@
                     avatarList
                     singleSelection
                     bind:selectedIndex={selectionIndex}
-                    on:click={handleOuterClick}
                 >
                 {#each $users as user (user.id)}
                     <Item on:SMUI:action={() => setUser(user)} disabled={!user.active} selected={selectionUserId === user.id}>
