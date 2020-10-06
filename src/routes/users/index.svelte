@@ -34,7 +34,7 @@
 <script>
     import { stores } from '@sapper/app';
     import Layout from './layout.svelte';
-    import { VideoManager, UserManager, Unauthorized } from 'components';
+    import { VideoManager, UserManager, TimeManager, Unauthorized } from 'components';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
     import Button, { Group } from '@smui/button';
     import Fab, { Label, Icon } from '@smui/fab';
@@ -107,9 +107,9 @@
             <div class="grid {tab}">
                 <div class="grid-item toolbar">
                     <Group variant="unelevated">
-                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = TAB_0} variant={tab === TAB_0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline" disabled={!selectionUserId} on:click={() => tab = TAB_1} variant={tab === TAB_1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
-                        <Button class="focus:outline-none focus:shadow-outline" disabled on:click={() => tab = TAB_2} variant={tab === TAB_2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" on:click={() => tab = TAB_0} variant={tab === TAB_0 ? "unelevated" : "outlined"}><Icon class="material-icons">account_circle</Icon><Label>Manage User</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" on:click={() => tab = TAB_1} variant={tab === TAB_1 ? "unelevated" : "outlined"}><Icon class="material-icons">video_settings</Icon><Label>Manage Videos</Label></Button>
+                        <Button class="focus:outline-none focus:shadow-outline" on:click={() => tab = TAB_2} variant={tab === TAB_2 ? "unelevated" : "outlined"}><Icon class="material-icons">timer</Icon><Label>Manage Time</Label></Button>
                     </Group>
                 </div>
                 {#if tab === TAB_0}
@@ -124,7 +124,8 @@
                     />
                 {/if}
                 {#if tab === TAB_2}
-                    <UserManager
+                    <TimeManager
+                        {$users}
                         {selectionUserId}
                     />
                 {/if}
