@@ -1,7 +1,7 @@
 <script>
 	import { stores } from '@sapper/app';
     import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
-    import { Breadcrumb } from 'components';
+	import { Breadcrumb } from 'components';
 
 	export let stretch = false;
 	export let sidebar = false;
@@ -22,7 +22,7 @@
 </style>
 
 <LayoutGrid {segment} {stretch} {sidebar}>
-	<GridItem vcenter name="content" let:inner class="has-grid">
+	<GridItem vcenter name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}
 			<Breadcrumb {segment}/>
@@ -30,7 +30,7 @@
 			<slot></slot>
 		</div>
 	</GridItem>
-	<GridItem vcenter name="side" let:inner>
+	<GridItem name="side" let:inner>
 		<div class="{inner}">
 			<slot name="side">Sidebar</slot>
 		</div>
