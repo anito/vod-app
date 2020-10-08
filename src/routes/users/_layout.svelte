@@ -1,16 +1,33 @@
 <script context="module">
     import * as api from 'api.js';
+    import { get } from 'svelte/store';
+    import { users } from '../../stores/userStore';
+    import { videos } from '../../stores/videoStore';
 
     export async function preload( { query }, { user }) {
 
-        const resVideo = await api.get( 'videos', user && user.token );
-        const resUser = await api.get( 'users', user && user.token );
-        
-        if( resUser.success && resVideo.success ) {
-            const userData = resUser.data;
-            const videoData = resVideo.data;
-            return { userData, videoData, ...query };
+        let userData, videoData, resUser, resVideo;
+
+        // fetch only if we haven't any data yet
+        if( (userData = get(users)) && !userData.length) {
+            resUser = await api.get( 'users', user && user.token );
+            
+            if( resUser.success ) {
+                userData = resUser.data;
+            }
         }
+        
+        // fetch only if we haven't any data yet
+        if( (videoData = get(videos)) && !videoData.length) {
+            resVideo = await api.get( 'videos', user && user.token );
+
+            if( resVideo.success ) {
+                videoData = resVideo.data;
+            }
+        }
+
+        return { userData, videoData, ...query };
+        
 	}
 </script>
 
@@ -19,25 +36,22 @@
     import Layout from './layout.svelte';
     import { Unauthorized } from 'components';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
-    import Fab, { Label, Icon } from '@smui/fab';
     import List, { Item, Graphic, Meta, Separator, Subheader, Text, PrimaryText, SecondaryText } from '@smui/list';
     import { stores, goto } from '@sapper/app';
-    import { users } from '../../stores/userStore';
-    import { videos } from '../../stores/videoStore';
 
     const { session } = stores();
     
-    const TAB = 'manage-user';
+    const TAB = 'user';
 
-    export let segment; // our user.id in case we start from a specific user
+    export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
     // from preload
     export let userData = [];
     export let videoData = [];
     export let tab = TAB;
 
     let selectionIndex;
-    let selectionUserId = segment;
 
+    $: selectionUserId = segment;
     $: tab = (t=>!t && TAB || t)(tab);
     
     // update stores with what we got from preload
@@ -49,8 +63,14 @@
         await goto(`users/${selectionUserId}?tab=${tab}`)
     }
 
-    function clickHandler(e) {
-        e.target.isSameNode(e.currentTarget) && (selectionUserId = null);
+    // deselect
+    async function clickHandler(e) {
+        if(e.target.isSameNode(e.currentTarget)) {
+
+            // let's redirect to sync view in case user gets deselected
+            await goto('users');
+        }
+        return false;
     }
     
 </script>
@@ -69,7 +89,7 @@
                     <Unauthorized />
                 </div>
             {/if}
-            <div slot="side" style="flex: 1;" on:click={clickHandler} >
+            <div slot="side" style="flex: 1;" on:click|stopPropagation|preventDefault={clickHandler} >
                 {#if $session.role === "Administrator"}
                     {#if $users.length}
                         <List
@@ -97,7 +117,6 @@
                             </Paper>
                         </div>
                     {/if}
-                    <Fab class="floating-fab" color="primary" on:click={()=> false} extended><Label>Add User</Label><Icon class="material-icons">add</Icon></Fab>
                 {/if}
             </div>
             <div slot="ad">

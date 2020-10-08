@@ -1,31 +1,11 @@
-<script context="module">
-    import * as api from 'api.js';
-    import { get } from 'svelte/store';
-    import { equals } from 'utils';
-    import { users } from '../../stores/userStore';
-    import { videos } from '../../stores/videoStore';
-
-    export async function preload( { path }, { user } ) {
-
-        // let vids, data;
-
-        // const res = await api.get( 'videos', user && user.token );
-
-        // if( res.success ) {
-        //     vids = get(videos)
-        //     data = res.data;
-        //     if(!equals(vids, data)) videos.update( data );
-        // } else {
-        //     videos.set( [] );
-        // }
-        
-    }
-
-</script>
-
 <script>
     import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
     import Paper, {Title, Subtitle, Content} from '@smui/paper';
+    import Fab, { Label, Icon } from '@smui/fab';
+
+    function addUser() {
+        console.log('adding user')
+    }
 
 </script>
 
@@ -55,6 +35,7 @@
             <Paper color="primary">
                 <Title style="color: var(--text-light)">No User Selected</Title>
             </Paper>
+            <Fab class="floating-fab" color="primary" on:click={addUser} extended><Label>Add User</Label><Icon class="material-icons">add</Icon></Fab>
         </div>
     </GridItem>
 </LayoutGrid>

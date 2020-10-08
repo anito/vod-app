@@ -2,7 +2,7 @@
     import * as api from 'api.js';
     import { users } from '../../stores/userStore';
 
-    export async function preload({params, query}, {user}) {
+    export async function preload( { params, query }, {user} ) {
 
 		const res = await api.get(`users/${params.slug}`, user && user.token);
         
@@ -19,18 +19,17 @@
     import { goto } from '@sapper/app';
 	import { VideoManager, UserManager, TimeManager } from 'components';
 	import Button, { Group, Label, Icon } from '@smui/button';
-import { isRedirect } from 'node-fetch';
 
 	const TABS = [
-        'manage-user',
-        'manage-video',
-        'manage-time',
+        'user',
+        'video',
+        'time',
     ]
     
     // available from preload
     export let id;
     export let name;
-    export let tab = 'manage-user';
+    export let tab = 'user';
 	
     let selectionUserId;
 
@@ -55,12 +54,12 @@ import { isRedirect } from 'node-fetch';
         height: 100%;
         align-items: center;
     }
-    :global(.grid.manage-video) {
+    :global(.grid.video) {
         grid-template-areas:
             "toolbar toolbar"
             "one two";
     }
-    :global(.grid.manage-time) {
+    :global(.grid.time) {
         grid-template-areas:
             "toolbar toolbar"
             "one two";
