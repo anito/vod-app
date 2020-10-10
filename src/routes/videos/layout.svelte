@@ -12,7 +12,7 @@
 </script>
 
 <LayoutGrid {segment} {stretch}>
-	<GridItem name="content" let:inner class="pb-16">
+	<GridItem name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}
 			<Breadcrumb {segment}/>

@@ -69,41 +69,33 @@
 	<title>Physiotherapy Online | Posters</title>
 </svelte:head>
 
-<Layout>
-    <Header h=2 mdc class="m-2 lg:m-5">Posters</Header>
-    <div class="lg:m-8">
-        {#if user = $session.user }
-            {#if $images.length }
-                <div class="flex flex-wrap flex-row justify-center lg:justify-start">
-                    {#each $images as image (image.id)}
-                        <div class="flex m-1">
-                            <ImageCard
-                                on:Image:lastSelected={setCurrentImage}
-                                {image}
-                                {user}
-                            />
-                        </div>
-                    {/each}
-                </div>
-            {:else}
-                <div class="paper-container flex justify-center">
-                    <Paper color="primary">
-                        <Title style="color: var(--text-light)">No Images available</Title>
-                        <Content><a href="/images" on:click|preventDefault={openUploader}>Upload</a> some images to your content</Content>
-                    </Paper>
-                </div>
-            {/if}
-            <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Poster</Label><Icon class="material-icons">add</Icon></Fab>
+<Header h=2 mdc class="m-2 lg:m-5">Posters</Header>
+<div class="lg:m-8">
+    {#if user = $session.user }
+        {#if $images.length }
+            <div class="flex flex-wrap flex-row justify-center lg:justify-start">
+                {#each $images as image (image.id)}
+                    <div class="flex m-1">
+                        <ImageCard
+                            on:Image:lastSelected={setCurrentImage}
+                            {image}
+                            {user}
+                        />
+                    </div>
+                {/each}
+            </div>
         {:else}
-            <div class="paper-container flex justify-center m-8">
-                <Unauthorized />
+            <div class="paper-container flex justify-center">
+                <Paper color="primary">
+                    <Title style="color: var(--text-light)">No Images available</Title>
+                    <Content><a href="/images" on:click|preventDefault={openUploader}>Upload</a> some images to your content</Content>
+                </Paper>
             </div>
         {/if}
-    </div>
-    <div slot="ad">
-        Images Ad
-    </div>
-    <div slot="footer">
-        Images Footer
-    </div>
-</Layout>
+        <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Poster</Label><Icon class="material-icons">add</Icon></Fab>
+    {:else}
+        <div class="paper-container flex justify-center m-8">
+            <Unauthorized />
+        </div>
+    {/if}
+</div>

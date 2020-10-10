@@ -22,7 +22,7 @@
 </style>
 
 <LayoutGrid {segment} {stretch} {sidebar}>
-	<GridItem vcenter name="content" let:inner>
+	<GridItem name="content" let:inner>
 		<div class="{inner}">
 			{#if segment}
 			<Breadcrumb {segment}/>

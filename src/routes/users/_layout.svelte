@@ -7,7 +7,7 @@
     export async function preload( { query }, { user }) {
 
         let userData, videoData, resUser, resVideo;
-
+        
         // fetch only if we haven't any data yet
         if( (userData = get(users)) && !userData.length) {
             resUser = await api.get( 'users', user && user.token );
@@ -76,7 +76,16 @@
 </script>
 
 <style>
-
+    .paper-container {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+    }
+    .vcentered {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 </style>
 
 <div class:segment>
@@ -85,8 +94,10 @@
             {#if $session.role === "Administrator"}
                 <slot></slot>
             {:else}
-                <div class="paper-container flex justify-center">
-                    <Unauthorized />
+                <div class="paper-container">
+                    <div class="vcentered">
+                        <Unauthorized />
+                    </div>
                 </div>
             {/if}
             <div slot="side" style="flex: 1;" on:click|stopPropagation|preventDefault={clickHandler} >
