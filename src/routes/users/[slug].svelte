@@ -71,6 +71,7 @@
       "one one"
       "two two";
     grid-template-rows: var(--toolbar-h) auto 10rem;
+    align-items: initial;
   }
   :global(.loggedin) .grid {
     align-items: initial;

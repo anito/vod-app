@@ -20,7 +20,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: "content";
-    height: calc(100vh - var(--nav-h) - var(--footer-section-h));
+    height: calc(var(--main-h) - var(--footer-section-h));
   }
   .no-user {
     grid-area: content;
@@ -34,16 +34,14 @@
   <title>Physiotherapy Online | Users</title>
 </svelte:head>
 
-<LayoutGrid>
-  <GridItem name="content" let:inner vcenter={loggedin} hcenter>
-    <div class={inner}>
-      <Paper color="primary">
-        <Title style="color: var(--text-light)">Select User</Title>
-      </Paper>
-      <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-        <Label>Add User</Label>
-        <Icon class="material-icons">add</Icon>
-      </Fab>
-    </div>
-  </GridItem>
-</LayoutGrid>
+<div class="grid no-user">
+  <div class="grid-item content">
+    <Paper color="primary">
+      <Title style="color: var(--text-light)">Select User</Title>
+    </Paper>
+    <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+      <Label>Add User</Label>
+      <Icon class="material-icons">add</Icon>
+    </Fab>
+  </div>
+</div>
