@@ -53,8 +53,8 @@
     display: grid;
     grid-template-areas:
       "toolbar toolbar"
-      "one one";
-    grid-template-columns: repeat(2, 1fr);
+      "one two";
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: var(--toolbar-h) auto;
     grid-gap: var(--grid-gap);
     height: 100%;
@@ -68,8 +68,8 @@
   :global(.grid.time) {
     grid-template-areas:
       "toolbar toolbar"
-      "one one"
-      "two two";
+      "one two"
+      "one two";
     grid-template-rows: var(--toolbar-h) auto 10rem;
     align-items: initial;
   }
