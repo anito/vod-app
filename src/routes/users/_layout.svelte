@@ -17,13 +17,13 @@
     // }
 
     // fetch only if we haven't any data yet
-    if ((videoData = get(videos)) && !videoData.length) {
-      const resVideo = await api.get("videos", user && user.token);
+    // if ((videoData = get(videos)) && !videoData.length) {
+    const resVideo = await api.get("videos", user && user.token);
 
-      if (resVideo && resVideo.success) {
-        videoData = resVideo.data;
-      }
+    if (resVideo && resVideo.success) {
+      videoData = resVideo.data;
     }
+    // }
 
     return { userData, videoData, ...query };
   }
