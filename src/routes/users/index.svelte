@@ -16,17 +16,11 @@
 </script>
 
 <style>
-  .grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "content";
-    height: calc(var(--main-h) - var(--footer-section-h));
-  }
   .no-user {
-    grid-area: content;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1;
   }
 </style>
 
@@ -34,8 +28,8 @@
   <title>Physiotherapy Online | Users</title>
 </svelte:head>
 
-<div class="grid no-user">
-  <div class="grid-item content">
+<div class="no-user">
+  <div class="content">
     <Paper color="primary">
       <Title style="color: var(--text-light)">Select User</Title>
     </Paper>

@@ -1,116 +1,124 @@
 <script>
-    import * as api from 'api.js';
-    import { stores } from '@sapper/app';
-    import { getContext } from 'svelte';
-    import { fly } from 'svelte/transition';
-    import Fab, {Icon} from '@smui/fab';
-    import { Label } from '@smui/common';
-    import Paper, {Title, Subtitle, Content} from '@smui/paper';
-	import { VideoCard } from 'components';
-    import { VideoUploader } from 'components';
-    import { urls } from '../../stores/urlStore';
-    import { currentVideo } from '../../stores/currentVideoStore';
-    import { Header } from '@sveltejs/site-kit';
-    import { Unauthorized } from 'components';
-    import { videos } from '../../stores/videoStore';
-    import { images } from '../../stores/imageStore';
-    import { crud } from '../../stores/crudStore';
-    
-    const { session } = stores();
-    const { open } = getContext('simple-modal');
+  import * as api from "api.js";
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
+  import { fly } from "svelte/transition";
+  import Fab, { Icon } from "@smui/fab";
+  import { Label } from "@smui/common";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import { VideoCard } from "components";
+  import { VideoUploader } from "components";
+  import { urls } from "../../stores/urlStore";
+  import { currentVideo } from "../../stores/currentVideoStore";
+  import { Header } from "@sveltejs/site-kit";
+  import { Unauthorized } from "components";
+  import { videos } from "../../stores/videoStore";
+  import { images } from "../../stores/imageStore";
+  import { crud } from "../../stores/crudStore";
 
-    $: user = $session.user;
+  const { session } = stores();
+  const { open } = getContext("simple-modal");
 
-    async function put(item) {
-        
-        const res = await api.put(`videos/${item.id}`, item, user && user.token);
-        if(res && res.success) {
-            videos.put( item )
-        }
+  let user = $session.user;
+
+  async function put(item) {
+    const res = await api.put(`videos/${item.id}`, item, user && user.token);
+    if (res && res.success) {
+      videos.put(item);
     }
+  }
 
-    async function get() {
-        
-        const res = await api.get( 'videos', user && user.token );
-        if( res.success ) {
-            videos.update( res.data );
-        }
+  async function get() {
+    const res = await api.get("videos", user && user.token);
+    if (res && res.success) {
+      videos.update(res.data);
     }
+  }
 
-    urls.subscribe( (items) => {
-        // console.log( 'because I subscribed:', items )
-    } )
+  urls.subscribe((items) => {
+    // console.log( 'because I subscribed:', items )
+  });
 
-    crud.subscribe( t => {
-        
-        if( 'post' === t.method ) {
-            post(t.data)
-        }
-        if( 'put' === t.method ) {
-            put(t.data)
-        }
-        if( 'get' === t.method ) {
-            get(t.data)
-        }
-        if( 'del' === t.method ) {
-            del(t)
-        }
-    } )
-
-    let openUploader = () => {
-        open( VideoUploader, {}, {
-            transitionWindow: fly,
-			transitionWindowProps: {
-				y: -200,
-				duration: 500
-			},
-        } )
+  crud.subscribe((t) => {
+    if ("post" === t.method) {
+      post(t.data);
     }
-
-    function setCurrentVideo(e) {
-        currentVideo.set( e.detail );
+    if ("put" === t.method) {
+      put(t.data);
     }
+    if ("get" === t.method) {
+      get(t.data);
+    }
+    if ("del" === t.method) {
+      del(t);
+    }
+  });
 
+  let openUploader = () => {
+    open(
+      VideoUploader,
+      {},
+      {
+        transitionWindow: fly,
+        transitionWindowProps: {
+          y: -200,
+          duration: 500,
+        },
+      }
+    );
+  };
+
+  function setCurrentVideo(e) {
+    currentVideo.set(e.detail);
+  }
 </script>
 
 <style>
-
 </style>
 
 <svelte:head>
-	<title>Physiotherapy Online | Video-Kurse</title>
+  <title>Physiotherapy Online | Video-Kurse</title>
 </svelte:head>
 
-<Header h=2 mdc class="m-2 lg:m-5">Videos</Header>
+<Header h="2" mdc class="m-2 lg:m-5">Videos</Header>
 <div class="lg:m-8">
-    {#if user = $session.user }
-        {#if $videos.length }
-            <div class="flex flex-wrap flex-row lg:justify-start justify-center">
-                {#each $videos as video (video.id)}
-                    <div class="flex mx-1 my-2">
-                        <VideoCard
-                            on:Video:current={setCurrentVideo}
-                            {video}
-                            {images}
-                            {user}
-                        />
-                    </div>
-                {/each}
-            </div>
-        {:else}
-            <div class="paper-container flex justify-center">
-                <Paper color="primary" class="paper-demo">
-                    <Title style="color: var(--text-light)">No Videos available</Title>
-                    <Content><a href="/videos" on:click|preventDefault={openUploader}>Upload</a> some videos to your content</Content>
-                </Paper>
-            </div>
-        {/if}
-        {#if $session.role === 'Administrator'}
-        <Fab class="floating-fab" color="primary" on:click={openUploader} extended><Label>Add Video</Label><Icon class="material-icons">add</Icon></Fab>
-        {/if}
+  {#if user}
+    {#if $videos.length}
+      <div class="flex flex-wrap flex-row lg:justify-start justify-center">
+        {#each $videos as video (video.id)}
+          <div class="flex mx-1 my-2">
+            <VideoCard on:Video:current={setCurrentVideo} {video} {images} />
+          </div>
+        {/each}
+      </div>
     {:else}
-        <div class="paper-container flex justify-center m-8">
-            <Unauthorized />
-        </div>
+      <div class="paper-container flex justify-center">
+        <Paper color="primary" class="paper-demo">
+          <Title style="color: var(--text-light)">No Videos available</Title>
+          {#if $session.role === 'Administrator'}
+            <Content>
+              <a
+                href="/videos"
+                on:click|preventDefault={openUploader}>Upload</a>
+              some videos to your content
+            </Content>
+          {/if}
+        </Paper>
+      </div>
     {/if}
+    {#if $session.role === 'Administrator'}
+      <Fab
+        class="floating-fab"
+        color="primary"
+        on:click={openUploader}
+        extended>
+        <Label>Add Video</Label>
+        <Icon class="material-icons">add</Icon>
+      </Fab>
+    {/if}
+  {:else}
+    <div class="paper-container flex justify-center m-8">
+      <Unauthorized />
+    </div>
+  {/if}
 </div>

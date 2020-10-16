@@ -1,141 +1,151 @@
 <script context="module">
-    import * as api from 'api.js';
-    import { get } from 'svelte/store';
-    import { users } from '../../stores/userStore';
-    import { videos } from '../../stores/videoStore';
+  import * as api from "api.js";
+  import { get } from "svelte/store";
+  import { users } from "../../stores/userStore";
+  import { videos } from "../../stores/videoStore";
 
-    export async function preload( { query }, { user }) {
+  export async function preload({ query }, { user }) {
+    let userData, videoData;
 
-        let userData, videoData, resUser, resVideo;
-        
-        // fetch only if we haven't any data yet
-        if( (userData = get(users)) && !userData.length) {
-            resUser = await api.get( 'users', user && user.token );
-            
-            if( resUser.success ) {
-                userData = resUser.data;
-            }
-        }
-        
-        // fetch only if we haven't any data yet
-        if( (videoData = get(videos)) && !videoData.length) {
-            resVideo = await api.get( 'videos', user && user.token );
+    // fetch only if we haven't any data yet
+    // if ((userData = get(users)) && !userData.length) {
+    const resUser = await api.get("users", user && user.token);
 
-            if( resVideo.success ) {
-                videoData = resVideo.data;
-            }
-        }
+    if (resUser && resUser.success) {
+      userData = resUser.data;
+    }
+    // }
 
-        return { userData, videoData, ...query };
-        
-	}
+    // fetch only if we haven't any data yet
+    if ((videoData = get(videos)) && !videoData.length) {
+      const resVideo = await api.get("videos", user && user.token);
+
+      if (resVideo && resVideo.success) {
+        videoData = resVideo.data;
+      }
+    }
+
+    return { userData, videoData, ...query };
+  }
 </script>
 
 <script>
-    import { Modal } from '@sveltejs/site-kit';
-    import Layout from './layout.svelte';
-    import { Unauthorized } from 'components';
-    import Paper, {Title, Subtitle, Content} from '@smui/paper';
-    import List, { Item, Graphic, Meta, Separator, Subheader, Text, PrimaryText, SecondaryText } from '@smui/list';
-    import { stores, goto } from '@sapper/app';
+  import { Modal } from "@sveltejs/site-kit";
+  import Layout from "./layout.svelte";
+  import { Unauthorized } from "components";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import List, {
+    Item,
+    Graphic,
+    Meta,
+    Separator,
+    Subheader,
+    Text,
+    PrimaryText,
+    SecondaryText,
+  } from "@smui/list";
+  import { stores, goto } from "@sapper/app";
 
-    const { session } = stores();
-    
-    const TAB = 'user';
+  const { session } = stores();
 
-    export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
-    // from preload
-    export let userData = [];
-    export let videoData = [];
-    export let tab = TAB;
+  const TAB = "time";
 
-    let selectionIndex;
+  export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
+  // from preload
+  export let userData = [];
+  export let videoData = [];
+  export let tab = TAB;
 
-    $: selectionUserId = segment;
-    $: tab = (t=>!t && TAB || t)(tab);
-    
-    // update stores with what we got from preload
-    users.update(userData);
-    videos.update(videoData);
+  let selectionIndex;
 
-    async function setUser(id) {
-        selectionUserId = id;
-        await goto(`users/${selectionUserId}?tab=${tab}`)
+  $: selectionUserId = segment;
+  $: tab = ((t) => (!t && TAB) || t)(tab);
+
+  // update stores with what we got from preload
+  users.update(userData);
+  videos.update(videoData);
+
+  async function setUser(id) {
+    selectionUserId = id;
+    await goto(`users/${selectionUserId}?tab=${tab}`);
+  }
+
+  // deselect
+  async function clickHandler(e) {
+    if (e.target.isSameNode(e.currentTarget)) {
+      // let's redirect to sync view in case user gets deselected
+      await goto("users");
     }
-
-    // deselect
-    async function clickHandler(e) {
-        if(e.target.isSameNode(e.currentTarget)) {
-
-            // let's redirect to sync view in case user gets deselected
-            await goto('users');
-        }
-        return false;
-    }
-    
+    return false;
+  }
 </script>
 
 <style>
-    .paper-container {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-    }
-    .vcentered {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+  .paper-container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+  .vcentered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 </style>
 
 <div class:segment>
-    <Modal>
-        <Layout sidebar>
-            {#if $session.role === "Administrator"}
-                <slot></slot>
-            {:else}
-                <div class="paper-container">
-                    <div class="vcentered">
-                        <Unauthorized />
-                    </div>
-                </div>
-            {/if}
-            <div slot="side" style="flex: 1;" on:click|stopPropagation|preventDefault={clickHandler} >
-                {#if $session.role === "Administrator"}
-                    {#if $users.length}
-                        <List
-                            class="users-list"
-                            twoLine
-                            avatarList
-                            singleSelection
-                            bind:selectedIndex={selectionIndex}
-                        >
-                        {#each $users as user (user.id)}
-                            <Item on:SMUI:action={() => setUser(user.id)} disabled={!user.active} selected={selectionUserId == user.id}>
-                                <Graphic style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name.split(' ').map(val => val.substring(0, 1)).join('')});" />
-                                <Text>
-                                    <PrimaryText>{user.name}</PrimaryText>
-                                    <SecondaryText>{user.email}</SecondaryText>
-                                </Text>
-                                <Meta class="material-icons">info</Meta>
-                            </Item>
-                        {/each}
-                        </List>
-                    {:else}
-                        <div class="paper-container flex justify-center">
-                            <Paper color="primary">
-                                <Title style="color: var(--text-light)">No Users</Title>
-                            </Paper>
-                        </div>
-                    {/if}
-                {/if}
+  <Modal>
+    <Layout sidebar>
+      {#if $session.role === 'Administrator'}
+        <slot />
+      {:else}
+        <div class="paper-container">
+          <div class="vcentered">
+            <Unauthorized />
+          </div>
+        </div>
+      {/if}
+      <div
+        slot="side"
+        style="flex: 1;"
+        on:click|stopPropagation|preventDefault={clickHandler}>
+        {#if $session.role === 'Administrator'}
+          {#if $users.length}
+            <List
+              class="users-list"
+              twoLine
+              avatarList
+              singleSelection
+              bind:selectedIndex={selectionIndex}>
+              {#each $users as user (user.id)}
+                <Item
+                  on:SMUI:action={() => setUser(user.id)}
+                  disabled={!user.active}
+                  selected={selectionUserId == user.id}>
+                  <Graphic
+                    style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name
+                      .split(' ')
+                      .map((val) => val.substring(0, 1))
+                      .join('')});" />
+                  <Text>
+                    <PrimaryText>{user.name}</PrimaryText>
+                    <SecondaryText>{user.email}</SecondaryText>
+                  </Text>
+                  <Meta class="material-icons">info</Meta>
+                </Item>
+              {/each}
+            </List>
+          {:else}
+            <div class="paper-container flex justify-center">
+              <Paper color="primary">
+                <Title style="color: var(--text-light)">No Users</Title>
+              </Paper>
             </div>
-            <div slot="ad">
-                Users Ad
-            </div>
-            <div slot="footer">
-                Users Footer
-            </div>
-        </Layout>
-    </Modal>
+          {/if}
+        {/if}
+      </div>
+      <div slot="ad">Users Ad</div>
+      <div slot="footer">Users Footer</div>
+    </Layout>
+  </Modal>
 </div>
