@@ -1,7 +1,11 @@
 <script>
-    export let segment;
+  import Layout from "./layout.svelte";
+
+  export let segment;
 </script>
 
 <div class:segment>
-    <slot></slot>
+  <Layout>
+    <slot />
+  </Layout>
 </div>

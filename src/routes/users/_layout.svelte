@@ -6,25 +6,21 @@
   export async function preload({ query }, { user }) {
     let userData, videoData;
 
-    // fetch only if we haven't any data yet
-    // if ((userData = get(users)) && !userData.length) {
     const resUser = await api.get("users", user && user.token);
 
     if (resUser && resUser.success) {
       userData = resUser.data;
+    } else if (resUser) {
+      this.error(resUser.status, resUser.data.message);
     }
-    // }
 
-    // fetch only if we haven't any data yet
-    // if ((videoData = get(videos)) && !videoData.length) {
     const resVideo = await api.get("videos", user && user.token);
 
     if (resVideo && resVideo.success) {
       videoData = resVideo.data;
-    } else {
-      this.error(res.status, res.data.message);
+    } else if (resVideo) {
+      this.error(resVideo.status, resVideo.data.message);
     }
-    // }
 
     return { userData, videoData, ...query };
   }

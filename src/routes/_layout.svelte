@@ -21,8 +21,6 @@
   let isMobileDevice;
 
   $: slug = ($page.params && $page.params.slug) || null;
-  // $: console.log($page);
-  $: console.log(slug);
 
   async function logout() {
     const r = await post(`auth/logout`);

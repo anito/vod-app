@@ -12,16 +12,16 @@
 
     if (resVideo && resVideo.success) {
       videoData = resVideo.data;
-    } else {
-      this.error(res.status, res.data.message);
+    } else if (resVideo) {
+      this.error(resVideo.status, resVideo.data.message);
     }
 
     const resImage = await api.get("images", user && user.token);
 
     if (resImage && resImage.success) {
       imageData = resImage.data;
-    } else {
-      this.error(res.status, res.data.message);
+    } else if (resImage) {
+      this.error(resImage.status, resImage.data.message);
     }
 
     return { videoData, imageData };
