@@ -15,11 +15,10 @@
 
 <script>
   import { goto } from "@sapper/app";
-  import { VideoManager, UserManager, TimeManager } from "components";
-  import { getUserVideos } from "utils";
+  import { UserManager, TimeManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
 
-  const TABS = ["time", "video", "user"];
+  const TABS = ["time", "user"];
 
   // available from preload
   export let id;
@@ -35,15 +34,6 @@
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
     return false;
   }
-
-  //   function getUserVideos(idx) {
-  //     let userVideos;
-  //     let _videos = get(videos);
-  //     if ($users[idx] && (userVideos = $users[idx].videos) && userVideos.length) {
-  //       return _videos.filter((v) => userVideos.find( uv => uv.id === v.id));
-  //     }
-  //     return [];
-  //   }
 </script>
 
 <style>
@@ -101,22 +91,15 @@
         class="focus:outline-none focus:shadow-outline"
         on:click={() => changeTab(TABS[0])}
         variant={tab === TABS[0] ? 'unelevated' : ''}>
-        <Icon class="material-icons">timer</Icon>
-        <Label>Manage Time</Label>
+        <Icon class="material-icons">video_settings</Icon>
+        <Label>Videos</Label>
       </Button>
       <Button
         class="focus:outline-none focus:shadow-outline"
         on:click={() => changeTab(TABS[1])}
         variant={tab === TABS[1] ? 'unelevated' : ''}>
-        <Icon class="material-icons">video_settings</Icon>
-        <Label>Manage Videos</Label>
-      </Button>
-      <Button
-        class="focus:outline-none focus:shadow-outline"
-        on:click={() => changeTab(TABS[2])}
-        variant={tab === TABS[2] ? 'unelevated' : ''}>
         <Icon class="material-icons">account_circle</Icon>
-        <Label>Manage User</Label>
+        <Label>User</Label>
       </Button>
     </Group>
   </div>
@@ -124,9 +107,6 @@
     <TimeManager {selectionUserId} />
   {/if}
   {#if tab === TABS[1]}
-    <VideoManager {selectionUserId} />
-  {/if}
-  {#if tab === TABS[2]}
     <UserManager {selectionUserId} />
   {/if}
 </div>

@@ -1,6 +1,5 @@
 <script context="module">
   import * as api from "api.js";
-  import { get } from "svelte/store";
   import { users } from "../../stores/userStore";
   import { videos } from "../../stores/videoStore";
 
@@ -22,6 +21,8 @@
 
     if (resVideo && resVideo.success) {
       videoData = resVideo.data;
+    } else {
+      this.error(res.status, res.data.message);
     }
     // }
 

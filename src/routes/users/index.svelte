@@ -6,7 +6,6 @@
 </script>
 
 <script>
-  import { GridItem, LayoutGrid } from "@sveltejs/site-kit";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import Fab, { Label, Icon } from "@smui/fab";
 

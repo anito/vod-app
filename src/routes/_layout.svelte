@@ -20,6 +20,10 @@
   let message = "";
   let isMobileDevice;
 
+  $: slug = ($page.params && $page.params.slug) || null;
+  // $: console.log($page);
+  $: console.log(slug);
+
   async function logout() {
     const r = await post(`auth/logout`);
     if (r.success) {
@@ -73,7 +77,7 @@
       <NavItem segment="images">Posters</NavItem>
     {/if}
     {#if $session.role === 'Administrator'}
-      <NavItem segment="users">Users</NavItem>
+      <NavItem segment="users" {slug}>Users</NavItem>
     {/if}
     <NavItem segment="about">About</NavItem>
 
