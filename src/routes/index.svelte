@@ -30,7 +30,7 @@
       <span class="learn-more">learn more</span>
     </a>
 
-    <a href="." slot="two">
+    <a href="/videos" slot="two">
       <h2>Check out our videos</h2>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita eum
