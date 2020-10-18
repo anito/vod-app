@@ -20,7 +20,12 @@
   let message = "";
   let isMobileDevice;
 
-  $: slug = ($page.params && $page.params.slug) || null;
+  $: query = $page.query || "";
+  $: slug = ((params) => {
+    if (params && params.slug && query.tab)
+      return `${params.slug}?tab=${query.tab}`;
+    return (params && params.slug) || "";
+  })($page.params);
 
   async function logout() {
     const r = await post(`auth/logout`);
