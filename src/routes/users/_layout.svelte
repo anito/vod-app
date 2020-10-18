@@ -8,17 +8,17 @@
 
     const resUser = await api.get("users", user && user.token);
 
-    if (resUser && resUser.success) {
+    if (resUser.success) {
       userData = resUser.data;
-    } else if (resUser) {
+    } else {
       this.error(resUser.status, resUser.data.message);
     }
 
     const resVideo = await api.get("videos", user && user.token);
 
-    if (resVideo && resVideo.success) {
+    if (resVideo.success) {
       videoData = resVideo.data;
-    } else if (resVideo) {
+    } else {
       this.error(resVideo.status, resVideo.data.message);
     }
 

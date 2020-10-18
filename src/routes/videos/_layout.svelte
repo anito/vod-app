@@ -10,17 +10,17 @@
 
     const resVideo = await api.get("videos", user && user.token);
 
-    if (resVideo && resVideo.success) {
+    if (resVideo.success) {
       videoData = resVideo.data;
-    } else if (resVideo) {
+    } else {
       this.error(resVideo.status, resVideo.data.message);
     }
 
     const resImage = await api.get("images", user && user.token);
 
-    if (resImage && resImage.success) {
+    if (resImage.success) {
       imageData = resImage.data;
-    } else if (resImage) {
+    } else {
       this.error(resImage.status, resImage.data.message);
     }
 
