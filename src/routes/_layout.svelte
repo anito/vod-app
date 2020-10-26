@@ -107,9 +107,4 @@
   labelText={message}
   on:MDCSnackbar:closed={handleClosed}>
   <SnackbarLabel />
-  <Actions>
-    <Button variant="raised" on:click={() => redirect('/login')}>
-      Goto Login
-    </Button>
-  </Actions>
 </Snackbar>

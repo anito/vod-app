@@ -1,3 +1,20 @@
+<script context="module">
+  import * as api from "api.js";
+  import { videos } from "../../stores/videoStore";
+  import { images } from "../../stores/imageStore";
+
+  export async function preload(page, { user }) {
+    let code;
+
+    const res = await api.get("images", user && user.token);
+
+    if (!res.success) {
+      code = res.data.code || res.status;
+      this.error(code, res.data.message);
+    }
+  }
+</script>
+
 <script>
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
