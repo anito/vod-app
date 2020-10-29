@@ -18,7 +18,7 @@
 <script>
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
-  import { Unauthorized } from "components";
+  import { Info } from "components";
   import { stores, goto } from "@sapper/app";
 
   export let segment;
@@ -47,7 +47,9 @@
       {:else}
         <div class="paper-container">
           <div class="vcentered">
-            <Unauthorized />
+            <Info title="Unauthorized" let:href>
+              <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+            </Info>
           </div>
         </div>
       {/if}

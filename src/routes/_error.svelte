@@ -13,7 +13,7 @@
 
   onMount(() => {
     let query = segment ? `?redirect=${segment}` : "";
-    status >= 400 && goto(`login${query}`);
+    // status >= 400 && goto(`login${query}`);
   });
 </script>
 
@@ -51,7 +51,7 @@
 
 <div class="wrapper">
   <h1>{status}</h1>
-  <Paper color="primary" style="align-self: center;">
+  <Paper color="secondary" style="align-self: center;">
     <Title style="color: var(--text-light)">{error.message}</Title>
   </Paper>
 </div>

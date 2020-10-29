@@ -1,6 +1,6 @@
 <script>
   import * as api from "api.js";
-  import { stores } from "@sapper/app";
+  import { stores, goto } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
   import Fab, { Icon } from "@smui/fab";
@@ -11,7 +11,7 @@
   import { urls } from "../../stores/urlStore";
   import { currentVideo } from "../../stores/currentVideoStore";
   import { Header } from "@sveltejs/site-kit";
-  import { Unauthorized } from "components";
+  import { Info } from "components";
   import { videos } from "../../stores/videoStore";
   import { images } from "../../stores/imageStore";
   import { crud } from "../../stores/crudStore";
@@ -118,7 +118,9 @@
     {/if}
   {:else}
     <div class="paper-container flex justify-center m-8">
-      <Unauthorized />
+      <Info title="Unauthorized" let:href>
+        <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+      </Info>
     </div>
   {/if}
 </div>

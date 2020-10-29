@@ -1,9 +1,10 @@
 <script context="module">
   import * as api from "api.js";
+  import { stores, goto } from "@sapper/app";
   import { images } from "../../stores/imageStore";
   import { get as receive } from "svelte/store";
   import { equals } from "utils";
-  import { Unauthorized } from "components";
+  import { Info } from "components";
 
   export async function preload({ path }, { user }) {
     let imgs;
@@ -21,17 +22,13 @@
 </script>
 
 <script>
-  import { stores } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
-  import List, { Item, Text, Graphic, Separator, Subheader } from "@smui/list";
   import Fab, { Icon } from "@smui/fab";
   import { Label } from "@smui/common";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import { ImageList } from "components";
   import { ImageCard } from "components";
   import { ImageUploader } from "components";
-  import Layout from "./layout.svelte";
   import { Header } from "@sveltejs/site-kit";
 
   import { currentImage } from "../../stores/currentImageStore";
@@ -95,7 +92,9 @@
     </Fab>
   {:else}
     <div class="paper-container flex justify-center m-8">
-      <Unauthorized />
+      <Info title="Unauthorized" let:href>
+        <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+      </Info>
     </div>
   {/if}
 </div>
