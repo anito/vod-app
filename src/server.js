@@ -21,10 +21,10 @@ polka() // You can also use Express
 		compression({ threshold: 0 }),
 		session({
 			secret: 'SomeSecretStringThatIsNotInGithub',
-			resave: false,
+			resave: true,
 			saveUninitialized: true,
 			cookie: {
-				maxAge: 31536000
+				maxAge: 1*60*60*1000 // 31500000 == 8,75h
 			},
 			store: new FileStore({
 				path: `.sessions`
