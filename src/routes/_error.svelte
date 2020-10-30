@@ -13,7 +13,7 @@
 
   onMount(() => {
     let query = segment ? `?redirect=${segment}` : "";
-    // status >= 400 && goto(`login${query}`);
+    status >= 400 && goto(`login${query}`);
   });
 </script>
 
