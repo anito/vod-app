@@ -26,7 +26,6 @@
       return `${params.slug}?tab=${query.tab}`;
     return (params && params.slug) || "";
   })($page.params);
-  $: console.log($page);
 
   async function logout() {
     const r = await post(`auth/logout`);
