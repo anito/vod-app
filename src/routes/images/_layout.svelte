@@ -4,13 +4,10 @@
   import { images } from "../../stores/imageStore";
 
   export async function preload(page, { user }) {
-    let code;
-
     const res = await api.get("images", user && user.token);
 
     if (!res.success) {
-      code = res.data.code || res.status;
-      this.error(code, res.data.message);
+      this.error(res.status, res.statusText);
     }
   }
 </script>

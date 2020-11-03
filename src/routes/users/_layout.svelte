@@ -11,8 +11,7 @@
     if (resUser.success) {
       userData = resUser.data;
     } else {
-      code = resUser.data.code || resUser.status;
-      this.error(code, resUser.data.message);
+      this.error(resUser.status, resUser.statusText);
     }
 
     const resVideo = await api.get("videos", user && user.token);
@@ -20,8 +19,7 @@
     if (resVideo.success) {
       videoData = resVideo.data;
     } else {
-      code = resVideo.data.code || resVideo.status;
-      this.error(code, resVideo.data.message);
+      this.error(resVideo.status, resVideo.statusText);
     }
 
     return { userData, videoData, ...query };
