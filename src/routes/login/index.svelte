@@ -3,19 +3,29 @@
   import { ListMessages } from "components";
   import { LoginForm } from "components";
   import { Header } from "@sveltejs/site-kit";
+  import { flash } from "../../stores/flashStore";
 
   let errors = null;
   let message = null;
+
+  $: flashMessage = $flash.message || "Login";
+  $: flashType = $flash.type;
+  $: console.log($flash);
 </script>
 
 <style>
+  :global(.error).login-header {
+    color: var(--error);
+  }
 </style>
 
 <svelte:head>
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<Header h="2" mdc class="m-2 lg:m-5">Login</Header>
+<Header h="2" mdc class="login-header m-2 lg:m-5 {flashType}">
+  {flashMessage}
+</Header>
 <div class="flex justify-center m-8">
   <div class="">
     <div class="cols-3">

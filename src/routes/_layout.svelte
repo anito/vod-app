@@ -3,10 +3,10 @@
   import isMobile from "ismobilejs";
   import { onMount } from "svelte";
   import { Icons, Nav, NavItem } from "@sveltejs/site-kit";
-
   import Button from "@smui/button";
   import { Label } from "@smui/common";
   import { post } from "utils";
+  import { flash } from "../stores/flashStore";
   import Snackbar, { Actions, Label as SnackbarLabel } from "@smui/snackbar";
 
   // import ListErrors from 'components';
@@ -20,32 +20,24 @@
   let message = "";
   let isMobileDevice;
 
-  $: query = $page.query || "";
-  $: slug = ((params) => {
-    if (params && params.slug && query.tab)
-      return `${params.slug}?tab=${query.tab}`;
-    return (params && params.slug) || "";
-  })($page.params);
+  $: slug = ((page) => {
+    let params = page.params;
+    let slug = (params && params.slug) || "";
+    let tab = page.query.tab;
+    if (slug && tab) return `${slug}?tab=${tab}`;
+    return slug || "";
+  })($page);
 
   async function logout() {
-    const r = await post(`auth/logout`);
-    if (r.success) {
+    const res = await post(`auth/logout`);
+    if (res.success) {
       $session.user = null;
       $session.role = null;
 
-      message = r.data.message;
+      message = res.data.message;
+      flash.update({ type: "alert", message });
       snackbar.open();
     }
-  }
-
-  function handleClosed() {
-    //
-  }
-
-  function redirect(p) {
-    snackbar.close();
-    let query = segment ? `?redirect=${segment}` : "";
-    goto(`${p}${query}`);
   }
 
   onMount(() => {
@@ -101,10 +93,6 @@
 
 <slot />
 
-<Snackbar
-  timeoutMs="10000"
-  bind:this={snackbar}
-  labelText={message}
-  on:MDCSnackbar:closed={handleClosed}>
+<Snackbar timeoutMs="4000" bind:this={snackbar} labelText={message}>
   <SnackbarLabel />
 </Snackbar>

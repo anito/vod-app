@@ -7,7 +7,7 @@
     const res = await api.get("images", user && user.token);
 
     if (!res.success) {
-      this.error(res.status, res.statusText);
+      this.error(res.data.code, res.data.message);
     }
   }
 </script>

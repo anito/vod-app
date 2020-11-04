@@ -1,19 +1,38 @@
 <script>
   import { onMount } from "svelte";
+  import { flash } from "../stores/flashStore";
   import { goto, stores } from "@sapper/app";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
 
+  const dev = process.env.NODE_ENV === "development";
   const { page } = stores();
 
   export let status = 500;
-  export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
   export let error;
 
-  const dev = process.env.NODE_ENV === "development";
+  $: errorMeassgeTemplate = ((message) => `<div class="error">${message}<div>`)(
+    error.message
+  );
+
+  function redirect(page) {
+    let tab = page.query.tab;
+    let path = page.path;
+    let bit = "";
+    return path
+      ? (bit = `?redirect=${path}`) && tab
+        ? bit + `&tab=${tab}`
+        : bit
+      : bit;
+  }
 
   onMount(() => {
-    let query = segment ? `?redirect=${segment}` : "";
-    status >= 400 && goto(`login${query}`);
+    if (status >= 400) {
+      flash.update({
+        type: "error",
+        message: error.message,
+      });
+      setTimeout((params) => goto(`login${params}`), 1500, redirect($page));
+    }
   });
 </script>
 

@@ -8,7 +8,7 @@
       const { id, name } = { ...res.data };
       return { id, name, ...query };
     } else {
-      this.error(res.status, res.statusText);
+      this.error(res.data.code, res.data.message);
     }
   }
 </script>
