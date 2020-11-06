@@ -3,11 +3,14 @@
   import isMobile from "ismobilejs";
   import { onMount } from "svelte";
   import { Icons, Nav, NavItem } from "@sveltejs/site-kit";
-  import Button from "@smui/button";
-  import { Label } from "@smui/common";
+  import Button from "@smui/packages/button";
+  import { Label } from "@smui/packages/common";
   import { post } from "utils";
   import { flash } from "../stores/flashStore";
-  import Snackbar, { Actions, Label as SnackbarLabel } from "@smui/snackbar";
+  import Snackbar, {
+    Actions,
+    Label as SnackbarLabel,
+  } from "@smui/packages/snackbar";
 
   // import ListErrors from 'components';
 

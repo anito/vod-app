@@ -1,16 +1,10 @@
-<script context="module">
-  let loggedin;
-  export async function preload({ query }, { user }) {
-    loggedin = !!user;
-  }
-</script>
-
 <script>
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import Fab, { Label, Icon } from "@smui/fab";
+  import { goto } from "@sapper/app";
+  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
+  import Fab, { Label, Icon } from "@smui/packages/fab";
 
   function addUser() {
-    console.log("adding user");
+    goto("users/add");
   }
 </script>
 
@@ -32,9 +26,9 @@
     <Paper color="primary">
       <Title style="color: var(--text-light)">Select User</Title>
     </Paper>
-    <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-      <Label>Add User</Label>
-      <Icon class="material-icons">add</Icon>
-    </Fab>
   </div>
+  <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+    <Label>Add User</Label>
+    <Icon class="material-icons">add</Icon>
+  </Fab>
 </div>

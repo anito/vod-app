@@ -24,9 +24,9 @@
 <script>
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
-  import Fab, { Icon } from "@smui/fab";
-  import { Label } from "@smui/common";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Fab, { Icon } from "@smui/packages/fab";
+  import { Label } from "@smui/packages/common";
+  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
   import { ImageCard } from "components";
   import { ImageUploader } from "components";
   import { Header } from "@sveltejs/site-kit";

@@ -13,4 +13,4 @@ function createStore() {
     }
 }
 
-export const crud = createStore()
+export const videoEmitter = createStore()

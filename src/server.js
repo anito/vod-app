@@ -35,6 +35,7 @@ polka() // You can also use Express
 				req.session && {
 				user: req.session.user,
 				role: req.session.role,
+				groups: req.session.groups || [],
 			})
 		})
 	)

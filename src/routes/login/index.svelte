@@ -10,7 +10,6 @@
 
   $: flashMessage = $flash.message || "Login";
   $: flashType = $flash.type;
-  $: console.log($flash);
 </script>
 
 <style>

@@ -4,7 +4,7 @@
   export async function preload({ params, query }, { user }) {
     const res = await api.get(`users/${params.slug}`, user && user.token);
 
-    if (res && res.success) {
+    if (res.success) {
       const { id, name } = { ...res.data };
       return { id, name, ...query };
     } else {
@@ -16,7 +16,8 @@
 <script>
   import { goto } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
-  import Button, { Group, Label, Icon } from "@smui/button";
+  import Button, { Group, Label, Icon } from "@smui/packages/button";
+  import Fab from "@smui/packages/fab";
 
   const TABS = ["time", "user"];
 
@@ -34,6 +35,10 @@
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
     return false;
   }
+
+  function addUser() {
+    goto("users/add");
+  }
 </script>
 
 <style>
@@ -44,25 +49,17 @@
     height: calc(100% - var(--breadcrumb-h));
     align-items: center;
   }
-  :global(.grid.user) {
+  :global(.user).grid {
     grid-template-areas:
       "toolbar toolbar"
       "one two";
     grid-template-columns: 1fr;
   }
-  :global(.grid.video) {
+  :global(.time).grid {
     grid-template-areas:
       "toolbar toolbar"
-      "one two";
-    grid-template-columns: repeat(2, 1fr);
-  }
-  :global(.grid.time) {
-    grid-template-areas:
-      "toolbar toolbar"
-      "one two"
       "one two";
     grid-template-columns: 3fr 5fr;
-    grid-template-rows: var(--toolbar-h) auto 10rem;
     align-items: initial;
   }
   :global(.loggedin) .grid {
@@ -92,21 +89,25 @@
         on:click={() => changeTab(TABS[0])}
         variant={tab === TABS[0] ? 'unelevated' : ''}>
         <Icon class="material-icons">video_settings</Icon>
-        <Label>Videos</Label>
+        <Label>User Videos</Label>
       </Button>
       <Button
         class="focus:outline-none focus:shadow-outline"
         on:click={() => changeTab(TABS[1])}
         variant={tab === TABS[1] ? 'unelevated' : ''}>
         <Icon class="material-icons">account_circle</Icon>
-        <Label>User</Label>
+        <Label>Users Settings</Label>
       </Button>
     </Group>
   </div>
+  <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+    <Label>Add User</Label>
+    <Icon class="material-icons">add</Icon>
+  </Fab>
   {#if tab === TABS[0]}
     <TimeManager {selectionUserId} />
   {/if}
   {#if tab === TABS[1]}
-    <UserManager {selectionUserId} />
+    <UserManager {selectionUserId} selectedMode="edit" />
   {/if}
 </div>

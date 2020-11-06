@@ -2,17 +2,13 @@
   import { onMount } from "svelte";
   import { flash } from "../stores/flashStore";
   import { goto, stores } from "@sapper/app";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
 
   const dev = process.env.NODE_ENV === "development";
   const { page } = stores();
 
   export let status = 500;
   export let error;
-
-  $: errorMeassgeTemplate = ((message) => `<div class="error">${message}<div>`)(
-    error.message
-  );
 
   function redirect(page) {
     let tab = page.query.tab;

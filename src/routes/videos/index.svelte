@@ -3,9 +3,9 @@
   import { stores, goto } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
-  import Fab, { Icon } from "@smui/fab";
-  import { Label } from "@smui/common";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Fab, { Icon } from "@smui/packages/fab";
+  import { Label } from "@smui/packages/common";
+  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
   import { VideoCard } from "components";
   import { VideoUploader } from "components";
   import { urls } from "../../stores/urlStore";
@@ -14,44 +14,13 @@
   import { Info } from "components";
   import { videos } from "../../stores/videoStore";
   import { images } from "../../stores/imageStore";
-  import { crud } from "../../stores/crudStore";
 
   const { session } = stores();
   const { open } = getContext("simple-modal");
-
-  let user = $session.user;
-
-  async function put(item) {
-    const res = await api.put(`videos/${item.id}`, item, user && user.token);
-    if (res && res.success) {
-      videos.put(item);
-    }
-  }
-
-  async function get() {
-    const res = await api.get("videos", user && user.token);
-    if (res && res.success) {
-      videos.update(res.data);
-    }
-  }
+  const user = $session.user;
 
   urls.subscribe((items) => {
     // console.log( 'because I subscribed:', items )
-  });
-
-  crud.subscribe((t) => {
-    if ("post" === t.method) {
-      post(t.data);
-    }
-    if ("put" === t.method) {
-      put(t.data);
-    }
-    if ("get" === t.method) {
-      get(t.data);
-    }
-    if ("del" === t.method) {
-      del(t);
-    }
   });
 
   let openUploader = () => {

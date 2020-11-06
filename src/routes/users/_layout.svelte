@@ -30,7 +30,7 @@
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
   import List, {
     Item,
     Graphic,
@@ -40,11 +40,11 @@
     Text,
     PrimaryText,
     SecondaryText,
-  } from "@smui/list";
+  } from "@smui/packages/list";
   import { stores, goto } from "@sapper/app";
+  import { userEmitter } from "../../stores/userEmitter";
 
   const { session } = stores();
-
   const TAB = "time";
 
   export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
@@ -54,6 +54,7 @@
   export let tab = TAB;
 
   let selectionIndex;
+  let user = $session.user;
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
@@ -75,6 +76,35 @@
     }
     return false;
   }
+
+  async function put(item) {
+    const res = await api.put(`users/${item.id}`, item, user && user.token);
+    if (res && res.success) {
+      users.put(item);
+    }
+  }
+
+  async function get(id = "") {
+    const res = await api.get(`users/${id}`, user && user.token);
+    if (res && res.success) {
+      users.update(res.data);
+    }
+  }
+
+  userEmitter.subscribe((t) => {
+    if ("post" === t.method) {
+      post(t.data);
+    }
+    if ("put" === t.method) {
+      put(t.data);
+    }
+    if ("get" === t.method) {
+      get(t.data);
+    }
+    if ("del" === t.method) {
+      del(t.data);
+    }
+  });
 </script>
 
 <style>

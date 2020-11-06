@@ -29,6 +29,40 @@
 <script>
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
+  import { stores } from "@sapper/app";
+  import { videoEmitter } from "../../stores/videoEmitter";
+
+  const { session } = stores();
+  let user = session.user;
+
+  async function put(item) {
+    const res = await api.put(`videos/${item.id}`, item, user && user.token);
+    if (res.success) {
+      videos.put(item);
+    }
+  }
+
+  async function get() {
+    const res = await api.get("videos", user && user.token);
+    if (res.success) {
+      videos.update(res.data);
+    }
+  }
+
+  videoEmitter.subscribe((t) => {
+    if ("post" === t.method) {
+      post(t.data);
+    }
+    if ("put" === t.method) {
+      put(t.data);
+    }
+    if ("get" === t.method) {
+      get(t.data);
+    }
+    if ("del" === t.method) {
+      del(t.data);
+    }
+  });
 
   export let segment;
   export let imageData = [];
