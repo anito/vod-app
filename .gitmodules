@@ -1,6 +1,3 @@
 [submodule "node_modules/@sveltejs/site-kit"]
 	path = node_modules/@sveltejs/site-kit
 	url = git@github.com:anito/site-kit.git
-[submodule "node_modules/@smui"]
-	path = node_modules/@smui
-	url = https://github.com/anito/svelte-material-ui
