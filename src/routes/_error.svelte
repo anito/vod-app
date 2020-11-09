@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { flash } from "../stores/flashStore";
   import { goto, stores } from "@sapper/app";
-  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
 
   const dev = process.env.NODE_ENV === "development";
   const { page } = stores();

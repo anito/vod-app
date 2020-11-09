@@ -3,9 +3,9 @@
   import { stores, goto } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
-  import Fab, { Icon } from "@smui/packages/fab";
-  import { Label } from "@smui/packages/common";
-  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
+  import Fab, { Icon } from "@smui/fab";
+  import { Label } from "@smui/common";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import { VideoCard } from "components";
   import { VideoUploader } from "components";
   import { urls } from "../../stores/urlStore";

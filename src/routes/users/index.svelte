@@ -1,7 +1,7 @@
 <script>
   import { goto } from "@sapper/app";
-  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
-  import Fab, { Label, Icon } from "@smui/packages/fab";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Fab, { Label, Icon } from "@smui/fab";
 
   function addUser() {
     goto("users/add");

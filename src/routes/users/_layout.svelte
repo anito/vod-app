@@ -30,7 +30,7 @@
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
-  import Paper, { Title, Subtitle, Content } from "@smui/packages/paper";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import List, {
     Item,
     Graphic,
@@ -40,7 +40,7 @@
     Text,
     PrimaryText,
     SecondaryText,
-  } from "@smui/packages/list";
+  } from "@smui/list";
   import { stores, goto } from "@sapper/app";
   import { userEmitter } from "../../stores/userEmitter";
 

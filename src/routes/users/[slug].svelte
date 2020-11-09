@@ -16,8 +16,8 @@
 <script>
   import { goto } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
-  import Button, { Group, Label, Icon } from "@smui/packages/button";
-  import Fab from "@smui/packages/fab";
+  import Button, { Group, Label, Icon } from "@smui/button";
+  import Fab from "@smui/fab";
 
   const TABS = ["time", "user"];
 
