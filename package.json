@@ -15,7 +15,6 @@
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
     "svelte-kit": "npm uninstall @sveltejs/site-kit && npm install anito/site-kit --save-dev",
-    "smui": "npm uninstall @smui && npm install anito/svelte-material-ui --save-dev",
     "setup": "npm run setup:install && npm run setup:build",
     "setup:install": "pnpm install --filter @vime/core",
     "setup:build": "pnpm run build --filter @vime/core",
