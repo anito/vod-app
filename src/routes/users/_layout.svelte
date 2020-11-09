@@ -42,7 +42,6 @@
     SecondaryText,
   } from "@smui/list";
   import { stores, goto } from "@sapper/app";
-  import { userEmitter } from "../../stores/userEmitter";
 
   const { session } = stores();
   const TAB = "time";
@@ -54,7 +53,6 @@
   export let tab = TAB;
 
   let selectionIndex;
-  let user = $session.user;
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
@@ -76,35 +74,6 @@
     }
     return false;
   }
-
-  async function put(item) {
-    const res = await api.put(`users/${item.id}`, item, user && user.token);
-    if (res && res.success) {
-      users.put(item);
-    }
-  }
-
-  async function get(id = "") {
-    const res = await api.get(`users/${id}`, user && user.token);
-    if (res && res.success) {
-      users.update(res.data);
-    }
-  }
-
-  userEmitter.subscribe((t) => {
-    if ("post" === t.method) {
-      post(t.data);
-    }
-    if ("put" === t.method) {
-      put(t.data);
-    }
-    if ("get" === t.method) {
-      get(t.data);
-    }
-    if ("del" === t.method) {
-      del(t.data);
-    }
-  });
 </script>
 
 <style>
