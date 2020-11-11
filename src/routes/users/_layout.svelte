@@ -58,24 +58,20 @@
 
   let selectionIndex;
   let snackbar;
-  let message;
-  let action;
-  let path;
-
-  const atts = {
-    path: "",
-    message: "no message",
-    action: "",
-  };
-
-  setContext("snackbarUsers", {
-    getSnackbar: () => snackbar,
-    getSnackbarAtts: () => atts,
-  });
+  let message = "";
+  let action = "";
+  let path = "";
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: timeout = atts.action ? "8000" : "4000";
+  $: timeout = action ? "8000" : "4000";
+
+  setContext("snackbarUsers", {
+    getSnackbar: () => snackbar,
+    setMessage: (data) => (message = data),
+    setAction: (data) => (action = data),
+    setPath: (data) => (path = data),
+  });
 
   // update stores with what we got from preload
   users.update(userData);
@@ -95,15 +91,8 @@
     return false;
   }
 
-  function handleOpening() {
-    message = atts.message;
-    path = atts.path;
-    action = atts.action;
-  }
-
   function handleClosed() {
-    message = path = action = "";
-    !atts.action && atts.path && goto(atts.path);
+    !action && path && goto(path);
   }
 </script>
 
@@ -185,7 +174,6 @@
   timeoutMs={timeout}
   bind:this={snackbar}
   labelText={message}
-  on:MDCSnackbar:opening={handleOpening}
   on:MDCSnackbar:closed={handleClosed}>
   <Label />
   <Actions>
