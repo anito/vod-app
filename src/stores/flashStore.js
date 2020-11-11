@@ -2,14 +2,17 @@ import { writable, get } from 'svelte/store';
 
 function createStore() {
 
-    const message = '';
     const type = '';
-    const { subscribe, update, set } = writable({type, message}, (  ) => {} )
+    const status = '';
+    const message = '';
+    const { subscribe, update, set } = writable({ type, status, message }, () => { })
+    let timeoutId;
     
     return {
         subscribe,
         update: (item) => update(text => {
-            setTimeout((empty) => set(empty), 8000, {type, message});
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout((empty) => set(empty), 8000, {type, status, message});
             return item;
         }),
     }

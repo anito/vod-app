@@ -27,10 +27,15 @@
 </script>
 
 <script>
+  import { stores, goto } from "@sapper/app";
+  import { onMount, setContext } from "svelte";
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import Button from "@smui/button";
+  import IconButton from "@smui/icon-button";
+  import Snackbar, { Actions, Label } from "@smui/snackbar";
   import List, {
     Item,
     Graphic,
@@ -41,7 +46,6 @@
     PrimaryText,
     SecondaryText,
   } from "@smui/list";
-  import { stores, goto } from "@sapper/app";
 
   const { session } = stores();
   const TAB = "time";
@@ -53,9 +57,25 @@
   export let tab = TAB;
 
   let selectionIndex;
+  let snackbar;
+  let message;
+  let action;
+  let path;
+
+  const atts = {
+    path: "",
+    message: "no message",
+    action: "",
+  };
+
+  setContext("snackbarUsers", {
+    getSnackbar: () => snackbar,
+    getSnackbarAtts: () => atts,
+  });
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
+  $: timeout = atts.action ? "8000" : "4000";
 
   // update stores with what we got from preload
   users.update(userData);
@@ -73,6 +93,17 @@
       await goto("users");
     }
     return false;
+  }
+
+  function handleOpening() {
+    message = atts.message;
+    path = atts.path;
+    action = atts.action;
+  }
+
+  function handleClosed() {
+    message = path = action = "";
+    !atts.action && atts.path && goto(atts.path);
   }
 </script>
 
@@ -129,7 +160,9 @@
                     <PrimaryText>{user.name}</PrimaryText>
                     <SecondaryText>{user.email}</SecondaryText>
                   </Text>
-                  <Meta class="material-icons">info</Meta>
+                  <Meta class="material-icons">
+                    {user.protected ? 'lock' : 'info'}
+                  </Meta>
                 </Item>
               {/each}
             </List>
@@ -147,3 +180,18 @@
     </Layout>
   </Modal>
 </div>
+
+<Snackbar
+  timeoutMs={timeout}
+  bind:this={snackbar}
+  labelText={message}
+  on:MDCSnackbar:opening={handleOpening}
+  on:MDCSnackbar:closed={handleClosed}>
+  <Label />
+  <Actions>
+    {#if action}
+      <Button on:click={() => goto(path)}>{action}</Button>
+    {/if}
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>

@@ -1,8 +1,8 @@
 <script>
-  import { goto, stores } from "@sapper/app";
+  import { stores, goto } from "@sapper/app";
   import isMobile from "ismobilejs";
   import { onMount } from "svelte";
-  import { Icons, Nav, NavItem } from "@sveltejs/site-kit";
+  import { Nav, NavItem } from "@sveltejs/site-kit";
   import Button from "@smui/button";
   import { Label } from "@smui/common";
   import { post } from "utils";
@@ -29,13 +29,17 @@
   })($page);
 
   async function logout() {
-    const res = await post(`auth/logout`);
+    let res = await post(`auth/logout`);
     if (res.success) {
-      $session.user = null;
-      $session.role = null;
-
       message = res.data.message;
       flash.update({ type: "alert", message });
+
+      res = goto("login");
+      if (res) {
+        $session.user = null;
+        $session.role = null;
+        $session.groups = null;
+      }
       snackbar.open();
     }
   }

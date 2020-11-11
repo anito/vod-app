@@ -1,11 +1,12 @@
 <script context="module">
   import * as api from "api.js";
 
-  export async function preload({ params, query }, { user }) {
-    const res = await api.get(`users/${params.slug}`, user && user.token);
+  export async function preload(page, { user }) {
+    const res = await api.get(`users/${page.params.slug}`, user && user.token);
 
     if (res.success) {
       const { id, name } = { ...res.data };
+      let query = page.query;
       return { id, name, ...query };
     } else {
       this.error(res.data.code, res.data.message);

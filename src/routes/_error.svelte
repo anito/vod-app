@@ -1,40 +1,40 @@
 <script>
   import { onMount } from "svelte";
-  import { flash } from "../stores/flashStore";
   import { goto, stores } from "@sapper/app";
+  import { flash } from "../stores/flashStore";
+  import { redirectSlug } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
 
   const dev = process.env.NODE_ENV === "development";
-  const { page } = stores();
+  const { page, session } = stores();
 
-  export let status = 500;
+  export let status;
   export let error;
 
-  function redirect(page) {
-    let tab = page.query.tab;
-    let path = page.path;
-    let bit = "";
-    return path
-      ? (bit = `?redirect=${path}`) && tab
-        ? bit + `&tab=${tab}`
-        : bit
-      : bit;
-  }
-
   onMount(() => {
+    flash.update({
+      type: "error",
+      message: error.message || error,
+      status: status,
+    });
+
     if (status >= 400) {
-      flash.update({
-        type: "error",
-        message: error.message,
-      });
-      setTimeout((params) => goto(`login${params}`), 1500, redirect($page));
+      gotoLogin();
     }
   });
+
+  async function gotoLogin() {
+    const res = goto(`login${redirectSlug($page)}`);
+    if (res) {
+      $session.user = null;
+      $session.role = null;
+      $session.groups = null;
+    }
+  }
 </script>
 
 <style>
-  h1,
-  p {
+  h1 {
     margin: 0 auto;
   }
 
@@ -44,9 +44,6 @@
     margin: 0 0 0.5em 0;
   }
 
-  p {
-    margin: 1em auto;
-  }
   .wrapper {
     padding-top: var(--nav-h);
     margin: 0 3rem;

@@ -1,5 +1,4 @@
 <script>
-  import * as api from "api.js";
   import { stores, goto } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
@@ -18,10 +17,6 @@
   const { session } = stores();
   const { open } = getContext("simple-modal");
   const user = $session.user;
-
-  urls.subscribe((items) => {
-    // console.log( 'because I subscribed:', items )
-  });
 
   let openUploader = () => {
     open(
