@@ -28,14 +28,15 @@
 
 <script>
   import { stores, goto } from "@sapper/app";
-  import { onMount, setContext } from "svelte";
+  import { setContext } from "svelte";
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import Button from "@smui/button";
+  import Paper, { Title } from "@smui/paper";
+  import Button, { Label, Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
-  import Snackbar, { Actions, Label } from "@smui/snackbar";
+  import Snackbar, { Actions } from "@smui/snackbar";
+  import Fab from "@smui/fab";
   import List, {
     Item,
     Graphic,
@@ -71,6 +72,9 @@
     setMessage: (data) => (message = data),
     setAction: (data) => (action = data),
     setPath: (data) => (path = data),
+    resetAtts: () => {
+      message = action = path = "";
+    },
   });
 
   // update stores with what we got from preload
@@ -94,6 +98,10 @@
   function handleClosed() {
     !action && path && goto(path);
   }
+
+  function addUser() {
+    goto("users/add");
+  }
 </script>
 
 <style>
@@ -106,6 +114,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  .fab-add-user {
+    position: absolute;
+  }
+  :global(.datapicker--open) .fab-add-user,
+  :global(.add-user-view--open) .fab-add-user {
+    display: none;
   }
 </style>
 
@@ -167,6 +182,12 @@
       <div slot="ad">Users Ad</div>
       <div slot="footer">Users Footer</div>
     </Layout>
+    <div class="fab-add-user">
+      <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+        <Label>Add User</Label>
+        <Icon class="material-icons">add</Icon>
+      </Fab>
+    </div>
   </Modal>
 </div>
 

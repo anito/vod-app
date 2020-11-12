@@ -46,9 +46,10 @@
 
   onMount(() => {
     root = document.documentElement;
-    !window.snackbar && (window.snackbar = snackbar);
+    // !window.snackbar && (window.snackbar = snackbar);
 
     isMobileDevice && root.classList.add("ismobile");
+    return () => root.classList.remove("ismobile");
   });
 
   $: root &&

@@ -18,7 +18,6 @@
   import { goto } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
-  import Fab from "@smui/fab";
 
   const TABS = ["time", "user"];
 
@@ -35,10 +34,6 @@
   async function changeTab(tab) {
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
     return false;
-  }
-
-  function addUser() {
-    goto("users/add");
   }
 </script>
 
@@ -101,10 +96,6 @@
       </Button>
     </Group>
   </div>
-  <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-    <Label>Add User</Label>
-    <Icon class="material-icons">add</Icon>
-  </Fab>
   {#if tab === TABS[0]}
     <TimeManager {selectionUserId} />
   {/if}

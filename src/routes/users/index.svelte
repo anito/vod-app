@@ -1,11 +1,5 @@
 <script>
-  import { goto } from "@sapper/app";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import Fab, { Label, Icon } from "@smui/fab";
-
-  function addUser() {
-    goto("users/add");
-  }
 </script>
 
 <style>
@@ -27,8 +21,4 @@
       <Title style="color: var(--text-light)">Select User</Title>
     </Paper>
   </div>
-  <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-    <Label>Add User</Label>
-    <Icon class="material-icons">add</Icon>
-  </Fab>
 </div>

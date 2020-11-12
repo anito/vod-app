@@ -14,7 +14,7 @@
 </script>
 
 <script>
-  import { goto } from "@sapper/app";
+  import { onMount } from "svelte";
   import { UserManager } from "components";
 
   const TABS = ["time", "user"];
@@ -22,13 +22,15 @@
   export let tab = "time";
 
   let selectionUserId = "add";
+  let root;
 
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[0])(tab);
 
-  async function changeTab() {
-    const wait = await goto("users");
-    return false;
-  }
+  onMount(() => {
+    root = document.documentElement;
+    root.classList.add("add-user-view--open");
+    return () => root.classList.remove("add-user-view--open");
+  });
 </script>
 
 <style>

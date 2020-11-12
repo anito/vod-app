@@ -33,7 +33,7 @@
   import { videoEmitter } from "../../stores/videoEmitter";
 
   const { session } = stores();
-  let user = session.user;
+  let user = $session.user;
 
   async function put(item) {
     const res = await api.put(`videos/${item.id}`, item, user && user.token);
