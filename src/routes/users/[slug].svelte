@@ -18,6 +18,7 @@
   import { goto } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
+  import { Header } from "@sveltejs/site-kit";
 
   const TABS = ["time", "user"];
 
@@ -55,7 +56,7 @@
     grid-template-areas:
       "toolbar toolbar"
       "one two";
-    grid-template-columns: 3fr 5fr;
+    grid-template-columns: 4fr 4fr;
     align-items: initial;
   }
   :global(.loggedin) .grid {

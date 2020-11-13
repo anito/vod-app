@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { goto, stores } from "@sapper/app";
   import { flash } from "../stores/flashStore";
-  import { redirectSlug } from "utils";
+  import { createRedirectSlug } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
 
   const dev = process.env.NODE_ENV === "development";
@@ -24,7 +24,7 @@
   });
 
   async function gotoLogin() {
-    const res = goto(`login${redirectSlug($page)}`);
+    const res = goto(`login${createRedirectSlug($page)}`);
     if (res) {
       $session.user = null;
       $session.role = null;

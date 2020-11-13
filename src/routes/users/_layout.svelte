@@ -28,15 +28,11 @@
 
 <script>
   import { stores, goto } from "@sapper/app";
-  import { setContext } from "svelte";
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import Paper, { Title } from "@smui/paper";
-  import Button, { Label, Icon } from "@smui/button";
-  import IconButton from "@smui/icon-button";
-  import Snackbar, { Actions } from "@smui/snackbar";
-  import Fab from "@smui/fab";
+  import Fab, { Label, Icon } from "@smui/fab";
   import List, {
     Item,
     Graphic,
@@ -58,24 +54,9 @@
   export let tab = TAB;
 
   let selectionIndex;
-  let snackbar;
-  let message = "";
-  let action = "";
-  let path = "";
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: timeout = action ? "8000" : "4000";
-
-  setContext("snackbarUsers", {
-    getSnackbar: () => snackbar,
-    setMessage: (data) => (message = data),
-    setAction: (data) => (action = data),
-    setPath: (data) => (path = data),
-    resetAtts: () => {
-      message = action = path = "";
-    },
-  });
 
   // update stores with what we got from preload
   users.update(userData);
@@ -93,10 +74,6 @@
       await goto("users");
     }
     return false;
-  }
-
-  function handleClosed() {
-    !action && path && goto(path);
   }
 
   function addUser() {
@@ -190,17 +167,3 @@
     </div>
   </Modal>
 </div>
-
-<Snackbar
-  timeoutMs={timeout}
-  bind:this={snackbar}
-  labelText={message}
-  on:MDCSnackbar:closed={handleClosed}>
-  <Label />
-  <Actions>
-    {#if action}
-      <Button on:click={() => goto(path)}>{action}</Button>
-    {/if}
-    <IconButton class="material-icons" title="Dismiss">close</IconButton>
-  </Actions>
-</Snackbar>
