@@ -61,6 +61,7 @@
         $session.role = null;
         $session.groups = null;
       }
+      configAtts(message);
       snackbar.open();
     }
   }
