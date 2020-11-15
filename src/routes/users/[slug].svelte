@@ -18,7 +18,6 @@
   import { goto } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
-  import { Header } from "@sveltejs/site-kit";
 
   const TABS = ["time", "user"];
 
