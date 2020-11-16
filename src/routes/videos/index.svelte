@@ -112,8 +112,7 @@
   <Component>
     <div slot="header">
       <Header h="2" mdc class="m-2 lg:m-5">
-        Your Video Subscriptions (
-        {@html ($session.user && $session.user.name) || 'Unnamed'})
+        {@html `Your Video Subscriptions <strong>(${($session.user && $session.user.name) || 'Unnamed'})</strong>`}
       </Header>
     </div>
     <VideoManager />
