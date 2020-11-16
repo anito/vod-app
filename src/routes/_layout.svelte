@@ -68,7 +68,6 @@
 
   onMount(() => {
     root = document.documentElement;
-    // !window.snackbar && (window.snackbar = snackbar);
 
     isMobileDevice && root.classList.add("ismobile");
     return () => root.classList.remove("ismobile");
@@ -91,9 +90,6 @@
   function handleClosed() {
     !action && path && goto(path);
   }
-  function handleClosing() {
-    // resetAtts();
-  }
 </script>
 
 <form on:submit|preventDefault={logout} method="post">
@@ -102,12 +98,8 @@
       <NavItem segment="videos">Videos</NavItem>
     {/if}
     {#if $session.role === 'Administrator'}
-      <NavItem segment="images">Posters</NavItem>
-    {/if}
-    {#if $session.role === 'Administrator'}
       <NavItem segment="users" {slug}>Users</NavItem>
     {/if}
-    <NavItem segment="about">About</NavItem>
 
     <NavItem title="Login">
       {#if $session.user}
@@ -130,7 +122,6 @@
   timeoutMs={timeout}
   bind:this={snackbar}
   labelText={message}
-  on:MDCSnackbar:closing={handleClosing}
   on:MDCSnackbar:closed={handleClosed}>
   <Label />
   <Actions>

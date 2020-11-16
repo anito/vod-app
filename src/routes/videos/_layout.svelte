@@ -1,28 +1,17 @@
 <script context="module">
   import * as api from "api.js";
-  import { videos } from "../../stores/videoStore";
-  import { images } from "../../stores/imageStore";
 
   export async function preload(page, { user }) {
-    let videoData, imageData;
+    let data;
 
-    const resVideo = await api.get("videos", user && user.token);
+    const res = await api.get("images", user && user.token);
 
-    if (resVideo.success) {
-      videoData = resVideo.data;
+    if (res.success) {
+      data = res.data;
+      return { data };
     } else {
-      this.error(resVideo.data.code, resVideo.data.message);
+      this.error(res.data.code, res.data.message);
     }
-
-    const resImage = await api.get("images", user && user.token);
-
-    if (resImage.success) {
-      imageData = resImage.data;
-    } else {
-      this.error(resImage.data.code, resImage.data.message);
-    }
-
-    return { videoData, imageData };
   }
 </script>
 
@@ -30,6 +19,8 @@
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { stores } from "@sapper/app";
+  import { images } from "../../stores/imageStore";
+  import { videos } from "../../stores/videoStore";
   import { videoEmitter } from "../../stores/videoEmitter";
 
   const { session } = stores();
@@ -65,11 +56,9 @@
   });
 
   export let segment;
-  export let imageData = [];
-  export let videoData = [];
+  export let data = [];
 
-  videos.update(videoData);
-  images.update(imageData);
+  images.update(data);
 </script>
 
 <div class:segment>
