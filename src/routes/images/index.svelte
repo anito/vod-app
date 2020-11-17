@@ -1,37 +1,32 @@
 <script context="module">
   import * as api from "api.js";
-  import { stores, goto } from "@sapper/app";
-  import { images } from "../../stores/imageStore";
-  import { get as receive } from "svelte/store";
-  import { equals } from "utils";
-  import { Info } from "components";
 
   export async function preload({ path }, { user }) {
-    let imgs;
     let data;
     const res = await api.get("images", user && user.token);
 
-    if (res && res.success) {
-      imgs = receive(images);
+    if (res.success) {
       data = res.data;
-      if (!equals(imgs, data)) images.set(data);
-    } else {
-      images.set([]);
+      return { data };
     }
   }
 </script>
 
 <script>
+  import { stores, goto } from "@sapper/app";
   import { getContext } from "svelte";
   import { fly } from "svelte/transition";
   import Fab, { Icon } from "@smui/fab";
   import { Label } from "@smui/common";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import { ImageCard } from "components";
-  import { ImageUploader } from "components";
+  import { Info, ImageUploader, ImageCard } from "components";
   import { Header } from "@sveltejs/site-kit";
-
   import { currentImage } from "../../stores/currentImageStore";
+  import { images } from "../../stores/imageStore";
+
+  export let data = {};
+
+  images.update(data);
 
   const { session } = stores();
   const { open } = getContext("simple-modal");

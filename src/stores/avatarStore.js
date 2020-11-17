@@ -10,7 +10,6 @@ function createStore() {
 
     return {
         subscribe,
-        // add: ( val ) => update( ( items ) => [ ...items, ...val ] ),
         add: ( val ) => update( ( items ) => {
             return findIndex( val.id, items ) == -1 && [ ...items, ...val ] || items;
         } ),
@@ -25,4 +24,4 @@ function createStore() {
 
 }
 
-export const images = createStore();
+export const avatars = createStore();

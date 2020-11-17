@@ -5,10 +5,11 @@
   import { Nav, NavItem } from "@sveltejs/site-kit";
   import Button from "@smui/button";
   import IconButton from "@smui/icon-button";
+  import Snackbar, { Actions } from "@smui/snackbar";
   import { Label } from "@smui/common";
   import { post } from "utils";
   import { flash } from "../stores/flashStore";
-  import Snackbar, { Actions } from "@smui/snackbar";
+  import { MediaImagePreview } from "components";
 
   // import ListErrors from 'components';
 
@@ -22,6 +23,7 @@
   let path = "";
   let timeout = 4000;
   let isMobileDevice;
+  let image;
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
@@ -74,8 +76,8 @@
   });
 
   function configAtts(msg = "", link) {
-    resetAtts();
     message = msg;
+    action = path = "";
     if (typeof link === "object") {
       path = link.path;
       action = link.action;
@@ -84,9 +86,7 @@
     }
     !action && path && (message = `${message}. Redirecting...`);
   }
-  function resetAtts() {
-    message = action = path = "";
-  }
+
   function handleClosed() {
     !action && path && goto(path);
   }
