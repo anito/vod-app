@@ -7,14 +7,14 @@
 
   let errors = null;
   let message = null;
-
-  $: flashMessage = $flash.message || "Login";
-  $: flashType = $flash.type;
 </script>
 
 <style>
   :global(.error).login-header {
     color: var(--error);
+  }
+  :global(.info).login-header {
+    color: var(--info);
   }
 </style>
 
@@ -22,8 +22,8 @@
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<Header h="2" mdc class="login-header m-2 lg:m-5 {flashType}">
-  {flashMessage}
+<Header h="2" mdc class="login-header m-2 lg:m-5 {$flash.type}">
+  {$flash.message || 'Login'}
 </Header>
 <div class="flex justify-center m-8">
   <div class="">

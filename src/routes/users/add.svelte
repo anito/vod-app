@@ -4,11 +4,14 @@
   export async function preload_({ params, query }, { user }) {
     const res = await api.get(`users/${params.slug}`, user && user.token);
 
-    if (res.success) {
+    if (res && res.success) {
       const { id, name } = { ...res.data };
       return { id, name, ...query };
     } else {
-      this.error(res.data.code, res.data.message);
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>

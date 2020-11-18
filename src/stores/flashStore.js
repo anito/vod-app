@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 function createStore() {
 
@@ -12,7 +12,7 @@ function createStore() {
         subscribe,
         update: (item) => update(text => {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout((empty) => set(empty), 8000, {type, status, message});
+            timeoutId = setTimeout((empty) => set(empty), 4000, {type, status, message});
             return item;
         }),
     }

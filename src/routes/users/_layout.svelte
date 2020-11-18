@@ -4,14 +4,17 @@
   import { videos } from "../../stores/videoStore";
 
   export async function preload({ query }, { user }) {
-    let userData, videoData, code;
+    let userData, videoData;
 
     const resUser = await api.get("users", user && user.token);
 
     if (resUser.success) {
       userData = resUser.data;
     } else {
-      this.error(resUser.data.code, resUser.data.message);
+      this.error(
+        (resUser.data && resUser.data.code) || resUser.status,
+        (resUser.data && resUser.data.message) || resUser.responseText
+      );
     }
 
     const resVideo = await api.get("videos", user && user.token);
@@ -19,7 +22,10 @@
     if (resVideo.success) {
       videoData = resVideo.data;
     } else {
-      this.error(resVideo.data.code, resVideo.data.message);
+      this.error(
+        (resVideo.data && resVideo.data.code) || resVideo.status,
+        (resVideo.data && resVideo.data.message) || resVideo.responseText
+      );
     }
 
     return { userData, videoData, ...query };

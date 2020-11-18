@@ -13,9 +13,14 @@
     let tab = (query.tab && TABS.find((itm) => itm === query.tab)) || TABS[0];
 
     const res = await api.get(tab, user && user.token);
-    if (res.success) {
+    if (res && res.success) {
       data = res.data;
       return { data, tab };
+    } else {
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>

@@ -6,16 +6,20 @@
 
     const res = await api.get("images", user && user.token);
 
-    if (res.success) {
+    if (res && res.success) {
       data = res.data;
       return { data };
     } else {
-      this.error(res.data.code, res.data.message);
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>
 
 <script>
+  import { onMount, getContext } from "svelte";
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { stores } from "@sapper/app";
@@ -24,18 +28,28 @@
   import { videoEmitter } from "../../stores/videoEmitter";
 
   const { session } = stores();
+  const { getSnackbar, configSnackbar } = getContext("snackbar");
+
   let user = $session.user;
+  let snackbar;
+
+  onMount(() => {
+    snackbar = getSnackbar();
+  });
 
   async function put(item) {
     const res = await api.put(`videos/${item.id}`, item, user && user.token);
-    if (res.success) {
+    if (res && res.success) {
+      let message = "Video updated" || res.data.message;
+      configSnackbar(message);
+      snackbar.open();
       videos.put(item);
     }
   }
 
   async function get() {
     const res = await api.get("videos", user && user.token);
-    if (res.success) {
+    if (res && res.success) {
       videos.update(res.data);
     }
   }

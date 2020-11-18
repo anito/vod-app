@@ -27,7 +27,7 @@
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
-    configAtts,
+    configSnackbar,
   });
 
   $: slug = ((page) => {
@@ -53,9 +53,9 @@
 
   async function logout() {
     let res = await post(`auth/logout`);
-    if (res.success) {
+    if (res && res.success) {
       message = res.data.message;
-      flash.update({ type: "alert", message });
+      flash.update({ message });
 
       res = goto("login");
       if (res) {
@@ -63,7 +63,7 @@
         $session.role = null;
         $session.groups = null;
       }
-      configAtts(message);
+      configSnackbar(message);
       snackbar.open();
     }
   }
@@ -75,7 +75,7 @@
     return () => root.classList.remove("ismobile");
   });
 
-  function configAtts(msg = "", link) {
+  function configSnackbar(msg = "", link) {
     message = msg;
     action = path = "";
     if (typeof link === "object") {

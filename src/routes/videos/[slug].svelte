@@ -9,7 +9,10 @@
     if (res && res.success) {
       return res.data;
     } else {
-      this.error(res.status, res.data.message);
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>

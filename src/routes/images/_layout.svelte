@@ -1,13 +1,14 @@
 <script context="module">
   import * as api from "api.js";
-  import { videos } from "../../stores/videoStore";
-  import { images } from "../../stores/imageStore";
 
   export async function preload(page, { user }) {
     const res = await api.get("images", user && user.token);
 
-    if (!res.success) {
-      this.error(res.data.code, res.data.message);
+    if (!res || !res.success) {
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>

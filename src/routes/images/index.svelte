@@ -5,9 +5,14 @@
     let data;
     const res = await api.get("images", user && user.token);
 
-    if (res.success) {
+    if (res && res.success) {
       data = res.data;
       return { data };
+    } else {
+      this.error(
+        (res.data && res.data.code) || res.status,
+        (res.data && res.data.message) || res.responseText
+      );
     }
   }
 </script>
