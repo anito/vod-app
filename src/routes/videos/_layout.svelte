@@ -33,28 +33,7 @@
   let user = $session.user;
   let snackbar;
 
-  onMount(() => {
-    snackbar = getSnackbar();
-  });
-
-  async function put(item) {
-    const res = await api.put(`videos/${item.id}`, item, user && user.token);
-    if (res && res.success) {
-      let message = "Video updated" || res.data.message;
-      configSnackbar(message);
-      snackbar.open();
-      videos.put(item);
-    }
-  }
-
-  async function get() {
-    const res = await api.get("videos", user && user.token);
-    if (res && res.success) {
-      videos.update(res.data);
-    }
-  }
-
-  videoEmitter.subscribe((t) => {
+  let unsubscribe = videoEmitter.subscribe((t) => {
     if ("post" === t.method) {
       post(t.data);
     }
@@ -68,6 +47,29 @@
       del(t.data);
     }
   });
+
+  onMount(() => {
+    snackbar = getSnackbar();
+    return () => unsubscribe();
+  });
+
+  async function put(item) {
+    const res = await api.put(`videos/${item.id}`, item, user && user.token);
+    if (res && res.success) {
+      let message = "Video updated" || res.data.message;
+      snackbar.isOpen && snackbar.close();
+      configSnackbar(message);
+      snackbar.open();
+      videos.put(item);
+    }
+  }
+
+  async function get() {
+    const res = await api.get("videos", user && user.token);
+    if (res && res.success) {
+      videos.update(res.data);
+    }
+  }
 
   export let segment;
   export let data = [];

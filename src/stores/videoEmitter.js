@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 
 function createStore() {
     
-    const { subscribe, update, set } = writable({}, () => {})
+    const { subscribe, update, set } = writable({}, (set) => set({}))
 
     return {
         subscribe,

@@ -34,6 +34,7 @@
 
 <script>
   import { stores, goto } from "@sapper/app";
+  import { onMount } from "svelte";
   import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
@@ -53,6 +54,8 @@
   const { session } = stores();
   const TAB = "time";
 
+  let preselectedIndex = 0;
+
   export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
   // from preload
   export let userData = [];
@@ -68,6 +71,16 @@
   users.update(userData);
   videos.update(videoData);
 
+  onMount(() => {
+    if (!$users.length) return;
+
+    let max = $users.length - 1;
+    preselectedIndex =
+      preselectedIndex < 0 || preselectedIndex > max ? 0 : preselectedIndex;
+
+    goto(`users/${$users[preselectedIndex].id}`);
+  });
+
   async function setUser(id) {
     selectionUserId = id;
     await goto(`users/${selectionUserId}?tab=${tab}`);
@@ -82,8 +95,8 @@
     return false;
   }
 
-  function addUser() {
-    goto("users/add");
+  async function addUser() {
+    await goto("users/add");
   }
 </script>
 
