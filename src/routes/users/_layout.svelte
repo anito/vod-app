@@ -54,7 +54,7 @@
   const { session } = stores();
   const TAB = "time";
 
-  let preselectedIndex = 0;
+  let preSelectedIndex = 0;
 
   export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
   // from preload
@@ -72,13 +72,14 @@
   videos.update(videoData);
 
   onMount(() => {
-    if (!$users.length) return;
+    if (segment || !$users.length) return;
 
+    console.log(segment);
     let max = $users.length - 1;
-    preselectedIndex =
-      preselectedIndex < 0 || preselectedIndex > max ? 0 : preselectedIndex;
+    preSelectedIndex =
+      preSelectedIndex < 0 || preSelectedIndex > max ? 0 : preSelectedIndex;
 
-    goto(`users/${$users[preselectedIndex].id}`);
+    goto(`users/${$users[preSelectedIndex].id}`);
   });
 
   async function setUser(id) {
