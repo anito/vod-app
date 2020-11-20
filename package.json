@@ -1,7 +1,7 @@
 {
   "name": "physio-dippoldiswalde",
   "description": "Physiotherapie Dippoldiswalde",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "scripts": {
     "dev": "run-p start:dev watch:tailwind",
     "start": "node __sapper__/build",
