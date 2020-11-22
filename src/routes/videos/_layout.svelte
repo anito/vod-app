@@ -27,6 +27,10 @@
   import { videos } from "../../stores/videoStore";
   import { videoEmitter } from "../../stores/videoEmitter";
 
+  export let segment;
+  export let data = [];
+  images.update(data);
+
   const { session } = stores();
   const { getSnackbar, configSnackbar } = getContext("snackbar");
 
@@ -50,7 +54,7 @@
 
   onMount(() => {
     snackbar = getSnackbar();
-    return () => unsubscribe();
+    return unsubscribe;
   });
 
   async function put(item) {
@@ -70,11 +74,6 @@
       videos.update(res.data);
     }
   }
-
-  export let segment;
-  export let data = [];
-
-  images.update(data);
 </script>
 
 <div class:segment>

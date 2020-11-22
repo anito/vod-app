@@ -62,19 +62,18 @@
   export let videoData = [];
   export let tab = TAB;
 
+  // update stores with what we got from preload
+  users.update(userData);
+  videos.update(videoData);
+
   let selectionIndex;
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
 
-  // update stores with what we got from preload
-  users.update(userData);
-  videos.update(videoData);
-
   onMount(() => {
     if (segment || !$users.length) return;
 
-    console.log(segment);
     let max = $users.length - 1;
     preSelectedIndex =
       preSelectedIndex < 0 || preSelectedIndex > max ? 0 : preSelectedIndex;
