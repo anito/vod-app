@@ -11,7 +11,7 @@ function createStore() {
     return {
         subscribe,
         add: ( val ) => update( ( items ) => {
-            return findIndex( val.id, items ) == -1 && [ ...items, ...val ] || items;
+            return findIndex( val.id, items ) == -1 && [ ...items, val ] || items;
         } ),
         put: ( id ) => update( items => {
             const index = findIndex( id, items )

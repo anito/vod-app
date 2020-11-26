@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload(page, { user }) {
     const res = await api.get("images", user && user.token);
@@ -14,7 +14,6 @@
 </script>
 
 <script>
-  import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import { stores, goto } from "@sapper/app";
@@ -65,23 +64,19 @@
 </style>
 
 <div class:segment>
-  <Modal
-    on:Upload:success={handleUpload}
-    on:Upload:successmultiple={handleUpload}>
-    <Layout>
-      {#if $session.role === 'Administrator'}
-        <slot />
-      {:else}
-        <div class="paper-container">
-          <div class="vcentered">
-            <Info title="Unauthorized" let:href>
-              <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
-            </Info>
-          </div>
+  <Layout>
+    {#if $session.role === 'Administrator'}
+      <slot />
+    {:else}
+      <div class="paper-container">
+        <div class="vcentered">
+          <Info title="Unauthorized" let:href>
+            <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+          </Info>
         </div>
-      {/if}
-      <div slot="ad">Images Ad</div>
-      <div slot="footer">Images Footer</div>
-    </Layout>
-  </Modal>
+      </div>
+    {/if}
+    <div slot="ad">Images Ad</div>
+    <div slot="footer">Images Footer</div>
+  </Layout>
 </div>

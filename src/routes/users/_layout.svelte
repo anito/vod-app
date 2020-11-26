@@ -35,7 +35,6 @@
 <script>
   import { stores, goto } from "@sapper/app";
   import { onMount } from "svelte";
-  import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import Paper, { Title } from "@smui/paper";
@@ -121,68 +120,66 @@
 </style>
 
 <div class:segment>
-  <Modal>
-    <Layout sidebar>
-      {#if $session.role === 'Administrator'}
-        <slot />
-      {:else}
-        <div class="paper-container">
-          <div class="vcentered">
-            <Info title="Unauthorized" let:href>
-              <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
-            </Info>
-          </div>
+  <Layout sidebar>
+    {#if $session.role === 'Administrator'}
+      <slot />
+    {:else}
+      <div class="paper-container">
+        <div class="vcentered">
+          <Info title="Unauthorized" let:href>
+            <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+          </Info>
         </div>
-      {/if}
-      <div
-        slot="side"
-        style="flex: 1;"
-        on:click|stopPropagation|preventDefault={clickHandler}>
-        {#if $session.role === 'Administrator'}
-          {#if $users.length}
-            <List
-              class="users-list"
-              twoLine
-              avatarList
-              singleSelection
-              bind:selectedIndex={selectionIndex}>
-              {#each $users as user (user.id)}
-                <Item
-                  on:SMUI:action={() => setUser(user.id)}
-                  disabled={!user.active}
-                  selected={selectionUserId == user.id}>
-                  <Graphic
-                    style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name
-                      .split(' ')
-                      .map((val) => val.substring(0, 1))
-                      .join('')});" />
-                  <Text>
-                    <PrimaryText>{user.name}</PrimaryText>
-                    <SecondaryText>{user.email}</SecondaryText>
-                  </Text>
-                  <Meta class="material-icons">
-                    {user.protected ? 'lock' : 'info'}
-                  </Meta>
-                </Item>
-              {/each}
-            </List>
-          {:else}
-            <div class="paper-container flex justify-center">
-              <Paper color="primary">
-                <Title style="color: var(--text-light)">No Users</Title>
-              </Paper>
-            </div>
-          {/if}
-        {/if}
       </div>
-      <div slot="ad">Users Ad</div>
-      <div slot="footer">Users Footer</div>
-    </Layout>
-    <div class="fab-add-user">
-      <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-        <Label>Add User</Label>
-        <Icon class="material-icons">add</Icon>
-      </Fab>
+    {/if}
+    <div
+      slot="side"
+      style="flex: 1;"
+      on:click|stopPropagation|preventDefault={clickHandler}>
+      {#if $session.role === 'Administrator'}
+        {#if $users.length}
+          <List
+            class="users-list"
+            twoLine
+            avatarList
+            singleSelection
+            bind:selectedIndex={selectionIndex}>
+            {#each $users as user (user.id)}
+              <Item
+                on:SMUI:action={() => setUser(user.id)}
+                disabled={!user.active}
+                selected={selectionUserId == user.id}>
+                <Graphic
+                  style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name
+                    .split(' ')
+                    .map((val) => val.substring(0, 1))
+                    .join('')});" />
+                <Text>
+                  <PrimaryText>{user.name}</PrimaryText>
+                  <SecondaryText>{user.email}</SecondaryText>
+                </Text>
+                <Meta class="material-icons">
+                  {user.protected ? 'lock' : 'info'}
+                </Meta>
+              </Item>
+            {/each}
+          </List>
+        {:else}
+          <div class="paper-container flex justify-center">
+            <Paper color="primary">
+              <Title style="color: var(--text-light)">No Users</Title>
+            </Paper>
+          </div>
+        {/if}
+      {/if}
     </div>
-  </Modal>
+    <div slot="ad">Users Ad</div>
+    <div slot="footer">Users Footer</div>
+  </Layout>
+  <div class="fab-add-user">
+    <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+      <Label>Add User</Label>
+      <Icon class="material-icons">add</Icon>
+    </Fab>
+  </div>
 </div>

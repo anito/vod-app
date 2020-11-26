@@ -1,21 +1,20 @@
 <script context="module">
   import * as api from "api.js";
 
-  let TABS = ["videos"];
-
   export async function preload(page, { role, user }) {
+    let tabs = ["videos"];
     let data;
     let query = page.query;
 
     if ("Administrator" === role) {
-      TABS.push("images");
+      tabs.push("images");
     }
-    let tab = (query.tab && TABS.find((itm) => itm === query.tab)) || TABS[0];
+    let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
 
     const res = await api.get(tab, user && user.token);
     if (res && res.success) {
       data = res.data;
-      return { data, tab };
+      return { data, tabs, tab };
     } else {
       this.error(
         (res.data && res.data.code) || res.status,
@@ -35,6 +34,7 @@
   import { images } from "../../stores/imageStore";
 
   // available from preload
+  export let tabs;
   export let data = [];
   export let tab = "videos";
 
@@ -88,16 +88,16 @@
       <Group variant="unelevated">
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[0])}
-          variant={tab === TABS[0] ? 'unelevated' : ''}>
+          on:click={() => changeTab(tabs[0])}
+          variant={tab === tabs[0] ? 'unelevated' : ''}>
           <Icon class="material-icons">video_settings</Icon>
           <Label>Videos</Label>
         </Button>
 
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[1])}
-          variant={tab === TABS[1] ? 'unelevated' : ''}>
+          on:click={() => changeTab(tabs[1])}
+          variant={tab === tabs[1] ? 'unelevated' : ''}>
           <Icon class="material-icons">collections</Icon>
           <Label>Posters</Label>
         </Button>
@@ -105,10 +105,10 @@
     </div>
 
     <div class="grid-item two">
-      {#if tab === TABS[0]}
+      {#if tab === tabs[0]}
         <VideoManager />
       {/if}
-      {#if tab === TABS[1]}
+      {#if tab === tabs[1]}
         <ImageManager />
       {/if}
     </div>

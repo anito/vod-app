@@ -20,7 +20,6 @@
 
 <script>
   import { onMount, getContext } from "svelte";
-  import { Modal } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
   import { stores } from "@sapper/app";
   import { images } from "../../stores/imageStore";
@@ -36,6 +35,24 @@
 
   let user = $session.user;
   let snackbar;
+
+  async function put(item) {
+    const res = await api.put(`videos/${item.id}`, item, user && user.token);
+    if (res && res.success) {
+      let message = "Video updated" || res.data.message;
+      snackbar.isOpen && snackbar.close();
+      configSnackbar(message);
+      snackbar.open();
+      videos.put(item);
+    }
+  }
+
+  async function get() {
+    const res = await api.get("videos", user && user.token);
+    if (res && res.success) {
+      videos.update(res.data);
+    }
+  }
 
   let unsubscribe = videoEmitter.subscribe((t) => {
     if ("post" === t.method) {
@@ -56,32 +73,12 @@
     snackbar = getSnackbar();
     return unsubscribe;
   });
-
-  async function put(item) {
-    const res = await api.put(`videos/${item.id}`, item, user && user.token);
-    if (res && res.success) {
-      let message = "Video updated" || res.data.message;
-      snackbar.isOpen && snackbar.close();
-      configSnackbar(message);
-      snackbar.open();
-      videos.put(item);
-    }
-  }
-
-  async function get() {
-    const res = await api.get("videos", user && user.token);
-    if (res && res.success) {
-      videos.update(res.data);
-    }
-  }
 </script>
 
 <div class:segment>
-  <Modal>
-    <Layout>
-      <slot />
-      <div slot="ad">Videos Ad</div>
-      <div slot="footer">Videos Footer</div>
-    </Layout>
-  </Modal>
+  <Layout>
+    <slot />
+    <div slot="ad">Videos Ad</div>
+    <div slot="footer">Videos Footer</div>
+  </Layout>
 </div>

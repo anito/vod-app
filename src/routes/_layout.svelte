@@ -9,7 +9,7 @@
   import { Label } from "@smui/common";
   import { post } from "utils";
   import { flash } from "../stores/flashStore";
-  import { MediaImagePreview } from "components";
+  import { Modal } from "@sveltejs/site-kit";
 
   // import ListErrors from 'components';
 
@@ -92,31 +92,33 @@
   }
 </script>
 
-<form on:submit|preventDefault={logout} method="post">
-  <Nav {segment} {page} logo="logo-sticky.svg">
-    {#if $session.user}
-      <NavItem segment="videos">Videos</NavItem>
-    {/if}
-    {#if $session.role === 'Administrator'}
-      <NavItem segment="users" {slug}>Users</NavItem>
-    {/if}
-
-    <NavItem title="Login">
+<Modal>
+  <form on:submit|preventDefault={logout} method="post">
+    <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
-        <Button type="submit" variant="raised">
-          <Label>Logout</Label>
-        </Button>
-      {:else}
-        <a
-          rel="prefetch"
-          aria-current={segment === 'login' ? 'page' : undefined}
-          href="/login">Login</a>
+        <NavItem segment="videos">Videos</NavItem>
       {/if}
-    </NavItem>
-  </Nav>
-</form>
+      {#if $session.role === 'Administrator'}
+        <NavItem segment="users" {slug}>Users</NavItem>
+      {/if}
 
-<slot />
+      <NavItem title="Login">
+        {#if $session.user}
+          <Button type="submit" variant="raised">
+            <Label>Logout</Label>
+          </Button>
+        {:else}
+          <a
+            rel="prefetch"
+            aria-current={segment === 'login' ? 'page' : undefined}
+            href="/login">Login</a>
+        {/if}
+      </NavItem>
+    </Nav>
+  </form>
+
+  <slot />
+</Modal>
 
 <Snackbar
   timeoutMs={timeout}
