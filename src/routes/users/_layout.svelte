@@ -37,12 +37,11 @@
   import { onMount } from "svelte";
   import { getMedia } from "utils";
   import Layout from "./layout.svelte";
-  import { Info } from "components";
+  import { Info, UserGraphic } from "components";
   import Paper, { Title } from "@smui/paper";
   import Fab, { Label, Icon } from "@smui/fab";
   import List, {
     Item,
-    Graphic,
     Meta,
     Separator,
     Subheader,
@@ -170,12 +169,7 @@
                 on:SMUI:action={() => setUser(user.id)}
                 disabled={!user.active}
                 selected={selectionUserId == user.id}>
-                {#await avatar(user)}
-                  <Graphic
-                    style="background-image: url({defaultAvatar(user)})" />
-                {:then avatar}
-                  <Graphic style="background-image: url({avatar});" />
-                {/await}
+                <UserGraphic {user} />
                 <Text>
                   <PrimaryText>{user.name}</PrimaryText>
                   <SecondaryText>{user.email}</SecondaryText>
