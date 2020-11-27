@@ -52,5 +52,5 @@
 </svelte:head>
 
 <div class="grid">
-  <UserManager {selectionUserId} selectedMode="add" />
+  <UserManager selectedMode="add" />
 </div>

@@ -4,16 +4,16 @@
   import { videos } from "../../stores/videoStore";
 
   export async function preload({ query }, { user }) {
-    let userData, videoData;
+    let usersData, videoData;
 
-    const resUser = await api.get("users", user && user.token);
+    const resUsers = await api.get("users", user && user.token);
 
-    if (resUser.success) {
-      userData = resUser.data;
+    if (resUsers.success) {
+      usersData = resUsers.data;
     } else {
       this.error(
-        (resUser.data && resUser.data.code) || resUser.status,
-        (resUser.data && resUser.data.message) || resUser.responseText
+        (resUsers.data && resUsers.data.code) || resUsers.status,
+        (resUsers.data && resUsers.data.message) || resUsers.responseText
       );
     }
 
@@ -28,13 +28,14 @@
       );
     }
 
-    return { userData, videoData, ...query };
+    return { usersData, videoData, ...query };
   }
 </script>
 
 <script>
   import { stores, goto } from "@sapper/app";
   import { onMount } from "svelte";
+  import { getMedia } from "utils";
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import Paper, { Title } from "@smui/paper";
@@ -52,23 +53,35 @@
 
   const { session } = stores();
   const TAB = "time";
+  const placeholder = "https://via.placeholder.com/40x40.png?text=";
 
   let preSelectedIndex = 0;
 
   export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
   // from preload
-  export let userData = [];
+  export let usersData = [];
   export let videoData = [];
   export let tab = TAB;
 
   // update stores with what we got from preload
-  users.update(userData);
+  users.update(usersData);
   videos.update(videoData);
 
   let selectionIndex;
 
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
+  $: avatar = async (user) => {
+    let res,
+      avatar = user.avatar;
+    if (!avatar) return defaultAvatar(user);
+    res = await getMedia("AVATAR", avatar.id, $session.user, {
+      width: 40,
+      height: 40,
+      square: 1,
+    });
+    if (res) return res;
+  };
 
   onMount(() => {
     if (segment || !$users.length) return;
@@ -79,6 +92,14 @@
 
     goto(`users/${$users[preSelectedIndex].id}`);
   });
+
+  function defaultAvatar(user) {
+    let name = user.name || "?";
+    return `${placeholder}${name
+      .split(" ")
+      .map((val) => val.substring(0, 1))
+      .join("")}`;
+  }
 
   async function setUser(id) {
     selectionUserId = id;
@@ -149,11 +170,12 @@
                 on:SMUI:action={() => setUser(user.id)}
                 disabled={!user.active}
                 selected={selectionUserId == user.id}>
-                <Graphic
-                  style="background-image: url(https://via.placeholder.com/40x40.png?text={user.name
-                    .split(' ')
-                    .map((val) => val.substring(0, 1))
-                    .join('')});" />
+                {#await avatar(user)}
+                  <Graphic
+                    style="background-image: url({defaultAvatar(user)})" />
+                {:then avatar}
+                  <Graphic style="background-image: url({avatar});" />
+                {/await}
                 <Text>
                   <PrimaryText>{user.name}</PrimaryText>
                   <SecondaryText>{user.email}</SecondaryText>
