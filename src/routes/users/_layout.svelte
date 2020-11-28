@@ -125,11 +125,6 @@
     flex: 1;
     justify-content: center;
   }
-  .vcentered {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
   .fab-add-user {
     position: absolute;
   }
@@ -137,21 +132,14 @@
   :global(.add-user-view--open) .fab-add-user {
     display: none;
   }
+  :global(.grid:not(.sidebar) .grid-item.side) {
+    display: none;
+  }
 </style>
 
 <div class:segment>
-  <Layout sidebar>
-    {#if $session.role === 'Administrator'}
-      <slot />
-    {:else}
-      <div class="paper-container">
-        <div class="vcentered">
-          <Info title="Unauthorized" let:href>
-            <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
-          </Info>
-        </div>
-      </div>
-    {/if}
+  <Layout sidebar={$session.role === 'Administrator'}>
+    <slot />
     <div
       slot="side"
       style="flex: 1;"
@@ -192,10 +180,12 @@
     <div slot="ad">Users Ad</div>
     <div slot="footer">Users Footer</div>
   </Layout>
-  <div class="fab-add-user">
-    <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-      <Label>Add User</Label>
-      <Icon class="material-icons">add</Icon>
-    </Fab>
-  </div>
+  {#if $session.role === 'Administrator'}
+    <div class="fab-add-user">
+      <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+        <Label>Add User</Label>
+        <Icon class="material-icons">add</Icon>
+      </Fab>
+    </div>
+  {/if}
 </div>

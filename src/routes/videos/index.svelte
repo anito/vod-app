@@ -2,13 +2,9 @@
   import * as api from "api.js";
 
   export async function preload(page, { role, user }) {
-    let tabs = ["videos"];
+    let tabs = ["videos", "images"];
     let data;
     let query = page.query;
-
-    if ("Administrator" === role) {
-      tabs.push("images");
-    }
     let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
 
     const res = await api.get(tab, user && user.token);
@@ -43,7 +39,7 @@
   $: "videos" === tab && videos.update(data);
   $: "images" === tab && images.update(data);
 
-  onMount(() => "Administrator" === $session.role && changeTab(tab));
+  onMount(() => $session.role === "Administrator" && changeTab(tab));
 
   async function changeTab(tab) {
     await goto(`videos?tab=${tab}`);

@@ -18,11 +18,12 @@
 </script>
 
 <script>
-  import { goto } from "@sapper/app";
+  import { goto, stores } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
 
-  const TABS = ["time", "user"];
+  const TABS = ["user", "time"];
+  const { session } = stores();
 
   // available from preload
   export let id;
@@ -80,29 +81,33 @@
   <title>Physiotherapy Online | User {name}</title>
 </svelte:head>
 
-<div class="grid {tab}">
-  <div class="grid-item toolbar">
-    <Group variant="unelevated">
-      <Button
-        class="focus:outline-none focus:shadow-outline"
-        on:click={() => changeTab(TABS[0])}
-        variant={tab === TABS[0] ? 'unelevated' : ''}>
-        <Icon class="material-icons">video_settings</Icon>
-        <Label>User Videos</Label>
-      </Button>
-      <Button
-        class="focus:outline-none focus:shadow-outline"
-        on:click={() => changeTab(TABS[1])}
-        variant={tab === TABS[1] ? 'unelevated' : ''}>
-        <Icon class="material-icons">account_circle</Icon>
-        <Label>Users Settings</Label>
-      </Button>
-    </Group>
+{#if 'Administrator' === $session.role}
+  <div class="grid {tab}">
+    <div class="grid-item toolbar">
+      <Group variant="unelevated">
+        <Button
+          class="focus:outline-none focus:shadow-outline"
+          on:click={() => changeTab(TABS[0])}
+          variant={tab === TABS[0] ? 'unelevated' : ''}>
+          <Icon class="material-icons">video_settings</Icon>
+          <Label>User Videos</Label>
+        </Button>
+        <Button
+          class="focus:outline-none focus:shadow-outline"
+          on:click={() => changeTab(TABS[1])}
+          variant={tab === TABS[1] ? 'unelevated' : ''}>
+          <Icon class="material-icons">account_circle</Icon>
+          <Label>Users Settings</Label>
+        </Button>
+      </Group>
+    </div>
+    {#if tab === TABS[1]}
+      <TimeManager {selectionUserId} />
+    {/if}
+    {#if tab === TABS[0]}
+      <UserManager {selectionUserId} selectedMode="edit" />
+    {/if}
   </div>
-  {#if tab === TABS[0]}
-    <TimeManager {selectionUserId} />
-  {/if}
-  {#if tab === TABS[1]}
-    <UserManager {selectionUserId} selectedMode="edit" />
-  {/if}
-</div>
+{:else}
+  <UserManager {selectionUserId} selectedMode="edit" />
+{/if}

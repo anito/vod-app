@@ -45,12 +45,12 @@
   $: timeout = action ? "8000" : "4000";
 
   async function logout(e) {
+    goto("login");
     let res = await post(`auth/logout`);
     if (res && res.success) {
       message = res.data.message;
       flash.update({ message });
 
-      res = goto("login");
       if (res) {
         $session.user = null;
         $session.role = null;
