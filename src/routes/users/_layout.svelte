@@ -169,7 +169,7 @@
                 on:SMUI:action={() => setUser(user.id)}
                 disabled={!user.active}
                 selected={selectionUserId == user.id}>
-                <UserGraphic {user} />
+                <UserGraphic width="40" height="40" {user} />
                 <Text>
                   <PrimaryText>{user.name}</PrimaryText>
                   <SecondaryText>{user.email}</SecondaryText>

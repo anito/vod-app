@@ -19,12 +19,13 @@
     });
 
     if (status >= 400) {
-      gotoLogin();
+      gotoLogin(status);
     }
   });
 
-  async function gotoLogin() {
-    const res = goto(`login${createRedirectSlug($page)}`);
+  async function gotoLogin(status) {
+    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
+    const res = goto(`login${redirectSlug}`);
     if (res) {
       $session.user = null;
       $session.role = null;

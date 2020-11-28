@@ -10,6 +10,7 @@
   import { post } from "utils";
   import { flash } from "../stores/flashStore";
   import { Modal } from "@sveltejs/site-kit";
+  import { UserGraphic } from "components";
 
   // import ListErrors from 'components';
 
@@ -23,20 +24,12 @@
   let path = "";
   let timeout = 4000;
   let isMobileDevice;
-  let image;
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
     configSnackbar,
   });
 
-  $: slug = ((page) => {
-    let params = page.params;
-    let slug = (params && params.slug) || "";
-    let tab = page.query.tab;
-    if (slug && tab) return `${slug}?tab=${tab}`;
-    return slug || "";
-  })($page);
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&
@@ -51,7 +44,7 @@
   $: isMobileDevice = isMobile().any;
   $: timeout = action ? "8000" : "4000";
 
-  async function logout() {
+  async function logout(e) {
     let res = await post(`auth/logout`);
     if (res && res.success) {
       message = res.data.message;
@@ -92,28 +85,41 @@
   }
 </script>
 
+<style>
+  .user-name-indicator {
+    position: absolute;
+    font-size: 0.36rem;
+    bottom: 3px;
+  }
+</style>
+
 <Modal>
   <form on:submit|preventDefault={logout} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
         <NavItem segment="videos">Videos</NavItem>
       {/if}
+
       {#if $session.role === 'Administrator'}
-        <NavItem segment="users" {slug}>Users</NavItem>
+        <NavItem segment="users">Users</NavItem>
       {/if}
 
-      <NavItem title="Login">
-        {#if $session.user}
-          <Button type="submit" variant="raised">
+      {#if $session.user}
+        <NavItem title="Logout">
+          <Button variant="raised">
+            <span class="user-name-indicator">{$session.user.name}</span>
             <Label>Logout</Label>
           </Button>
-        {:else}
-          <a
-            rel="prefetch"
-            aria-current={segment === 'login' ? 'page' : undefined}
-            href="/login">Login</a>
-        {/if}
-      </NavItem>
+        </NavItem>
+      {:else}
+        <NavItem title="Login" segment="login">Login</NavItem>
+      {/if}
+
+      {#if $session.user}
+        <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
+          <UserGraphic dense width="40" height="40" user={$session.user} />
+        </NavItem>
+      {/if}
     </Nav>
   </form>
 
