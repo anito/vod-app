@@ -10,9 +10,7 @@ function createStore() {
 
     return {
         subscribe,
-        add: ( val ) => update( ( items ) => {
-            return findIndexById( val.id, items ) == -1 && [ ...items, ...val ] || items;
-        } ),
+        add: ( val ) => update( ( items ) => [ ...items, ...val ] ),
         put: (val) => update(items => {
             const index = findIndexById( val.id, items )
             return [...items.slice(0, index), { ...items[index], ...val }, ...items.slice(index + 1)]

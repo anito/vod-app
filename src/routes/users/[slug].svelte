@@ -33,7 +33,7 @@
   let selectionUserId;
 
   $: selectionUserId = id;
-  $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[0])(tab);
+  $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
 
   async function changeTab(tab) {
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
@@ -87,15 +87,15 @@
       <Group variant="unelevated">
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[0])}
-          variant={tab === TABS[0] ? 'unelevated' : ''}>
+          on:click={() => changeTab(TABS[1])}
+          variant={tab === TABS[1] ? 'unelevated' : ''}>
           <Icon class="material-icons">video_settings</Icon>
-          <Label>User Videos</Label>
+          <Label>Videos Settings</Label>
         </Button>
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[1])}
-          variant={tab === TABS[1] ? 'unelevated' : ''}>
+          on:click={() => changeTab(TABS[0])}
+          variant={tab === TABS[0] ? 'unelevated' : ''}>
           <Icon class="material-icons">account_circle</Icon>
           <Label>Users Settings</Label>
         </Button>

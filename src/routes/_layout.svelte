@@ -89,7 +89,7 @@
   .user-name-indicator {
     position: absolute;
     font-size: 0.36rem;
-    bottom: 3px;
+    bottom: 5px;
   }
 </style>
 
@@ -97,18 +97,18 @@
   <form on:submit|preventDefault={logout} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
-        <NavItem segment="videos">Videos</NavItem>
+        <NavItem segment="videos" title="videos">Videos</NavItem>
       {/if}
 
       {#if $session.role === 'Administrator'}
-        <NavItem segment="users">Users</NavItem>
+        <NavItem segment="users" title="users">Users</NavItem>
       {/if}
 
       {#if $session.user}
         <NavItem title="Logout">
           <Button variant="raised">
             <span class="user-name-indicator">{$session.user.name}</span>
-            <Label>Logout</Label>
+            <Label style="margin-top: -5px;">Logout</Label>
           </Button>
         </NavItem>
       {:else}
@@ -117,7 +117,12 @@
 
       {#if $session.user}
         <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
-          <UserGraphic dense width="40" height="40" user={$session.user} />
+          <UserGraphic
+            border
+            dense
+            width="40"
+            height="40"
+            user={$session.user} />
         </NavItem>
       {/if}
     </Nav>
