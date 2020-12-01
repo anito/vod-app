@@ -9,7 +9,7 @@ export function post(req, res) {
 			// what will be saved in file session
 			response.data.user
 				&& (req.session.user = response.data.user)
-			req.session.role === "Administrator" && (req.session.groups = response.data.groups);
+			response.data.user.group.name === "Administrator" && (req.session.groups = response.data.groups);
 		}
 		res.setHeader('Content-Type', 'application/json');
 

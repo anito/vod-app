@@ -111,9 +111,15 @@
 {:else}
   <Component>
     <div slot="header">
-      <Header h="2" mdc class="m-2 lg:m-5">
-        {@html `Video Subscriptions <strong>${($session.user && $session.user.name) || 'Unnamed'}</strong>`}
-      </Header>
+      <div class="flex justify-between">
+        <span class="self-center">
+          <Header h="5" mdc class="m-2 lg:m-5">
+            Folgende Kurse stehen für Sie zur Verfügung:
+          </Header>
+        </span>
+        <span
+          class="self-center"><strong>{@html ($session.user && $session.user.name) || 'Unnamed'}</strong></span>
+      </div>
     </div>
     <VideoManager />
   </Component>

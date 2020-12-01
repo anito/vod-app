@@ -21,6 +21,7 @@
       // gotoLogin(status);
     }
   });
+  $: status === 401 && (error.message = "Not Authorized");
   $: status === 403 && (error.message = "Forbidden");
   $: status === 404 && (error.message = "Not found");
 

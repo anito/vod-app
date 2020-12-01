@@ -82,7 +82,7 @@
     } else {
       path = link;
     }
-    !action && path && (message = `${message}. Redirecting...`);
+    !action && path && (message = `${message}...`);
   }
 
   function handleOpened() {
@@ -101,6 +101,11 @@
     position: absolute;
     font-size: 0.36rem;
     bottom: 5px;
+    width: 84%;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
   }
 </style>
 
@@ -119,11 +124,11 @@
         <NavItem title="Logout">
           <Button variant="raised">
             <span class="user-name-indicator">{$session.user.name}</span>
-            <Label style="margin-top: -5px;">Logout</Label>
+            <Label style="margin-top: -5px;">Abmelden</Label>
           </Button>
         </NavItem>
       {:else}
-        <NavItem title="Login" segment="login">Login</NavItem>
+        <NavItem title="Login" segment="login">Anmelden</NavItem>
       {/if}
 
       {#if $session.user}

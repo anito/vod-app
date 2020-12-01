@@ -23,12 +23,12 @@
 </svelte:head>
 
 <Header h="2" mdc class="login-header m-2 lg:m-5 {$flash.type}">
-  {$flash.message || 'Login'}
+  {$flash.message || 'Anmeldung'}
 </Header>
 <div class="flex justify-center m-8">
   <div class="">
     <div class="cols-3">
-      <Header h="4" mdc class="m-2">Please Login</Header>
+      <Header h="4" mdc class="m-2">Bitte loggen Sie sich ein</Header>
     </div>
     <div class="cols-3">
       <LoginForm />
