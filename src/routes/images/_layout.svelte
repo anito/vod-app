@@ -7,7 +7,7 @@
     if (!res || !res.success) {
       this.error(
         (res.data && res.data.code) || res.status,
-        (res.data && res.data.message) || res.responseText
+        res.message || res.responseText
       );
     }
   }

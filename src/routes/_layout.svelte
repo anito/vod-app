@@ -12,6 +12,9 @@
   import { Modal } from "@sveltejs/site-kit";
   import { UserGraphic } from "components";
 
+  // import { urls } from "../stores/urlStore";
+  // urls.subscribe((items) => console.log(items));
+
   // import ListErrors from 'components';
 
   const { page, session } = stores();
@@ -48,7 +51,7 @@
     goto("login");
     let res = await post(`auth/logout`);
     if (res && res.success) {
-      message = res.data.message;
+      message = res.message;
       flash.update({ message });
 
       if (res) {

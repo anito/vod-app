@@ -12,7 +12,7 @@
     } else {
       this.error(
         (res.data && res.data.code) || res.status,
-        (res.data && res.data.message) || res.responseText
+        res.message || res.responseText
       );
     }
   }
@@ -24,6 +24,7 @@
   import { stores } from "@sapper/app";
   import { images } from "../../stores/imageStore";
   import { videos } from "../../stores/videoStore";
+  import { urls } from "../../stores/urlStore";
   import { videoEmitter } from "../../stores/videoEmitter";
 
   export let segment;
@@ -39,7 +40,7 @@
   async function put(item) {
     const res = await api.put(`videos/${item.id}`, item, user && user.token);
     if (res && res.success) {
-      let message = "Video updated" || res.data.message;
+      let message = "Video updated" || res.message || res.data.message;
       snackbar.isOpen && snackbar.close();
       configSnackbar(message);
       snackbar.open();
@@ -51,6 +52,19 @@
     const res = await api.get("videos", user && user.token);
     if (res && res.success) {
       videos.update(res.data);
+    }
+  }
+
+  async function del(item) {
+    const res = await api.del(`videos/${item.id}`, user && user.token);
+    if (res && res.success) {
+      let message = "Video deleted" || res.message || res.data.message;
+      snackbar.isOpen && snackbar.close();
+      configSnackbar(message);
+      snackbar.open();
+
+      urls.del(item.id);
+      videos.del(item.id);
     }
   }
 

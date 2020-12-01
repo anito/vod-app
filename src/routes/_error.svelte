@@ -18,7 +18,7 @@
       status: status,
     });
     if (status >= 400) {
-      gotoLogin(status);
+      // gotoLogin(status);
     }
   });
 

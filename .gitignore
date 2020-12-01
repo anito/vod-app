@@ -9,3 +9,4 @@ yarn-error.log
 /__sapper__/
 /.sessions/
 package-lock.json
+src/request.rest

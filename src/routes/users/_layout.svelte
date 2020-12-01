@@ -13,7 +13,7 @@
     } else {
       this.error(
         (resUsers.data && resUsers.data.code) || resUsers.status,
-        (resUsers.data && resUsers.data.message) || resUsers.responseText
+        resUsers.message || resUsers.responseText
       );
     }
 
@@ -24,7 +24,7 @@
     } else {
       this.error(
         (resVideo.data && resVideo.data.code) || resVideo.status,
-        (resVideo.data && resVideo.data.message) || resVideo.responseText
+        resVideo.message || resVideo.responseText
       );
     }
 

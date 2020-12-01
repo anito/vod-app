@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload(page, { role, user }) {
     let tabs = ["videos", "images"];
@@ -12,10 +12,8 @@
       data = res.data;
       return { data, tabs, tab };
     } else {
-      this.error(
-        (res.data && res.data.code) || res.status,
-        (res.data && res.data.message) || res.responseText
-      );
+      // if (!res) throw Error;
+      this.error();
     }
   }
 </script>
@@ -28,6 +26,7 @@
   import { Header } from "@sveltejs/site-kit";
   import { videos } from "../../stores/videoStore";
   import { images } from "../../stores/imageStore";
+  import Error from "../_error.svelte";
 
   // available from preload
   export let tabs;

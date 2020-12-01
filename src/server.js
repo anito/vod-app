@@ -24,7 +24,9 @@ polka() // You can also use Express
 			resave: false,
 			saveUninitialized: true,
 			cookie: {
-				maxAge: 1*60*60*1000 // 1 hour (31500000 == 8,75 h)
+				// 1h 		1*60*60*1000
+				// 8,75h	31500000
+				maxAge: 1*60*60*1000
 			},
 			store: new FileStore({
 				path: `.sessions`
