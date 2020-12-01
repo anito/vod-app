@@ -25,7 +25,9 @@
   let message = "";
   let action = "";
   let path = "";
-  let timeout = 4000;
+  let snackbarLifetime = 4000;
+  let snackbarActionDelay = 300;
+  let snackbarTimeoutID;
   let isMobileDevice;
 
   setContext("snackbar", {
@@ -45,7 +47,7 @@
         (!seg && root.classList.add("home")));
   })(segment);
   $: isMobileDevice = isMobile().any;
-  $: timeout = action ? "8000" : "4000";
+  $: snackbarLifetime = action ? "8000" : "4000";
 
   async function logout(e) {
     goto("login");
@@ -83,9 +85,15 @@
     !action && path && (message = `${message}. Redirecting...`);
   }
 
-  function handleClosed() {
-    !action && path && goto(path);
+  function handleOpened() {
+    clearTimeout(snackbarTimeoutID);
+    snackbarTimeoutID = setTimeout(
+      () => !action && path && goto(path),
+      snackbarActionDelay
+    );
   }
+
+  function handleClosed() {}
 </script>
 
 <style>
@@ -100,11 +108,11 @@
   <form on:submit|preventDefault={logout} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
-        <NavItem segment="videos" title="videos">Videos</NavItem>
+        <NavItem segment="videos" title="videos">Videokurse</NavItem>
       {/if}
 
       {#if $session.role === 'Administrator'}
-        <NavItem segment="users" title="users">Users</NavItem>
+        <NavItem segment="users" title="users">Einstellungen</NavItem>
       {/if}
 
       {#if $session.user}
@@ -135,10 +143,11 @@
 </Modal>
 
 <Snackbar
-  timeoutMs={timeout}
+  snackbarLifetimeMs={snackbarLifetime}
   bind:this={snackbar}
   labelText={message}
-  on:MDCSnackbar:closed={handleClosed}>
+  on:MDCSnackbar:closed={handleClosed}
+  on:MDCSnackbar:opened={handleOpened}>
   <Label />
   <Actions>
     {#if action}

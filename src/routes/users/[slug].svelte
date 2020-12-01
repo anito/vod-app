@@ -90,14 +90,14 @@
           on:click={() => changeTab(TABS[1])}
           variant={tab === TABS[1] ? 'unelevated' : ''}>
           <Icon class="material-icons">video_settings</Icon>
-          <Label>Videos Settings</Label>
+          <Label>Videokurse</Label>
         </Button>
         <Button
           class="focus:outline-none focus:shadow-outline"
           on:click={() => changeTab(TABS[0])}
           variant={tab === TABS[0] ? 'unelevated' : ''}>
           <Icon class="material-icons">account_circle</Icon>
-          <Label>Users Settings</Label>
+          <Label>Klientendaten</Label>
         </Button>
       </Group>
     </div>

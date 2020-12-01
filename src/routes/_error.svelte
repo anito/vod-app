@@ -17,10 +17,12 @@
       message: error.message || error,
       status: status,
     });
-    if (status >= 400) {
+    if (400 <= status && status < 500) {
       // gotoLogin(status);
     }
   });
+  $: status === 403 && (error.message = "Forbidden");
+  $: status === 404 && (error.message = "Not found");
 
   async function gotoLogin(status) {
     let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
@@ -64,7 +66,9 @@
 <div class="wrapper">
   <h1>{status}</h1>
   <Paper color="secondary" style="align-self: center;">
-    <Title style="color: var(--text-light)">{error.message}</Title>
+    <Title style="color: var(--text-light); text-transform: uppercase;">
+      {error.message}
+    </Title>
   </Paper>
 </div>
 

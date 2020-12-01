@@ -183,7 +183,7 @@
   {#if $session.role === 'Administrator'}
     <div class="fab-add-user">
       <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-        <Label>Add User</Label>
+        <Label>Neuer Klient</Label>
         <Icon class="material-icons">add</Icon>
       </Fab>
     </div>

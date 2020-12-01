@@ -101,7 +101,7 @@
       color="primary"
       on:click={() => openUploader('image')}
       extended>
-      <Label>Add Poster</Label>
+      <Label>Neues Poster</Label>
       <Icon class="material-icons">add</Icon>
     </Fab>
   {:else}
