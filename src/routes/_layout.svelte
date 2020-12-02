@@ -97,7 +97,7 @@
   .user-name-indicator {
     position: absolute;
     font-size: 0.46rem;
-    bottom: 10px;
+    top: 20px;
     width: 84%;
     text-overflow: ellipsis;
     display: inline-block;
@@ -105,7 +105,7 @@
     white-space: nowrap;
   }
   :global(.button-login) {
-    height: 100px;
+    height: 74px;
   }
 </style>
 
@@ -134,13 +134,13 @@
         <NavItem title="Logout" let:active>
           <Button variant="raised" class="button-login">
             <span class="user-name-indicator">{$session.user.name}</span>
-            <Label style="margin-top: -5px;">Abmelden</Label>
+            <Label style="padding-top: 20px;">Abmelden</Label>
           </Button>
         </NavItem>
       {:else}
         <NavItem title="Login" segment="login" let:active>
           <Button color="secondary" variant="raised" class="button-login">
-            <Label style="margin-top: -5px;">Anmelden</Label>
+            <Label>Anmelden</Label>
           </Button>
         </NavItem>
       {/if}
