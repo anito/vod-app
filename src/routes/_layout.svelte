@@ -3,7 +3,7 @@
   import isMobile from "ismobilejs";
   import { onMount, setContext } from "svelte";
   import { Nav, NavItem } from "@sveltejs/site-kit";
-  import Button from "@smui/button";
+  import Button, { Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Snackbar, { Actions } from "@smui/snackbar";
   import { Label } from "@smui/common";
@@ -11,9 +11,6 @@
   import { flash } from "../stores/flashStore";
   import { Modal } from "@sveltejs/site-kit";
   import { UserGraphic } from "components";
-
-  // import { urls } from "../stores/urlStore";
-  // urls.subscribe((items) => console.log(items));
 
   // import ListErrors from 'components';
 
@@ -99,13 +96,16 @@
 <style>
   .user-name-indicator {
     position: absolute;
-    font-size: 0.36rem;
-    bottom: 5px;
+    font-size: 0.46rem;
+    bottom: 10px;
     width: 84%;
     text-overflow: ellipsis;
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
+  }
+  :global(.button-login) {
+    height: 100px;
   }
 </style>
 
@@ -113,22 +113,36 @@
   <form on:submit|preventDefault={logout} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
-        <NavItem segment="videos" title="videos">Videokurse</NavItem>
+        <NavItem segment="videos" title="videos" let:active>
+          <Icon class="material-icons" style="vertical-align: middle;">
+            video_library
+          </Icon>
+          <Label>Videokurse</Label>
+        </NavItem>
       {/if}
 
       {#if $session.role === 'Administrator'}
-        <NavItem segment="users" title="users">Einstellungen</NavItem>
+        <NavItem segment="users" title="users" let:active>
+          <Icon class="material-icons" style="vertical-align: middle;">
+            settings
+          </Icon>
+          <Label>Admin</Label>
+        </NavItem>
       {/if}
 
       {#if $session.user}
-        <NavItem title="Logout">
-          <Button variant="raised">
+        <NavItem title="Logout" let:active>
+          <Button variant="raised" class="button-login">
             <span class="user-name-indicator">{$session.user.name}</span>
             <Label style="margin-top: -5px;">Abmelden</Label>
           </Button>
         </NavItem>
       {:else}
-        <NavItem title="Login" segment="login">Anmelden</NavItem>
+        <NavItem title="Login" segment="login" let:active>
+          <Button color="secondary" variant="raised" class="button-login">
+            <Label style="margin-top: -5px;">Anmelden</Label>
+          </Button>
+        </NavItem>
       {/if}
 
       {#if $session.user}

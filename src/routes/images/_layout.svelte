@@ -17,37 +17,10 @@
   import Layout from "./layout.svelte";
   import { Info } from "components";
   import { stores, goto } from "@sapper/app";
-  import { images } from "../../stores/imageStore";
-  import { avatars } from "../../stores/avatarStore";
-  import { videoEmitter } from "../../stores/videoEmitter";
-  import { currentVideo } from "../../stores/currentVideoStore";
 
   export let segment;
 
   let { session } = stores();
-
-  function handleUpload(e) {
-    (e.detail.type === "image" && images.add(e.detail.data)) ||
-      (e.detail.type === "avatar" && avatars.add(e.detail.data));
-
-    let video;
-    if (!(video = $currentVideo)) return;
-
-    console.log(e);
-    return;
-    // take the last element for our poster
-    let image_id = e.detail.data.slice(-1)[0].id;
-
-    // only required for cakes customized finder methods
-    // eg "findWithImages" which return assoziated models
-    // video.image = null;
-    video.image_id = image_id;
-
-    videoEmitter.dispatch({
-      method: "put",
-      data: video,
-    });
-  }
 </script>
 
 <style>
