@@ -70,6 +70,7 @@
   }
   .two {
     grid-area: two;
+    overflow: auto;
   }
 </style>
 

@@ -70,7 +70,7 @@
 </svelte:head>
 
 <Header h="2" mdc class="m-2 lg:m-5">Posters</Header>
-<div class="lg:m-8">
+<div class="lg:p-8">
   {#if $session.user}
     {#if $images.length}
       <div class="flex flex-wrap flex-row justify-center lg:justify-start">
