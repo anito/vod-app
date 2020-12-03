@@ -113,12 +113,15 @@
     <div slot="header">
       <div class="flex justify-between">
         <span class="self-center">
-          <Header h="5" mdc class="m-2 lg:m-5">
-            Folgende Kurse stehen für Sie zur Verfügung:
+          <Header h="6" mdc class="m-2 lg:m-5">
+            Die folgenden Online-Videokurse stehen für Sie bereit:
           </Header>
         </span>
-        <span
-          class="self-center"><strong>{@html ($session.user && $session.user.name) || 'Unnamed'}</strong></span>
+        <span class="self-center">
+          <Header h="5" mdc>
+            {@html ($session.user && $session.user.name) || 'Unnamed'}
+          </Header>
+        </span>
       </div>
     </div>
     <VideoManager />

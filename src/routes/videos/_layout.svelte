@@ -92,7 +92,7 @@
 <div class:segment>
   <Layout>
     <slot />
-    <div slot="ad">Videos Ad</div>
-    <div slot="footer">Videos Footer</div>
+    <div slot="ad" />
+    <div slot="footer" />
   </Layout>
 </div>

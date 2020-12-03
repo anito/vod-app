@@ -49,7 +49,7 @@
         </div>
       </div>
     {/if}
-    <div slot="ad">Images Ad</div>
-    <div slot="footer">Images Footer</div>
+    <div slot="ad" />
+    <div slot="footer" />
   </Layout>
 </div>

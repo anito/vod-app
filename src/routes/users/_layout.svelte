@@ -39,7 +39,10 @@
   import Layout from "./layout.svelte";
   import { Info, UserGraphic } from "components";
   import Paper, { Title } from "@smui/paper";
-  import Fab, { Label, Icon } from "@smui/fab";
+  import Fab, { Label } from "@smui/fab";
+  import Textfield, { Input, Textarea } from "@smui/textfield";
+  import Icon from "@smui/textfield/icon/index";
+  import HelperText from "@smui/textfield/helper-text/index";
   import List, {
     Item,
     Meta,
@@ -52,11 +55,12 @@
 
   const { session } = stores();
   const TAB = "time";
-  const placeholder = "https://via.placeholder.com/40x40.png?text=";
 
   let preSelectedIndex = 0;
+  let selectionIndex;
+  let search = "";
 
-  export let segment; // our user.id (or slug) in case we start from a specific user like /users/23
+  export let segment; // user.id (or slug) in case we start from a specific user e.g. /users/23
   // from preload
   export let usersData = [];
   export let videoData = [];
@@ -66,21 +70,11 @@
   users.update(usersData);
   videos.update(videoData);
 
-  let selectionIndex;
-
   $: selectionUserId = segment;
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: avatar = async (user) => {
-    let res,
-      avatar = user.avatar;
-    if (!avatar) return defaultAvatar(user);
-    res = await getMedia("AVATAR", avatar.id, $session.user, {
-      width: 40,
-      height: 40,
-      square: 1,
-    });
-    if (res) return res;
-  };
+  $: filteredUsers = $users.filter(
+    (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+  );
 
   onMount(() => {
     if (segment || !$users.length) return;
@@ -91,14 +85,6 @@
 
     goto(`users/${$users[preSelectedIndex].id}`);
   });
-
-  function defaultAvatar(user) {
-    let name = user.name || "?";
-    return `${placeholder}${name
-      .split(" ")
-      .map((val) => val.substring(0, 1))
-      .join("")}`;
-  }
 
   async function setUser(id) {
     selectionUserId = id;
@@ -135,6 +121,9 @@
   :global(.grid:not(.sidebar) .grid-item.side) {
     display: none;
   }
+  .filter {
+    background-color: var(--back);
+  }
 </style>
 
 <div class:segment>
@@ -144,6 +133,18 @@
       slot="side"
       style="flex: 1;"
       on:click|stopPropagation|preventDefault={clickHandler}>
+      <div class="filter flex flex-col p-2">
+        <Textfield
+          class="shaped"
+          variant="filled"
+          bind:value={search}
+          label="Namen suchen"
+          input$aria-controls="helper-text"
+          input$aria-describedby="helper-text" />
+        <HelperText id="helper-text">
+          hier etwas eintippen um nach Namen zu filtern
+        </HelperText>
+      </div>
       {#if $session.role === 'Administrator'}
         {#if $users.length}
           <List
@@ -152,7 +153,7 @@
             avatarList
             singleSelection
             bind:selectedIndex={selectionIndex}>
-            {#each $users as user (user.id)}
+            {#each filteredUsers as user (user.id)}
               <Item
                 on:SMUI:action={() => setUser(user.id)}
                 disabled={!user.active}
@@ -171,14 +172,16 @@
         {:else}
           <div class="paper-container flex justify-center">
             <Paper color="primary">
-              <Title style="color: var(--text-light)">No Users</Title>
+              <Title style="color: var(--text-light)">
+                Keine Benutzer vorhanden
+              </Title>
             </Paper>
           </div>
         {/if}
       {/if}
     </div>
-    <div slot="ad">Users Ad</div>
-    <div slot="footer">Users Footer</div>
+    <div slot="ad" />
+    <div slot="footer" />
   </Layout>
   {#if $session.role === 'Administrator'}
     <div class="fab-add-user">

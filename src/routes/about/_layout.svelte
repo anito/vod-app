@@ -7,7 +7,7 @@
 <div class:segment>
   <Layout>
     <slot />
-    <div slot="ad">About Ad</div>
-    <div slot="footer">About Footer</div>
+    <div slot="ad" />
+    <div slot="footer" />
   </Layout>
 </div>

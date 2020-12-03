@@ -20,6 +20,7 @@
 <script>
   import { goto, stores } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
+  import { Header } from "@sveltejs/site-kit";
   import Button, { Group, Label, Icon } from "@smui/button";
 
   const TABS = ["user", "time"];
@@ -83,7 +84,7 @@
 
 {#if 'Administrator' === $session.role}
   <div class="grid {tab}">
-    <div class="grid-item toolbar">
+    <div class="grid-item toolbar justify-between">
       <Group variant="unelevated">
         <Button
           class="focus:outline-none focus:shadow-outline"
@@ -97,9 +98,10 @@
           on:click={() => changeTab(TABS[0])}
           variant={tab === TABS[0] ? 'unelevated' : ''}>
           <Icon class="material-icons">account_circle</Icon>
-          <Label>Klientendaten</Label>
+          <Label>Profildaten</Label>
         </Button>
       </Group>
+      <Header mdc h="4" class="pr-4 prime">{name}</Header>
     </div>
     {#if tab === TABS[1]}
       <TimeManager {selectionUserId} />

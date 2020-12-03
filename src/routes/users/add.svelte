@@ -48,7 +48,7 @@
 </style>
 
 <svelte:head>
-  <title>Physiotherapy Online | Add User</title>
+  <title>Physiotherapy Online | Klient hinzufügen</title>
 </svelte:head>
 
 <div class="grid">
