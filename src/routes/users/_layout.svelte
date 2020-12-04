@@ -121,28 +121,33 @@
   :global(.grid:not(.sidebar) .grid-item.side) {
     display: none;
   }
-  .filter {
-    background-color: var(--back);
-  }
 </style>
 
 <div class:segment>
   <Layout sidebar={$session.role === 'Administrator'}>
     <slot />
     <div
+      class="sidebar"
       slot="side"
       style="flex: 1;"
       on:click|stopPropagation|preventDefault={clickHandler}>
-      <div class="filter flex flex-col p-2">
+      <div class="flex flex-col p-2">
         <Textfield
-          class="shaped"
           variant="filled"
+          withTrailingIcon
           bind:value={search}
-          label="Namen suchen"
+          label="nach Namen suchen"
           input$aria-controls="helper-text"
-          input$aria-describedby="helper-text" />
+          input$aria-describedby="helper-text">
+          <Icon
+            tabindex="1"
+            class="material-icons"
+            on:click={() => (search = '')}>
+            search
+          </Icon>
+        </Textfield>
         <HelperText id="helper-text">
-          hier etwas eintippen um nach Namen zu filtern
+          tippe etwas um Namen schneller zu finden
         </HelperText>
       </div>
       {#if $session.role === 'Administrator'}
