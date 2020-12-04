@@ -13,7 +13,7 @@ function createStore() {
         update: (item) => update(text => {
             clearTimeout(timeoutId);
             timeoutId = setTimeout((empty) => set(empty), 4000, {type, status, message});
-            return item;
+            return { ...item, type, status };
         }),
     }
 
