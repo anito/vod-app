@@ -161,7 +161,6 @@
             {#each filteredUsers as user (user.id)}
               <Item
                 on:SMUI:action={() => setUser(user.id)}
-                disabled={!user.active}
                 selected={selectionUserId == user.id}>
                 <UserGraphic width="40" height="40" {user} />
                 <Text>
@@ -169,7 +168,7 @@
                   <SecondaryText>{user.email}</SecondaryText>
                 </Text>
                 <Meta class="material-icons">
-                  {user.protected ? 'lock' : 'info'}
+                  {user.token ? 'info' : 'lock'}
                 </Meta>
               </Item>
             {/each}

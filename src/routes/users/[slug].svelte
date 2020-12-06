@@ -5,9 +5,8 @@
     const res = await api.get(`users/${page.params.slug}`, user && user.token);
 
     if (res && res.success) {
-      const { id, name } = { ...res.data };
       let query = page.query;
-      return { id, name, ...query };
+      return { ...res, ...query };
     } else {
       this.error(
         (res.data && res.data.code) || res.status,
@@ -27,13 +26,13 @@
   const { session } = stores();
 
   // available from preload
-  export let id;
-  export let name;
+  export let data;
   export let tab = "time";
 
   let selectionUserId;
 
-  $: selectionUserId = id;
+  $: user = data;
+  $: selectionUserId = user.id;
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
 
   async function changeTab(tab) {
@@ -79,7 +78,7 @@
 </style>
 
 <svelte:head>
-  <title>Physiotherapy Online | User {name}</title>
+  <title>Physiotherapy Online | User {user.name}</title>
 </svelte:head>
 
 {#if 'Administrator' === $session.role}
@@ -101,7 +100,7 @@
           <Label>Profildaten</Label>
         </Button>
       </Group>
-      <Header mdc h="4" class="pr-4 prime">{name}</Header>
+      <Header mdc h="4" class="pr-6">{user.name}</Header>
     </div>
     {#if tab === TABS[1]}
       <TimeManager {selectionUserId} />

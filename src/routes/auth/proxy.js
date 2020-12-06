@@ -2,6 +2,7 @@ export function post(req, res) {
 
 	const data = req.body;
 
+	console.log(data)
 	// what will be saved in file session
 	req.session.user = data.user;
 	req.session.groups = data.groups;
