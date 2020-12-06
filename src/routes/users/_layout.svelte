@@ -167,7 +167,10 @@
                   <PrimaryText>{user.name}</PrimaryText>
                   <SecondaryText>{user.email}</SecondaryText>
                 </Text>
-                <Meta class="material-icons">
+                <Meta
+                  color="#f00"
+                  class="material-icons"
+                  title={user.token ? 'Token vorhanden' : 'Zugang ist gesperrt. Um den Zugang zu ermöglichen, muss erst ein Token für diesen Benutzer generiert werden.'}>
                   {user.token ? 'info' : 'lock'}
                 </Meta>
               </Item>
