@@ -1,6 +1,13 @@
 <script>
+  import { stores, goto } from "@sapper/app";
   import { Blurb, Hero, Section } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
+
+  let { session } = stores();
+
+  $: continueWith = $session.user
+    ? { title: "Ihre Kurse", url: "videos" }
+    : { title: "Login", url: "login" };
 </script>
 
 <style>
@@ -19,7 +26,7 @@
 
   <Blurb>
     <a href="." slot="one">
-      <h2>We are a Physiotherapy Company</h2>
+      <h2>Videokurse bequem zu Hause</h2>
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus animi
         labore maxime quos architecto, dolore ducimus vero molestiae dicta?
@@ -27,11 +34,11 @@
         exercitationem explicabo asperiores sed?
       </p>
 
-      <span class="learn-more">learn more</span>
+      <span class="learn-more">...</span>
     </a>
 
-    <a href="/videos" slot="two">
-      <h2>Check out our videos</h2>
+    <a href="/{continueWith.url}" slot="two">
+      <h2>Ihre Physiotherapie Praxis aus Dippoldiswalde</h2>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita eum
         dolorem, est perspiciatis laborum nihil veniam pariatur tempore voluptas
@@ -39,7 +46,7 @@
         quasi?
       </p>
 
-      <span class="learn-more">learn more</span>
+      <span class="learn-more">{continueWith.title}</span>
     </a>
 
     <div class="description" slot="what">
