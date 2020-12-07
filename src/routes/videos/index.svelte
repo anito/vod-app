@@ -120,7 +120,7 @@
         </span>
         <span class="self-center">
           <Header h="5" mdc>
-            {@html ($session.user && $session.user.name) || 'Unnamed'}
+            {@html ($session.user && $session.user.name) || ''}
           </Header>
         </span>
       </div>

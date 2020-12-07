@@ -71,7 +71,7 @@
   });
 
   function configSnackbar(msg = "", link) {
-    snackbar.open && snackbar.close();
+    snackbar.close();
     message = msg;
     action = path = "";
     if (typeof link === "object") {

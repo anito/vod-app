@@ -7,10 +7,8 @@
     if (page.query && (token = page.query.token)) {
       res = await api.get(`login?token=${token}`);
 
-      if (res.success) {
-        return { ...res.data };
-      } else {
-        console.log(res);
+      if (res) {
+        return { ...res };
       }
     }
   }
@@ -34,24 +32,28 @@
   let path;
   let snackbar;
 
-  export let user;
-  export let groups;
+  export let data = null;
+  export let success = null;
 
   onMount(() => {
     snackbar = getSnackbar();
 
-    if (user) {
+    if (success && data.user) {
       saveSession();
+    } else if (success === false) {
+      // wait until snackbar is ready
+      let detail = { data, success };
+      setTimeout(() => handleLogin({ detail }), 10);
     }
   });
 
   function handleLogin(e) {
     let res = e.detail;
-    snackbar.isOpen && snackbar.close();
 
     message = res.message || res.data.message || res.statusText;
+
     if (res.success) {
-      flash.update({ message });
+      flash.update({ type: "success", message });
       res.data.user &&
         ($session.user = res.data.user) &&
         ($session.role = res.data.user.group.name);
@@ -61,12 +63,14 @@
       configSnackbar(message, path);
       snackbar.open();
     } else {
+      flash.update({ type: "warning", message });
       configSnackbar(message);
       snackbar.open();
     }
   }
+
   async function saveSession() {
-    const res = await post("auth/proxy", { user, groups });
+    const res = await post("auth/proxy", { ...data });
     if (res) {
       ($session.user = res.user) && ($session.role = res.user.group.name);
       res.groups && ($session.groups = res.groups);
@@ -85,15 +89,23 @@
   :global(.info).login-header {
     color: var(--info);
   }
+  :global(.warning).login-header {
+    color: var(--prime-unused);
+  }
+  :global(.success).login-header {
+    color: var(--flash);
+  }
 </style>
 
 <svelte:head>
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<Header h="2" mdc class="login-header m-2 lg:m-5 {$flash.type}">
-  {$flash.message || 'Anmeldung'}
-</Header>
+<div class="login-header {$flash.type}">
+  <Header h="2" mdc class="login-header m-2 lg:m-5">
+    {$flash.message || `Anmeldung ${$flash.type}`}
+  </Header>
+</div>
 <div class="flex justify-center m-8">
   <div class="">
     <div class="cols-3">
@@ -105,5 +117,7 @@
   </div>
 </div>
 
-<ListErrors {errors} />
-<ListMessages {message} />
+<div class="hidden">
+  <ListErrors {errors} />
+  <ListMessages {message} />
+</div>

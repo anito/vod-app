@@ -97,7 +97,7 @@
           on:click={() => changeTab(TABS[0])}
           variant={tab === TABS[0] ? 'unelevated' : ''}>
           <Icon class="material-icons">account_circle</Icon>
-          <Label>Profildaten</Label>
+          <Label>Benutzerdaten</Label>
         </Button>
       </Group>
       <Header mdc h="4" class="pr-6">{user.name}</Header>
