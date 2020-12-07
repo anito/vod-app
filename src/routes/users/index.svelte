@@ -18,7 +18,7 @@
 <div class="no-user">
   <div class="content">
     <Paper color="primary">
-      <Title style="color: var(--text-light)">Select User</Title>
+      <Title style="color: var(--text-light)">Wähle einen Benutzer aus</Title>
     </Paper>
   </div>
 </div>

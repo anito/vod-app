@@ -1,21 +1,3 @@
-<script context="module">
-  import * as api from "api.js";
-
-  export async function preload(page, { user }) {
-    const res = await api.get(`users/${page.params.slug}`, user && user.token);
-
-    if (res && res.success) {
-      let query = page.query;
-      return { ...res, ...query };
-    } else {
-      this.error(
-        (res.data && res.data.code) || res.status,
-        res.message || res.responseText
-      );
-    }
-  }
-</script>
-
 <script>
   import { goto, stores } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
@@ -23,6 +5,7 @@
   import Button, { Group, Label, Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Dialog, { Title, Content, Actions, InitialFocus } from "@smui/dialog";
+  import { users } from "../../stores/userStore";
 
   const TABS = ["user", "time"];
   const { page, session } = stores();
@@ -30,13 +13,21 @@
   let redirectToUserDialog;
 
   // available from preload
-  export let data;
-  export let tab = "time";
+  // export let data;
+  // export let tab = "time";
 
-  let selectionUserId;
+  let filtered;
+  $: tab = ($page.query && $page.query.tab) || "time";
+  $: selectionUserId = $page.params.slug;
 
-  $: currentUser = data;
-  $: selectionUserId = currentUser.id;
+  // $: currentUser = data;
+  $: currentUser =
+    (filtered = ((id) => $users.filter((usr) => usr.id === id))(
+      selectionUserId
+    )) &&
+    filtered.length &&
+    filtered[0];
+  // $: selectionUserId = currentUser.id;
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: magicLink =
     (currentUser &&
@@ -130,7 +121,10 @@
       <TimeManager {selectionUserId} />
     {/if}
     {#if tab === TABS[0]}
-      <UserManager {selectionUserId} selectedMode="edit" />
+      <UserManager
+        on:openRedirectToUserDialog={() => redirectToUserDialog.open()}
+        {selectionUserId}
+        selectedMode="edit" />
     {/if}
   </div>
 {:else}
