@@ -21,9 +21,13 @@
   import { UserManager, TimeManager } from "components";
   import { Header } from "@sveltejs/site-kit";
   import Button, { Group, Label, Icon } from "@smui/button";
+  import IconButton from "@smui/icon-button";
+  import Dialog, { Title, Content, Actions, InitialFocus } from "@smui/dialog";
 
   const TABS = ["user", "time"];
-  const { session } = stores();
+  const { page, session } = stores();
+
+  let redirectToUserDialog;
 
   // available from preload
   export let data;
@@ -31,13 +35,24 @@
 
   let selectionUserId;
 
-  $: user = data;
-  $: selectionUserId = user.id;
+  $: currentUser = data;
+  $: selectionUserId = currentUser.id;
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
+  $: magicLink =
+    (currentUser &&
+      currentUser.token &&
+      `http://${$page.host}/login?token=${currentUser.token.token}`) ||
+    false;
 
   async function changeTab(tab) {
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
     return false;
+  }
+
+  function dialogCloseHandler(e) {
+    console.log(e);
+    if (e.detail.action === "approved") {
+    }
   }
 </script>
 
@@ -78,7 +93,7 @@
 </style>
 
 <svelte:head>
-  <title>Physiotherapy Online | User {user.name}</title>
+  <title>Physiotherapy Online | User {currentUser.name}</title>
 </svelte:head>
 
 {#if 'Administrator' === $session.role}
@@ -100,7 +115,16 @@
           <Label>Benutzerdaten</Label>
         </Button>
       </Group>
-      <Header mdc h="4" class="pr-6">{user.name}</Header>
+      <div class="flex">
+        {#if magicLink}
+          <Button on:click={() => redirectToUserDialog.open()}>
+            <IconButton>
+              <Icon class="material-icons">launch</Icon>
+            </IconButton>
+          </Button>
+        {/if}
+        <Header mdc h="4" class="pr-6">{currentUser.name}</Header>
+      </div>
     </div>
     {#if tab === TABS[1]}
       <TimeManager {selectionUserId} />
@@ -112,3 +136,29 @@
 {:else}
   <UserManager {selectionUserId} selectedMode="edit" />
 {/if}
+<Dialog
+  bind:this={redirectToUserDialog}
+  aria-labelledby="event-title"
+  aria-describedby="event-content"
+  on:MDCDialog:closed={dialogCloseHandler}>
+  <Title id="event-title">Jetzt als {currentUser.name} anmelden?</Title>
+  <Content id="event-content">
+    Möchten Sie die Seite verlassen und auf einer neuen Seite automatisch als
+    <strong>{currentUser.name}</strong>
+    angemeldet werden? Um später hier weiter zu arbeiten, können Sie das neu
+    geöffnete Fenster wieder schliessen und zurück auf diese Seite kehren. Da
+    Sie abgemeldet wurden, müssen Sie sich erneut anmelden.
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>Abbrechen</Label>
+    </Button>
+    <Button
+      variant="outlined"
+      href={magicLink}
+      on:click={() => setTimeout(() => (location.href = 'login'), 1000)}
+      target="_blank">
+      <Label class="token-button-label">Ja, Seite verlassen</Label>
+    </Button>
+  </Actions>
+</Dialog>

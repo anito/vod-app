@@ -114,16 +114,16 @@
   <form on:submit|preventDefault={logout} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
-        <NavItem segment="videos" title="videos" let:active>
+        <NavItem segment="videos" title="Videothek" let:active>
           <Icon class="material-icons" style="vertical-align: middle;">
             video_library
           </Icon>
-          <Label>Videokurse</Label>
+          <Label>Videothek</Label>
         </NavItem>
       {/if}
 
       {#if $session.role === 'Administrator'}
-        <NavItem segment="users" title="users" let:active>
+        <NavItem segment="users" title="Administration" let:active>
           <Icon class="material-icons" style="vertical-align: middle;">
             settings
           </Icon>
