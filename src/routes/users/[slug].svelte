@@ -107,13 +107,13 @@
         </Button>
       </Group>
       <div class="flex">
-        {#if magicLink}
-          <Button on:click={() => redirectToUserDialog.open()}>
-            <IconButton>
-              <Icon class="material-icons">launch</Icon>
-            </IconButton>
-          </Button>
-        {/if}
+        <Button on:click={() => redirectToUserDialog.open()}>
+          <IconButton>
+            <Icon class="material-icons">
+              {magicLink ? 'link' : 'link_off'}
+            </Icon>
+          </IconButton>
+        </Button>
         <Header mdc h="4" class="pr-6">{currentUser.name}</Header>
       </div>
     </div>
