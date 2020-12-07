@@ -170,8 +170,8 @@
                 <Meta
                   color="#f00"
                   class="material-icons"
-                  title={user.token ? 'Token vorhanden' : 'Zugang ist gesperrt. Um den Zugang zu ermöglichen, muss erst ein Token für diesen Benutzer generiert werden.'}>
-                  {user.token ? 'info' : 'lock'}
+                  title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
+                  {user.token ? 'link' : 'link_off'}
                 </Meta>
               </Item>
             {/each}
