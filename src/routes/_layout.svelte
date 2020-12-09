@@ -59,6 +59,7 @@
         $session.role = null;
         $session.groups = null;
       }
+
       configSnackbar(message);
       snackbar.open();
     }
@@ -146,12 +147,10 @@
       {/if}
 
       {#if $session.user}
-        <NavItem title="Logout" let:active>
-          <Button variant="raised" class="button-login">
-            <span class="user-name-indicator">{$session.user.name}</span>
-            <Label style="padding-top: 20px;">Abmelden</Label>
-          </Button>
-        </NavItem>
+        <Button variant="raised" class="button-login">
+          <span class="user-name-indicator">{$session.user.name}</span>
+          <Label style="padding-top: 20px;">Abmelden</Label>
+        </Button>
       {:else}
         <NavItem title="Login" segment="login" let:active>
           <Button color="secondary" variant="raised" class="button-login">

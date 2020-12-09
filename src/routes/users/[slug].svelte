@@ -146,7 +146,7 @@
         <summary>Hinweis</summary>
         <p>
           Um später als
-          <strong>{$session.user.name}</strong>
+          <strong>{$session.user && $session.user.name}</strong>
           weiter zu arbeiten, müssen Sie sich erneut anmelden.
         </p>
       </details>
