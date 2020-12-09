@@ -107,13 +107,19 @@
         </Button>
       </Group>
       <div class="flex">
-        <Button on:click={() => redirectToUserDialog.open()}>
-          <IconButton>
-            <Icon class="material-icons">
-              {magicLink ? 'link' : 'link_off'}
-            </Icon>
-          </IconButton>
-        </Button>
+        {#if magicLink}
+          <Button on:click={() => redirectToUserDialog.open()}>
+            <IconButton>
+              <Icon class="material-icons">link</Icon>
+            </IconButton>
+          </Button>
+        {:else}
+          <Icon
+            class="material-icons"
+            style="align-self: center; margin-right: 10px;">
+            link_off
+          </Icon>
+        {/if}
         <Header mdc h="4" class="pr-6">{currentUser.name}</Header>
       </div>
     </div>
@@ -139,19 +145,23 @@
   <Content id="event-content">
     Möchten Sie die Seite verlassen und auf einer neuen Seite automatisch als
     <strong>{currentUser.name}</strong>
-    angemeldet werden? Um später hier weiter zu arbeiten, können Sie das neu
-    geöffnete Fenster wieder schliessen und zurück auf diese Seite kehren. Da
-    Sie abgemeldet wurden, müssen Sie sich erneut anmelden.
+    angemeldet werden?
+    <div class="mt-5 mb-5">
+      <details>
+        <summary>Zusätzliche Information</summary>
+        <p>
+          Um später als
+          <strong>{$session.user.name}</strong>
+          weiter zu arbeiten, müssen Sie sich erneut anmelden.
+        </p>
+      </details>
+    </div>
   </Content>
   <Actions>
     <Button action="none">
       <Label>Abbrechen</Label>
     </Button>
-    <Button
-      variant="outlined"
-      href={magicLink}
-      on:click={() => setTimeout(() => (location.href = 'login'), 1000)}
-      target="_blank">
+    <Button variant="outlined" href={magicLink} target="_self">
       <Label class="token-button-label">Ja, Seite verlassen</Label>
     </Button>
   </Actions>

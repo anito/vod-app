@@ -12,7 +12,7 @@ function createStore() {
         subscribe,
         update: (item) => update(text => {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout((empty) => set(empty), 4000, {type, status, message});
+            timeoutId = setTimeout((empty) => set(empty), 1000, {type, status, message});
             return { type, status, message, ...item };
         }),
     }

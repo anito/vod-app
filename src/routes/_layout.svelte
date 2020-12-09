@@ -15,6 +15,7 @@
   // import ListErrors from 'components';
 
   const { page, session } = stores();
+
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
   let root;
@@ -66,12 +67,21 @@
   onMount(() => {
     root = document.documentElement;
 
+    window.addEventListener("introend", handleIntroEnd);
     isMobileDevice && root.classList.add("ismobile");
-    return () => root.classList.remove("ismobile");
+
+    return () => {
+      root.classList.remove("ismobile");
+      window.removeEventListener("introend", handleIntroEnd);
+    };
   });
 
-  function configSnackbar(msg = "", link) {
+  function configSnackbar(msg, link) {
     snackbar.close();
+    configureAction(msg, link);
+  }
+
+  function configureAction(msg = "", link) {
     message = msg;
     action = path = "";
     if (typeof link === "object") {
@@ -92,6 +102,10 @@
   }
 
   function handleClosed() {}
+
+  function handleIntroEnd(e) {
+    e.detail.path && goto(e.detail.path);
+  }
 </script>
 
 <style>

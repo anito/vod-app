@@ -15,28 +15,51 @@
 </script>
 
 <script>
-  import { onMount, getContext } from "svelte";
+  import { onMount, getContext, createEventDispatcher } from "svelte";
   import { ListErrors } from "components";
   import { ListMessages } from "components";
   import { LoginForm } from "components";
   import { Header } from "@sveltejs/site-kit";
   import { flash } from "../../stores/flashStore";
   import { stores } from "@sapper/app";
+  import { fly, fade, slide } from "svelte/transition";
+  import { windowSize } from "utils";
 
   const { getSnackbar, configSnackbar } = getContext("snackbar");
 
   const { page, session } = stores();
+  const dispatch = createEventDispatcher();
+  const transitionParams = {
+    delay: 0,
+    duration: 400,
+  };
 
   let errors = null;
   let message = null;
-  let path;
+  let viewportSize;
   let snackbar;
+  let statusEl;
+  let flashEl;
+  let flashOutroEnded = false;
 
   export let data = null;
   export let success = null;
 
+  $: flyTransitionParams = { ...transitionParams, y: -80 };
+  $: statusMessage = !$session.user
+    ? "Bitte loggen Sie sich ein"
+    : `Willommen ${$session.user.name}`;
+
   onMount(() => {
+    viewportSize = windowSize();
     snackbar = getSnackbar();
+
+    window.addEventListener("resize", () => (viewportSize = windowSize()));
+
+    // start intro
+    setTimeout(() => {
+      flashOutroEnded = true;
+    }, 1000); // should be the same as defined in flashStore to avoid flashing
 
     if (success && data.user) {
       saveSession();
@@ -47,20 +70,44 @@
     }
   });
 
+  function dispatchCustomEvent(e, node) {
+    let detail = {};
+    let path;
+    let fromFlash = node == flashEl;
+    let fromStatus = node == statusEl;
+
+    switch (e.type) {
+      case "introstart":
+        break;
+      case "introend":
+        if (fromStatus && $session.user) {
+          path = redirectPath($page, $session);
+          detail = { ...detail, path };
+          window.dispatchEvent(new CustomEvent(e.type, { detail }));
+        }
+        break;
+      case "outrostart":
+        fromFlash && (flashOutroEnded = false);
+        break;
+      case "outroend":
+        fromFlash && (flashOutroEnded = true);
+        break;
+    }
+  }
+
   function handleLogin(e) {
     let res = e.detail;
 
     message = res.message || res.data.message || res.statusText;
 
     if (res.success) {
-      flash.update({ type: "success", message });
+      flash.update({ message });
       res.data.user &&
         ($session.user = res.data.user) &&
         ($session.role = res.data.user.group.name);
       res.data.groups && ($session.groups = res.data.groups);
 
-      path = redirectPath($page, $session);
-      configSnackbar(message, path);
+      configSnackbar(message);
       snackbar.open();
     } else {
       flash.update({ type: "warning", message });
@@ -95,23 +142,38 @@
   :global(.success).login-header {
     color: var(--flash);
   }
+  .flyer {
+    position: absolute;
+    top: -60px;
+  }
 </style>
 
 <svelte:head>
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<div class="login-header {$flash.type}">
-  <Header h="2" mdc class="login-header m-2 lg:m-5">
-    {$flash.message || `Anmeldung ${$flash.type}`}
-  </Header>
-</div>
-<div class="flex justify-center m-8">
-  <div class="">
-    <div class="cols-3">
-      <Header h="4" mdc class="m-2">Bitte loggen Sie sich ein</Header>
-    </div>
-    <div class="cols-3">
+<div class="flex flex-1 justify-center m-8">
+  <div class="flex flex-col justify-center">
+    <div class="relative">
+      {#if $flash.message}
+        <div
+          bind:this={flashEl}
+          class="flyer"
+          transition:fly={flyTransitionParams}
+          on:outrostart={(e) => dispatchCustomEvent(e, flashEl)}
+          on:outroend={(e) => dispatchCustomEvent(e, flashEl)}>
+          <Header h="4" mdc class="m-2">{$flash.message}</Header>
+        </div>
+      {:else if flashOutroEnded}
+        <div
+          bind:this={statusEl}
+          class="flyer"
+          in:fly={flyTransitionParams}
+          on:introend={(e) => dispatchCustomEvent(e, statusEl)}
+          style="top: -60px;">
+          <Header h="4" mdc class="m-2">{statusMessage}</Header>
+        </div>
+      {/if}
       <LoginForm on:loginResponse={handleLogin} />
     </div>
   </div>

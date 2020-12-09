@@ -124,7 +124,7 @@
 </style>
 
 <div class:segment>
-  <Layout sidebar={$session.role === 'Administrator'}>
+  <Layout sidebar>
     <slot />
     <div
       class="sidebar"
@@ -150,41 +150,39 @@
           tippe etwas um Namen schneller zu finden
         </HelperText>
       </div>
-      {#if $session.role === 'Administrator'}
-        {#if $users.length}
-          <List
-            class="users-list"
-            twoLine
-            avatarList
-            singleSelection
-            bind:selectedIndex={selectionIndex}>
-            {#each filteredUsers as user (user.id)}
-              <Item
-                on:SMUI:action={() => setUser(user.id)}
-                selected={selectionUserId == user.id}>
-                <UserGraphic width="40" height="40" {user} />
-                <Text>
-                  <PrimaryText>{user.name}</PrimaryText>
-                  <SecondaryText>{user.email}</SecondaryText>
-                </Text>
-                <Meta
-                  color="#f00"
-                  class="material-icons"
-                  title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
-                  {user.token ? 'link' : 'link_off'}
-                </Meta>
-              </Item>
-            {/each}
-          </List>
-        {:else}
-          <div class="paper-container flex justify-center">
-            <Paper color="primary">
-              <Title style="color: var(--text-light)">
-                Keine Benutzer vorhanden
-              </Title>
-            </Paper>
-          </div>
-        {/if}
+      {#if $users.length}
+        <List
+          class="users-list"
+          twoLine
+          avatarList
+          singleSelection
+          bind:selectedIndex={selectionIndex}>
+          {#each filteredUsers as user (user.id)}
+            <Item
+              on:SMUI:action={() => setUser(user.id)}
+              selected={selectionUserId == user.id}>
+              <UserGraphic width="40" height="40" {user} />
+              <Text>
+                <PrimaryText>{user.name}</PrimaryText>
+                <SecondaryText>{user.email}</SecondaryText>
+              </Text>
+              <Meta
+                color="#f00"
+                class="material-icons"
+                title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
+                {user.token ? 'link' : 'link_off'}
+              </Meta>
+            </Item>
+          {/each}
+        </List>
+      {:else}
+        <div class="paper-container flex justify-center">
+          <Paper color="primary">
+            <Title style="color: var(--text-light)">
+              Keine Benutzer vorhanden
+            </Title>
+          </Paper>
+        </div>
       {/if}
     </div>
     <div slot="ad" />
