@@ -34,10 +34,8 @@
 
 <script>
   import { stores, goto } from "@sapper/app";
-  import { onMount } from "svelte";
-  import { getMedia } from "utils";
   import Layout from "./layout.svelte";
-  import { Info, UserGraphic } from "components";
+  import { UserGraphic } from "components";
   import Paper, { Title } from "@smui/paper";
   import Fab, { Label } from "@smui/fab";
   import Textfield, { Input, Textarea } from "@smui/textfield";
@@ -56,7 +54,6 @@
   const { session } = stores();
   const TAB = "time";
 
-  let preSelectedIndex = 0;
   let selectionIndex;
   let search = "";
 
@@ -75,16 +72,6 @@
   $: filteredUsers = $users.filter(
     (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
   );
-
-  onMount(() => {
-    if (segment || !$users.length) return;
-
-    let max = $users.length - 1;
-    preSelectedIndex =
-      preSelectedIndex < 0 || preSelectedIndex > max ? 0 : preSelectedIndex;
-
-    goto(`users/${$users[preSelectedIndex].id}`);
-  });
 
   async function setUser(id) {
     selectionUserId = id;
@@ -146,9 +133,7 @@
             search
           </Icon>
         </Textfield>
-        <HelperText id="helper-text">
-          tippe etwas um Namen schneller zu finden
-        </HelperText>
+        <HelperText id="helper-text">tippe etwas um Namen zu finden</HelperText>
       </div>
       {#if $users.length}
         <List

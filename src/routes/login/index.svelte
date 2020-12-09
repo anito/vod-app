@@ -48,7 +48,7 @@
   $: flyTransitionParams = { ...transitionParams, y: -80 };
   $: statusMessage = !$session.user
     ? "Bitte loggen Sie sich ein"
-    : `Willommen ${$session.user.name}`;
+    : `Willkommen ${$session.user.name}`;
 
   onMount(() => {
     viewportSize = windowSize();

@@ -6,28 +6,22 @@
   import IconButton from "@smui/icon-button";
   import Dialog, { Title, Content, Actions, InitialFocus } from "@smui/dialog";
   import { users } from "../../stores/userStore";
+  import { onMount } from "svelte";
 
   const TABS = ["user", "time"];
   const { page, session } = stores();
 
   let redirectToUserDialog;
-
-  // available from preload
-  // export let data;
-  // export let tab = "time";
-
   let filtered;
+
   $: tab = ($page.query && $page.query.tab) || "time";
   $: selectionUserId = $page.params.slug;
-
-  // $: currentUser = data;
   $: currentUser =
     (filtered = ((id) => $users.filter((usr) => usr.id === id))(
       selectionUserId
     )) &&
     filtered.length &&
     filtered[0];
-  // $: selectionUserId = currentUser.id;
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: magicLink =
     (currentUser &&
@@ -35,13 +29,14 @@
       `http://${$page.host}/login?token=${currentUser.token.token}`) ||
     false;
 
+  onMount(() => {});
+
   async function changeTab(tab) {
     const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
     return false;
   }
 
   function dialogCloseHandler(e) {
-    console.log(e);
     if (e.detail.action === "approved") {
     }
   }
@@ -94,7 +89,7 @@
         <Button
           class="focus:outline-none focus:shadow-outline"
           on:click={() => changeTab(TABS[1])}
-          variant={tab === TABS[1] ? 'unelevated' : ''}>
+          variant={tab === TABS[1] ? 'unelevated' : 'outlined'}>
           <Icon class="material-icons">video_settings</Icon>
           <Label>Videokurse</Label>
         </Button>
@@ -110,7 +105,7 @@
         {#if magicLink}
           <Button on:click={() => redirectToUserDialog.open()}>
             <IconButton>
-              <Icon class="material-icons">link</Icon>
+              <Icon class="material-icons">swap_calls</Icon>
             </IconButton>
           </Button>
         {:else}
@@ -143,12 +138,12 @@
   on:MDCDialog:closed={dialogCloseHandler}>
   <Title id="event-title">Jetzt als {currentUser.name} anmelden?</Title>
   <Content id="event-content">
-    Möchten Sie die Seite verlassen und auf einer neuen Seite automatisch als
+    Möchten Sie die Seite verlassen und sich als
     <strong>{currentUser.name}</strong>
-    angemeldet werden?
+    anmelden?
     <div class="mt-5 mb-5">
       <details>
-        <summary>Zusätzliche Information</summary>
+        <summary>Hinweis</summary>
         <p>
           Um später als
           <strong>{$session.user.name}</strong>
