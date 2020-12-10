@@ -96,7 +96,7 @@
         <Button
           class="focus:outline-none focus:shadow-outline"
           on:click={() => changeTab(TABS[0])}
-          variant={tab === TABS[0] ? 'unelevated' : ''}>
+          variant={tab === TABS[0] ? 'unelevated' : 'outlined'}>
           <Icon class="material-icons">account_circle</Icon>
           <Label>Benutzerdaten</Label>
         </Button>
