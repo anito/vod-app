@@ -1,5 +1,5 @@
 <script>
-  import { stores, goto } from "@sapper/app";
+  import { stores } from "@sapper/app";
   import { Blurb, Hero, Section } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
 

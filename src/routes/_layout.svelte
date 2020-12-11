@@ -8,13 +8,15 @@
   import Snackbar, { Actions } from "@smui/snackbar";
   import { Label } from "@smui/common";
   import { post } from "utils";
+  import { loginGuard as frozen } from "../stores/loginGuard";
   import { flash } from "../stores/flashStore";
   import { Modal } from "@sveltejs/site-kit";
-  import { UserGraphic } from "components";
+  import { UserGraphic, LoadingModal } from "components";
+  import { Jumper } from "svelte-loading-spinners";
 
   // import ListErrors from 'components';
 
-  const { page, session } = stores();
+  const { preloading, page, session } = stores();
 
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
@@ -24,8 +26,8 @@
   let action = "";
   let path = "";
   let snackbarLifetime = 4000;
-  let snackbarActionDelay = 300;
-  let snackbarTimeoutID;
+  let redirectDelay = 300;
+  let timeoutId;
   let isMobileDevice;
 
   setContext("snackbar", {
@@ -46,10 +48,18 @@
   })(segment);
   $: isMobileDevice = isMobile().any;
   $: snackbarLifetime = action ? "8000" : "4000";
+  $: isLoginPage = $page.path.indexOf("login") === 1;
 
-  async function logout(e) {
-    goto("login");
-    let res = await post(`auth/logout`);
+  async function submit(e) {
+    let type = e.submitter.name;
+    let path = type === "logout" ? "/" : type === "login" ? "login" : null;
+    if (!path) return;
+
+    goto(path);
+
+    if (!$session.user) return;
+
+    const res = await post(`auth/logout`);
     if (res && res.success) {
       message = res.message;
       flash.update({ message });
@@ -95,17 +105,19 @@
   }
 
   function handleOpened() {
-    clearTimeout(snackbarTimeoutID);
-    snackbarTimeoutID = setTimeout(
-      () => !action && path && goto(path),
-      snackbarActionDelay
-    );
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => !action && path && goto(path), redirectDelay);
   }
 
   function handleClosed() {}
 
   function handleIntroEnd(e) {
-    e.detail.path && goto(e.detail.path);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(
+      (o) => o.path && goto(o.path),
+      redirectDelay,
+      e.detail
+    );
   }
 </script>
 
@@ -126,7 +138,7 @@
 </style>
 
 <Modal>
-  <form on:submit|preventDefault={logout} method="post">
+  <form on:submit|preventDefault={submit} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
@@ -147,16 +159,18 @@
       {/if}
 
       {#if $session.user}
-        <Button variant="raised" class="button-login">
+        <Button variant="raised" class="button-login" name="logout">
           <span class="user-name-indicator">{$session.user.name}</span>
-          <Label style="padding-top: 20px;">Abmelden</Label>
+          <Label style="padding-top: 20px;">Logout</Label>
         </Button>
-      {:else}
-        <NavItem title="Login" segment="login" let:active>
-          <Button color="secondary" variant="raised" class="button-login">
-            <Label>Anmelden</Label>
-          </Button>
-        </NavItem>
+      {:else if !isLoginPage}
+        <Button
+          color="secondary"
+          variant="raised"
+          name="login"
+          class="button-login {$frozen}">
+          <Label>Login</Label>
+        </Button>
       {/if}
 
       {#if $session.user}
@@ -171,9 +185,11 @@
       {/if}
     </Nav>
   </form>
-
   <slot />
 </Modal>
+<LoadingModal backgroundColor="#ffffff" opacity=".45">
+  <Jumper size="60" color="var(--flash)" unit="px" />
+</LoadingModal>
 
 <Snackbar
   snackbarLifetimeMs={snackbarLifetime}

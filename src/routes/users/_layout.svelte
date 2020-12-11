@@ -73,20 +73,6 @@
     (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
   );
 
-  async function setUser(id) {
-    selectionUserId = id;
-    await goto(`users/${selectionUserId}?tab=${tab}`);
-  }
-
-  // deselect
-  async function clickHandler(e) {
-    if (e.target.isSameNode(e.currentTarget)) {
-      // let's redirect to sync view in case user gets deselected
-      await goto("users");
-    }
-    return false;
-  }
-
   async function addUser() {
     await goto("users/add");
   }
@@ -113,11 +99,7 @@
 <div class:segment>
   <Layout sidebar>
     <slot />
-    <div
-      class="sidebar"
-      slot="side"
-      style="flex: 1;"
-      on:click|stopPropagation|preventDefault={clickHandler}>
+    <div class="sidebar" slot="side" style="flex: 1;">
       <div class="flex flex-col p-2">
         <Textfield
           variant="filled"
@@ -143,21 +125,21 @@
           singleSelection
           bind:selectedIndex={selectionIndex}>
           {#each filteredUsers as user (user.id)}
-            <Item
-              on:SMUI:action={() => setUser(user.id)}
-              selected={selectionUserId == user.id}>
-              <UserGraphic width="40" height="40" {user} />
-              <Text>
-                <PrimaryText>{user.name}</PrimaryText>
-                <SecondaryText>{user.email}</SecondaryText>
-              </Text>
-              <Meta
-                color="#f00"
-                class="material-icons"
-                title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
-                {user.token ? 'link' : 'link_off'}
-              </Meta>
-            </Item>
+            <a rel="prefetch" href="users/{user.id}?tab={tab}">
+              <Item selected={selectionUserId == user.id}>
+                <UserGraphic width="40" height="40" {user} border />
+                <Text>
+                  <PrimaryText>{user.name}</PrimaryText>
+                  <SecondaryText>{user.email}</SecondaryText>
+                </Text>
+                <Meta
+                  color="#f00"
+                  class="material-icons"
+                  title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
+                  {user.token ? 'link' : 'link_off'}
+                </Meta>
+              </Item>
+            </a>
           {/each}
         </List>
       {:else}
@@ -177,7 +159,7 @@
     <div class="fab-add-user">
       <Fab class="floating-fab" color="primary" on:click={addUser} extended>
         <Label>Neuer Klient</Label>
-        <Icon class="material-icons">add</Icon>
+        <Icon class="material-icons">person_add</Icon>
       </Fab>
     </div>
   {/if}

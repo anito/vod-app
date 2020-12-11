@@ -15,6 +15,7 @@ function createStore() {
             timeoutId = setTimeout((empty) => set(empty), 1000, {type, status, message});
             return { type, status, message, ...item };
         }),
+        set,
     }
 
 }

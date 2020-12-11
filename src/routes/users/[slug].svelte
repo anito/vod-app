@@ -29,13 +29,6 @@
       `http://${$page.host}/login?token=${currentUser.token.token}`) ||
     false;
 
-  onMount(() => {});
-
-  async function changeTab(tab) {
-    const wait = await goto(`users/${selectionUserId}?tab=${tab}`);
-    return false;
-  }
-
   function dialogCloseHandler(e) {
     if (e.detail.action === "approved") {
     }
@@ -88,14 +81,16 @@
       <Group variant="unelevated">
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[1])}
+          rel="prefetch"
+          href="users/{selectionUserId}?tab=time"
           variant={tab === TABS[1] ? 'unelevated' : 'outlined'}>
           <Icon class="material-icons">video_settings</Icon>
           <Label>Videokurse</Label>
         </Button>
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(TABS[0])}
+          rel="prefetch"
+          href="users/{selectionUserId}?tab=user"
           variant={tab === TABS[0] ? 'unelevated' : 'outlined'}>
           <Icon class="material-icons">account_circle</Icon>
           <Label>Benutzerdaten</Label>
