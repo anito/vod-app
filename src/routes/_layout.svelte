@@ -158,25 +158,27 @@
         </NavItem>
       {/if}
 
-      {#if $session.user}
-        <Button variant="raised" class="button-login" name="logout">
-          <span class="user-name-indicator">{$session.user.name}</span>
-          <Label style="padding-top: 20px;">Logout</Label>
-        </Button>
-      {:else if !isLoginPage}
-        <Button
-          color="secondary"
-          variant="raised"
-          name="login"
-          class="button-login {$frozen}">
-          <Label>Login</Label>
-        </Button>
-      {/if}
+      <li>
+        {#if $session.user}
+          <Button variant="raised" class="button-login" name="logout">
+            <span class="user-name-indicator">{$session.user.name}</span>
+            <Label style="padding-top: 20px;">Logout</Label>
+          </Button>
+        {:else if !isLoginPage}
+          <Button
+            color="secondary"
+            variant="raised"
+            name="login"
+            class="button-login {$frozen}">
+            <Label>Login</Label>
+          </Button>
+        {/if}
+      </li>
 
       {#if $session.user}
         <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
           <UserGraphic
-            border
+            border="0px 0px 0px 3px var(--prime)"
             dense
             width="40"
             height="40"
