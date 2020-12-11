@@ -16,7 +16,7 @@
 
   // import ListErrors from 'components';
 
-  const { preloading, page, session } = stores();
+  const { page, session } = stores();
 
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
@@ -48,15 +48,9 @@
   })(segment);
   $: isMobileDevice = isMobile().any;
   $: snackbarLifetime = action ? "8000" : "4000";
-  $: isLoginPage = $page.path.indexOf("login") === 1;
 
   async function submit(e) {
-    let type = e.submitter.name;
-    let path = type === "logout" ? "/" : type === "login" ? "login" : null;
-    if (!path) return;
-
-    goto(path);
-
+    goto("/");
     if (!$session.user) return;
 
     const res = await post(`auth/logout`);
@@ -132,22 +126,22 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  :global(.is-login-page) li > :global(button) {
+  :global(.is-login-page) form.main-menu :global(button) {
     transform: translateY(-60px);
     transition: all 0.4s ease-out;
   }
-  li > :global(button) {
+  form.main-menu :global(button) {
     transform: translateY(0px);
     transition: all 0.4s ease-in;
   }
-  li > :global(button) {
+  form.main-menu :global(button) {
     height: 74px;
     width: 130px;
   }
 </style>
 
 <Modal>
-  <form on:submit|preventDefault={submit} method="post">
+  <form class="main-menu" on:submit|preventDefault={submit} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
@@ -167,30 +161,23 @@
         </NavItem>
       {/if}
 
-      <li>
-        {#if $session.user}
-          <Button
-            variant="raised"
-            class="button-login"
-            name="logout"
-            type="submit">
+      {#if $session.user}
+        <NavItem segment="login" let:active>
+          <Button variant="raised" class="button-logout">
             <span class="button-first-line">Logout</span>
             <Label style="padding-top: 20px; font-size: 0.7rem">
               Hallo,
               {$session.user.name}
             </Label>
           </Button>
-        {:else}
-          <Button
-            color="secondary"
-            variant="raised"
-            name="login"
-            type="submit"
-            class="button-login {$frozen}">
+        </NavItem>
+      {:else}
+        <NavItem segment="login" let:active>
+          <Button color="secondary" variant="raised" class="button-login">
             <Label>Zum Login</Label>
           </Button>
-        {/if}
-      </li>
+        </NavItem>
+      {/if}
 
       {#if $session.user}
         <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
