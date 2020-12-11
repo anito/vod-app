@@ -122,7 +122,7 @@
 </script>
 
 <style>
-  .user-name-indicator {
+  .button-first-line {
     position: absolute;
     font-size: 0.46rem;
     top: 20px;
@@ -132,8 +132,17 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  :global(.button-login) {
+  :global(.is-login-page) li > :global(button) {
+    transform: translateY(-60px);
+    transition: all 0.4s ease-out;
+  }
+  li > :global(button) {
+    transform: translateY(0px);
+    transition: all 0.4s ease-in;
+  }
+  li > :global(button) {
     height: 74px;
+    width: 130px;
   }
 </style>
 
@@ -160,17 +169,25 @@
 
       <li>
         {#if $session.user}
-          <Button variant="raised" class="button-login" name="logout">
-            <span class="user-name-indicator">{$session.user.name}</span>
-            <Label style="padding-top: 20px;">Logout</Label>
+          <Button
+            variant="raised"
+            class="button-login"
+            name="logout"
+            type="submit">
+            <span class="button-first-line">Logout</span>
+            <Label style="padding-top: 20px; font-size: 0.7rem">
+              Hallo,
+              {$session.user.name}
+            </Label>
           </Button>
-        {:else if !isLoginPage}
+        {:else}
           <Button
             color="secondary"
             variant="raised"
             name="login"
+            type="submit"
             class="button-login {$frozen}">
-            <Label>Login</Label>
+            <Label>Zum Login</Label>
           </Button>
         {/if}
       </li>
@@ -183,6 +200,14 @@
             width="40"
             height="40"
             user={$session.user} />
+        </NavItem>
+      {:else}
+        <NavItem title="Avatar">
+          <UserGraphic
+            border="0px 0px 0px 3px var(--prime)"
+            dense
+            width="40"
+            height="40" />
         </NavItem>
       {/if}
     </Nav>
