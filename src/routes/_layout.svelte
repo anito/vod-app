@@ -50,7 +50,6 @@
   $: snackbarLifetime = action ? "8000" : "4000";
 
   async function submit(e) {
-    goto("/");
     if (!$session.user) return;
 
     const res = await post(`auth/logout`);
@@ -63,7 +62,7 @@
         $session.role = null;
         $session.groups = null;
       }
-
+      goto("/");
       configSnackbar(message);
       snackbar.open();
     }
@@ -141,7 +140,7 @@
 </style>
 
 <Modal>
-  <form class="main-menu" on:submit|preventDefault={submit} method="post">
+  <form class="main-menu" on:click={submit} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
