@@ -111,6 +111,11 @@
 </script>
 
 <style>
+  .flyer {
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+  }
   :global(.error).login-header {
     color: var(--error);
   }
@@ -131,47 +136,45 @@
 
 <div class="flex flex-1 justify-center m-8">
   <div class="flex flex-col justify-center">
-    <div class="relative">
-      <Paper elevation="20">
-        <div>
-          {#if $flash.message}
-            <div
-              bind:this={flashEl}
-              class="flex justify-center"
-              transition:fly={flyTransitionParams}
-              on:outrostart={(e) => (flashOutroEnded = false)}
-              on:outroend={(e) => (flashOutroEnded = true)}>
-              <Header
-                h="5"
-                mdc
-                class="m-2 {$flash.type || statusMessage.type}"
-                style="max-width: 400px;">
-                {$flash.message}
-              </Header>
-            </div>
-          {:else if flashOutroEnded}
-            <div
-              bind:this={statusEl}
-              class="flyer flex justify-center"
-              in:fly={flyTransitionParams}
-              on:introend={(e) => dispatchCustomEvent(e, statusEl)}>
-              <Header
-                h="5"
-                mdc
-                class="m-2 {flash.type || statusMessage.type}"
-                style="max-width: 400px;">
-                {statusMessage.text}
-              </Header>
-            </div>
-          {/if}
-          <Paper elevation="0">
-            <Content>
-              <LoginForm />
-            </Content>
-          </Paper>
-        </div>
+    <Paper elevation="20">
+      <div class="flyer">
+        {#if $flash.message}
+          <div
+            bind:this={flashEl}
+            class="flex justify-center"
+            transition:fly={flyTransitionParams}
+            on:outrostart={(e) => (flashOutroEnded = false)}
+            on:outroend={(e) => (flashOutroEnded = true)}>
+            <Header
+              h="5"
+              mdc
+              class="m-2 {$flash.type || statusMessage.type}"
+              style="max-width: 400px;">
+              {$flash.message}
+            </Header>
+          </div>
+        {:else if flashOutroEnded}
+          <div
+            bind:this={statusEl}
+            class="flex justify-center"
+            in:fly={flyTransitionParams}
+            on:introend={(e) => dispatchCustomEvent(e, statusEl)}>
+            <Header
+              h="5"
+              mdc
+              class="m-2 {flash.type || statusMessage.type}"
+              style="max-width: 400px;">
+              {statusMessage.text}
+            </Header>
+          </div>
+        {/if}
+      </div>
+      <Paper elevation="0">
+        <Content>
+          <LoginForm />
+        </Content>
       </Paper>
-    </div>
+    </Paper>
   </div>
 </div>
 

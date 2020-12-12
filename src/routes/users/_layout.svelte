@@ -132,6 +132,14 @@
                   <PrimaryText>{user.name}</PrimaryText>
                   <SecondaryText>{user.email}</SecondaryText>
                 </Text>
+                {#if user.protected}
+                  <Meta
+                    color="#f00"
+                    class="material-icons"
+                    title="User is readonly">
+                    lock
+                  </Meta>
+                {/if}
                 <Meta
                   color="#f00"
                   class="material-icons"
