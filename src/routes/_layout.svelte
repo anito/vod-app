@@ -50,21 +50,21 @@
   $: snackbarLifetime = action ? "8000" : "4000";
 
   async function submit(e) {
-    if (!$session.user) return;
-
-    const res = await post(`auth/logout`);
-    if (res && res.success) {
-      message = res.message;
-      flash.update({ message });
-
-      if (res) {
-        $session.user = null;
-        $session.role = null;
-        $session.groups = null;
-      }
+    if ($session.user) {
       goto("/");
-      configSnackbar(message);
-      snackbar.open();
+      const res = await post(`auth/logout`);
+      if (res && res.success) {
+        message = res.message;
+        flash.update({ message });
+
+        if (res) {
+          $session.user = null;
+          $session.role = null;
+          $session.groups = null;
+        }
+        configSnackbar(message);
+        snackbar.open();
+      }
     }
   }
 
@@ -125,22 +125,30 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  :global(.is-login-page) form.main-menu :global(button) {
+  :global(.is-login-page) .main-menu :global(button) {
     transform: translateY(-60px);
     transition: all 0.4s ease-out;
   }
-  form.main-menu :global(button) {
+  .main-menu :global(button) {
     transform: translateY(0px);
     transition: all 0.4s ease-in;
   }
-  form.main-menu :global(button) {
+  .main-menu :global(button) {
     height: 74px;
     width: 130px;
+  }
+  .main-menu :global(button .no-break) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 
 <Modal>
-  <form class="main-menu" on:click={submit} method="post">
+  <form
+    class="main-menu"
+    on:submit|stopPropagation|preventDefault={submit}
+    method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
@@ -161,11 +169,13 @@
       {/if}
 
       {#if $session.user}
-        <NavItem segment="login" let:active>
+        <NavItem let:active>
           <Button variant="raised" class="button-logout">
             <span class="button-first-line">Logout</span>
-            <Label style="padding-top: 20px; font-size: 0.7rem">
-              Hallo,
+            <Label
+              class="no-break"
+              style="padding-top: 20px; font-size: 0.7rem">
+              Hallo,<br />
               {$session.user.name}
             </Label>
           </Button>
