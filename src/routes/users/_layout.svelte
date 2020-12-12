@@ -9,6 +9,7 @@
     const resUsers = await api.get("users", user && user.token);
 
     if (resUsers.success) {
+      users.update(resUsers.data);
       usersData = resUsers.data;
     } else {
       this.error(
@@ -20,6 +21,7 @@
     const resVideo = await api.get("videos", user && user.token);
 
     if (resVideo.success) {
+      videos.update(resVideo.data);
       videoData = resVideo.data;
     } else {
       this.error(
