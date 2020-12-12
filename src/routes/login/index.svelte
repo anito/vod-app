@@ -15,7 +15,7 @@
 </script>
 
 <script>
-  import { onMount, getContext, createEventDispatcher } from "svelte";
+  import { onMount, getContext } from "svelte";
   import { stores } from "@sapper/app";
   import { ListMessages, ListErrors, LoginForm } from "components";
   import { Header } from "@sveltejs/site-kit";
@@ -27,7 +27,6 @@
   const { getSnackbar, configSnackbar } = getContext("snackbar");
 
   const { page, session } = stores();
-  const dispatch = createEventDispatcher();
   const transitionParams = {
     delay: 0,
     duration: 200,
@@ -67,6 +66,7 @@
       flashOutroEnded = true;
     }, 1000); // should be the same as defined in flashStore to avoid clashing
 
+    // someone has tryied to log in via token
     if (success && data.user) {
       saveSession();
     } else if (success === false) {
@@ -103,9 +103,8 @@
       ($session.user = res.user) && ($session.role = res.user.group.name);
       res.groups && ($session.groups = res.groups);
 
-      let path = redirectPath($page, $session);
-      configSnackbar(`Herzlich Willkommen ${res.user.name}`, path);
-      snackbar.open();
+      configSnackbar(`Herzlich Willkommen ${res.user.name}`);
+      // snackbar.open();
     }
   }
 </script>
