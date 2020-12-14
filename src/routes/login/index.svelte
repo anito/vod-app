@@ -34,7 +34,7 @@
 
   let errors = null;
   let viewportSize;
-  let message;
+  let message = "";
   let snackbar;
   let statusEl;
   let flashEl;
@@ -60,20 +60,22 @@
     snackbar = getSnackbar();
 
     // init intro
-    setTimeout(() => {
-      flash.update({ message: "Bitte loggen Sie sich ein", keep: true });
-    }, 1000); // should be the same as defined in flashStore to avoid clashing
 
     // someone has tryied to log in via token
     if (success && data.user) {
+      flash.update({ type: "success", ...data });
       saveSession();
     } else if (success === false) {
       // wait until snackbar is ready
       setTimeout(() => {
-        flash.update({ type: "warning", ...data });
+        flash.update({ type: "warning", ...data, keep: true });
         configSnackbar(data.message);
         snackbar.open();
       }, 10);
+    } else {
+      setTimeout(() => {
+        flash.update({ message: "Bitte loggen Sie sich ein", keep: true });
+      }, 1000); // should be the same as defined in flashStore to avoid clashing
     }
     return () => {
       window.removeEventListener("resize", setViewportSize);
