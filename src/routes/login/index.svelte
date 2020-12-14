@@ -33,8 +33,8 @@
   };
 
   let errors = null;
-  let message = null;
   let viewportSize;
+  let message;
   let snackbar;
   let statusEl;
   let flashEl;
@@ -46,9 +46,7 @@
 
   $: flyTransitionParams = { ...transitionParams, x: -80 };
   $: statusMessage = {
-    text: !$session.user
-      ? "Bitte loggen Sie sich ein"
-      : `Willkommen ${$session.user.name}`,
+    text: ($session.user && `Willkommen ${$session.user.name}`) || "",
     type: "success",
   };
 
@@ -61,9 +59,9 @@
 
     snackbar = getSnackbar();
 
-    // start intro
+    // init intro
     setTimeout(() => {
-      flashOutroEnded = true;
+      flash.update({ message: "Bitte loggen Sie sich ein", keep: true });
     }, 1000); // should be the same as defined in flashStore to avoid clashing
 
     // someone has tryied to log in via token
@@ -71,10 +69,9 @@
       saveSession();
     } else if (success === false) {
       // wait until snackbar is ready
-      let detail = { data, success };
       setTimeout(() => {
-        flash.update({ type: "warning", message });
-        configSnackbar(message);
+        flash.update({ type: "warning", ...data });
+        configSnackbar(data.message);
         snackbar.open();
       }, 10);
     }
@@ -104,7 +101,7 @@
       res.groups && ($session.groups = res.groups);
 
       configSnackbar(`Herzlich Willkommen ${res.user.name}`);
-      // snackbar.open();
+      snackbar.open();
     }
   }
 </script>
@@ -157,7 +154,7 @@
             bind:this={statusEl}
             class="flex justify-center"
             in:fly={flyTransitionParams}
-            on:introend={(e) => dispatchCustomEvent(e, statusEl)}>
+            on:introend={(e) => dispatchCustomEvent(e)}>
             <Header
               h="5"
               mdc
