@@ -5,17 +5,16 @@ function createStore() {
     const type = 'success';
     const status = '';
     const message = '';
-    const keep = false;
     const delayed = 1000;
-    const { subscribe, update, set } = writable({ type, status, message, delayed, keep }, () => { })
-    let timeoutId, timeoutId_2;
+    const { subscribe, update, set } = writable({ type, status, message }, () => { })
+    let timeoutId;
     
     return {
         subscribe,
         update: (item) => update(_ => {
+            clearTimeout(timeoutId);
             if (!item.keep) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout((_) => set(_), item.delayed || delayed, { type, status, message, delayed, keep });
+                timeoutId = setTimeout((_) => set(_), item.delayed || delayed, { message });
             }
             return { type, status, message, ...item };
         }),
