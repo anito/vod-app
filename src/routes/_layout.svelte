@@ -154,6 +154,10 @@
     on:submit|stopPropagation|preventDefault={submit}
     method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
+      <NavItem segment="privacy-policy" title="Privacy Policy" let:active>
+        <Label>Privacy Policy</Label>
+      </NavItem>
+
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
           <Icon class="material-icons" style="vertical-align: middle;">
