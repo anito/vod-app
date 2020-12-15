@@ -29,6 +29,8 @@
   let redirectDelay = 300;
   let timeoutId;
   let isMobileDevice;
+  let logoutLabelTextDefault = "Zum Login";
+  let logoutLabelText = logoutLabelTextDefault;
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
@@ -48,20 +50,22 @@
   })(segment);
   $: isMobileDevice = isMobile().any;
   $: snackbarLifetime = action ? "8000" : "4000";
+  $: $session.user && (logoutLabelText = `Hallo,<br />${$session.user.name}`);
 
   async function submit(e) {
     if ($session.user) {
-      goto("/");
+      logoutLabelText = "Moment...";
       const res = await post(`auth/logout`);
       if (res && res.success) {
         message = res.message;
-        flash.update({ message });
-
-        if (res) {
+        setTimeout(() => {
+          goto("/");
           $session.user = null;
           $session.role = null;
           $session.groups = null;
-        }
+          logoutLabelText = logoutLabelTextDefault;
+          flash.update({ message });
+        }, 1000);
         configSnackbar(message);
         snackbar.open();
       }
@@ -175,8 +179,7 @@
             <Label
               class="no-break"
               style="padding-top: 20px; font-size: 0.7rem">
-              Hallo,<br />
-              {$session.user.name}
+              {@html logoutLabelText}
             </Label>
           </Button>
         </NavItem>

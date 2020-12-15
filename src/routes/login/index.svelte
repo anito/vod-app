@@ -46,7 +46,9 @@
 
   $: flyTransitionParams = { ...transitionParams, x: -80 };
   $: statusMessage = {
-    text: ($session.user && `Willkommen ${$session.user.name}`) || "",
+    text:
+      ($session.user && `Willkommen ${$session.user.name}`) ||
+      "Bitte loggen Sie sich ein",
     type: "success",
   };
 
@@ -61,21 +63,22 @@
 
     // init intro
 
-    // someone has tryied to log in via token
+    // token login success
     if (success && data.user) {
       flash.update({ type: "success", ...data });
       saveSession();
     } else if (success === false) {
+      // token login failed
       // wait until snackbar is ready
       setTimeout(() => {
-        flash.update({ type: "warning", ...data, keep: true });
+        flash.update({ type: "warning", ...data, delayed: 4000 });
         configSnackbar(data.message);
         snackbar.open();
       }, 10);
     } else {
       setTimeout(() => {
-        flash.update({ message: "Bitte loggen Sie sich ein", keep: true });
-      }, 1000); // should be the same as defined in flashStore to avoid clashing
+        flash.update({ message: statusMessage.text, keep: true });
+      }, 500); // should be the same as defined in flashStore to avoid clashing
     }
     return () => {
       window.removeEventListener("resize", setViewportSize);
@@ -92,7 +95,10 @@
       let detail = {
         path: redirectPath($page, $session),
       };
-      window.dispatchEvent(new CustomEvent(e.type, { detail }));
+      setTimeout(
+        () => window.dispatchEvent(new CustomEvent(e.type, { detail })),
+        500
+      );
     }
   }
 
@@ -114,17 +120,17 @@
     overflow: hidden;
     position: relative;
   }
-  :global(.error).login-header {
+  :global(.error).message {
     color: var(--error);
   }
-  :global(.info).login-header {
+  :global(.info).message {
     color: var(--info);
   }
-  :global(.warning).login-header {
-    color: var(--prime-unused);
+  :global(.warning).message {
+    color: var(--warning);
   }
-  :global(.success).login-header {
-    color: var(--flash);
+  :global(.success).message {
+    color: var(--success);
   }
 </style>
 
@@ -139,29 +145,21 @@
         {#if $flash.message}
           <div
             bind:this={flashEl}
-            class="flex justify-center"
+            class="flex justify-center message {$flash.type}"
             transition:fly={flyTransitionParams}
             on:outrostart={(e) => (flashOutroEnded = false)}
             on:outroend={(e) => (flashOutroEnded = true)}>
-            <Header
-              h="5"
-              mdc
-              class="m-2 {$flash.type || statusMessage.type}"
-              style="max-width: 400px;">
+            <Header h="5" mdc class="m-2" style="max-width: 400px;">
               {$flash.message}
             </Header>
           </div>
         {:else if flashOutroEnded}
           <div
             bind:this={statusEl}
-            class="flex justify-center"
+            class="flex justify-center message {statusMessage.type}"
             in:fly={flyTransitionParams}
             on:introend={(e) => dispatchCustomEvent(e)}>
-            <Header
-              h="5"
-              mdc
-              class="m-2 {flash.type || statusMessage.type}"
-              style="max-width: 400px;">
+            <Header h="5" mdc class="m-2" style="max-width: 400px;">
               {statusMessage.text}
             </Header>
           </div>
