@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { goto, stores } from "@sapper/app";
   import { flash } from "../stores/flashStore";
-  import { createRedirectSlug } from "utils";
+  import { post, createRedirectSlug } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
 
   const dev = process.env.NODE_ENV === "development";
@@ -11,28 +11,35 @@
   export let status;
   export let error;
 
-  onMount(() => {
-    flash.update({
-      type: "error",
-      message: error.message || error,
-      status: status,
-    });
-    if (400 <= status && status < 500) {
-      // gotoLogin(status);
-    }
-  });
-  $: status === 401 && (error.message = "Not Authorized");
+  $: status === 401 && (error.message = "Unauthorized");
   $: status === 403 && (error.message = "Forbidden");
   $: status === 404 && (error.message = "Not found");
 
-  async function gotoLogin(status) {
-    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
-    const res = goto(`login${redirectSlug}`);
-    if (res) {
-      $session.user = null;
-      $session.role = null;
-      $session.groups = null;
+  onMount(async () => {
+    flash.update({
+      type: "error",
+      message: error.message || error,
+      status,
+    });
+    if (error.message && error.message.toLowerCase() === "expired token") {
+      status = 401;
     }
+    if ($session.user && 401 === status) {
+      const res = await post(`auth/logout`);
+      if (res.success) {
+        $session.user = null;
+        $session.role = null;
+        $session.groups = null;
+        gotoLogin();
+      }
+    } else {
+      gotoLogin();
+    }
+  });
+
+  async function gotoLogin() {
+    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
+    goto(`login${redirectSlug}`);
   }
 </script>
 

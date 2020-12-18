@@ -37,21 +37,13 @@
 <script>
   import { stores, goto } from "@sapper/app";
   import Layout from "./layout.svelte";
-  import { UserGraphic } from "components";
+  import { SimpleUserCard } from "components";
   import Paper, { Title } from "@smui/paper";
   import Fab, { Label } from "@smui/fab";
   import Textfield, { Input, Textarea } from "@smui/textfield";
-  import Icon from "@smui/textfield/icon/index";
-  import HelperText from "@smui/textfield/helper-text/index";
-  import List, {
-    Item,
-    Meta,
-    Separator,
-    Subheader,
-    Text,
-    PrimaryText,
-    SecondaryText,
-  } from "@smui/list";
+  import Icon from "@smui/textfield/icon";
+  import HelperText from "@smui/textfield/helper-text";
+  import List from "@smui/list";
 
   const { session } = stores();
   const TAB = "time";
@@ -128,27 +120,7 @@
           bind:selectedIndex={selectionIndex}>
           {#each filteredUsers as user (user.id)}
             <a rel="prefetch" href="users/{user.id}?tab={tab}">
-              <Item selected={selectionUserId == user.id}>
-                <UserGraphic width="40" height="40" {user} border />
-                <Text>
-                  <PrimaryText>{user.name}</PrimaryText>
-                  <SecondaryText>{user.email}</SecondaryText>
-                </Text>
-                {#if user.protected}
-                  <Meta
-                    color="#f00"
-                    class="material-icons"
-                    title="User is readonly">
-                    lock
-                  </Meta>
-                {/if}
-                <Meta
-                  color="#f00"
-                  class="material-icons"
-                  title={user.token ? 'Token vorhanden' : 'Zugang gesperrt. Es existiert kein Token für diesen Benutzer.'}>
-                  {user.token ? 'link' : 'link_off'}
-                </Meta>
-              </Item>
+              <SimpleUserCard class="flex" {selectionUserId} {user} />
             </a>
           {/each}
         </List>

@@ -1,8 +1,10 @@
 <script context="module">
   import * as api from "api";
 
+  const TABS = ["videos", "images"];
+
   export async function preload(page, { role, user }) {
-    let tabs = ["videos", "images"];
+    let tabs = TABS;
     let data;
     let query = page.query;
     let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
@@ -26,10 +28,9 @@
   import { Header } from "@sveltejs/site-kit";
   import { videos } from "../../stores/videoStore";
   import { images } from "../../stores/imageStore";
-  import Error from "../_error.svelte";
 
   // available from preload
-  export let tabs;
+  export let tabs = TABS;
   export let data = [];
   export let tab = "videos";
 

@@ -1,18 +1,19 @@
 <script>
-  import { goto, stores } from "@sapper/app";
+  import { stores } from "@sapper/app";
   import { UserManager, TimeManager } from "components";
   import { Header } from "@sveltejs/site-kit";
   import Button, { Group, Label, Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Dialog, { Title, Content, Actions, InitialFocus } from "@smui/dialog";
   import { users } from "../../stores/userStore";
-  import { onMount } from "svelte";
 
   const TABS = ["user", "time"];
   const { page, session } = stores();
 
   let redirectToUserDialog;
   let filtered;
+  let expires;
+  let hasExpired;
 
   $: tab = ($page.query && $page.query.tab) || "time";
   $: selectionUserId = $page.params.slug;
@@ -28,6 +29,10 @@
       currentUser.token &&
       `http://${$page.host}/login?token=${currentUser.token.token}`) ||
     false;
+  $: ((user) => {
+    expires = user.expires;
+    hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
+  })(currentUser);
 
   function dialogCloseHandler(e) {
     if (e.detail.action === "approved") {
@@ -100,7 +105,9 @@
         {#if magicLink}
           <Button on:click={() => redirectToUserDialog.open()}>
             <IconButton>
-              <Icon class="material-icons">swap_calls</Icon>
+              <Icon class="material-icons">
+                {(hasExpired && 'link_off') || 'link'}
+              </Icon>
             </IconButton>
           </Button>
         {:else}
