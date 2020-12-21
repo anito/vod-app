@@ -40,7 +40,7 @@
   async function put(item) {
     const res = await api.put(`videos/${item.id}`, item, user && user.token);
     if (res && res.success) {
-      let message = "Video aktualisiert" || res.message || res.data.message;
+      let message = res.message || res.data.message;
       snackbar.isOpen && snackbar.close();
       configSnackbar(message);
       snackbar.open();
@@ -58,7 +58,7 @@
   async function del(item) {
     const res = await api.del(`videos/${item.id}`, user && user.token);
     if (res && res.success) {
-      let message = "Video gelöscht" || res.message || res.data.message;
+      let message = res.message || res.data.message;
       snackbar.isOpen && snackbar.close();
       configSnackbar(message);
       snackbar.open();
