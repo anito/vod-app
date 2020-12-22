@@ -26,7 +26,6 @@
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import { Info, ImageCard, MediaUploader } from "components";
   import { Header } from "@sveltejs/site-kit";
-  import { currentImage } from "../../stores/currentImageStore";
   import { images } from "../../stores/imageStore";
   import { currentVideo } from "../../stores/currentVideoStore";
 
@@ -56,10 +55,6 @@
       }
     );
   };
-
-  function setCurrentImage(e) {
-    currentImage.set(e.detail);
-  }
 </script>
 
 <style>
@@ -76,10 +71,7 @@
       <div class="flex flex-wrap flex-row justify-center lg:justify-start">
         {#each $images as image (image.id)}
           <div class="flex m-1">
-            <ImageCard
-              on:Image:lastSelected={setCurrentImage}
-              {image}
-              user={$session.user} />
+            <ImageCard {image} user={$session.user} />
           </div>
         {/each}
       </div>
