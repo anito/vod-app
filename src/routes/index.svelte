@@ -1,6 +1,6 @@
 <script>
   import { stores } from "@sapper/app";
-  import { Blurb, Hero, Section } from "@sveltejs/site-kit";
+  import { Blurb, Hero } from "@sveltejs/site-kit";
   import Layout from "./layout.svelte";
 
   let { session } = stores();
