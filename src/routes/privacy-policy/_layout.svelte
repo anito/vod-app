@@ -4,7 +4,7 @@
 </script>
 
 <div class:segment>
-    <Layout sidebar>
+    <Layout>
         <slot />
         <slot name="add" />
         <slot name="footer" />
