@@ -3,7 +3,7 @@
   "description": "Physiotherapie Dippoldiswalde",
   "version": "1.0.1",
   "scripts": {
-    "dev": "run-p start:dev watch:tailwind",
+    "dev": "run-p start:dev",
     "start": "node __sapper__/build",
     "start:dev": "sapper dev",
     "build": "npm run build:tailwind && sapper build --legacy",
@@ -16,9 +16,8 @@
     "test": "run-p --race dev cy:run",
     "svelte-kit": "npm uninstall @sveltejs/site-kit && npm install anito/site-kit --save-dev",
     "setup": "npm run setup:install && npm run setup:build",
-    "setup:install": "pnpm install --filter @vime/core",
-    "setup:build": "pnpm run build --filter @vime/core",
-    "node-sass": "npm i node-sass"
+    "setup:install": "pnpm install",
+    "setup:build": "pnpm run build "
   },
   "dependencies": {
     "body-parser": "^1.19.0",
