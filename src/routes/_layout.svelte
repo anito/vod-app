@@ -54,7 +54,7 @@
 
   async function submit(e) {
     if ($session.user) {
-      logoutLabelText = "Moment...";
+      logoutLabelText = "Einen Moment...";
       const res = await post(`auth/logout`);
       if (res && res.success) {
         message = res.message;
