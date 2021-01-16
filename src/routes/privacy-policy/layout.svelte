@@ -9,12 +9,6 @@
   let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
 
-<style>
-  :global(.light-grey-background) {
-    background: var(--back-grid-item) !important;
-  }
-</style>
-
 <LayoutGrid {segment} {stretch}>
   <GridItem name="content" let:inner>
     <div class={inner}>
@@ -23,12 +17,18 @@
   </GridItem>
   <GridItem vcenter name="footer" let:inner>
     <div class={inner}>
-      <slot name="footer">Footer</slot>
+      <slot name="footer" />
     </div>
   </GridItem>
   <GridItem vcenter name="ad" let:inner>
     <div class={inner}>
-      <slot name="ad">Advertisement</slot>
+      <slot name="ad" />
     </div>
   </GridItem>
 </LayoutGrid>
+
+<style>
+  :global(.light-grey-background) {
+    background: var(--back-grid-item) !important;
+  }
+</style>

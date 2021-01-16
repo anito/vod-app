@@ -10,9 +10,6 @@
     : { title: "Login", url: "login" };
 </script>
 
-<style>
-</style>
-
 <svelte:head>
   <title>Physiotherapy Online | Home</title>
 </svelte:head>
@@ -22,7 +19,8 @@
     title="Physio Dips"
     tagline=""
     outline="logo.svg"
-    logotype="logo-type.svg" />
+    logotype="logo-type.svg"
+  />
 
   <Blurb>
     <a href="." slot="one">
@@ -67,7 +65,8 @@
 
     <div
       style="grid-area: start; display: flex; flex-direction: column; min-width: 0"
-      slot="how">
+      slot="how"
+    >
       <p style="margin: 0 0 1em 0; min-width: 0; min-height: 0">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique
         libero ut, ad quidem eos architecto laborum illum nesciunt eius quis
@@ -77,3 +76,6 @@
     </div>
   </Blurb>
 </Layout>
+
+<style>
+</style>

@@ -89,10 +89,8 @@
   });
 </script>
 
-<div class:segment>
-  <Layout>
-    <slot />
-    <div slot="ad" />
-    <div slot="footer" />
-  </Layout>
-</div>
+<Layout>
+  <slot />
+  <div slot="ad" />
+  <div slot="footer" />
+</Layout>

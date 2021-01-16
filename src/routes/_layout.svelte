@@ -118,6 +118,99 @@
   }
 </script>
 
+<Modal>
+  <form
+    class="main-menu"
+    on:submit|stopPropagation|preventDefault={submit}
+    method="post"
+  >
+    <Nav {segment} {page} logo="logo-sticky.svg">
+      <NavItem segment="privacy-policy" title="Privacy Policy" let:active>
+        <Label>Privacy Policy</Label>
+      </NavItem>
+
+      {#if $session.user}
+        <NavItem segment="videos" title="Videothek" let:active>
+          <Icon class="material-icons" style="vertical-align: middle;">
+            video_library
+          </Icon>
+          <Label>Videothek</Label>
+        </NavItem>
+      {/if}
+
+      {#if $session.role === "Administrator"}
+        <NavItem segment="users" title="Administration" let:active>
+          <Icon class="material-icons" style="vertical-align: middle;">
+            settings
+          </Icon>
+          <Label>Admin</Label>
+        </NavItem>
+      {/if}
+
+      {#if $session.user}
+        <NavItem let:active>
+          <Button variant="raised" class="button-logout">
+            <span class="button-first-line">Logout</span>
+            <Label
+              class="no-break"
+              style="padding-top: 20px; font-size: 0.7rem"
+            >
+              {@html logoutLabelText}
+            </Label>
+          </Button>
+        </NavItem>
+      {:else}
+        <NavItem segment="login" let:active>
+          <Button color="secondary" variant="raised" class="button-login">
+            <Label>Zum Login</Label>
+          </Button>
+        </NavItem>
+      {/if}
+
+      {#if $session.user}
+        <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
+          <UserGraphic
+            border="0px 0px 0px 3px var(--prime)"
+            dense
+            width="40"
+            height="40"
+            user={$session.user}
+          />
+        </NavItem>
+      {:else}
+        <NavItem title="Avatar">
+          <UserGraphic
+            border="0px 0px 0px 3px var(--prime)"
+            dense
+            width="40"
+            height="40"
+          />
+        </NavItem>
+      {/if}
+    </Nav>
+  </form>
+  <slot />
+</Modal>
+<LoadingModal backgroundColor="#ffffff" opacity=".45">
+  <Jumper size="60" color="var(--flash)" unit="px" />
+</LoadingModal>
+
+<Snackbar
+  snackbarLifetimeMs={snackbarLifetime}
+  bind:this={snackbar}
+  labelText={message}
+  on:MDCSnackbar:closed={handleClosed}
+  on:MDCSnackbar:opened={handleOpened}
+>
+  <Label />
+  <Actions>
+    {#if action}
+      <Button on:click={() => goto(path)}>{action}</Button>
+    {/if}
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>
+
 <style>
   .button-first-line {
     position: absolute;
@@ -147,91 +240,3 @@
     white-space: nowrap;
   }
 </style>
-
-<Modal>
-  <form
-    class="main-menu"
-    on:submit|stopPropagation|preventDefault={submit}
-    method="post">
-    <Nav {segment} {page} logo="logo-sticky.svg">
-      <NavItem segment="privacy-policy" title="Privacy Policy" let:active>
-        <Label>Privacy Policy</Label>
-      </NavItem>
-
-      {#if $session.user}
-        <NavItem segment="videos" title="Videothek" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">
-            video_library
-          </Icon>
-          <Label>Videothek</Label>
-        </NavItem>
-      {/if}
-
-      {#if $session.role === 'Administrator'}
-        <NavItem segment="users" title="Administration" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">
-            settings
-          </Icon>
-          <Label>Admin</Label>
-        </NavItem>
-      {/if}
-
-      {#if $session.user}
-        <NavItem let:active>
-          <Button variant="raised" class="button-logout">
-            <span class="button-first-line">Logout</span>
-            <Label
-              class="no-break"
-              style="padding-top: 20px; font-size: 0.7rem">
-              {@html logoutLabelText}
-            </Label>
-          </Button>
-        </NavItem>
-      {:else}
-        <NavItem segment="login" let:active>
-          <Button color="secondary" variant="raised" class="button-login">
-            <Label>Zum Login</Label>
-          </Button>
-        </NavItem>
-      {/if}
-
-      {#if $session.user}
-        <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
-          <UserGraphic
-            border="0px 0px 0px 3px var(--prime)"
-            dense
-            width="40"
-            height="40"
-            user={$session.user} />
-        </NavItem>
-      {:else}
-        <NavItem title="Avatar">
-          <UserGraphic
-            border="0px 0px 0px 3px var(--prime)"
-            dense
-            width="40"
-            height="40" />
-        </NavItem>
-      {/if}
-    </Nav>
-  </form>
-  <slot />
-</Modal>
-<LoadingModal backgroundColor="#ffffff" opacity=".45">
-  <Jumper size="60" color="var(--flash)" unit="px" />
-</LoadingModal>
-
-<Snackbar
-  snackbarLifetimeMs={snackbarLifetime}
-  bind:this={snackbar}
-  labelText={message}
-  on:MDCSnackbar:closed={handleClosed}
-  on:MDCSnackbar:opened={handleOpened}>
-  <Label />
-  <Actions>
-    {#if action}
-      <Button on:click={() => goto(path)}>{action}</Button>
-    {/if}
-    <IconButton class="material-icons" title="Dismiss">close</IconButton>
-  </Actions>
-</Snackbar>

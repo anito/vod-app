@@ -72,6 +72,60 @@
   }
 </script>
 
+<Layout sidebar>
+  <slot />
+  <div class="sidebar" slot="side" style="flex: 1;">
+    <div class="flex flex-col p-2">
+      <Textfield
+        variant="filled"
+        withTrailingIcon
+        bind:value={search}
+        label="nach Namen suchen"
+        input$aria-controls="helper-text"
+        input$aria-describedby="helper-text"
+      >
+        <Icon tabindex="1" class="material-icons" on:click={() => (search = "")}
+          >search</Icon
+        >
+      </Textfield>
+      <HelperText id="helper-text">tippe etwas um Namen zu finden</HelperText>
+    </div>
+    {#if $users.length}
+      <List
+        class="users-list"
+        twoLine
+        avatarList
+        singleSelection
+        bind:selectedIndex={selectionIndex}
+      >
+        {#each filteredUsers as user (user.id)}
+          <a rel="prefetch" href="users/{user.id}?tab={tab}">
+            <SimpleUserCard class="flex" {selectionUserId} {user} />
+          </a>
+        {/each}
+      </List>
+    {:else}
+      <div class="paper-container flex justify-center">
+        <Paper color="primary">
+          <Title style="color: var(--text-light)">
+            Keine Benutzer vorhanden
+          </Title>
+        </Paper>
+      </div>
+    {/if}
+  </div>
+  <div slot="ad" />
+  <div slot="footer" />
+</Layout>
+{#if $session.role === "Administrator"}
+  <div class="fab-add-user">
+    <Fab class="floating-fab" color="primary" on:click={addUser} extended>
+      <Label>Neuer Klient</Label>
+      <Icon class="material-icons">person_add</Icon>
+    </Fab>
+  </div>
+{/if}
+
 <style>
   .paper-container {
     display: flex;
@@ -89,60 +143,3 @@
     display: none;
   }
 </style>
-
-<div class:segment>
-  <Layout sidebar>
-    <slot />
-    <div class="sidebar" slot="side" style="flex: 1;">
-      <div class="flex flex-col p-2">
-        <Textfield
-          variant="filled"
-          withTrailingIcon
-          bind:value={search}
-          label="nach Namen suchen"
-          input$aria-controls="helper-text"
-          input$aria-describedby="helper-text">
-          <Icon
-            tabindex="1"
-            class="material-icons"
-            on:click={() => (search = '')}>
-            search
-          </Icon>
-        </Textfield>
-        <HelperText id="helper-text">tippe etwas um Namen zu finden</HelperText>
-      </div>
-      {#if $users.length}
-        <List
-          class="users-list"
-          twoLine
-          avatarList
-          singleSelection
-          bind:selectedIndex={selectionIndex}>
-          {#each filteredUsers as user (user.id)}
-            <a rel="prefetch" href="users/{user.id}?tab={tab}">
-              <SimpleUserCard class="flex" {selectionUserId} {user} />
-            </a>
-          {/each}
-        </List>
-      {:else}
-        <div class="paper-container flex justify-center">
-          <Paper color="primary">
-            <Title style="color: var(--text-light)">
-              Keine Benutzer vorhanden
-            </Title>
-          </Paper>
-        </div>
-      {/if}
-    </div>
-    <div slot="ad" />
-    <div slot="footer" />
-  </Layout>
-  {#if $session.role === 'Administrator'}
-    <div class="fab-add-user">
-      <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-        <Label>Neuer Klient</Label>
-        <Icon class="material-icons">person_add</Icon>
-      </Fab>
-    </div>
-  {/if}
-</div>
