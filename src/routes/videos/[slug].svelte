@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload({ params, query }, { user }) {
     // the `slug` parameter is available because

@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload({ path }, { user }) {
     let data;
@@ -57,9 +57,6 @@
   };
 </script>
 
-<style>
-</style>
-
 <svelte:head>
   <title>Physiotherapy Online | Posters</title>
 </svelte:head>
@@ -82,7 +79,8 @@
           <Content>
             <a
               href="/images"
-              on:click|preventDefault={() => openUploader('image')}>Upload</a>
+              on:click|preventDefault={() => openUploader("image")}>Upload</a
+            >
             some images to your content
           </Content>
         </Paper>
@@ -91,8 +89,9 @@
     <Fab
       class="floating-fab"
       color="primary"
-      on:click={() => openUploader('image')}
-      extended>
+      on:click={() => openUploader("image")}
+      extended
+    >
       <Label>Neues Poster</Label>
       <Icon class="material-icons">add</Icon>
     </Fab>
@@ -104,3 +103,6 @@
     </div>
   {/if}
 </div>
+
+<style>
+</style>

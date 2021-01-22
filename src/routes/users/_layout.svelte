@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
   import { users } from "../../stores/userStore";
   import { videos } from "../../stores/videoStore";
 

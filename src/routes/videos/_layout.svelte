@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload(page, { user }) {
     let data;

@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api.js";
+  import * as api from "api";
 
   export async function preload_({ params, query }, { user }) {
     const res = await api.get(`users/${params.slug}`, user && user.token);
@@ -36,6 +36,14 @@
   });
 </script>
 
+<svelte:head>
+  <title>Physiotherapy Online | Klient hinzufügen</title>
+</svelte:head>
+
+<div class="grid">
+  <UserManager selectedMode="add" />
+</div>
+
 <style>
   .grid {
     display: grid;
@@ -46,11 +54,3 @@
     height: calc(100% - var(--breadcrumb-h));
   }
 </style>
-
-<svelte:head>
-  <title>Physiotherapy Online | Klient hinzufügen</title>
-</svelte:head>
-
-<div class="grid">
-  <UserManager selectedMode="add" />
-</div>

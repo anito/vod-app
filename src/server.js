@@ -8,11 +8,10 @@ import * as sapper from '@sapper/server';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
+const FileStore = new sessionFileStore(session);
 
 // ignore "unable to verify the first certificate" error caused by self signed (root) certificate
 dev && ( process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0 );
-
-const FileStore = new sessionFileStore(session);
 
 polka() // You can also use Express
 	.use(
@@ -25,7 +24,6 @@ polka() // You can also use Express
 			saveUninitialized: true,
 			cookie: {
 				// 1h 		1*60*60*1000
-				// 8,75h	31500000
 				maxAge: 1*60*60*1000
 			},
 			store: new FileStore({
