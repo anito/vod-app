@@ -23,22 +23,9 @@
   let { session } = stores();
 </script>
 
-<style>
-  .paper-container {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-  }
-  .vcentered {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-</style>
-
 <div class:segment>
   <Layout>
-    {#if $session.role === 'Administrator'}
+    {#if $session.role === "Administrator"}
       <slot />
     {:else}
       <div class="paper-container">
@@ -53,3 +40,16 @@
     <div slot="footer" />
   </Layout>
 </div>
+
+<style>
+  .paper-container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+  .vcentered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+</style>

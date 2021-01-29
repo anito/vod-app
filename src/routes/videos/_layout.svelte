@@ -29,6 +29,8 @@
 
   export let segment;
   export let data = [];
+
+  // hydrate images store
   images.update(data);
 
   const { session } = stores();
@@ -82,6 +84,8 @@
       del(t.data);
     }
   });
+
+  $: segment && console.log(segment);
 
   onMount(() => {
     snackbar = getSnackbar();

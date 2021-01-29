@@ -9,12 +9,11 @@
     let query = page.query;
     let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
 
-    const res = await api.get(tab, user && user.token);
+    const res = await api.get("videos", user && user.token);
     if (res && res.success) {
       data = res.data;
       return { data, tabs, tab };
     } else {
-      // if (!res) throw Error;
       this.error();
     }
   }
@@ -27,7 +26,6 @@
   import { VideoManager, ImageManager, Component } from "components";
   import { Header } from "@sveltejs/site-kit";
   import { videos } from "../../stores/videoStore";
-  import { images } from "../../stores/imageStore";
 
   // available from preload
   export let tabs = TABS;
@@ -36,8 +34,7 @@
 
   let { session } = stores();
 
-  $: "videos" === tab && videos.update(data);
-  $: "images" === tab && images.update(data);
+  $: videos.update(data);
 
   onMount(() => $session.role === "Administrator" && changeTab(tab));
 
@@ -46,6 +43,63 @@
     return false;
   }
 </script>
+
+<svelte:head>
+  <title>Physiotherapy Online | Video-Kurse</title>
+</svelte:head>
+
+{#if "Administrator" === $session.role}
+  <div class="grid {tab}">
+    <div class="grid-item one">
+      <Group variant="unelevated">
+        <Button
+          class="focus:outline-none focus:shadow-outline"
+          on:click={() => changeTab(tabs[0])}
+          variant={tab === tabs[0] ? "unelevated" : ""}
+        >
+          <Icon class="material-icons">video_settings</Icon>
+          <Label>Videos</Label>
+        </Button>
+
+        <Button
+          class="focus:outline-none focus:shadow-outline"
+          on:click={() => changeTab(tabs[1])}
+          variant={tab === tabs[1] ? "unelevated" : ""}
+        >
+          <Icon class="material-icons">collections</Icon>
+          <Label>Posters</Label>
+        </Button>
+      </Group>
+    </div>
+
+    <div class="grid-item two">
+      {#if tab === tabs[0]}
+        <VideoManager />
+      {/if}
+      {#if tab === tabs[1]}
+        <ImageManager />
+      {/if}
+    </div>
+  </div>
+{:else}
+  <Component>
+    <div slot="header">
+      <div class="flex justify-between">
+        <span class="self-center">
+          <Header h="6" mdc class="m-2 lg:m-5">
+            Die folgenden Online-Videokurse stehen für Sie bereit:
+          </Header>
+        </span>
+        <span class="self-center">
+          <Header h="5" mdc>
+            {@html ($session.user && $session.user.name) || ""}
+          </Header>
+        </span>
+      </div>
+    </div>
+    <VideoManager />
+  </Component>
+{/if}
 
 <style>
   .grid {
@@ -74,58 +128,3 @@
     overflow: auto;
   }
 </style>
-
-<svelte:head>
-  <title>Physiotherapy Online | Video-Kurse</title>
-</svelte:head>
-
-{#if 'Administrator' === $session.role}
-  <div class="grid {tab}">
-    <div class="grid-item one">
-      <Group variant="unelevated">
-        <Button
-          class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(tabs[0])}
-          variant={tab === tabs[0] ? 'unelevated' : ''}>
-          <Icon class="material-icons">video_settings</Icon>
-          <Label>Videos</Label>
-        </Button>
-
-        <Button
-          class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(tabs[1])}
-          variant={tab === tabs[1] ? 'unelevated' : ''}>
-          <Icon class="material-icons">collections</Icon>
-          <Label>Posters</Label>
-        </Button>
-      </Group>
-    </div>
-
-    <div class="grid-item two">
-      {#if tab === tabs[0]}
-        <VideoManager />
-      {/if}
-      {#if tab === tabs[1]}
-        <ImageManager />
-      {/if}
-    </div>
-  </div>
-{:else}
-  <Component>
-    <div slot="header">
-      <div class="flex justify-between">
-        <span class="self-center">
-          <Header h="6" mdc class="m-2 lg:m-5">
-            Die folgenden Online-Videokurse stehen für Sie bereit:
-          </Header>
-        </span>
-        <span class="self-center">
-          <Header h="5" mdc>
-            {@html ($session.user && $session.user.name) || ''}
-          </Header>
-        </span>
-      </div>
-    </div>
-    <VideoManager />
-  </Component>
-{/if}
