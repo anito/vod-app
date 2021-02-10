@@ -2,10 +2,11 @@
 // MDC Theme
 //
 
+$mdc-typography-font-family: var(--font, "sans-serif");
+
 @import "@material/theme/color-palette";
 @import "@material/typography/mdc-typography";
 
-$mdc-typography-font-family: unquote("BellGothic, sans-serif");
 
 // Defined in @sveltejs/site-kit
 // $mdc-theme-primary: #ff3e00;
