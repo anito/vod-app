@@ -2,7 +2,7 @@
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
 	"name": "Physio Dips",
-	"short_name": "TODO",
+	"short_name": "Physio",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [
