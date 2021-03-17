@@ -1,13 +1,13 @@
 <script>
-  import { stores } from "@sapper/app";
-  import { UserManager, TimeManager } from "components";
-  import { Header } from "@sveltejs/site-kit";
-  import Button, { Group, Label, Icon } from "@smui/button";
-  import IconButton from "@smui/icon-button";
-  import Dialog, { Title, Content, Actions, InitialFocus } from "@smui/dialog";
-  import { users } from "../../stores/userStore";
+  import { stores } from '@sapper/app';
+  import { UserManager, TimeManager } from 'components';
+  import { Header } from '@sveltejs/site-kit';
+  import Button, { Group, Label, Icon } from '@smui/button';
+  import IconButton from '@smui/icon-button';
+  import Dialog, { Title, Content, Actions, InitialFocus } from '@smui/dialog';
+  import { users } from '../../stores/userStore';
 
-  const TABS = ["user", "time"];
+  const TABS = ['user', 'time'];
   const { page, session } = stores();
 
   let redirectToUserDialog;
@@ -15,66 +15,23 @@
   let expires;
   let hasExpired;
 
-  $: tab = ($page.query && $page.query.tab) || "time";
+  $: tab = ($page.query && $page.query.tab) || 'time';
   $: selectionUserId = $page.params.slug;
   $: currentUser =
-    (filtered = ((id) => $users.filter((usr) => usr.id === id))(
-      selectionUserId
-    )) &&
-    filtered.length &&
-    filtered[0];
+    (filtered = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)) && filtered.length && filtered[0];
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: magicLink =
-    (currentUser &&
-      currentUser.token &&
-      `http://${$page.host}/login?token=${currentUser.token.token}`) ||
-    false;
+    (currentUser && currentUser.token && `http://${$page.host}/login?token=${currentUser.token.token}`) || false;
   $: ((user) => {
     expires = user.expires;
     hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
   })(currentUser);
 
   function dialogCloseHandler(e) {
-    if (e.detail.action === "approved") {
+    if (e.detail.action === 'approved') {
     }
   }
 </script>
-
-<style>
-  .grid {
-    display: grid;
-    grid-template-rows: var(--toolbar-h) auto;
-    grid-gap: var(--grid-gap);
-    height: calc(100% - var(--breadcrumb-h));
-    align-items: center;
-  }
-  :global(.user).grid {
-    grid-template-areas:
-      "toolbar toolbar"
-      "one two";
-    grid-template-columns: 1fr;
-  }
-  :global(.time).grid {
-    grid-template-areas:
-      "toolbar toolbar"
-      "one two";
-    grid-template-columns: 4fr 4fr;
-    align-items: initial;
-  }
-  :global(.loggedin) .grid {
-    align-items: initial;
-  }
-  .grid-item {
-    background: var(--back-grid-item);
-    padding-left: 0.4rem;
-  }
-  .toolbar {
-    grid-area: toolbar;
-    display: flex;
-    align-items: center;
-    height: var(--toolbar-h);
-  }
-</style>
 
 <svelte:head>
   <title>Physiotherapy Online | User {currentUser.name}</title>
@@ -88,7 +45,8 @@
           class="focus:outline-none focus:shadow-outline"
           rel="prefetch"
           href="users/{selectionUserId}?tab=time"
-          variant={tab === TABS[1] ? 'unelevated' : 'outlined'}>
+          variant={tab === TABS[1] ? 'unelevated' : 'outlined'}
+        >
           <Icon class="material-icons">video_settings</Icon>
           <Label>Videokurse</Label>
         </Button>
@@ -96,7 +54,8 @@
           class="focus:outline-none focus:shadow-outline"
           rel="prefetch"
           href="users/{selectionUserId}?tab=user"
-          variant={tab === TABS[0] ? 'unelevated' : 'outlined'}>
+          variant={tab === TABS[0] ? 'unelevated' : 'outlined'}
+        >
           <Icon class="material-icons">account_circle</Icon>
           <Label>Benutzerdaten</Label>
         </Button>
@@ -111,13 +70,9 @@
             </IconButton>
           </Button>
         {:else}
-          <Icon
-            class="material-icons"
-            style="align-self: center; margin-right: 10px;">
-            link_off
-          </Icon>
+          <Icon class="material-icons" style="align-self: center; margin-right: 10px;">link_off</Icon>
         {/if}
-        <Header mdc h="4" class="pr-6">{currentUser.name}</Header>
+        <Header mdc h="4" class="pr-6 hidden md:block">{currentUser.name}</Header>
       </div>
     </div>
     {#if tab === TABS[1]}
@@ -127,7 +82,8 @@
       <UserManager
         on:openRedirectToUserDialog={() => redirectToUserDialog.open()}
         {selectionUserId}
-        selectedMode="edit" />
+        selectedMode="edit"
+      />
     {/if}
   </div>
 {:else}
@@ -137,7 +93,8 @@
   bind:this={redirectToUserDialog}
   aria-labelledby="event-title"
   aria-describedby="event-content"
-  on:MDCDialog:closed={dialogCloseHandler}>
+  on:MDCDialog:closed={dialogCloseHandler}
+>
   <Title id="event-title">Jetzt als {currentUser.name} anmelden?</Title>
   <Content id="event-content">
     Möchten Sie die Seite verlassen und sich als
@@ -163,3 +120,39 @@
     </Button>
   </Actions>
 </Dialog>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-rows: var(--toolbar-h) auto;
+    grid-gap: var(--grid-gap);
+    height: calc(100% - var(--breadcrumb-h));
+    align-items: center;
+  }
+  :global(.user).grid {
+    grid-template-areas:
+      'toolbar toolbar'
+      'one two';
+    grid-template-columns: 1fr;
+  }
+  :global(.time).grid {
+    grid-template-areas:
+      'toolbar toolbar'
+      'one two';
+    grid-template-columns: 4fr 4fr;
+    align-items: initial;
+  }
+  :global(.loggedin) .grid {
+    align-items: initial;
+  }
+  .grid-item {
+    background: var(--back-grid-item);
+    padding-left: 0.4rem;
+  }
+  .toolbar {
+    grid-area: toolbar;
+    display: flex;
+    align-items: center;
+    height: var(--toolbar-h);
+  }
+</style>
