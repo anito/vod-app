@@ -3,10 +3,12 @@
 //
 
 $mdc-typography-font-family: var(--font, "sans-serif");
+$mdc-typography-styles-headline5: (
+  font-weight: 700
+);
 
 @import "@material/theme/color-palette";
 @import "@material/typography/mdc-typography";
-
 
 // Defined in @sveltejs/site-kit
 // $mdc-theme-primary: #ff3e00;

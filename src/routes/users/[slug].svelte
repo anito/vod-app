@@ -72,7 +72,7 @@
         {:else}
           <Icon class="material-icons" style="align-self: center; margin-right: 10px;">link_off</Icon>
         {/if}
-        <Header mdc h="4" class="pr-6 hidden md:block">{currentUser.name}</Header>
+        <Header mdc h="5" class="pr-6 hidden md:block">{currentUser.name}</Header>
       </div>
     </div>
     {#if tab === TABS[1]}
