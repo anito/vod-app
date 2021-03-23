@@ -31,7 +31,7 @@
 <script>
   import { stores, goto } from '@sapper/app';
   import Layout from './layout.svelte';
-  import { Warnings, SimpleUserCard } from 'components';
+  import { InfoChips, SimpleUserCard } from 'components';
   import Paper, { Title } from '@smui/paper';
   import Fab, { Label } from '@smui/fab';
   import Textfield, { Input, Textarea } from '@smui/textfield';
@@ -98,7 +98,7 @@
   </div>
   <div slot="ad" />
   <div slot="footer">
-    <Warnings {selectionUserId} />
+    <InfoChips {selectionUserId} />
   </div>
 </Layout>
 {#if $session.role === 'Administrator'}
@@ -118,6 +118,10 @@
   }
   .fab-add-user {
     position: absolute;
+  }
+  [slot='footer'] {
+    color: var(--text-light-grey);
+    font-size: 0.8em;
   }
   :global(.datapicker--open) .fab-add-user,
   :global(.add-user-view--open) .fab-add-user {
