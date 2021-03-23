@@ -1,18 +1,17 @@
 <script>
-  import { stores, goto } from "@sapper/app";
-  import isMobile from "ismobilejs";
-  import { onMount, setContext } from "svelte";
-  import { Nav, NavItem } from "@sveltejs/site-kit";
-  import Button, { Icon } from "@smui/button";
-  import IconButton from "@smui/icon-button";
-  import Snackbar, { Actions } from "@smui/snackbar";
-  import { Label } from "@smui/common";
-  import { post } from "utils";
-  import { loginGuard as frozen } from "../stores/loginGuard";
-  import { flash } from "../stores/flashStore";
-  import { Modal } from "@sveltejs/site-kit";
-  import { UserGraphic, LoadingModal } from "components";
-  import { Jumper } from "svelte-loading-spinners";
+  import { stores, goto } from '@sapper/app';
+  import isMobile from 'ismobilejs';
+  import { onMount, setContext } from 'svelte';
+  import { Nav, NavItem } from '@sveltejs/site-kit';
+  import Button, { Icon } from '@smui/button';
+  import IconButton from '@smui/icon-button';
+  import Snackbar, { Actions } from '@smui/snackbar';
+  import { Label } from '@smui/common';
+  import { post } from 'utils';
+  import { flash } from '../stores/flashStore';
+  import { Modal } from '@sveltejs/site-kit';
+  import { UserGraphic, LoadingModal } from 'components';
+  import { Jumper } from 'svelte-loading-spinners';
 
   // import ListErrors from 'components';
 
@@ -22,44 +21,38 @@
 
   let root;
   let snackbar;
-  let message = "";
-  let action = "";
-  let path = "";
+  let message = '';
+  let action = '';
+  let path = '';
   let snackbarLifetime = 4000;
   let redirectDelay = 300;
   let timeoutId;
   let isMobileDevice;
-  let logoutLabelTextDefault = "Zum Login";
+  let logoutLabelTextDefault = 'Zum Login';
   let logoutLabelText = logoutLabelTextDefault;
 
-  setContext("snackbar", {
+  setContext('snackbar', {
     getSnackbar: () => snackbar,
     configSnackbar,
   });
 
-  $: root &&
-    ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
-  $: root &&
-    ((isAdmin) => root.classList.toggle("admin", isAdmin))(
-      $session.role === "Administrator"
-    );
+  $: root && ((user) => root.classList.toggle('loggedin', user))(!!$session.user);
+  $: root && ((isAdmin) => root.classList.toggle('admin', isAdmin))($session.role === 'Administrator');
   $: ((seg) => {
-    root &&
-      ((seg && root.classList.remove("home")) ||
-        (!seg && root.classList.add("home")));
+    root && ((seg && root.classList.remove('home')) || (!seg && root.classList.add('home')));
   })(segment);
   $: isMobileDevice = isMobile().any;
-  $: snackbarLifetime = action ? "8000" : "4000";
+  $: snackbarLifetime = action ? '8000' : '4000';
   $: $session.user && (logoutLabelText = `Hallo,<br />${$session.user.name}`);
 
   async function submit(e) {
     if ($session.user) {
-      logoutLabelText = "Einen Moment...";
+      logoutLabelText = 'Einen Moment...';
       const res = await post(`auth/logout`);
       if (res && res.success) {
         message = res.message;
         setTimeout(() => {
-          goto("/");
+          goto('/');
           $session.user = null;
           $session.role = null;
           $session.groups = null;
@@ -75,12 +68,12 @@
   onMount(() => {
     root = document.documentElement;
 
-    window.addEventListener("introend", handleIntroEnd);
-    isMobileDevice && root.classList.add("ismobile");
+    window.addEventListener('introend', handleIntroEnd);
+    isMobileDevice && root.classList.add('ismobile');
 
     return () => {
-      root.classList.remove("ismobile");
-      window.removeEventListener("introend", handleIntroEnd);
+      root.classList.remove('ismobile');
+      window.removeEventListener('introend', handleIntroEnd);
     };
   });
 
@@ -89,10 +82,10 @@
     configureAction(msg, link);
   }
 
-  function configureAction(msg = "", link) {
+  function configureAction(msg = '', link) {
     message = msg;
-    action = path = "";
-    if (typeof link === "object") {
+    action = path = '';
+    if (typeof link === 'object') {
       path = link.path;
       action = link.action;
     } else {
@@ -110,20 +103,12 @@
 
   function handleIntroEnd(e) {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(
-      (o) => o.path && goto(o.path),
-      redirectDelay,
-      e.detail
-    );
+    timeoutId = setTimeout((o) => o.path && goto(o.path), redirectDelay, e.detail);
   }
 </script>
 
 <Modal>
-  <form
-    class="main-menu"
-    on:submit|stopPropagation|preventDefault={submit}
-    method="post"
-  >
+  <form class="main-menu" on:submit|stopPropagation|preventDefault={submit} method="post">
     <Nav {segment} {page} logo="logo-sticky.svg">
       <NavItem segment="privacy-policy" title="Privacy Policy" let:active>
         <Label>Privacy Policy</Label>
@@ -131,18 +116,14 @@
 
       {#if $session.user}
         <NavItem segment="videos" title="Videothek" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">
-            video_library
-          </Icon>
+          <Icon class="material-icons" style="vertical-align: middle;">video_library</Icon>
           <Label>Videothek</Label>
         </NavItem>
       {/if}
 
-      {#if $session.role === "Administrator"}
+      {#if $session.role === 'Administrator'}
         <NavItem segment="users" title="Administration" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">
-            settings
-          </Icon>
+          <Icon class="material-icons" style="vertical-align: middle;">settings</Icon>
           <Label>Admin</Label>
         </NavItem>
       {/if}
@@ -151,10 +132,7 @@
         <NavItem let:active>
           <Button variant="raised" class="button-logout">
             <span class="button-first-line">Logout</span>
-            <Label
-              class="no-break"
-              style="padding-top: 20px; font-size: 0.7rem"
-            >
+            <Label class="no-break" style="padding-top: 20px; font-size: 0.7rem">
               {@html logoutLabelText}
             </Label>
           </Button>
@@ -169,22 +147,11 @@
 
       {#if $session.user}
         <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
-          <UserGraphic
-            border="0px 0px 0px 3px var(--prime)"
-            dense
-            width="40"
-            height="40"
-            user={$session.user}
-          />
+          <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" user={$session.user} />
         </NavItem>
       {:else}
         <NavItem title="Avatar">
-          <UserGraphic
-            border="0px 0px 0px 3px var(--prime)"
-            dense
-            width="40"
-            height="40"
-          />
+          <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" />
         </NavItem>
       {/if}
     </Nav>

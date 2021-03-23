@@ -1,5 +1,5 @@
 module.exports = {
-  purge: ["./src/**/*.svelte"],
+  purge: ['./src/**/*.svelte'],
   theme: {
     extend: {},
     // screens: {} // custom breakpoints
@@ -8,4 +8,10 @@ module.exports = {
     // backgroundColor: [ 'responsive', 'hover', 'focus', 'active']
   },
   plugins: [],
-}
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+    defaultLineHeights: true,
+    standardFontWeights: true,
+  },
+};

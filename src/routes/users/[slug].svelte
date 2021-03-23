@@ -115,7 +115,7 @@
     <Button action="none">
       <Label>Abbrechen</Label>
     </Button>
-    <Button variant="outlined" href={magicLink} target="_self">
+    <Button variant="unelevated" href={magicLink} target="_self">
       <Label class="token-button-label">Ja, Seite verlassen</Label>
     </Button>
   </Actions>
