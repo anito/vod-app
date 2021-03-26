@@ -57,6 +57,13 @@
   let code;
   let currentUser;
   let username;
+  let active;
+  let expires;
+  let hasExpired;
+  let token;
+  let tokenId;
+  let tokenVal;
+  let magicLink;
   let selectionIndex;
   let search = '';
   let snackbar;
@@ -75,14 +82,18 @@
 
   $: selectionUserId = segment;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
-  $: username = currentUser && currentUser.name;
-  $: active = ((usr) => (usr && usr.active) || false)(currentUser);
-  $: token = ((usr) => usr && usr.token)(currentUser);
-  $: tokenId = (token && token.id) || null;
-  $: tokenVal = (token && token.token) || '';
+  $: ((usr) => {
+    username = usr && usr.name;
+    active = (usr && usr.active) || false;
+    token = usr && usr.token;
+    tokenId = (token && token.id) || null;
+    tokenVal = (token && token.token) || '';
+    expires = usr && usr.expires;
+    hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
+    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}`) || '';
+  })(currentUser);
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: magicLink = `http://${$page.host}/login?token=${tokenVal}` || '';
   $: userInfos = ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
   $: userIssues = userInfos.filter((info) => info.type === 'issue');
 
@@ -213,7 +224,8 @@
   }
 
   function redirectDialogCloseHandler(e) {
-    if (e.detail.action) location.href = e.detail.action;
+    if (/^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i.test(e.detail.action))
+      location.href = e.detail.action;
   }
 
   function chipInteractionHandler(e) {
@@ -255,7 +267,7 @@
   </div>
   <div slot="ad" />
   <div slot="footer">
-    <InfoChips {selectionUserId} />
+    <InfoChips staggered {selectionUserId} />
   </div>
 </Layout>
 <Dialog bind:this={infoDialog} aria-labelledby="info-title" aria-describedby="info-content">
@@ -347,12 +359,14 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={resolveAllDialogCloseHandler}
 >
-  <DialogTitle id="info-title">Probleme {userInfos.length ? 'beheben' : 'behoben'}</DialogTitle>
+  <DialogTitle id="info-title"
+    >{userInfos.length ? 'Kein Zugriff auf aktive Inhalte' : 'Alle Probleme wurden behoben'}</DialogTitle
+  >
   {#if userInfos.length}
     <Content id="info-content">
       <div class="item">
         <p>Der Benutzer <strong>{username}</strong> kann momentan nicht auf die von ihm gebuchten Inhalte zugreifen.</p>
-        <p>Sollen folgende Aktionen ausgeführt werden?</p>
+        <p>Sollen die folgenden Aktionen ausgeführt werden?</p>
       </div>
       <div class="list">
         <ul class="reasons-list">
@@ -367,7 +381,7 @@
         <Label>Abbrechen</Label>
       </Button>
       <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-        <Label>Probleme beheben</Label>
+        <Label>Alle Probleme beheben</Label>
       </Button>
     </Actions>
   {:else}
@@ -408,7 +422,7 @@
   <DialogTitle id="info-title">Token generieren</DialogTitle>
   <Content id="info-content">
     <div class="item">
-      {#if token}
+      {#if token && !hasExpired}
         <Icon class="material-icons leading">warning</Icon>
         <p>Der bisherige Token wird dadurch unbrauchbar!</p>
       {/if}
@@ -454,18 +468,25 @@
   aria-describedby="event-content"
   on:MDCDialog:closed={redirectDialogCloseHandler}
 >
-  <DialogTitle id="event-title">Als {username} anmelden?</DialogTitle>
+  <DialogTitle id="event-title"
+    >{hasExpired ? 'Token abgelaufen' : !active ? 'Benutzer deaktiviert' : `Als ${username} fortfahren?`}</DialogTitle
+  >
   <Content id="event-content">
-    Durch diesen Vorgang werden Sie von Ihrem Konto abgemeldet und als Benutzer
-    <strong>{username}</strong>
-    angemeldet.
+    {#if hasExpired}
+      <p>Da der aktuelle Token abgelaufen ist, wird die Anmeldung als <strong>{username}</strong> fehlschlagen.</p>
+    {/if}
+    {#if !active}
+      <p>Da der Benutzer <strong>{username}</strong> deaktiviert ist, wird die Anmeldung fehlschlagen.</p>
+    {/if}
+    <p>Wenn Sie fortfahren, werden Sie von Ihrer aktuellen Sitzung abgemeldet.</p>
   </Content>
   <Actions>
     <Button action="none">
       <Label>Abbrechen</Label>
     </Button>
     <Button variant="unelevated" action={magicLink} use={[InitialFocus]}>
-      <Label class="token-button-label">Ok, Benutzer wechseln</Label>
+      <Label class="token-button-label">{hasExpired || !active ? 'Trotzdem fortfahren' : 'Ja, Benutzer wechseln'}</Label
+      >
     </Button>
   </Actions>
 </Dialog>
