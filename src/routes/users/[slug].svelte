@@ -18,14 +18,12 @@
   $: selectionUserId = $page.params.slug;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
-  $: magicLink =
-    (currentUser && currentUser.token && `http://${$page.host}/login?token=${currentUser.token.token}`) || false;
   $: ((user) => {
     expires = user.expires;
     hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
     tokenVal = user.token && user.token.token;
   })(currentUser);
-  $: magicLink = `http://${$page.host}/login?token=${tokenVal}`;
+  $: magicLink = (currentUser && currentUser.token && `http://${$page.host}/login?token=${tokenVal}`) || false;
 </script>
 
 <svelte:head>
