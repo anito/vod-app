@@ -15,37 +15,41 @@ function createStore() {
   const DEFS = [
     {
       key: {
-        slug: 'hasActiveVideosAccountInactive',
-        label: 'Zugriff auf Inhalte blockiert',
+        id: 'account-inaccessible',
+        eventType: 'INFO:open:ResolveAllDialog',
+        label: 'Inhalte nicht zugänglich',
         flag: 'warning',
+        type: '',
       },
-      value: (usr) => hasActiveVideos(usr) &&
-        (!usr.token ||
-          !usr.active ||
-          (usr.expires &&
-            isExpired(usr.expires))),
+      value: (usr) => hasActiveVideos(usr) && (!usr.token || !usr.active || (usr.expires && isExpired(usr.expires))),
     },
     {
       key: {
-        slug: 'expired',
-        label: 'Token abgelaufen',
+        id: 'token-expired',
+        eventType: 'INFO:token:Generate',
+        label: 'Abgelaufenen Token regenerieren',
         flag: 'flash',
+        type: 'issue',
       },
       value: (usr) => usr.expires && isExpired(usr.expires),
     },
     {
       key: {
-        slug: 'inactive',
-        label: 'Benutzer deaktiviert',
+        id: 'user-inactive',
+        eventType: 'INFO:user:Activate',
+        label: 'Benutzer aktivieren',
         flag: 'flash',
+        type: 'issue',
       },
       value: (usr) => !usr.active,
     },
     {
       key: {
-        slug: 'notoken',
-        label: 'Kein Token vorhanden',
+        id: 'token-missing',
+        eventType: 'INFO:token:Generate',
+        label: 'Token generieren',
         flag: 'flash',
+        type: 'issue',
       },
       value: (usr) => !usr.token,
     },

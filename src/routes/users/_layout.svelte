@@ -30,19 +30,22 @@
 
 <script>
   import { stores, goto } from '@sapper/app';
+  import { onMount, getContext } from 'svelte';
+  import { infos } from '../../stores/infoStore';
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
+  import { dict } from 'dict';
+  import { proxyEvent } from 'utils';
   import Paper, { Title } from '@smui/paper';
+  import Button, { Icon } from '@smui/button';
   import Fab, { Label } from '@smui/fab';
   import Textfield, { Input, Textarea } from '@smui/textfield';
-  import Icon from '@smui/textfield/icon';
   import HelperText from '@smui/textfield/helper-text';
   import List from '@smui/list';
+  import Dialog, { Title as DialogTitle, Content, Actions, InitialFocus } from '@smui/dialog';
 
-  let selectionIndex;
-  let search = '';
-
-  const { session } = stores();
+  const { page, session } = stores();
+  const { getSnackbar, configSnackbar } = getContext('snackbar');
   const TAB = 'time';
 
   export let segment; // user.id (or slug) in case we start from a specific user e.g. /users/23
@@ -51,16 +54,170 @@
   export let videoData = [];
   export let tab = TAB;
 
+  let code;
+  let currentUser;
+  let username;
+  let selectionIndex;
+  let search = '';
+  let snackbar;
+  let message;
+  let infoDialog;
+  let generateTokenDialog;
+  let activateUserDialog;
+  let resolveAllDialog;
+  let removeTokenDialog;
+  let redirectDialog;
+  let user = $session.user;
+
   // update stores with what we got from preload
   users.update(usersData);
   videos.update(videoData);
 
   $: selectionUserId = segment;
-  $: tab = ((t) => (!t && TAB) || t)(tab);
+  $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
+  $: username = currentUser && currentUser.name;
+  $: active = ((usr) => (usr && usr.active) || false)(currentUser);
+  $: token = ((usr) => usr && usr.token)(currentUser);
+  $: tokenId = (token && token.id) || null;
+  $: tokenVal = (token && token.token) || '';
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+  $: tab = ((t) => (!t && TAB) || t)(tab);
+  $: magicLink = `http://${$page.host}/login?token=${tokenVal}` || '';
+  $: userInfos = ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
+  $: userIssues = userInfos.filter((info) => info.type === 'issue');
+
+  onMount(() => {
+    snackbar = getSnackbar();
+
+    // window.addEventListener('MDCChip:interaction', chipInteractionHandler);
+    window.addEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
+    window.addEventListener('INFO:open:InfoDialog', infoDialogHandler);
+    window.addEventListener('INFO:user:Activate', activateUserHandler);
+    window.addEventListener('INFO:token:Remove', removeTokenHandler);
+    window.addEventListener('INFO:token:Generate', generateTokenHandler);
+    window.addEventListener('INFO:token:Redirect', tokenRedirectHandler);
+
+    return () => {
+      // window.removeEventListener('MDCChip:interaction', chipInteractionHandler);
+      window.removeEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
+      window.removeEventListener('INFO:open:InfoDialog', infoDialogHandler);
+      window.removeEventListener('INFO:user:Activate', activateUserHandler);
+      window.removeEventListener('INFO:token:Remove', removeTokenHandler);
+      window.removeEventListener('INFO:token:Generate', generateTokenHandler);
+      window.removeEventListener('INFO:token:Redirect', tokenRedirectHandler);
+    };
+  });
 
   async function addUser() {
     await goto('users/add');
+  }
+
+  async function generateToken() {
+    const res = await api.post('tokens', { user_id: currentUser.id }, user.token);
+
+    let message;
+    if (res.success) {
+      users.put({ ...res.data });
+      message = res.message;
+      configSnackbar(message);
+      snackbar.open();
+      return res;
+    } else {
+      try {
+        // validation message
+        let message = res.data.errors.token._isUnique || res.data.massage || 'Error';
+        configSnackbar(message);
+      } catch (e) {}
+      snackbar.open();
+    }
+  }
+
+  async function removeToken() {
+    const res = await api.del(`tokens/${tokenId}`, user.token);
+    if (res.success) {
+      users.put({ ...currentUser, ...res.data });
+      configSnackbar(res.message);
+      snackbar.open();
+    } else {
+      configSnackbar(res.message);
+      snackbar.open();
+    }
+  }
+
+  async function activateUser(state = {}) {
+    let data = 'active' in state ? state : { active: !active };
+    const res = await api.put(`users/${selectionUserId}`, data, user && user.token);
+
+    message = res.message || res.data.message || res.statusText;
+    code = (res.data && res.data.code) || res.status;
+
+    if (res) {
+      (res.success && users.put({ ...currentUser, ...data })) || (active = !active);
+      configSnackbar(message);
+      snackbar.open();
+    }
+  }
+
+  function resolveAll() {
+    for (const info of userInfos) {
+      proxyEvent(info.eventType, { silent: true });
+    }
+  }
+
+  function resolveAllHandler(e) {
+    resolveAllDialog.open();
+  }
+
+  function activateUserHandler(e) {
+    (e.detail.silent && activateUser({ active: true })) || activateUserDialog.open();
+  }
+
+  function generateTokenHandler(e) {
+    (e.detail.silent && generateToken()) || generateTokenDialog.open();
+  }
+
+  function removeTokenHandler(e) {
+    removeTokenDialog.open();
+  }
+
+  function tokenRedirectHandler(e) {
+    redirectDialog.open();
+  }
+
+  function infoDialogHandler(e) {
+    infoDialog.open();
+  }
+
+  async function resolveAllDialogCloseHandler(e) {
+    if (e.detail.action === 'approved') {
+      resolveAll();
+    }
+  }
+
+  async function activateUserDialogCloseHandler(e) {
+    if (e.detail.action === 'approved') {
+      activateUser({ active: true });
+    }
+  }
+
+  async function generateTokenDialogCloseHandler(e) {
+    if (e.detail.action === 'approved') {
+      generateToken();
+    }
+  }
+
+  async function removeTokenDialogCloseHandler(e) {
+    if (e.detail.action === 'approved') {
+      removeToken();
+    }
+  }
+
+  function redirectDialogCloseHandler(e) {
+    if (e.detail.action) location.href = e.detail.action;
+  }
+
+  function chipInteractionHandler(e) {
+    console.log('chipInteractionHandler', e);
   }
 </script>
 
@@ -101,6 +258,217 @@
     <InfoChips {selectionUserId} />
   </div>
 </Layout>
+<Dialog bind:this={infoDialog} aria-labelledby="info-title" aria-describedby="info-content">
+  <DialogTitle id="info-title">Was ist ein Token?</DialogTitle>
+  <Content id="info-content">
+    <div class="item">Ein Token ist eine kryptische Zeichenkette mit verschlüsselten (Anmelde-) Informationen.</div>
+    <div class="item">
+      <details>
+        <summary>Beispiel</summary>
+        <pre>
+          eyJ0eXAiiJKV1QiLCJhbGciOiJIUzI1NiJ9.as...
+        </pre>
+      </details>
+      <details>
+        <summary>Wofür wird der Token verwendet?</summary>
+        <p>
+          Der Token wird zur Authentifizierung verwendet. D.h. das übliche fehlerbehaftete Eintippen von
+          Benutzernamen/Passwort entfällt und es kann sofort losgelegt werden. Der Token beinhaltet verschlüsselte
+          Parameter wie Gültigkeitsdauer und Benutzername. Kann am Server eine Zuordnung stattfinden, wird der
+          entsprechende Benutzer angemeldet.
+        </p>
+      </details>
+      <details>
+        <summary>Wie gehe ich weiter vor?</summary>
+        <p>
+          Benutzen Sie den Button
+          <i class="button">{dict.generateTokenText}</i>, um einen <i>magischen Link</i> zu erzeugen. Dadurch wird auch automatisch
+          der Account freigeschaltet. Die Gültigkeit des generierten Token richtet sich automatisch nach der Buchungsdauer
+          des zuletzt auslaufenden Videos.
+        </p>
+        <p>
+          Beachten Sie, dass bei <strong>Hinzubuchen weiterer Videos</strong> auch dringend ein neuer Token generiert
+          und ausgehändigt werden muss. Nur dadurch wird sichergestellt, dass sich der Benutzer über den gesamten
+          Buchungszeitraums hinweg am Portal anmelden kann.
+          <strong
+            >Ist ein Token verfallen, ist danach auch eine konventionelle Anmeldung per Anmeldeformular nicht mehr
+            möglich.</strong
+          > Etwaige noch aktive Inhalte können in diesem Fall von Ihrem Kunden nicht mehr genutzt werden!
+        </p>
+        <p>
+          <strong
+            >Stellen Sie jederzeit sicher, dass Ihre KlientInnen im Besitz des aktuellen Tokens sind. Er ist
+            gewissermassen der <i>Schlüssel</i> zu den gebuchten Inhalten.</strong
+          >
+        </p>
+      </details>
+      <details>
+        <summary>Was tun bei Verdacht auf Missbrauch des Tokens?</summary>
+        <p>
+          Generieren Sie in diesem Fall über den Button
+          <i class="button">{dict.generateTokenText}</i>
+          einen neuen Token. Alle zuvor generierten Token werden dadurch unbrauchbar.
+        </p>
+        <p>
+          Verwenden Sie den Button
+          <i class="button">{dict.removeTokenText}</i>, um das Konto zu sperren. Alternativ können Sie auch
+          <i>Deactivate User</i>
+          anklicken. In beiden Fällen ist eine Anmeldung nicht mehr möglich.
+        </p>
+      </details>
+    </div>
+    <div class="item">
+      <h4>Weitergabe an Dritte</h4>
+      <Icon class="material-icons leading">warning</Icon>
+      <p>
+        Jeder im Besitz dieses Links verfügt automatisch über Zugriff auf gespeicherte Benutzerdaten, einschliesslich
+        gebuchter Inhalte. Gehen Sie daher äusserst achtsam mit dem Token (Link) um und geben Sie den Link keinesfalls
+        an Dritte weiter.
+      </p>
+    </div>
+    <div class="item">
+      <h4>Gültigkeit</h4>
+      <p>
+        Die Gültigkeit des Tokens richtet sich jeweils nach dem Buchungsende des spätesten Videos. Falls gerade keine
+        Videos gebucht sind, aber dennoch ein neuer Token angefordert wird, hat dieser eine generelle Gültigkeit von 30
+        Tagen.
+      </p>
+    </div>
+  </Content>
+  <Actions>
+    <Button action="approved" default use={[InitialFocus]}>
+      <Label>Schliessen</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<Dialog
+  bind:this={resolveAllDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+  on:MDCDialog:closed={resolveAllDialogCloseHandler}
+>
+  <DialogTitle id="info-title">Probleme {userInfos.length ? 'beheben' : 'behoben'}</DialogTitle>
+  {#if userInfos.length}
+    <Content id="info-content">
+      <div class="item">
+        <p>Der Benutzer <strong>{username}</strong> kann momentan nicht auf die von ihm gebuchten Inhalte zugreifen.</p>
+        <p>Sollen folgende Aktionen ausgeführt werden?</p>
+      </div>
+      <div class="list">
+        <ul class="reasons-list">
+          {#each userIssues as issue}
+            <li>{issue.label}</li>
+          {/each}
+        </ul>
+      </div>
+    </Content>
+    <Actions>
+      <Button action="none">
+        <Label>Abbrechen</Label>
+      </Button>
+      <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
+        <Label>Probleme beheben</Label>
+      </Button>
+    </Actions>
+  {:else}
+    <Actions>
+      <Button action="none" variant="unelevated" default use={[InitialFocus]}>
+        <Label>Fertig</Label>
+      </Button>
+    </Actions>
+  {/if}
+</Dialog>
+<Dialog
+  bind:this={activateUserDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+  on:MDCDialog:closed={activateUserDialogCloseHandler}
+>
+  <DialogTitle id="info-title">{username} {active ? 'deaktivieren' : 'aktivieren'}</DialogTitle>
+  <Content id="info-content">
+    <div class="item">
+      <p>Soll Benutzer <strong>{username}</strong> {active ? 'deaktiviert' : 'aktiviert'} werden?</p>
+    </div>
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>Abbrechen</Label>
+    </Button>
+    <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
+      <Label>Benutzer {active ? 'deaktivieren' : 'aktivieren'}</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<Dialog
+  bind:this={generateTokenDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+  on:MDCDialog:closed={generateTokenDialogCloseHandler}
+>
+  <DialogTitle id="info-title">Token generieren</DialogTitle>
+  <Content id="info-content">
+    <div class="item">
+      {#if token}
+        <Icon class="material-icons leading">warning</Icon>
+        <p>Der bisherige Token wird dadurch unbrauchbar!</p>
+      {/if}
+      <p>
+        Denken Sie daran, dem Benutzer
+        <strong>{username}</strong>
+        den neuen Token zu übermitteln.
+      </p>
+    </div>
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>Abbrechen</Label>
+    </Button>
+    <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
+      <Label>Token generieren</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<Dialog
+  bind:this={removeTokenDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+  on:MDCDialog:closed={removeTokenDialogCloseHandler}
+>
+  <DialogTitle id="info-title">Token löschen</DialogTitle>
+  <Content id="info-content">
+    <Icon class="material-icons leading">warning</Icon>
+    <div class="item">Achtung, durch Löschen des Token wird der Account gesperrt!</div>
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>Abbrechen</Label>
+    </Button>
+    <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
+      <Label>Token löschen & Account sperren</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<Dialog
+  bind:this={redirectDialog}
+  aria-labelledby="event-title"
+  aria-describedby="event-content"
+  on:MDCDialog:closed={redirectDialogCloseHandler}
+>
+  <DialogTitle id="event-title">Als {username} anmelden?</DialogTitle>
+  <Content id="event-content">
+    Durch diesen Vorgang werden Sie von Ihrem Konto abgemeldet und als Benutzer
+    <strong>{username}</strong>
+    angemeldet.
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>Abbrechen</Label>
+    </Button>
+    <Button variant="unelevated" action={magicLink} use={[InitialFocus]}>
+      <Label class="token-button-label">Ok, Benutzer wechseln</Label>
+    </Button>
+  </Actions>
+</Dialog>
 {#if $session.role === 'Administrator'}
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
@@ -129,5 +497,25 @@
   }
   :global(.grid:not(.sidebar) .grid-item.side) {
     display: none;
+  }
+  h4 {
+    margin: revert;
+  }
+  pre {
+    overflow: auto;
+    padding: 1.5rem 2rem;
+    margin: 0.8rem 0 2.4rem;
+    /* max-width: var(--code-w); */
+    border-radius: var(--border-r);
+    box-shadow: 1px 1px 1px rgba(68, 68, 68, 0.12) inset;
+    background: var(--background);
+  }
+  .reasons-list {
+    list-style: disc;
+    margin: 1em 0;
+  }
+  .reasons-list li {
+    margin-left: 1em;
+    font-weight: 600;
   }
 </style>

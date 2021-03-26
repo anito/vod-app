@@ -4,33 +4,28 @@
   import { Header } from '@sveltejs/site-kit';
   import Button, { Group, Label, Icon } from '@smui/button';
   import IconButton from '@smui/icon-button';
-  import Dialog, { Title, Content, Actions, InitialFocus } from '@smui/dialog';
   import { users } from '../../stores/userStore';
+  import { proxyEvent } from 'utils';
 
   const TABS = ['user', 'time'];
   const { page, session } = stores();
 
-  let redirectToUserDialog;
-  let filtered;
   let expires;
   let hasExpired;
+  let tokenVal;
 
   $: tab = ($page.query && $page.query.tab) || 'time';
   $: selectionUserId = $page.params.slug;
-  $: currentUser =
-    (filtered = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)) && filtered.length && filtered[0];
+  $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: magicLink =
     (currentUser && currentUser.token && `http://${$page.host}/login?token=${currentUser.token.token}`) || false;
   $: ((user) => {
     expires = user.expires;
     hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
+    tokenVal = user.token && user.token.token;
   })(currentUser);
-
-  function dialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
-    }
-  }
+  $: magicLink = `http://${$page.host}/login?token=${tokenVal}`;
 </script>
 
 <svelte:head>
@@ -62,7 +57,7 @@
       </Group>
       <div class="flex">
         {#if magicLink}
-          <Button on:click={() => redirectToUserDialog.open()}>
+          <Button on:click={() => proxyEvent('INFO:token:Redirect')}>
             <IconButton>
               <Icon class="material-icons">
                 {(hasExpired && 'link_off') || 'link'}
@@ -80,7 +75,11 @@
     {/if}
     {#if tab === TABS[0]}
       <UserManager
-        on:openRedirectToUserDialog={() => redirectToUserDialog.open()}
+        on:user:Redirect
+        on:token:Generate
+        on:token:Remove
+        on:user:Activate
+        on:open:InfoDialog
         {selectionUserId}
         selectedMode="edit"
       />
@@ -89,37 +88,6 @@
 {:else}
   <UserManager {selectionUserId} selectedMode="edit" />
 {/if}
-<Dialog
-  bind:this={redirectToUserDialog}
-  aria-labelledby="event-title"
-  aria-describedby="event-content"
-  on:MDCDialog:closed={dialogCloseHandler}
->
-  <Title id="event-title">Jetzt als {currentUser.name} anmelden?</Title>
-  <Content id="event-content">
-    Möchten Sie die Seite verlassen und sich als
-    <strong>{currentUser.name}</strong>
-    anmelden?
-    <div class="mt-5 mb-5">
-      <details>
-        <summary>Hinweis</summary>
-        <p>
-          Um später als
-          <strong>{$session.user && $session.user.name}</strong>
-          weiter zu arbeiten, müssen Sie sich erneut anmelden.
-        </p>
-      </details>
-    </div>
-  </Content>
-  <Actions>
-    <Button action="none">
-      <Label>Abbrechen</Label>
-    </Button>
-    <Button variant="unelevated" href={magicLink} target="_self">
-      <Label class="token-button-label">Ja, Seite verlassen</Label>
-    </Button>
-  </Actions>
-</Dialog>
 
 <style>
   .grid {

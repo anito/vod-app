@@ -16,6 +16,9 @@
   // import ListErrors from 'components';
 
   const { page, session } = stores();
+  const snackbarLifetimeDefault = 4000;
+  const redirectDelay = 300;
+  const logoutLabelTextDefault = 'Zum Login';
 
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
@@ -24,11 +27,8 @@
   let message = '';
   let action = '';
   let path = '';
-  let snackbarLifetime = 4000;
-  let redirectDelay = 300;
   let timeoutId;
   let isMobileDevice;
-  let logoutLabelTextDefault = 'Zum Login';
   let logoutLabelText = logoutLabelTextDefault;
 
   setContext('snackbar', {
@@ -42,7 +42,7 @@
     root && ((seg && root.classList.remove('home')) || (!seg && root.classList.add('home')));
   })(segment);
   $: isMobileDevice = isMobile().any;
-  $: snackbarLifetime = action ? '8000' : '4000';
+  $: snackbarLifetime = action ? 6000 : snackbarLifetimeDefault;
   $: $session.user && (logoutLabelText = `Hallo,<br />${$session.user.name}`);
 
   async function submit(e) {
