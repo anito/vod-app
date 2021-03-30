@@ -23,8 +23,8 @@
     "login": "Anmelden",
     "physio-classes": "Physiotherapie Kurse",
     "user-profil": "Profil",
-    "more-courses": "Weitere Kurse",
-    "booked-courses": "Gebuchte Kurse",
+    "more-classes": "Weitere Kurse",
+    "booked-classes": "Gebuchte Kurse",
     "generate-token": "Token generieren",
     "regenerate-expired-token": "Abgelaufenen Token erneuern",
     "content-inaccessible": "Inhalte nicht zugänglich",
@@ -63,7 +63,7 @@
     "save": "Speichern",
     "reset": "Zurücksetzen",
     "got-it": "Ich habe verstanden",
-    "timeframe-updated": "Zeitfenster aktualisiert",
+    "timeframe-updated": "Zeitrahmen aktualisiert",
     "uploaded-on": "Hochgeladen: {date}",
     "no-poster": "Kein Poster",
     "until-date": "<small>noch bis</small><br />{date}",
@@ -77,7 +77,17 @@
     "done": "Erledigt",
     "continue-anyways": "Trotzdem fortfahren",
     "delete-token-and-deactivate-account": "Token löschen & Account deaktivieren",
-    "switch-user": "Ja, Benutzer wechseln"
+    "switch-user": "Ja, Benutzer wechseln",
+    "video-removed": "Video entfernt",
+    "1-month": "1 Monat",
+    "-months": "{number} Monate",
+    "self-select-timeframe": "individueller Zeitraum",
+    "no-timeframe": "Kein Zeitrahmen",
+    "user-has-no-videos": "Benutzer <strong>{name}</strong> hat keine Videokurse abonniert",
+    "user-doesnt-exist": "Dieser Benutzer existiert nicht",
+    "admins-have-full-access": "Admins haben vollen Zugriff",
+    "user-is-deactivated": "Benutzer ist deaktiviert",
+    "remove-class": "Kurs entfernen"
   },
   "summary": {
     "copy-link": {

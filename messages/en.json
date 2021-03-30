@@ -19,12 +19,12 @@
     "mail-subject": "Your access token to your account",
     "viaEmailTo": "by email to {name}",
     "next-steps": "Next steps",
-    "yourCourses": "Your courses",
+    "yourCourses": "Your classes",
     "login": "Sign in",
     "physio-classes": "Physical Therapie Courses",
     "user-profil": "Profile",
-    "more-courses": "More courses",
-    "booked-courses": "Booked courses",
+    "more-classes": "More classes",
+    "booked-classes": "Booked classes",
     "generate-token": "Generate Token",
     "regenerate-expired-token": "Refresh expired token",
     "content-inaccessible": "Content inaccessible",
@@ -50,6 +50,7 @@
     "new-user": "New User",
     "no-messages": "No Messages",
     "can-not-remove-admin-token": "Administrators cannot be locked out",
+    "token-expired": "Token expired",
     "token-expired-on": "Token expired on {date}",
     "token-expires-on": "Token valid as of {date}",
     "no-token-information": "No Tokeninformation",
@@ -72,11 +73,21 @@
     "select-poster": "Select Poster",
     "new-poster": "New Poster",
     "remove-poster": "Remove Poster",
-    "resolve-conflicts": "Resolve conflicts",
+    "resolve-conflicts": "Fix conflicts",
     "done": "Done",
     "continue-anyways": "Continue anyways",
     "delete-token-and-deactivate-account": "Delete Token & Deactivate Account",
-    "switch-user": "Yes, switch user"
+    "switch-user": "Yes, switch user",
+    "video-removed": "Video removed",
+    "1-month": "1 Month",
+    "-months": "{number} Months",
+    "self-select-timeframe": "individual Timeframe",
+    "no-timeframe": "No Timeframe",
+    "user-has-no-videos": "User <strong>{name}</strong> has not booked any videos",
+    "user-doesnt-exist": "User doesn't exist",
+    "admins-have-full-access": "Admins have full access",
+    "user-is-deactivated": "User is deactivated",
+    "remove-class": "Remove class"
   },
   "summary": {
     "copy-link": {
@@ -132,7 +143,7 @@
   "messages": {
     "error": "Error: {status}",
     "permanently-remove-user": "{name} will be permanently removed. Confirm pressing OK",
-    "video-availabe-until": "This course will be available until <strong>{date}</strong>"
+    "video-availabe-until": "This class will be available until <strong>{date}</strong>"
   },
   "languages": {
     "en": "English",

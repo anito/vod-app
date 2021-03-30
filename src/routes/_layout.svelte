@@ -163,9 +163,9 @@
           </NavItem>
         {/if}
 
-        <div class="locale-switcher">
+        <li class="locale-switcher">
           <LocaleSwitcher />
-        </div>
+        </li>
       </Nav>
     </form>
     <slot />
@@ -218,9 +218,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  .locale-switcher {
-    margin: 0 -20px 0 20px;
-    display: inline-block;
   }
 </style>
