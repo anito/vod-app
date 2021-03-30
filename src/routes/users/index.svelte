@@ -3,6 +3,7 @@
   import { goto } from '@sapper/app';
   import Paper, { Title, Subtitle, Content } from '@smui/paper';
   import { users } from '../../stores/userStore';
+  import { _ } from 'svelte-i18n';
 
   let preSelectedIndex = 0;
 
@@ -22,8 +23,8 @@
 
 <div class="no-user">
   <div class="content">
-    <Paper color="primary">
-      <Title style="color: var(--text-light)">Lade Benutzer...</Title>
+    <Paper color="secondary">
+      <Title style="color: var(--text-light)">{$_('text.loading-users')}</Title>
     </Paper>
   </div>
 </div>

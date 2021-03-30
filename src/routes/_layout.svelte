@@ -1,3 +1,11 @@
+<script context="module">
+  import { waitLocale } from 'svelte-i18n';
+
+  export async function preload() {
+    return waitLocale();
+  }
+</script>
+
 <script>
   import { stores, goto } from '@sapper/app';
   import isMobile from 'ismobilejs';
@@ -10,15 +18,14 @@
   import { post } from 'utils';
   import { flash } from '../stores/flashStore';
   import { Modal } from '@sveltejs/site-kit';
-  import { UserGraphic, LoadingModal } from 'components';
   import { Jumper } from 'svelte-loading-spinners';
-
+  import { UserGraphic, LoadingModal, LocaleSwitcher } from 'components';
+  import { _, locale } from 'svelte-i18n';
   // import ListErrors from 'components';
 
   const { page, session } = stores();
   const snackbarLifetimeDefault = 4000;
   const redirectDelay = 300;
-  const logoutLabelTextDefault = 'Zum Login';
 
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
@@ -29,7 +36,7 @@
   let path = '';
   let timeoutId;
   let isMobileDevice;
-  let logoutLabelText = logoutLabelTextDefault;
+  let loggedInButtonTextSecondLine;
 
   setContext('snackbar', {
     getSnackbar: () => snackbar,
@@ -43,27 +50,8 @@
   })(segment);
   $: isMobileDevice = isMobile().any;
   $: snackbarLifetime = action ? 6000 : snackbarLifetimeDefault;
-  $: $session.user && (logoutLabelText = `Hallo,<br />${$session.user.name}`);
-
-  async function submit(e) {
-    if ($session.user) {
-      logoutLabelText = 'Einen Moment...';
-      const res = await post(`auth/logout`);
-      if (res && res.success) {
-        message = res.message;
-        setTimeout(() => {
-          goto('/');
-          $session.user = null;
-          $session.role = null;
-          $session.groups = null;
-          logoutLabelText = logoutLabelTextDefault;
-          flash.update({ message });
-        }, 1000);
-        configSnackbar(message);
-        snackbar.open();
-      }
-    }
-  }
+  $: $session.user &&
+    (loggedInButtonTextSecondLine = $_('text.logged-in-button-second-line', { values: { name: $session.user.name } }));
 
   onMount(() => {
     root = document.documentElement;
@@ -76,6 +64,25 @@
       window.removeEventListener('introend', handleIntroEnd);
     };
   });
+
+  async function submit(e) {
+    if ($session.user) {
+      loggedInButtonTextSecondLine = $_('text.one-moment');
+      const res = await post(`auth/logout`);
+      if (res && res.success) {
+        message = res.message;
+        setTimeout(() => {
+          goto('/');
+          $session.user = null;
+          $session.role = null;
+          $session.groups = null;
+          flash.update({ message });
+        }, 1000);
+        configSnackbar(message);
+        snackbar.open();
+      }
+    }
+  }
 
   function configSnackbar(msg, link) {
     snackbar.close();
@@ -108,55 +115,61 @@
 </script>
 
 <Modal>
-  <form class="main-menu" on:submit|stopPropagation|preventDefault={submit} method="post">
-    <Nav {segment} {page} logo="logo-sticky.svg">
-      <NavItem segment="privacy-policy" title="Privacy Policy" let:active>
-        <Label>Privacy Policy</Label>
-      </NavItem>
+  {#if $locale}
+    <form class="main-menu" on:submit|stopPropagation|preventDefault={submit} method="post">
+      <Nav {segment} {page} logo="logo-sticky.svg">
+        <NavItem segment="privacy-policy" title={$_('nav.privacy')} let:active>
+          <Label>{$_('nav.privacy')}</Label>
+        </NavItem>
 
-      {#if $session.user}
-        <NavItem segment="videos" title="Videothek" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">video_library</Icon>
-          <Label>Videothek</Label>
-        </NavItem>
-      {/if}
+        {#if $session.user}
+          <NavItem segment="videos" title="Videothek" let:active>
+            <Icon class="material-icons" style="vertical-align: middle;">video_library</Icon>
+            <Label>{$_('nav.library')}</Label>
+          </NavItem>
+        {/if}
 
-      {#if $session.role === 'Administrator'}
-        <NavItem segment="users" title="Administration" let:active>
-          <Icon class="material-icons" style="vertical-align: middle;">settings</Icon>
-          <Label>Admin</Label>
-        </NavItem>
-      {/if}
+        {#if $session.role === 'Administrator'}
+          <NavItem segment="users" title="Administration" let:active>
+            <Icon class="material-icons" style="vertical-align: middle;">settings</Icon>
+            <Label>Admin</Label>
+          </NavItem>
+        {/if}
 
-      {#if $session.user}
-        <NavItem let:active>
-          <Button variant="raised" class="button-logout">
-            <span class="button-first-line">Logout</span>
-            <Label class="no-break" style="padding-top: 20px; font-size: 0.7rem">
-              {@html logoutLabelText}
-            </Label>
-          </Button>
-        </NavItem>
-      {:else}
-        <NavItem segment="login" let:active>
-          <Button color="secondary" variant="raised" class="button-login">
-            <Label>Zum Login</Label>
-          </Button>
-        </NavItem>
-      {/if}
+        {#if $session.user}
+          <NavItem let:active>
+            <Button variant="raised" class="button-logout">
+              <span class="button-first-line">Logout</span>
+              <Label class="no-break" style="padding-top: 20px; font-size: 0.7rem">
+                {@html loggedInButtonTextSecondLine}
+              </Label>
+            </Button>
+          </NavItem>
+        {:else}
+          <NavItem segment="login" let:active>
+            <Button color="secondary" variant="raised" class="button-login">
+              <Label>{$_('nav.login')}</Label>
+            </Button>
+          </NavItem>
+        {/if}
 
-      {#if $session.user}
-        <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
-          <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" user={$session.user} />
-        </NavItem>
-      {:else}
-        <NavItem title="Avatar">
-          <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" />
-        </NavItem>
-      {/if}
-    </Nav>
-  </form>
-  <slot />
+        {#if $session.user}
+          <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
+            <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" user={$session.user} />
+          </NavItem>
+        {:else}
+          <NavItem title="Avatar">
+            <UserGraphic border="0px 0px 0px 3px var(--prime)" dense width="40" height="40" />
+          </NavItem>
+        {/if}
+
+        <div class="locale-switcher">
+          <LocaleSwitcher />
+        </div>
+      </Nav>
+    </form>
+    <slot />
+  {/if}
 </Modal>
 <LoadingModal backgroundColor="#ffffff" opacity=".45">
   <Jumper size="60" color="var(--flash)" unit="px" />
@@ -205,5 +218,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .locale-switcher {
+    margin: 0 -20px 0 20px;
+    display: inline-block;
   }
 </style>

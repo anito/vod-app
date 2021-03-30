@@ -6,6 +6,7 @@
   import IconButton from '@smui/icon-button';
   import { users } from '../../stores/userStore';
   import { proxyEvent } from 'utils';
+  import { _ } from 'svelte-i18n';
 
   const TABS = ['user', 'time'];
   const { page, session } = stores();
@@ -13,21 +14,23 @@
   let expires;
   let hasExpired;
   let tokenVal;
+  let magicLink;
 
   $: tab = ($page.query && $page.query.tab) || 'time';
   $: selectionUserId = $page.params.slug;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: ((user) => {
+    if (!user) return;
     expires = user.expires;
     hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
     tokenVal = user.token && user.token.token;
+    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}`) || false;
   })(currentUser);
-  $: magicLink = (currentUser && currentUser.token && `http://${$page.host}/login?token=${tokenVal}`) || false;
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | User {currentUser.name}</title>
+  <title>Physiotherapy Online | User {currentUser && currentUser.name}</title>
 </svelte:head>
 
 {#if 'Administrator' === $session.role}
@@ -41,7 +44,7 @@
           variant={tab === TABS[1] ? 'unelevated' : 'outlined'}
         >
           <Icon class="material-icons">video_settings</Icon>
-          <Label>Videokurse</Label>
+          <Label>{$_('text.physio-classes')}</Label>
         </Button>
         <Button
           class="focus:outline-none focus:shadow-outline"
@@ -50,7 +53,7 @@
           variant={tab === TABS[0] ? 'unelevated' : 'outlined'}
         >
           <Icon class="material-icons">account_circle</Icon>
-          <Label>Benutzerdaten</Label>
+          <Label>{$_('text.user-profil')}</Label>
         </Button>
       </Group>
       <div class="flex">

@@ -28,7 +28,8 @@
     "polka": "next",
     "sass": "^1.30.0",
     "session-file-store": "^1.4.0",
-    "sirv": "^0.4.6"
+    "sirv": "^0.4.6",
+    "svelte-i18n": "^3.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
@@ -62,6 +63,7 @@
     "@rollup/plugin-alias": "^3.1.0",
     "@rollup/plugin-babel": "^5.2.0",
     "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-replace": "^2.3.2",
     "date-fns": "^2.16.1",

@@ -1,0 +1,149 @@
+{
+  "Administrator": "Administrator",
+  "User": "Benutzer",
+  "Manager": "Manager",
+  "Guest": "Gast",
+  "text": {
+    "password-hint": "Das Passwort muss aus mind. 8 Zeichen bestehen",
+    "invalid-password": "Passwörter stimmern nicht überein",
+    "invalid-email": "Keine gültige Email Adresse.",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "select-mode": "Modus wählen",
+    "one-moment": "Einen Moment...",
+    "welcome-message": "Willkommen {name}",
+    "external-login-welcome-message": "Herzlich Willkommen {name}",
+    "logged-in-button-second-line": "Hallo, {name}",
+    "login-text": "Bitte loggen Sie sich ein",
+    "search-user": "Benutzer suchen",
+    "mail-subject": "Ihr Zugangslink zu Ihrem Online-Kurs",
+    "viaEmailTo": "per Email an {name}",
+    "next-steps": "Nächste Schritte",
+    "yourCourses": "Ihre Kurse",
+    "login": "Anmelden",
+    "physio-classes": "Physiotherapie Kurse",
+    "user-profil": "Profil",
+    "more-courses": "Weitere Kurse",
+    "booked-courses": "Gebuchte Kurse",
+    "generate-token": "Token generieren",
+    "regenerate-expired-token": "Abgelaufenen Token erneuern",
+    "content-inaccessible": "Inhalte nicht zugänglich",
+    "remove-token": "Token entfernen",
+    "activate-user": "Benutzer aktivieren",
+    "deactivate-user": "Benutzer deaktivieren",
+    "user-activated": "Benutzer aktiviert",
+    "continue-as-user": "Als {name} fortfahren?",
+    "user-deactivated": "Benutzer deaktiviert",
+    "edit-user": "Benutzer bearbeiten",
+    "delete-user": "Benutzer löschen",
+    "select-edit-mode": "Editiermodus wählen",
+    "edit": "Bearbeiten",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "close": "Schliessen",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "edit-password": "Passwort ändern",
+    "repeat-password": "Passwort wiederholen",
+    "user-role": "Benutzerrolle",
+    "new-user": "Neuer Benutzer",
+    "no-messages": "Keine Mitteilungen",
+    "can-not-remove-admin-token": "Administratoren können nicht gesperrt werden",
+    "token-expired": "Token abgelaufen",
+    "token-expired-on": "Token abgelaufen am {date}",
+    "token-expires-on": "Token läuft am {date} ab",
+    "no-token-information": "Keine Tokeninformation",
+    "type-to-find": "tippe etwas um Namen zu finden",
+    "user-not-found": "Benutzer nicht gefunden",
+    "loading-users": "Lade Benutzer...",
+    "reveal-user": "Benutzer anzeigen",
+    "locale-changed-to": "Sprache wurde geändert auf {locale}",
+    "create-new-user": "Neuen Klienten anlegen",
+    "save": "Speichern",
+    "reset": "Zurücksetzen",
+    "got-it": "Ich habe verstanden",
+    "timeframe-updated": "Zeitfenster aktualisiert",
+    "uploaded-on": "Hochgeladen: {date}",
+    "no-poster": "Kein Poster",
+    "until-date": "<small>noch bis</small><br />{date}",
+    "more-options": "Mehr Optionen",
+    "delete-video": "Video löschen",
+    "delete-poster": "Poster löschen",
+    "select-poster": "Poster auswählen",
+    "new-poster": "Neues Poster",
+    "remove-poster": "Poster entfernen",
+    "reolve-conflicts": "Konflikt lösen",
+    "done": "Erledigt",
+    "continue-anyways": "Trotzdem fortfahren",
+    "delete-token-and-deactivate-account": "Token löschen & Account deaktivieren",
+    "switch-user": "Ja, Benutzer wechseln"
+  },
+  "summary": {
+    "copy-link": {
+      "header": "Link kopieren",
+      "text": "Benutzen Sie den Button <i>Kopieren</i> um den Link in Ihrer Zwischenablage zu speichern. Sie können den Link anschliessend über den <i>Einfügen</i>-Befehl (<i>Strg-V</i>) in eine Email einfügen und weiterleiten."
+    },
+    "send-link": {
+      "header": "Link verschicken",
+      "text": "Je nach Konfiguration Ihres Browsers, startet bei Anklicken spezieller Email-Links ein Email Programm. Falls dies bei Ihnen nicht der Fall sein sollte, lesen Sie den nächsten Punkt.<br /> Hier können Sie testen:"
+    },
+    "next-steps": {
+      "text": "Weitere Schritte"
+    },
+    "howDoesItWork": {
+      "text": "Wie funktioniert der Token?"
+    },
+    "test-magic-link": {
+      "header": "Den Magic Link testen",
+      "text": "Testen Sie den Magic Link indem Sie auf den Button <i>Magic Link</i> klicken. Sie werden von Ihrem Account abgemeldet und automatisch als <strong>{currentUserName}</strong> angemeldet. Um später als <strong>{sessionUserName}</strong> weiter zu arbeiten, müssen Sie sich erneut anmelden."
+    }
+  },
+  "blocks": {
+    "p1": {
+      "header": "Machen Sie Ihre Physio-Kurse bequem zu Hause",
+      "text1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti.",
+      "text2": ""
+    },
+    "p2": {
+      "header": "Ihre Physiotherapie Praxis",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti."
+    },
+    "p3": {
+      "header": "",
+      "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
+    },
+    "p4": {
+      "header": "",
+      "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
+    },
+    "p5": {
+      "header": "",
+      "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "privacy": "Datenschutz",
+    "library": "Bibliothek",
+    "login": "Zum Login"
+  },
+  "messages": {
+    "error": "Error: {status}",
+    "permanently-remove-user": "{name} wird dauerhaft gelöscht. Bestätigen Sie mit OK",
+    "video-availabe-until": "Dieser Online-Videokurs steht für Sie bis einschl. <strong>{date}</strong> zur Verfügung"
+  },
+  "languages": {
+    "en": "English",
+    "de_DE": "Deutsch"
+  },
+  "error": {
+    "error401": "Nicht Authorisiert",
+    "error403": "Nicht erlaubt",
+    "error404": "Nicht gefunden",
+    "expiredToken": "Token abgelaufen"
+  },
+  "direction": "ltr"
+}

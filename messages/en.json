@@ -1,0 +1,148 @@
+{
+  "Administrator": "Administrator",
+  "User": "User",
+  "Manager": "Manager",
+  "Guest": "Guest",
+  "text": {
+    "password-hint": "The password must consist of at least 8 characters",
+    "invalid-password": "Passwords do not match",
+    "invalid-email": "Not a valid email-address.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "select-mode": "Select mode",
+    "one-moment": "One moment...",
+    "welcome-message": "Welcome {name}",
+    "external-login-welcome-message": "Welcome {name}",
+    "logged-in-button-second-line": "Hallo, {name}",
+    "login-text": "Please sign in",
+    "search-user": "Search User",
+    "mail-subject": "Your access token to your account",
+    "viaEmailTo": "by email to {name}",
+    "next-steps": "Next steps",
+    "yourCourses": "Your courses",
+    "login": "Sign in",
+    "physio-classes": "Physical Therapie Courses",
+    "user-profil": "Profile",
+    "more-courses": "More courses",
+    "booked-courses": "Booked courses",
+    "generate-token": "Generate Token",
+    "regenerate-expired-token": "Refresh expired token",
+    "content-inaccessible": "Content inaccessible",
+    "remove-token": "Remove token",
+    "activate-user": "Activate User",
+    "deactivate-user": "Deactivate User",
+    "user-activated": "User activated",
+    "user-deactivated": "User deactivated",
+    "continue-as-user": "Continue as {name}?",
+    "edit-user": "Edit User",
+    "delete-user": "Delete User",
+    "select-edit-mode": "Select Edit Mode",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "close": "Close",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "edit-password": "Change Password",
+    "repeat-password": "Repeat Password",
+    "user-role": "Userrole",
+    "new-user": "New User",
+    "no-messages": "No Messages",
+    "can-not-remove-admin-token": "Administrators cannot be locked out",
+    "token-expired-on": "Token expired on {date}",
+    "token-expires-on": "Token valid as of {date}",
+    "no-token-information": "No Tokeninformation",
+    "type-to-find": "start typing to find user",
+    "user-not-found": "User not found",
+    "loading-users": "Loading Users...",
+    "reveal-user": "Show user",
+    "locale-changed-to": "Language changed to {locale}",
+    "create-new-user": "Create new user",
+    "save": "Save",
+    "reset": "Reset",
+    "got-it": "Got it",
+    "timeframe-updated": "Timeframe updated",
+    "uploaded-on": "Uploaded: {date}",
+    "no-poster": "No poster",
+    "until-date": "<small>valid until</small><br />{date}",
+    "more-options": "More options",
+    "delete-video": "Delete Video",
+    "delete-poster": "Delete Poster",
+    "select-poster": "Select Poster",
+    "new-poster": "New Poster",
+    "remove-poster": "Remove Poster",
+    "reolve-conflicts": "Resolve conflicts",
+    "done": "Done",
+    "continue-anyways": "Continue anyways",
+    "delete-token-and-deactivate-account": "Delete Token & Deactivate Account",
+    "switch-user": "Yes, switch user"
+  },
+  "summary": {
+    "copy-link": {
+      "header": "Copy link",
+      "text": "Use the <i> Copy </i> button to save the link in your clipboard. \nYou can then paste the link into an email using the <i> Paste </i> command (<i> Ctrl-V </i>). Next forward the mail to the client."
+    },
+    "send-link": {
+      "header": "Send link",
+      "text": "Depending on the configuration of your browser, an email program starts when upon clicking special email links. \nIf there is no email client starting up, jump to the next point. <br /> Here is a Test Link:"
+    },
+    "next-steps": {
+      "text": "Weitere Schritte"
+    },
+    "howDoesItWork": {
+      "text": "How does the token work?"
+    },
+    "test-magic-link": {
+      "header": "Test the Magic Link",
+      "text": "Test the Magic Link by clicking the <i> Magic Link </i> button. \nYou will be logged out of your account and automatically logged in as <strong> {currentUserName} </strong>. \nTo continue working later as <strong> {sessionUserName} </strong>, you'll have to log back into your account."
+    }
+  },
+  "blocks": {
+    "p1": {
+      "header": "Machen Sie Ihre Physio-Kurse bequem zu Hause",
+      "text1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti.",
+      "text2": ""
+    },
+    "p2": {
+      "header": "Your Physiotherapy Practice",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti."
+    },
+    "p3": {
+      "header": "",
+      "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
+    },
+    "p4": {
+      "header": "",
+      "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
+    },
+    "p5": {
+      "header": "",
+      "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "privacy": "Privacy Policy",
+    "library": "Library",
+    "login": "Sign In"
+  },
+  "messages": {
+    "error": "Error: {status}",
+    "permanently-remove-user": "{name} will be permanently removed. Confirm pressing OK",
+    "video-availabe-until": "This course will be available until <strong>{date}</strong>"
+  },
+  "languages": {
+    "en": "English",
+    "de_DE": "Deutsch"
+  },
+  "error": {
+    "error401": "Not Authorized",
+    "error403": "Not allowed",
+    "error404": "Not Found",
+    "expiredToken": "Expired Token"
+  },
+  "direction": "ltr"
+}

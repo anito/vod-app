@@ -34,15 +34,16 @@
   import { infos } from '../../stores/infoStore';
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
-  import { dict } from 'dict';
   import { proxyEvent } from 'utils';
   import Paper, { Title } from '@smui/paper';
   import Button, { Icon } from '@smui/button';
   import Fab, { Label } from '@smui/fab';
-  import Textfield, { Input, Textarea } from '@smui/textfield';
+  import Textfield from '@smui/textfield';
+  import { Icon as TextfieldIcon } from '@smui/textfield/icon';
   import HelperText from '@smui/textfield/helper-text';
   import List from '@smui/list';
   import Dialog, { Title as DialogTitle, Content, Actions, InitialFocus } from '@smui/dialog';
+  import { _, locale } from 'svelte-i18n';
 
   const { page, session } = stores();
   const { getSnackbar, configSnackbar } = getContext('snackbar');
@@ -90,7 +91,7 @@
     tokenVal = (token && token.token) || '';
     expires = usr && usr.expires;
     hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
-    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}`) || '';
+    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) || '';
   })(currentUser);
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
   $: tab = ((t) => (!t && TAB) || t)(tab);
@@ -124,7 +125,7 @@
   }
 
   async function generateToken() {
-    const res = await api.post('tokens', { user_id: currentUser.id }, user.token);
+    const res = await api.post(`tokens?lang=${$locale}`, { user_id: currentUser.id }, user.token);
 
     let message;
     if (res.success) {
@@ -144,7 +145,7 @@
   }
 
   async function removeToken() {
-    const res = await api.del(`tokens/${tokenId}`, user.token);
+    const res = await api.del(`tokens/${tokenId}?lang=${$locale}`, user.token);
     if (res.success) {
       users.put({ ...currentUser, ...res.data });
       configSnackbar(res.message);
@@ -157,7 +158,7 @@
 
   async function activateUser(state = {}) {
     let data = 'active' in state ? state : { active: !active };
-    const res = await api.put(`users/${selectionUserId}`, data, user && user.token);
+    const res = await api.put(`users/${selectionUserId}?lang=${$locale}`, data, user && user.token);
 
     message = res.message || res.data.message || res.statusText;
     code = (res.data && res.data.code) || res.status;
@@ -241,11 +242,13 @@
         variant="filled"
         withTrailingIcon
         bind:value={search}
-        label="nach Namen suchen"
+        label={$_('text.search-user')}
         input$aria-controls="helper-text"
         input$aria-describedby="helper-text"
       >
-        <Icon tabindex="1" class="material-icons" on:click={() => (search = '')}>search</Icon>
+        <TextfieldIcon tabindex="1" class="material-icons" on:click={() => (search = '')}
+          >{search.length && 'close'}</TextfieldIcon
+        >
       </Textfield>
       <HelperText id="helper-text">tippe etwas um Namen zu finden</HelperText>
     </div>
@@ -259,9 +262,7 @@
       </List>
     {:else}
       <div class="paper-container flex justify-center">
-        <Paper color="primary">
-          <Title style="color: var(--text-light)">Keine Benutzer vorhanden</Title>
-        </Paper>
+        <div>{$_('text.user-not-found')}</div>
       </div>
     {/if}
   </div>
@@ -294,9 +295,9 @@
         <summary>Wie gehe ich weiter vor?</summary>
         <p>
           Benutzen Sie den Button
-          <i class="button">{dict.generateTokenText}</i>, um einen <i>magischen Link</i> zu erzeugen. Dadurch wird auch automatisch
-          der Account freigeschaltet. Die Gültigkeit des generierten Token richtet sich automatisch nach der Buchungsdauer
-          des zuletzt auslaufenden Videos.
+          <i class="button">{$_('text.generate-token')}</i>, um einen <i>magischen Link</i> zu erzeugen. Dadurch wird auch
+          automatisch der Account freigeschaltet. Die Gültigkeit des generierten Token richtet sich automatisch nach der
+          Buchungsdauer des zuletzt auslaufenden Videos.
         </p>
         <p>
           Beachten Sie, dass bei <strong>Hinzubuchen weiterer Videos</strong> auch dringend ein neuer Token generiert
@@ -318,12 +319,12 @@
         <summary>Was tun bei Verdacht auf Missbrauch des Tokens?</summary>
         <p>
           Generieren Sie in diesem Fall über den Button
-          <i class="button">{dict.generateTokenText}</i>
+          <i class="button">{$_('text.generate-token')}</i>
           einen neuen Token. Alle zuvor generierten Token werden dadurch unbrauchbar.
         </p>
         <p>
           Verwenden Sie den Button
-          <i class="button">{dict.removeTokenText}</i>, um das Konto zu sperren. Alternativ können Sie auch
+          <i class="button">{$_('text.remove-token')}</i>, um das Konto zu sperren. Alternativ können Sie auch
           <i>Deactivate User</i>
           anklicken. In beiden Fällen ist eine Anmeldung nicht mehr möglich.
         </p>
@@ -349,7 +350,7 @@
   </Content>
   <Actions>
     <Button action="approved" default use={[InitialFocus]}>
-      <Label>Schliessen</Label>
+      <Label>{$_('text.close')}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -371,23 +372,23 @@
       <div class="list">
         <ul class="reasons-list">
           {#each userIssues as issue}
-            <li>{issue.label}</li>
+            <li>{$_(issue.label)}</li>
           {/each}
         </ul>
       </div>
     </Content>
     <Actions>
       <Button action="none">
-        <Label>Abbrechen</Label>
+        <Label>{$_('text.cancel')}</Label>
       </Button>
       <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-        <Label>Alle Probleme beheben</Label>
+        <Label>{$_('text.resolve-conflicts')}</Label>
       </Button>
     </Actions>
   {:else}
     <Actions>
       <Button action="none" variant="unelevated" default use={[InitialFocus]}>
-        <Label>Fertig</Label>
+        <Label>{$_('text.done')}</Label>
       </Button>
     </Actions>
   {/if}
@@ -406,10 +407,10 @@
   </Content>
   <Actions>
     <Button action="none">
-      <Label>Abbrechen</Label>
+      <Label>{$_('text.cancel')}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>Benutzer {active ? 'deaktivieren' : 'aktivieren'}</Label>
+      <Label>{active ? $_('text.deactivate-user') : $_('text.activate-user')}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -435,10 +436,10 @@
   </Content>
   <Actions>
     <Button action="none">
-      <Label>Abbrechen</Label>
+      <Label>{$_('text.cancel')}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>Token generieren</Label>
+      <Label>{$_('text.generate-token')}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -455,10 +456,10 @@
   </Content>
   <Actions>
     <Button action="none">
-      <Label>Abbrechen</Label>
+      <Label>{$_('text.cancel')}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>Token löschen & Account sperren</Label>
+      <Label>{$_('text.delete-token-and-deactivate-account')}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -469,7 +470,11 @@
   on:MDCDialog:closed={redirectDialogCloseHandler}
 >
   <DialogTitle id="event-title"
-    >{hasExpired ? 'Token abgelaufen' : !active ? 'Benutzer deaktiviert' : `Als ${username} fortfahren?`}</DialogTitle
+    >{hasExpired
+      ? $_('text.token-expired')
+      : !active
+      ? $_('text.user-deactivated')
+      : $_('text.continue-as-user', { values: { name: username } })}</DialogTitle
   >
   <Content id="event-content">
     {#if hasExpired}
@@ -482,10 +487,11 @@
   </Content>
   <Actions>
     <Button action="none">
-      <Label>Abbrechen</Label>
+      <Label>{$_('text.cancel')}</Label>
     </Button>
     <Button variant="unelevated" action={magicLink} use={[InitialFocus]}>
-      <Label class="token-button-label">{hasExpired || !active ? 'Trotzdem fortfahren' : 'Ja, Benutzer wechseln'}</Label
+      <Label class="token-button-label"
+        >{hasExpired || !active ? $_('text.continue-anyways') : $_('text.switch-user')}</Label
       >
     </Button>
   </Actions>
@@ -493,7 +499,7 @@
 {#if $session.role === 'Administrator'}
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-      <Label>Neuer Klient</Label>
+      <Label>{$_('text.new-user')}</Label>
       <Icon class="material-icons">person_add</Icon>
     </Fab>
   </div>

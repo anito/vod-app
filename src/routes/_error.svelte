@@ -1,27 +1,28 @@
 <script>
-  import { onMount } from "svelte";
-  import { goto, stores } from "@sapper/app";
-  import { flash } from "../stores/flashStore";
-  import { post, createRedirectSlug } from "utils";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import { onMount } from 'svelte';
+  import { goto, stores } from '@sapper/app';
+  import { flash } from '../stores/flashStore';
+  import { post, createRedirectSlug } from 'utils';
+  import Paper, { Title, Subtitle, Content } from '@smui/paper';
+  import { _ } from 'svelte-i18n';
 
-  const dev = process.env.NODE_ENV === "development";
+  const dev = process.env.NODE_ENV === 'development';
   const { page, session } = stores();
 
   export let status;
   export let error;
 
-  $: status === 401 && (error.message = "Unauthorized");
-  $: status === 403 && (error.message = "Forbidden");
-  $: status === 404 && (error.message = "Not found");
+  $: status === 401 && (error.message = $_('error.error401'));
+  $: status === 403 && (error.message = $_('error.error403'));
+  $: status === 404 && (error.message = $_('error.error404'));
 
   onMount(async () => {
     flash.update({
-      type: "error",
+      type: 'error',
       message: error.message || error,
       status,
     });
-    if (error.message && error.message.toLowerCase() === "expired token") {
+    if (error.message && error.message.toLowerCase() === 'expired token') {
       status = 401;
     }
     if ($session.user && 401 === status) {
@@ -38,10 +39,27 @@
   });
 
   async function gotoLogin() {
-    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
+    let redirectSlug = status === 404 ? '' : createRedirectSlug($page);
     goto(`login${redirectSlug}`);
   }
 </script>
+
+<svelte:head>
+  <title>{status}</title>
+</svelte:head>
+
+<div class="wrapper">
+  <h1>{status}</h1>
+  <Paper color="secondary" style="align-self: center;">
+    <Title style="color: var(--text-light); text-transform: uppercase;">
+      {error.message}
+    </Title>
+  </Paper>
+</div>
+
+{#if dev && error.stack}
+  <pre>{error.stack}</pre>
+{/if}
 
 <style>
   h1 {
@@ -66,20 +84,3 @@
     }
   }
 </style>
-
-<svelte:head>
-  <title>{status}</title>
-</svelte:head>
-
-<div class="wrapper">
-  <h1>{status}</h1>
-  <Paper color="secondary" style="align-self: center;">
-    <Title style="color: var(--text-light); text-transform: uppercase;">
-      {error.message}
-    </Title>
-  </Paper>
-</div>
-
-{#if dev && error.stack}
-  <pre>{error.stack}</pre>
-{/if}
