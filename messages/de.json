@@ -73,7 +73,7 @@
     "select-poster": "Poster auswählen",
     "new-poster": "Neues Poster",
     "remove-poster": "Poster entfernen",
-    "reolve-conflicts": "Konflikt lösen",
+    "resolve-conflicts": "Konflikt lösen",
     "done": "Erledigt",
     "continue-anyways": "Trotzdem fortfahren",
     "delete-token-and-deactivate-account": "Token löschen & Account deaktivieren",
@@ -101,7 +101,7 @@
   },
   "blocks": {
     "p1": {
-      "header": "Machen Sie Ihre Physio-Kurse bequem zu Hause",
+      "header": "Machen Sie Physio-Kurse bequem zu Hause",
       "text1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti.",
       "text2": ""
     },
