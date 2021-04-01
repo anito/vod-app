@@ -44,7 +44,7 @@
           variant={tab === TABS[1] ? 'unelevated' : 'outlined'}
         >
           <Icon class="material-icons">video_settings</Icon>
-          <Label>{$_('text.physio-classes')}</Label>
+          <Label>{$_('text.classes')}</Label>
         </Button>
         <Button
           class="focus:outline-none focus:shadow-outline"

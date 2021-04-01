@@ -15,13 +15,16 @@
       this.error((resUsers.data && resUsers.data.code) || resUsers.status, resUsers.message || resUsers.responseText);
     }
 
-    const resVideo = await api.get('videos', user && user.token);
+    const resVideos = await api.get('videos', user && user.token);
 
-    if (resVideo.success) {
-      videos.update(resVideo.data);
-      videoData = resVideo.data;
+    if (resVideos.success) {
+      videos.update(resVideos.data);
+      videoData = resVideos.data;
     } else {
-      this.error((resVideo.data && resVideo.data.code) || resVideo.status, resVideo.message || resVideo.responseText);
+      this.error(
+        (resVideos.data && resVideos.data.code) || resVideos.status,
+        resVideos.message || resVideos.responseText
+      );
     }
 
     return { usersData, videoData, ...query };
@@ -73,6 +76,7 @@
   let generateTokenDialog;
   let activateUserDialog;
   let resolveAllDialog;
+  let renewedTokenDialog;
   let removeTokenDialog;
   let redirectDialog;
   let user = $session.user;
@@ -95,12 +99,15 @@
   })(currentUser);
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: userInfos = ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
-  $: userIssues = userInfos.filter((info) => info.type === 'issue');
+  $: userIssues =
+    ($infos.has(selectionUserId) && $infos.get(selectionUserId).params.filter((info) => info.type === 'issue')) || [];
 
   onMount(() => {
     snackbar = getSnackbar();
-
+    let renewed;
+    if ((renewed = localStorage.getItem('renewed'))) {
+      renewedTokenDialog.open();
+    }
     // window.addEventListener('MDCChip:interaction', chipInteractionHandler);
     window.addEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
     window.addEventListener('INFO:open:InfoDialog', infoDialogHandler);
@@ -224,6 +231,12 @@
     }
   }
 
+  async function renewTokenDialogCloseHandler(e) {
+    if (e.detail.action === 'approved') {
+      localStorage.removeItem('renewed');
+    }
+  }
+
   function redirectDialogCloseHandler(e) {
     if (/^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i.test(e.detail.action))
       location.href = e.detail.action;
@@ -331,7 +344,7 @@
       </details>
     </div>
     <div class="item">
-      <h4>Weitergabe an Dritte</h4>
+      <h4>{$_('text.transfer-to-third-parties')}</h4>
       <Icon class="material-icons leading">warning</Icon>
       <p>
         Jeder im Besitz dieses Links verfügt automatisch über Zugriff auf gespeicherte Benutzerdaten, einschliesslich
@@ -340,7 +353,7 @@
       </p>
     </div>
     <div class="item">
-      <h4>Gültigkeit</h4>
+      <h4>{$_('text.validity')}</h4>
       <p>
         Die Gültigkeit des Tokens richtet sich jeweils nach dem Buchungsende des spätesten Videos. Falls gerade keine
         Videos gebucht sind, aber dennoch ein neuer Token angefordert wird, hat dieser eine generelle Gültigkeit von 30
@@ -360,10 +373,8 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={resolveAllDialogCloseHandler}
 >
-  <DialogTitle id="info-title"
-    >{userInfos.length ? 'Kein Zugriff auf aktive Inhalte' : 'Alle Probleme wurden behoben'}</DialogTitle
-  >
-  {#if userInfos.length}
+  {#if userIssues.length}
+    <DialogTitle id="info-title">{$_('text.content-inaccessible')}</DialogTitle>
     <Content id="info-content">
       <div class="item">
         <p>Der Benutzer <strong>{username}</strong> kann momentan nicht auf die von ihm gebuchten Inhalte zugreifen.</p>
@@ -386,9 +397,14 @@
       </Button>
     </Actions>
   {:else}
+    <Content id="info-content">
+      <div class="item">
+        {$_('text.issues-fixed')}
+      </div>
+    </Content>
     <Actions>
       <Button action="none" variant="unelevated" default use={[InitialFocus]}>
-        <Label>{$_('text.done')}</Label>
+        <Label>{$_('text.close')}</Label>
       </Button>
     </Actions>
   {/if}
@@ -420,18 +436,14 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={generateTokenDialogCloseHandler}
 >
-  <DialogTitle id="info-title">Token generieren</DialogTitle>
+  <DialogTitle id="info-title">{$_('text.generate-token')}</DialogTitle>
   <Content id="info-content">
     <div class="item">
       {#if token && !hasExpired}
         <Icon class="material-icons leading">warning</Icon>
         <p>Der bisherige Token wird dadurch unbrauchbar!</p>
       {/if}
-      <p>
-        Denken Sie daran, dem Benutzer
-        <strong>{username}</strong>
-        den neuen Token zu übermitteln.
-      </p>
+      <p>{@html $_('messages.transfer-token-reminder', { values: { name: username } })}</p>
     </div>
   </Content>
   <Actions>
@@ -469,21 +481,23 @@
   aria-describedby="event-content"
   on:MDCDialog:closed={redirectDialogCloseHandler}
 >
-  <DialogTitle id="event-title"
-    >{hasExpired
-      ? $_('text.token-expired')
-      : !active
-      ? $_('text.user-deactivated')
-      : $_('text.continue-as-user', { values: { name: username } })}</DialogTitle
-  >
+  <DialogTitle id="event-title">{$_('text.magic-link')}</DialogTitle>
   <Content id="event-content">
-    {#if hasExpired}
-      <p>Da der aktuelle Token abgelaufen ist, wird die Anmeldung als <strong>{username}</strong> fehlschlagen.</p>
+    {#if userIssues.length}
+      <p>{@html $_('messages.login-will-fail', { values: { name: username } })}</p>
+      <div class="reasons">
+        {#each userIssues as issue}
+          <Button
+            style="display: block;"
+            variant="raised"
+            on:click={() => proxyEvent(issue.eventType, { silent: true })}
+          >
+            <Label>{$_(issue.label)}</Label>
+          </Button>
+        {/each}
+      </div>
     {/if}
-    {#if !active}
-      <p>Da der Benutzer <strong>{username}</strong> deaktiviert ist, wird die Anmeldung fehlschlagen.</p>
-    {/if}
-    <p>Wenn Sie fortfahren, werden Sie von Ihrer aktuellen Sitzung abgemeldet.</p>
+    <p>{$_('messages.you-will-be-logged-out')}</p>
   </Content>
   <Actions>
     <Button action="none">
@@ -493,6 +507,27 @@
       <Label class="token-button-label"
         >{hasExpired || !active ? $_('text.continue-anyways') : $_('text.switch-user')}</Label
       >
+    </Button>
+  </Actions>
+</Dialog>
+<Dialog
+  bind:this={renewedTokenDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+  on:MDCDialog:closed={renewTokenDialogCloseHandler}
+>
+  <DialogTitle id="info-title">{$_('text.token-updated')}</DialogTitle>
+  <Content id="info-content">
+    <div class="item">
+      <p>{$_('text.token-was-renewed')}</p>
+    </div>
+  </Content>
+  <Actions>
+    <Button action="none">
+      <Label>{$_('text.close')}</Label>
+    </Button>
+    <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
+      <Label>{$_('text.got-it')}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -536,6 +571,10 @@
     border-radius: var(--border-r);
     box-shadow: 1px 1px 1px rgba(68, 68, 68, 0.12) inset;
     background: var(--background);
+  }
+  .reasons > :global(*) {
+    display: block;
+    margin: 1em 0;
   }
   .reasons-list {
     list-style: disc;

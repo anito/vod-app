@@ -8,6 +8,7 @@ export function post(req, res) {
 	api.post(`users/login?lang=${get(locale)}`, { ...user }).then((response) => {
     if (response.success && response.data.user) {
       // what will be saved in file session
+			console.log(response.data.user);
       response.data.user && (req.session.user = response.data.user);
       response.data.user.group.name === 'Administrator' && (req.session.groups = response.data.groups);
     }

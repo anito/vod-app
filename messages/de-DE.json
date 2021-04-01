@@ -21,7 +21,6 @@
     "next-steps": "Nächste Schritte",
     "yourCourses": "Ihre Kurse",
     "login": "Anmelden",
-    "physio-classes": "Physiotherapie Kurse",
     "user-profil": "Profil",
     "more-classes": "Weitere Kurse",
     "booked-classes": "Gebuchte Kurse",
@@ -62,8 +61,9 @@
     "create-new-user": "Neuen Klienten anlegen",
     "save": "Speichern",
     "reset": "Zurücksetzen",
-    "got-it": "Ich habe verstanden",
-    "timeframe-updated": "Zeitrahmen aktualisiert",
+    "got-it": "Ok, verstanden",
+    "period-updated": "Zeitrahmen aktualisiert",
+    "not-scheduled": "Nicht geplant",
     "uploaded-on": "Hochgeladen: {date}",
     "no-poster": "Kein Poster",
     "until-date": "<small>noch bis</small><br />{date}",
@@ -73,21 +73,36 @@
     "select-poster": "Poster auswählen",
     "new-poster": "Neues Poster",
     "remove-poster": "Poster entfernen",
-    "resolve-conflicts": "Konflikt lösen",
+    "resolve-conflicts": "Konflikte jetzt lösen",
     "done": "Erledigt",
     "continue-anyways": "Trotzdem fortfahren",
     "delete-token-and-deactivate-account": "Token löschen & Account deaktivieren",
     "switch-user": "Ja, Benutzer wechseln",
     "video-removed": "Video entfernt",
+    "select-period": "Zeitraum festlegen",
     "1-month": "1 Monat",
-    "-months": "{number} Monate",
-    "self-select-timeframe": "individueller Zeitraum",
-    "no-timeframe": "Kein Zeitrahmen",
+    "2-months": "2 Monate",
+    "3-months": "3 Monate",
+    "individually": "individuell",
     "user-has-no-videos": "Benutzer <strong>{name}</strong> hat keine Videokurse abonniert",
     "user-doesnt-exist": "Dieser Benutzer existiert nicht",
     "admins-have-full-access": "Admins haben vollen Zugriff",
     "user-is-deactivated": "Benutzer ist deaktiviert",
-    "remove-class": "Kurs entfernen"
+    "remove-class": "Kurs entfernen",
+    "scheduler": "Planer",
+    "today": "Heute",
+    "apply": "Anwenden",
+    "validity": "Gültigkeit",
+    "transfer-to-third-parties": "Weitergabe an Dritte",
+    "classes": "Kurse",
+    "issues-fixed": "Probleme behoben",
+    "remind-me-again": "Wieder erinnern",
+    "token-was-renewed": "Der Token wurde aktualisiert, da er abgelaufen war.",
+    "pending": "ausstehend",
+    "token-updated": "Token aktualisiert",
+    "account-inactive": "Account ist inaktiv",
+    "magic-link": "Magic Link",
+    "video-is-active": "{title} ist momentan aktiv"
   },
   "summary": {
     "copy-link": {
@@ -143,7 +158,11 @@
   "messages": {
     "error": "Error: {status}",
     "permanently-remove-user": "{name} wird dauerhaft gelöscht. Bestätigen Sie mit OK",
-    "video-availabe-until": "Dieser Online-Videokurs steht für Sie bis einschl. <strong>{date}</strong> zur Verfügung"
+    "video-available-until": "Dieser Online-Videokurs steht für Sie bis einschl. <strong>{date}</strong> bereit.",
+    "transfer-token-reminder": "Denken Sie daran, dem Benutzer <strong>{name}</strong> den neuen Token zu übermitteln.",
+    "you-will-be-logged-out": "Wenn Sie fortfahren, werden Sie von Ihrer aktuellen Sitzung abgemeldet.",
+    "login-will-fail": "Die Anmeldung als <strong>{name}</strong> wird fehlschlagen. Die folgende Aktionen müssen erst durchgeführt werden: ",
+    "class-has-active-time-slot": "Dieser Kurs hat ein aktives Zeitfenster.<br /> <strong>{title}</strong> trotzdem entfernen?"
   },
   "languages": {
     "en": "English",
@@ -155,5 +174,6 @@
     "error404": "Nicht gefunden",
     "expiredToken": "Token abgelaufen"
   },
-  "direction": "ltr"
+  "direction": "ltr",
+  "message": {}
 }

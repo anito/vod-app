@@ -3,8 +3,8 @@ import { register, init, getLocaleFromNavigator, locale as $locale, locale } fro
 import { setCookie, getCookie } from './modules/cookie.js';
 
 const INIT_OPTIONS = {
-  fallbackLocale: 'en',
-  initialLocale: 'de',
+  fallbackLocale: 'en-US',
+  initialLocale: 'de-DE',
   loadingDelay: 200,
   formats: {},
   warnOnMissingMessages: true,
@@ -12,8 +12,8 @@ const INIT_OPTIONS = {
 
 let currentLocale = null;
 
-register('en', () => import('../messages/en.json'));
-register('de', () => import('../messages/de.json'));
+register('en-US', () => import('../messages/en-US.json'));
+register('de-DE', () => import('../messages/de-DE.json'));
 
 $locale.subscribe((value) => {
   if (value == null) return;

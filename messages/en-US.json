@@ -21,7 +21,6 @@
     "next-steps": "Next steps",
     "yourCourses": "Your classes",
     "login": "Sign in",
-    "physio-classes": "Physical Therapie Courses",
     "user-profil": "Profile",
     "more-classes": "More classes",
     "booked-classes": "Booked classes",
@@ -63,7 +62,8 @@
     "save": "Save",
     "reset": "Reset",
     "got-it": "Got it",
-    "timeframe-updated": "Timeframe updated",
+    "period-updated": "Period updated",
+    "not-scheduled": "not scheduled",
     "uploaded-on": "Uploaded: {date}",
     "no-poster": "No poster",
     "until-date": "<small>valid until</small><br />{date}",
@@ -73,21 +73,36 @@
     "select-poster": "Select Poster",
     "new-poster": "New Poster",
     "remove-poster": "Remove Poster",
-    "resolve-conflicts": "Fix conflicts",
+    "resolve-conflicts": "Fix conflicts now",
     "done": "Done",
     "continue-anyways": "Continue anyways",
     "delete-token-and-deactivate-account": "Delete Token & Deactivate Account",
     "switch-user": "Yes, switch user",
     "video-removed": "Video removed",
+    "select-period": "Select Period",
     "1-month": "1 Month",
-    "-months": "{number} Months",
-    "self-select-timeframe": "individual Timeframe",
-    "no-timeframe": "No Timeframe",
+    "2-months": "2 Months",
+    "3-months": "3 Months",
+    "individually": "individually",
     "user-has-no-videos": "User <strong>{name}</strong> has not booked any videos",
     "user-doesnt-exist": "User doesn't exist",
     "admins-have-full-access": "Admins have full access",
     "user-is-deactivated": "User is deactivated",
-    "remove-class": "Remove class"
+    "remove-class": "Remove class",
+    "scheduler": "Scheduler",
+    "today": "Today",
+    "apply": "Apply",
+    "validity": "Validity",
+    "transfer-to-third-parties": "Transfer to third parties",
+    "classes": "Classes",
+    "issues-fixed": "Issues fixed",
+    "remind-me-again": "Remind me again",
+    "token-was-renewed": "The token was updated because it had expired.",
+    "pending": "pending",
+    "token-updated": "Token updated",
+    "account-inactive": "Account is inactive",
+    "magic-link": "Magic Link",
+    "video-is-active": "{title} is currently active"
   },
   "summary": {
     "copy-link": {
@@ -143,7 +158,11 @@
   "messages": {
     "error": "Error: {status}",
     "permanently-remove-user": "{name} will be permanently removed. Confirm pressing OK",
-    "video-availabe-until": "This class will be available until <strong>{date}</strong>"
+    "video-available-until": "This class will be available for you until <strong>{date}</strong>",
+    "transfer-token-reminder": "Remember to send the new token to the user <strong> {name} </strong>.",
+    "you-will-be-logged-out": "If you continue, you will be logged out of your current session.",
+    "login-will-fail": "Logging in as <strong> {name} </strong> will fail. \nThe following actions must first be carried out:",
+    "class-has-active-time-slot": "This course has an active time slot. <br /> Remove <strong> {title} </strong> anyway?"
   },
   "languages": {
     "en": "English",
@@ -155,5 +174,9 @@
     "error404": "Not Found",
     "expiredToken": "Expired Token"
   },
-  "direction": "ltr"
+  "direction": "ltr",
+  "test": {
+    "issues-fixed": ""
+  },
+  "message": {}
 }
