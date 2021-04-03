@@ -99,8 +99,8 @@
   })(currentUser);
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: userIssues =
-    ($infos.has(selectionUserId) && $infos.get(selectionUserId).params.filter((info) => info.type === 'issue')) || [];
+  $: userInfos = ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
+  $: userIssues = userInfos.filter((info) => info.type === 'issue');
 
   onMount(() => {
     snackbar = getSnackbar();
