@@ -102,13 +102,26 @@
     "token-updated": "Token aktualisiert",
     "account-inactive": "Account ist inaktiv",
     "magic-link": "Magic Link",
-    "video-is-active": "{title} ist momentan aktiv",
-    "session-expires": "Sitzung ended in:"
+    "video-is-active": "Aktives Video",
+    "session-expires": "Sitzung ended in:",
+    "what-is-a-token": "Was ist ein Token?",
+    "example": "Beispiel",
+    "user": "Benutzer aktivieren",
+    "deactivate": "deaktivieren",
+    "activate": "aktivieren",
+    "delete-token": "Token löschen",
+    "what-is-the-token-good-for": "Wofür wird der Token verwendet?",
+    "how-do-i-proceed": "Wie gehe ich weiter vor?",
+    "a-token-is": "Ein Token ist eine kryptische Zeichenkette mit verschlüsselten (Anmelde-) Informationen.",
+    "type-something": "tippe etwas um Namen zu finden",
+    "no-more-videos-available": "Keine weiteren Videokurse verfügbar",
+    "you-cant-revert-deletion-of-user": "Dieser Vorgang kann nicht rückgängig gemacht werden!",
+    "attention": "Achtung!"
   },
   "summary": {
     "copy-link": {
       "header": "Link kopieren",
-      "text": "Benutzen Sie den Button <i>Kopieren</i> um den Link in Ihrer Zwischenablage zu speichern. Sie können den Link anschliessend über den <i>Einfügen</i>-Befehl (<i>Strg-V</i>) in eine Email einfügen und weiterleiten."
+      "text": "Benutzen Sie den Button <i>Kopieren</i> um den Link in der Zwischenablage zu speichern. Sie können ihn nun z.B. in eine E-Mail einfügen und versenden."
     },
     "send-link": {
       "text": "Abhängig von der Konfiguration Ihres Browsers, wird eine Email generiert, bereit zum Versenden an den Benutzer."
@@ -121,7 +134,7 @@
     },
     "test-magic-link": {
       "header": "Den Magic Link testen",
-      "text": "Testen Sie den Magic Link indem Sie auf den Button <i>Magic Link</i> klicken. Sie werden nun zur Login Seite weitergeletet wo der im Link enthaltene Token ausgelesen wird."
+      "text": "Durch Anklicken des Magic Links melden Sie sich direkt am entsprechenden Benutzer Account an.  "
     },
     "send-email": {
       "header": "E-Mail senden"
@@ -165,7 +178,18 @@
     "transfer-token-reminder": "Denken Sie daran, dem Benutzer <strong>{name}</strong> den neuen Token zu übermitteln.",
     "you-will-be-logged-out": "Wenn Sie fortfahren, werden Sie von Ihrer aktuellen Sitzung abgemeldet.",
     "login-will-fail": "Die Anmeldung als <strong>{name}</strong> wird fehlschlagen. Die folgende Aktionen müssen erst durchgeführt werden: ",
-    "class-has-active-time-slot": "Dieser Kurs hat ein aktives Zeitfenster.<br /> <strong>{title}</strong> trotzdem entfernen?"
+    "class-has-active-time-slot": "Dieser Kurs hat ein aktives Zeitfenster.<br /> <strong>{title}</strong> trotzdem entfernen?",
+    "content-inaccessible": "<p>Der Benutzer <strong>{name}</strong> kann momentan nicht auf die von ihm gebuchten Inhalte zugreifen.</p><p>Um die Inhalte verfügbar zu machen, müssen folgende Aktionen ausgeführt werden:</p>",
+    "should-user-be-activated": "<p>Soll Benutzer <strong>{name}</strong> aktiviert werden?</p>",
+    "deactivating-token-locks-account": "Das Löschen des Tokens deaktiviert den Account!",
+    "previous-token-will-be-discarted": "Der bisherige Token wird dadurch verworfen!",
+    "validity-of-the-token": "Die Gültigkeit des Tokens richtet sich jeweils nach dem Buchungsende des spätesten Videos. Falls gerade keine Videos gebucht sind, aber dennoch ein neuer Token angefordert wird, hat dieser eine generelle Gültigkeit von 30 Tagen.",
+    "every-token-owner": "Der Besitzer des Token verfügt automatisch über Zugriff auf gespeicherte Benutzerdaten, einschliesslich gebuchter Inhalte. Gehen Sie daher äusserst achtsam mit dem Token um und geben Sie ihn keinesfalls an Dritte weiter.",
+    "usage-of-the-button": "<p>Benutzen Sie den Button <i class=\"button\">{button}</i>, um einen <i>magischen Link</i> zu erzeugen. Dadurch wird auch automatisch der Account freigeschaltet. Die Gültigkeit des generierten Token richtet sich automatisch nach der\n Buchungsdauer des zuletzt auslaufenden Videos.</p>\n<p>Beachten Sie, dass bei <strong>Hinzubuchen weiterer Videos</strong> auch dringend ein neuer Token generiert und ausgehändigt werden muss. Nur dadurch wird sichergestellt, dass sich der Benutzer über den gesamten Buchungszeitraums hinweg am Portal anmelden kann. <strong>Ist ein Token verfallen, ist danach auch eine konventionelle Anmeldung per Anmeldeformular nicht mehr möglich.</strong> Etwaige noch aktive Inhalte können in diesem Fall von Ihrem Kunden nicht mehr genutzt werden!</p>\n<p><strong>Stellen Sie jederzeit sicher, dass Ihre KlientInnen im Besitz des aktuellen Tokens sind. Er ist gewissermassen der <i>Schlüssel</i> zu den gebuchten Inhalten.</strong></p>",
+    "misusage": "Was tun bei Verdacht auf Missbrauch des Tokens?",
+    "generate-a-new-token": "Generieren Sie in diesem Fall über den Button <i class=\"button\">{button}</i> einen neuen Token. Alle zuvor generierten Token werden dadurch unbrauchbar.",
+    "use-remove-token-button": "Verwenden Sie den Button <i class=\"button\">{button}</i>, um das Konto zu deaktivieren. Alternativ können Sie auch <i>Deactivate User</i> anklicken. In beiden Fällen ist eine Anmeldung nicht mehr möglich.",
+    "what-is-the-token-used-for": "Der Token wird zur Authentifizierung verwendet. D.h. das übliche fehlerbehaftete Eintippen von Benutzernamen/Passwort entfällt und es kann sofort losgelegt werden. Der Token beinhaltet verschlüsselte Parameter wie Gültigkeitsdauer und Benutzername. Kann am Server eine Zuordnung stattfinden, wird der entsprechende Benutzer angemeldet."
   },
   "languages": {
     "en": "English",

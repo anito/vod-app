@@ -272,7 +272,7 @@
           >{search.length && 'close'}</TextfieldIcon
         >
       </Textfield>
-      <HelperText id="helper-text">tippe etwas um Namen zu finden</HelperText>
+      <HelperText id="helper-text">{$_('text.type-something')}</HelperText>
     </div>
     {#if $users.length}
       <List class="users-list" twoLine avatarList singleSelection bind:selectedIndex={selectionIndex}>
@@ -288,67 +288,34 @@
       </div>
     {/if}
   </div>
-  <div slot="ad"><Ticker /></div>
-  <div slot="footer">
-    <InfoChips staggered {selectionUserId} />
+  <div slot="ad" />
+  <div slot="footer" class="flex justify-between">
+    <div class="m-auto ml-0"><InfoChips staggered {selectionUserId} /></div>
+    <div class="m-auto mr-0"><Ticker /></div>
   </div>
 </Layout>
 <Dialog bind:this={infoDialog} aria-labelledby="info-title" aria-describedby="info-content">
-  <DialogTitle id="info-title">Was ist ein Token?</DialogTitle>
+  <DialogTitle id="info-title">{$_('text.what-is-a-token')}</DialogTitle>
   <Content id="info-content">
-    <div class="item">Ein Token ist eine kryptische Zeichenkette mit verschlüsselten (Anmelde-) Informationen.</div>
+    <div class="item">{$_('text.a-token-is')}</div>
     <div class="item">
       <details>
-        <summary>Beispiel</summary>
-        <pre>
-          eyJ0eXAiiJKV1QiLCJhbGciOiJIUzI1NiJ9.as...
-        </pre>
-      </details>
-      <details>
-        <summary>Wofür wird der Token verwendet?</summary>
+        <summary>{$_('text.what-is-the-token-good-for')}</summary>
         <p>
-          Der Token wird zur Authentifizierung verwendet. D.h. das übliche fehlerbehaftete Eintippen von
-          Benutzernamen/Passwort entfällt und es kann sofort losgelegt werden. Der Token beinhaltet verschlüsselte
-          Parameter wie Gültigkeitsdauer und Benutzername. Kann am Server eine Zuordnung stattfinden, wird der
-          entsprechende Benutzer angemeldet.
+          {$_('messages.what-is-the-token-used-for')}
         </p>
       </details>
       <details>
-        <summary>Wie gehe ich weiter vor?</summary>
-        <p>
-          Benutzen Sie den Button
-          <i class="button">{$_('text.generate-token')}</i>, um einen <i>magischen Link</i> zu erzeugen. Dadurch wird auch
-          automatisch der Account freigeschaltet. Die Gültigkeit des generierten Token richtet sich automatisch nach der
-          Buchungsdauer des zuletzt auslaufenden Videos.
-        </p>
-        <p>
-          Beachten Sie, dass bei <strong>Hinzubuchen weiterer Videos</strong> auch dringend ein neuer Token generiert
-          und ausgehändigt werden muss. Nur dadurch wird sichergestellt, dass sich der Benutzer über den gesamten
-          Buchungszeitraums hinweg am Portal anmelden kann.
-          <strong
-            >Ist ein Token verfallen, ist danach auch eine konventionelle Anmeldung per Anmeldeformular nicht mehr
-            möglich.</strong
-          > Etwaige noch aktive Inhalte können in diesem Fall von Ihrem Kunden nicht mehr genutzt werden!
-        </p>
-        <p>
-          <strong
-            >Stellen Sie jederzeit sicher, dass Ihre KlientInnen im Besitz des aktuellen Tokens sind. Er ist
-            gewissermassen der <i>Schlüssel</i> zu den gebuchten Inhalten.</strong
-          >
-        </p>
+        <summary>{$_('text.how-do-i-proceed')}</summary>
+        {@html $_('messages.usage-of-the-button', { values: { button: $_('text.generate-token') } })}
       </details>
       <details>
-        <summary>Was tun bei Verdacht auf Missbrauch des Tokens?</summary>
+        <summary>{$_('messages.misusage')}</summary>
         <p>
-          Generieren Sie in diesem Fall über den Button
-          <i class="button">{$_('text.generate-token')}</i>
-          einen neuen Token. Alle zuvor generierten Token werden dadurch unbrauchbar.
+          {@html $_('messages.generate-a-new-token', { values: { button: $_('text.generate-token') } })}
         </p>
         <p>
-          Verwenden Sie den Button
-          <i class="button">{$_('text.remove-token')}</i>, um das Konto zu sperren. Alternativ können Sie auch
-          <i>Deactivate User</i>
-          anklicken. In beiden Fällen ist eine Anmeldung nicht mehr möglich.
+          {@html $_('messages.use-remove-token-button', { values: { button: $_('text.remove-token') } })}
         </p>
       </details>
     </div>
@@ -356,17 +323,13 @@
       <h4>{$_('text.transfer-to-third-parties')}</h4>
       <Icon class="material-icons leading">warning</Icon>
       <p>
-        Jeder im Besitz dieses Links verfügt automatisch über Zugriff auf gespeicherte Benutzerdaten, einschliesslich
-        gebuchter Inhalte. Gehen Sie daher äusserst achtsam mit dem Token (Link) um und geben Sie den Link keinesfalls
-        an Dritte weiter.
+        {$_('messages.every-token-owner')}
       </p>
     </div>
     <div class="item">
       <h4>{$_('text.validity')}</h4>
       <p>
-        Die Gültigkeit des Tokens richtet sich jeweils nach dem Buchungsende des spätesten Videos. Falls gerade keine
-        Videos gebucht sind, aber dennoch ein neuer Token angefordert wird, hat dieser eine generelle Gültigkeit von 30
-        Tagen.
+        {$_('messages.validity-of-the-token')}
       </p>
     </div>
   </Content>
@@ -386,8 +349,7 @@
     <DialogTitle id="info-title">{$_('text.content-inaccessible')}</DialogTitle>
     <Content id="info-content">
       <div class="item">
-        <p>Der Benutzer <strong>{username}</strong> kann momentan nicht auf die von ihm gebuchten Inhalte zugreifen.</p>
-        <p>Sollen die folgenden Aktionen ausgeführt werden?</p>
+        {@html $_('messages.content-inaccessible', { values: { name: username } })}
       </div>
       <div class="list">
         <ul class="reasons-list">
@@ -424,10 +386,10 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={activateUserDialogCloseHandler}
 >
-  <DialogTitle id="info-title">{username} {active ? 'deaktivieren' : 'aktivieren'}</DialogTitle>
+  <DialogTitle id="info-title">{$_('text.activate-user')}</DialogTitle>
   <Content id="info-content">
     <div class="item">
-      <p>Soll Benutzer <strong>{username}</strong> {active ? 'deaktiviert' : 'aktiviert'} werden?</p>
+      {@html $_('messages.should-user-be-activated', { values: { name: username } })}
     </div>
   </Content>
   <Actions>
@@ -450,7 +412,7 @@
     <div class="item">
       {#if token && !hasExpired}
         <Icon class="material-icons leading">warning</Icon>
-        <p>Der bisherige Token wird dadurch unbrauchbar!</p>
+        <p>{$_('messages.previous-token-will-be-discarted')}</p>
       {/if}
       <p>{@html $_('messages.transfer-token-reminder', { values: { name: username } })}</p>
     </div>
@@ -470,10 +432,10 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={removeTokenDialogCloseHandler}
 >
-  <DialogTitle id="info-title">Token löschen</DialogTitle>
+  <DialogTitle id="info-title">{$_('text.delete-token')}</DialogTitle>
   <Content id="info-content">
     <Icon class="material-icons leading">warning</Icon>
-    <div class="item">Achtung, durch Löschen des Token wird der Account gesperrt!</div>
+    <div class="item">{$_('messages.deactivating-token-locks-account')}</div>
   </Content>
   <Actions>
     <Button action="none">
@@ -558,10 +520,6 @@
   .fab-add-user {
     position: absolute;
   }
-  [slot='footer'] {
-    color: var(--text-light-grey);
-    font-size: 0.8em;
-  }
   :global(.datapicker--open) .fab-add-user,
   :global(.add-user-view--open) .fab-add-user {
     display: none;
@@ -573,10 +531,8 @@
     margin: revert;
   }
   pre {
-    overflow: auto;
     padding: 1.5rem 2rem;
     margin: 0.8rem 0 2.4rem;
-    /* max-width: var(--code-w); */
     border-radius: var(--border-r);
     box-shadow: 1px 1px 1px rgba(68, 68, 68, 0.12) inset;
     background: var(--background);

@@ -102,13 +102,26 @@
     "token-updated": "Token updated",
     "account-inactive": "Account is inactive",
     "magic-link": "Magic Link",
-    "video-is-active": "{title} is currently active",
-    "session-expires": "Session expires in:"
+    "video-is-active": "Active Class",
+    "session-expires": "Session expires in:",
+    "what-is-a-token": "What is a token?",
+    "example": "Example",
+    "user": "Activate User",
+    "deactivate": "deactivate",
+    "activate": "activate",
+    "delete-token": "Delete Token",
+    "what-is-the-token-good-for": "What is the token used for?",
+    "how-do-i-proceed": "How do I proceed?",
+    "a-token-is": "A token is a cryptic string with encrypted (login) information.",
+    "type-something": "type something to find names",
+    "no-more-videos-available": "No more video classes available",
+    "you-cant-revert-deletion-of-user": "This action can not be undone!",
+    "attention": "Attention!"
   },
   "summary": {
     "copy-link": {
       "header": "Copy link",
-      "text": "Use the <i> Copy </i> button to save the link in your clipboard. \nYou can then paste the link into an email using the <i> Paste </i> command (<i> Ctrl-V </i>). Next forward the mail to the client."
+      "text": "Use the <i> Copy </i> button to save the link to the clipboard. You can than paste the Link into an email."
     },
     "send-link": {
       "text": "Depending on the configuration of your browser, an email is generated, ready to be sent to the user."
@@ -121,7 +134,7 @@
     },
     "test-magic-link": {
       "header": "Test the Magic Link",
-      "text": "Test the Magic Link by clicking the <i> Magic Link </i> button. \nAs a result you will be redirected to the login page where the token provided with the link is read out."
+      "text": "By clicking the Magic Link, you sign into the relevant user account."
     },
     "send-email": {
       "header": "Send email"
@@ -165,7 +178,18 @@
     "transfer-token-reminder": "Remember to send the new token to the user <strong> {name} </strong>.",
     "you-will-be-logged-out": "If you continue, you will be logged out of your current session.",
     "login-will-fail": "Logging in as <strong> {name} </strong> will fail. \nThe following actions must first be carried out:",
-    "class-has-active-time-slot": "This course has an active time slot. <br /> Remove <strong> {title} </strong> anyway?"
+    "class-has-active-time-slot": "This course has an active time slot. <br /> Remove <strong> {title} </strong> anyway?",
+    "content-inaccessible": "<p> The user <strong> {name} </strong> can currently not access the content he has booked. </p> <p> To make the content available, the following actions must be taken: </p>",
+    "should-user-be-activated": "<p>Should user <strong>{name}</strong> be activated?</p>",
+    "deactivating-token-locks-account": "Deleting the token will lock the account!",
+    "previous-token-will-be-discarted": "The previous token will be discarded!",
+    "validity-of-the-token": "The validity of the token is based on the booking end of the latest video. \nIf no videos are currently booked but a new token is requested, it is generally valid for 30 days.",
+    "every-token-owner": "The owner of the token automatically has access to stored user data, including booked content. \nYou should therefore handle the token with care and never pass it on to third parties.",
+    "usage-of-the-button": "<p>\n\nUse the <i class = \"button\">{button}</i> button to create a <i> magic link </i>. \nThis will also automatically activate the account. \nThe validity of the generated token is automatically based on the\n \nBooking duration of the last expiring video. </p>\n\n<p>\n\nPlease note that if you <strong> book additional videos </strong>, a new token must urgently be generated and handed over. \nThis is the only way to ensure that the user can log into the portal for the entire booking period. \n<strong> If a token has expired, conventional registration using the registration form is no longer possible. </strong> In this case, any content that is still active can no longer be used by your customer! </p>\n\n<p>\n\n<strong> Make sure that your clients are in possession of the current token at all times. \nTo a certain extent, it is the <i> key </i> to the booked content. </strong> </p>",
+    "misusage": "What should I do if I suspect that the token has been misused?",
+    "generate-a-new-token": "In this case, generate a new token using the <i class = \"button\"> {button} </i> button. \nAll previously generated tokens will become useless as a result.",
+    "use-remove-token-button": "Use the <i class = \"button\">{button}</i> button to lock the account. \nAlternatively, you can also click on <i> Deactivate User </i>. \nIn both cases, registration is no longer possible.",
+    "what-is-the-token-used-for": "The token is used for user authentication. \nThis means that the usual erroneous typing of the user name / password is no longer necessary and you can start immediately. \nThe token contains encrypted parameters such as the period of validity or user name. \nIf an assignment can take place server-side, the corresponding user will be logged in."
   },
   "languages": {
     "en": "English",

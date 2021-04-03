@@ -92,6 +92,9 @@
 
 <Layout class={segment}>
   <slot />
-  <div slot="ad"><Ticker /></div>
-  <div slot="footer" />
+  <div slot="ad" />
+  <div slot="footer" class="flex justify-between">
+    <div class="m-auto ml-0" />
+    <div class="m-auto mr-0"><Ticker /></div>
+  </div>
 </Layout>

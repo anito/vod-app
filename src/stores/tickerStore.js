@@ -8,7 +8,7 @@ function createStore() {
     console.log('first subscriber');
     return () => {
       clearInterval(__session__.interval);
-      console.log('%c SESSION ENDED', 'background: #ff5722; color: #ffffff');
+      console.log('%c SESSION ENDED', 'background: #ff5722; color: #ffffff; padding:3px;');
     }
           
   })
@@ -20,7 +20,7 @@ function createStore() {
         exp = new Date(exp);
       }
       if (__session__.interval) console.log('%c SESSION EXTENDED', 'background: #2f6ef7; color: #ffffff');
-      else console.log('%c SESSION STARTED', 'background: #5eba7d; color: #ffffff');
+      else console.log('%c SESSION STARTED', 'background: #5eba7d; color: #ffffff; padding:3px;');
       
       clearInterval(__session__.interval);
       __session__.interval = setInterval(() => {
