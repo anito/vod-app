@@ -1,5 +1,7 @@
 <script>
   import { stores } from '@sapper/app';
+  import { onMount } from 'svelte';
+  import { post, proxyEvent } from 'utils';
   import { Blurb, Hero } from '@sveltejs/site-kit';
   import Layout from './layout.svelte';
   import { _ } from 'svelte-i18n';
@@ -9,6 +11,17 @@
   $: continueWith = $session.user
     ? { title: $_('text.yourCourses'), url: 'videos' }
     : { title: $_('text.login'), url: 'login' };
+
+  onMount(() => {
+    extendSession();
+  });
+
+  async function extendSession() {
+    const res = await post('auth/session', {});
+    if (res) {
+      proxyEvent('session:extend', { expires: res.expires });
+    }
+  }
 </script>
 
 <svelte:head>

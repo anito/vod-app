@@ -35,10 +35,10 @@
   import { stores, goto } from '@sapper/app';
   import { onMount, getContext } from 'svelte';
   import { infos } from '../../stores/infoStore';
+  import { post } from 'utils';
   import Layout from './layout.svelte';
-  import { InfoChips, SimpleUserCard } from 'components';
+  import { InfoChips, SimpleUserCard, Ticker } from 'components';
   import { proxyEvent } from 'utils';
-  import Paper, { Title } from '@smui/paper';
   import Button, { Icon } from '@smui/button';
   import Fab, { Label } from '@smui/fab';
   import Textfield from '@smui/textfield';
@@ -81,7 +81,7 @@
   let redirectDialog;
   let user = $session.user;
 
-  // update stores with what we got from preload
+  // from preload
   users.update(usersData);
   videos.update(videoData);
 
@@ -105,9 +105,10 @@
   onMount(() => {
     snackbar = getSnackbar();
     let renewed;
-    if ((renewed = localStorage.getItem('renewed'))) {
+    if ((renewed = localStorage.getItem('renewed')) && renewed == ($session.user && $session.user.id)) {
       renewedTokenDialog.open();
     }
+
     // window.addEventListener('MDCChip:interaction', chipInteractionHandler);
     window.addEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
     window.addEventListener('INFO:open:InfoDialog', infoDialogHandler);
@@ -126,6 +127,14 @@
       window.removeEventListener('INFO:token:Redirect', tokenRedirectHandler);
     };
   });
+
+  async function extendSession() {
+    console.log('extending session...');
+    const res = await post('auth/session', {});
+    if (res) {
+      proxyEvent('session:extend', { expires: res.expires });
+    }
+  }
 
   async function addUser() {
     await goto('users/add');
@@ -279,7 +288,7 @@
       </div>
     {/if}
   </div>
-  <div slot="ad" />
+  <div slot="ad"><Ticker /></div>
   <div slot="footer">
     <InfoChips staggered {selectionUserId} />
   </div>

@@ -1,6 +1,6 @@
 <script>
-  import { stores } from "@sapper/app";
-  import { GridItem, LayoutGrid } from "@sveltejs/site-kit";
+  import { stores } from '@sapper/app';
+  import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
 
   export let stretch = false;
 

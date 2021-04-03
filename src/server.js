@@ -6,6 +6,7 @@ import session from 'express-session';
 import sessionFileStore from 'session-file-store';
 import * as sapper from '@sapper/server';
 import { i18nMiddleware } from "./i18n";
+import { config } from 'config';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
@@ -16,18 +17,15 @@ dev && ( process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0 );
 
 polka() // You can also use Express
   .use(
-		i18nMiddleware(),
     bodyParser.json(),
     sirv('static', { dev }),
-		compression({ threshold: 0 }),
+    compression({ threshold: 0 }),
     session({
-      secret: 'SomeSecretStringThatIsNotInGithub',
+      secret: 'kjsdlkf%$267xKLJ§j93489jksdhfuu$&§%$9usij99jj',
       resave: false,
       saveUninitialized: true,
       cookie: {
-        // 1h 		1*60*60*1000
-        // maxAge: 1*60*60*1000
-        maxAge: 15000 * 1000,
+        maxAge: config.MAX_AGE,
       },
       store: new FileStore({
         path: `.sessions`,
@@ -41,7 +39,8 @@ polka() // You can also use Express
           groups: req.session.groups || [],
           expires: req.session.cookie.expires,
         },
-    })
+    }),
+    i18nMiddleware()
   )
   .listen(PORT, (err) => {
     if (err) console.log('error', err);

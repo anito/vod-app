@@ -1,6 +1,5 @@
 <script context="module">
   import * as api from 'api';
-  import { post, redirectPath } from 'utils';
 
   export async function preload(page) {
     let res, token;
@@ -20,8 +19,8 @@
   import { ListMessages, ListErrors, LoginForm } from 'components';
   import { Header } from '@sveltejs/site-kit';
   import { flash } from '../../stores/flashStore';
-  import { fly, fade, slide } from 'svelte/transition';
-  import { windowSize } from 'utils';
+  import { fly } from 'svelte/transition';
+  import { post, windowSize, redirectPath, proxyEvent } from 'utils';
   import Paper, { Title, Subtitle, Content } from '@smui/paper';
   import { _ } from 'svelte-i18n';
 
@@ -42,7 +41,10 @@
   let root;
   let flashOutroEnded = false;
 
-  // from preload
+  /**
+   * For token logins
+   * from preload
+   */
   export let data = null;
   export let success = false;
 
@@ -71,7 +73,6 @@
       flash.update({ type: 'success', ...data });
       saveSession();
     } else if (success === false && data) {
-      console.log('failed', data);
       // token login failed
       // wait until snackbar is ready
       setTimeout(() => {
@@ -106,8 +107,13 @@
   async function saveSession() {
     const res = await post('auth/proxy', { ...data });
     if (res) {
-      ($session.user = res.user) && ($session.role = res.user.group.name);
+      res.user && ($session.user = res.user);
       res.groups && ($session.groups = res.groups);
+      res.expires && ($session.expires = new Date(res.expires));
+      $session.role = res.user.group.name;
+
+      if (res.renewed) localStorage.setItem('renewed', res.renewed);
+      proxyEvent('session:started');
 
       configSnackbar($_('text.external-login-welcome-message', { values: { name: res.user.name } }));
       snackbar.open();

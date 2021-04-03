@@ -62,7 +62,7 @@
     "save": "Save",
     "reset": "Reset",
     "got-it": "Got it",
-    "period-updated": "Period updated",
+    "time-slot-updated": "Time slot updated",
     "not-scheduled": "not scheduled",
     "uploaded-on": "Uploaded: {date}",
     "no-poster": "No poster",
@@ -79,7 +79,7 @@
     "delete-token-and-deactivate-account": "Delete Token & Deactivate Account",
     "switch-user": "Yes, switch user",
     "video-removed": "Video removed",
-    "select-period": "Select Period",
+    "select-time-slot": "Select time slot",
     "1-month": "1 Month",
     "2-months": "2 Months",
     "3-months": "3 Months",
@@ -102,7 +102,8 @@
     "token-updated": "Token updated",
     "account-inactive": "Account is inactive",
     "magic-link": "Magic Link",
-    "video-is-active": "{title} is currently active"
+    "video-is-active": "{title} is currently active",
+    "session-expires": "Session expires in:"
   },
   "summary": {
     "copy-link": {
@@ -110,8 +111,7 @@
       "text": "Use the <i> Copy </i> button to save the link in your clipboard. \nYou can then paste the link into an email using the <i> Paste </i> command (<i> Ctrl-V </i>). Next forward the mail to the client."
     },
     "send-link": {
-      "header": "Send link",
-      "text": "Depending on the configuration of your browser, an email program starts when upon clicking special email links. \nIf there is no email client starting up, jump to the next point. <br /> Here is a Test Link:"
+      "text": "Depending on the configuration of your browser, an email is generated, ready to be sent to the user."
     },
     "next-steps": {
       "text": "Weitere Schritte"
@@ -121,7 +121,10 @@
     },
     "test-magic-link": {
       "header": "Test the Magic Link",
-      "text": "Test the Magic Link by clicking the <i> Magic Link </i> button. \nYou will be logged out of your account and automatically logged in as <strong> {currentUserName} </strong>. \nTo continue working later as <strong> {sessionUserName} </strong>, you'll have to log back into your account."
+      "text": "Test the Magic Link by clicking the <i> Magic Link </i> button. \nAs a result you will be redirected to the login page where the token provided with the link is read out."
+    },
+    "send-email": {
+      "header": "Send email"
     }
   },
   "blocks": {

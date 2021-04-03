@@ -49,6 +49,7 @@ export function i18nMiddleware() {
       return;
     }
 
+    console.log('i18nMiddleware', req)
     let locale = getCookie('locale', req.headers.cookie);
 
     // no cookie, let's get the first accepted language

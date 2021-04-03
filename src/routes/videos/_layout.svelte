@@ -18,12 +18,13 @@
 <script>
   import { onMount, getContext } from 'svelte';
   import Layout from './layout.svelte';
+  import { Ticker } from 'components';
   import { stores } from '@sapper/app';
   import { images } from '../../stores/imageStore';
   import { videos } from '../../stores/videoStore';
   import { urls } from '../../stores/urlStore';
   import { videoEmitter } from '../../stores/videoEmitter';
-  import { locale } from 'svelte-i18n';
+  import { locale, _ } from 'svelte-i18n';
 
   export let segment;
   export let data = [];
@@ -83,16 +84,14 @@
     }
   });
 
-  $: segment && console.log(segment);
-
   onMount(() => {
     snackbar = getSnackbar();
     return unsubscribe;
   });
 </script>
 
-<Layout>
+<Layout class={segment}>
   <slot />
-  <div slot="ad" />
+  <div slot="ad"><Ticker /></div>
   <div slot="footer" />
 </Layout>

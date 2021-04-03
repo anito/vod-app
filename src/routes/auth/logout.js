@@ -9,6 +9,7 @@ export function post(req, res) {
 		if (response.success) {
 			delete req.session.user;
 			delete req.session.role;
+			delete req.session.groups;
 		}
 		res.setHeader('Content-Type', 'application/json');
 

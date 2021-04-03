@@ -15,8 +15,9 @@
   import IconButton from '@smui/icon-button';
   import Snackbar, { Actions } from '@smui/snackbar';
   import { Label } from '@smui/common';
-  import { post } from 'utils';
+  import { post, createRedirectSlug, proxyEvent, recoverSession, __session__ } from 'utils';
   import { flash } from '../stores/flashStore';
+  import { ticker } from '../stores/tickerStore';
   import { Modal } from '@sveltejs/site-kit';
   import { Jumper } from 'svelte-loading-spinners';
   import { UserGraphic, LoadingModal, LocaleSwitcher } from 'components';
@@ -37,6 +38,7 @@
   let timeoutId;
   let isMobileDevice;
   let loggedInButtonTextSecondLine;
+  let unsubscribeTicker;
 
   setContext('snackbar', {
     getSnackbar: () => snackbar,
@@ -52,16 +54,25 @@
   $: snackbarLifetime = action ? 6000 : snackbarLifetimeDefault;
   $: $session.user &&
     (loggedInButtonTextSecondLine = $_('text.logged-in-button-second-line', { values: { name: $session.user.name } }));
+  // $: $session.expires && ticker.init($session.expires);
 
   onMount(() => {
     root = document.documentElement;
 
-    window.addEventListener('introend', handleIntroEnd);
+    window.addEventListener('introend', handleIntroEndHandler);
+    window.addEventListener('session:started', sessionStartedHandler);
+    window.addEventListener('session:extend', sessionExtendHandler);
+    window.addEventListener('session:ended', sessionEndedHandler);
     isMobileDevice && root.classList.add('ismobile');
+
+    if ($session.user) recoverSession($session);
 
     return () => {
       root.classList.remove('ismobile');
-      window.removeEventListener('introend', handleIntroEnd);
+      window.removeEventListener('introend', handleIntroEndHandler);
+      window.removeEventListener('session:started', sessionStartedHandler);
+      window.removeEventListener('session:extend', sessionExtendHandler);
+      window.removeEventListener('session:ended', sessionEndedHandler);
     };
   });
 
@@ -71,13 +82,9 @@
       const res = await post(`auth/logout`);
       if (res && res.success) {
         message = res.message;
-        setTimeout(() => {
-          goto('/');
-          $session.user = null;
-          $session.role = null;
-          $session.groups = null;
-          flash.update({ message });
-        }, 1000);
+        proxyEvent('session:ended', { redirect: '/' });
+
+        flash.update({ message });
         configSnackbar(message);
         snackbar.open();
       }
@@ -108,9 +115,33 @@
 
   function handleClosed() {}
 
-  function handleIntroEnd(e) {
+  function handleIntroEndHandler(e) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout((o) => o.path && goto(o.path), redirectDelay, e.detail);
+  }
+
+  function sessionStartedHandler() {
+    if (__session__.started) return;
+    ticker.init($session.expires);
+    unsubscribeTicker = ticker.subscribe((val) => {
+      val === 0 && proxyEvent('session:ended', { redirect: 'login' });
+    });
+  }
+
+  function sessionExtendHandler(e) {
+    $session.expires = e.detail.expires;
+    ticker.init($session.expires);
+  }
+
+  function sessionEndedHandler(e) {
+    unsubscribeTicker();
+    setTimeout(() => {
+      goto(`${e.detail.redirect}${createRedirectSlug($page)}`);
+      $session.user = null;
+      $session.role = null;
+      $session.groups = null;
+      $session.expires = null;
+    }, 1000);
   }
 </script>
 

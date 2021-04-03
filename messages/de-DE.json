@@ -62,7 +62,7 @@
     "save": "Speichern",
     "reset": "Zurücksetzen",
     "got-it": "Ok, verstanden",
-    "period-updated": "Zeitrahmen aktualisiert",
+    "time-slot-updated": "Zeitrahmen aktualisiert",
     "not-scheduled": "Nicht geplant",
     "uploaded-on": "Hochgeladen: {date}",
     "no-poster": "Kein Poster",
@@ -79,7 +79,7 @@
     "delete-token-and-deactivate-account": "Token löschen & Account deaktivieren",
     "switch-user": "Ja, Benutzer wechseln",
     "video-removed": "Video entfernt",
-    "select-period": "Zeitraum festlegen",
+    "select-time-slot": "Zeitraum festlegen",
     "1-month": "1 Monat",
     "2-months": "2 Monate",
     "3-months": "3 Monate",
@@ -102,7 +102,8 @@
     "token-updated": "Token aktualisiert",
     "account-inactive": "Account ist inaktiv",
     "magic-link": "Magic Link",
-    "video-is-active": "{title} ist momentan aktiv"
+    "video-is-active": "{title} ist momentan aktiv",
+    "session-expires": "Sitzung ended in:"
   },
   "summary": {
     "copy-link": {
@@ -110,8 +111,7 @@
       "text": "Benutzen Sie den Button <i>Kopieren</i> um den Link in Ihrer Zwischenablage zu speichern. Sie können den Link anschliessend über den <i>Einfügen</i>-Befehl (<i>Strg-V</i>) in eine Email einfügen und weiterleiten."
     },
     "send-link": {
-      "header": "Link verschicken",
-      "text": "Je nach Konfiguration Ihres Browsers, startet bei Anklicken spezieller Email-Links ein Email Programm. Falls dies bei Ihnen nicht der Fall sein sollte, lesen Sie den nächsten Punkt.<br /> Hier können Sie testen:"
+      "text": "Abhängig von der Konfiguration Ihres Browsers, wird eine Email generiert, bereit zum Versenden an den Benutzer."
     },
     "next-steps": {
       "text": "Weitere Schritte"
@@ -121,7 +121,10 @@
     },
     "test-magic-link": {
       "header": "Den Magic Link testen",
-      "text": "Testen Sie den Magic Link indem Sie auf den Button <i>Magic Link</i> klicken. Sie werden von Ihrem Account abgemeldet und automatisch als <strong>{currentUserName}</strong> angemeldet. Um später als <strong>{sessionUserName}</strong> weiter zu arbeiten, müssen Sie sich erneut anmelden."
+      "text": "Testen Sie den Magic Link indem Sie auf den Button <i>Magic Link</i> klicken. Sie werden nun zur Login Seite weitergeletet wo der im Link enthaltene Token ausgelesen wird."
+    },
+    "send-email": {
+      "header": "E-Mail senden"
     }
   },
   "blocks": {

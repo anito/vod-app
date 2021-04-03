@@ -1,11 +1,12 @@
 <script>
   import { stores } from '@sapper/app';
+  import { onMount } from 'svelte';
   import { UserManager, TimeManager } from 'components';
   import { Header } from '@sveltejs/site-kit';
   import Button, { Group, Label, Icon } from '@smui/button';
   import IconButton from '@smui/icon-button';
   import { users } from '../../stores/userStore';
-  import { proxyEvent } from 'utils';
+  import { post, proxyEvent } from 'utils';
   import { _ } from 'svelte-i18n';
 
   const TABS = ['user', 'time'];
@@ -27,6 +28,17 @@
     tokenVal = user.token && user.token.token;
     magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}`) || false;
   })(currentUser);
+
+  onMount(() => {
+    extendSession();
+  });
+
+  async function extendSession() {
+    const res = await post('auth/session', {});
+    if (res) {
+      proxyEvent('session:extend', { expires: res.expires });
+    }
+  }
 </script>
 
 <svelte:head>
