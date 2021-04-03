@@ -1,7 +1,7 @@
 <script>
-  import { GridItem, LayoutGrid } from "@sveltejs/site-kit";
-  import { Breadcrumb } from "components";
-  import { stores } from "@sapper/app";
+  import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
+  import { Breadcrumb, Ticker } from 'components';
+  import { stores } from '@sapper/app';
 
   const { page } = stores();
 
@@ -13,9 +13,16 @@
 <LayoutGrid {segment} {stretch}>
   <GridItem name="content" let:inner>
     <div class={inner}>
-      {#if segment}
-        <Breadcrumb {segment} />
-      {/if}
+      <div class="page-bar flex justify-between">
+        <div class="breadcrumb-container m-auto ml-0">
+          {#if segment}
+            <Breadcrumb {segment} />
+          {/if}
+        </div>
+        <div class="ticker-container m-auto mr-0">
+          <Ticker />
+        </div>
+      </div>
       <slot />
     </div>
   </GridItem>
@@ -30,3 +37,5 @@
     </div>
   </GridItem>
 </LayoutGrid>
+
+<style></style>

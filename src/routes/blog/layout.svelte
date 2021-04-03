@@ -1,6 +1,6 @@
 <script>
-  import { stores } from "@sapper/app";
-  import { GridItem, LayoutGrid } from "@sveltejs/site-kit";
+  import { stores } from '@sapper/app';
+  import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
 
   export let stretch = false;
 
@@ -8,12 +8,6 @@
 
   let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
-
-<style>
-  :global(.light-grey-background) {
-    background: var(--back-grid-item) !important;
-  }
-</style>
 
 <LayoutGrid {segment} {stretch}>
   <GridItem name="content" let:inner>
@@ -32,3 +26,5 @@
     </div>
   </GridItem>
 </LayoutGrid>
+
+<style></style>

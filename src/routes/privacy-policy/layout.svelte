@@ -28,7 +28,4 @@
 </LayoutGrid>
 
 <style>
-  :global(.light-grey-background) {
-    background: var(--back-grid-item) !important;
-  }
 </style>

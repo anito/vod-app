@@ -37,7 +37,7 @@
   import { infos } from '../../stores/infoStore';
   import { post } from 'utils';
   import Layout from './layout.svelte';
-  import { InfoChips, SimpleUserCard, Ticker } from 'components';
+  import { InfoChips, SimpleUserCard } from 'components';
   import { proxyEvent } from 'utils';
   import Button, { Icon } from '@smui/button';
   import Fab, { Label } from '@smui/fab';
@@ -291,7 +291,7 @@
   <div slot="ad" />
   <div slot="footer" class="flex justify-between">
     <div class="m-auto ml-0"><InfoChips staggered {selectionUserId} /></div>
-    <div class="m-auto mr-0"><Ticker /></div>
+    <div class="m-auto mr-0" />
   </div>
 </Layout>
 <Dialog bind:this={infoDialog} aria-labelledby="info-title" aria-describedby="info-content">

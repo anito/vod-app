@@ -18,7 +18,6 @@
 <script>
   import { onMount, getContext } from 'svelte';
   import Layout from './layout.svelte';
-  import { Ticker } from 'components';
   import { stores } from '@sapper/app';
   import { images } from '../../stores/imageStore';
   import { videos } from '../../stores/videoStore';
@@ -95,6 +94,6 @@
   <div slot="ad" />
   <div slot="footer" class="flex justify-between">
     <div class="m-auto ml-0" />
-    <div class="m-auto mr-0"><Ticker /></div>
+    <div class="m-auto mr-0" />
   </div>
 </Layout>
