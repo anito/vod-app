@@ -17,11 +17,13 @@
   let tokenVal;
   let magicLink;
   let currentUser;
+  let username;
 
   $: tab = ($page.query && $page.query.tab) || 'time';
   $: selectionUserId = $page.params.slug;
   $: (tab || selectionUserId) && extendSession();
   $: currentUser = ((id) => $users.length && $users.filter((usr) => usr.id === id)[0])(selectionUserId);
+  $: username = (currentUser && currentUser.name) || '';
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: ((user) => {
     if (!user) return;
@@ -35,7 +37,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | User {currentUser && currentUser.name}</title>
+  <title>Physiotherapy Online | User {username}</title>
 </svelte:head>
 
 {#if 'Administrator' === $session.role}
@@ -73,7 +75,7 @@
         {:else}
           <Icon class="material-icons" style="align-self: center; margin-right: 10px;">link_off</Icon>
         {/if}
-        <Header mdc h="5" class="pr-6 hidden md:block">{currentUser.name}</Header>
+        <Header mdc h="5" class="pr-6 hidden md:block">{username}</Header>
       </div>
     </div>
     {#if tab === TABS[1]}
