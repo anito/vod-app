@@ -9,4 +9,4 @@ function createStore() {
 		update: (val) => update(_ => val)
 	}
 }
-export const loginGuard = createStore();
+export const formGuard = createStore();

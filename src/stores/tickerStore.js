@@ -5,8 +5,6 @@ function createStore() {
 
   const { subscribe, update, set } = writable(0, set => {
       
-    console.log('first subscriber');
-    
     return () => {
       clearInterval(__session__.interval);
       __session__.started = false;

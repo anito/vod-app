@@ -89,7 +89,7 @@
     "admins-have-full-access": "Admins have full access",
     "user-is-deactivated": "User is deactivated",
     "remove-class": "Remove class",
-    "scheduler": "Scheduler",
+    "scheduler": "Planner",
     "today": "Today",
     "apply": "Apply",
     "validity": "Validity",
@@ -117,7 +117,11 @@
     "no-more-videos-available": "No more video classes available",
     "you-cant-revert-deletion-of-user": "This action can not be undone!",
     "attention": "Attention!",
-    "expired": "expired"
+    "expired": "expired",
+    "new-class": "New Class",
+    "sign-in-now": "Sign in now",
+    "no-content-available": "No content available",
+    "no-description": "no description"
   },
   "summary": {
     "copy-link": {

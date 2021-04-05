@@ -117,7 +117,11 @@
     "no-more-videos-available": "Keine weiteren Videokurse verfügbar",
     "you-cant-revert-deletion-of-user": "Dieser Vorgang kann nicht rückgängig gemacht werden!",
     "attention": "Achtung!",
-    "expired": "abgelaufen"
+    "expired": "abgelaufen",
+    "new-class": "Neuer Kurs",
+    "sign-in-now": "Jetzt anmelden",
+    "no-content-available": "Keine Inhalte verfügbar",
+    "no-description": "keine Beschreibung"
   },
   "summary": {
     "copy-link": {

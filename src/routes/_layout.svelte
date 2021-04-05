@@ -22,6 +22,8 @@
   import { Jumper } from 'svelte-loading-spinners';
   import { UserGraphic, LoadingModal, LocaleSwitcher } from 'components';
   import { _, locale } from 'svelte-i18n';
+  import { serverConfig } from 'config';
+
   // import ListErrors from 'components';
 
   const { page, session } = stores();
@@ -39,6 +41,8 @@
   let isMobileDevice;
   let loggedInButtonTextSecondLine;
   let unsubscribeTicker;
+
+  serverConfig();
 
   setContext('snackbar', {
     getSnackbar: () => snackbar,

@@ -6,7 +6,7 @@ import session from 'express-session';
 import sessionFileStore from 'session-file-store';
 import * as sapper from '@sapper/server';
 import { i18nMiddleware } from "./i18n";
-import { config } from 'config';
+import { INIT_OPTIONS } from 'config';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
@@ -25,7 +25,7 @@ polka() // You can also use Express
       resave: false,
       saveUninitialized: true,
       cookie: {
-        maxAge: config.MAX_AGE,
+        maxAge: INIT_OPTIONS.Session.lifetime,
       },
       store: new FileStore({
         path: `.sessions`,
