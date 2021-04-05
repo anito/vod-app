@@ -4,13 +4,13 @@
   import { videos } from '../../stores/videoStore';
 
   export async function preload({ query }, { user }) {
-    let usersData, videoData;
-
+    let usersData = [],
+      videosData = [];
     const resUsers = await api.get('users', user && user.token);
 
     if (resUsers.success) {
-      users.update(resUsers.data);
       usersData = resUsers.data;
+      users.update(usersData);
     } else {
       this.error((resUsers.data && resUsers.data.code) || resUsers.status, resUsers.message || resUsers.responseText);
     }
@@ -18,8 +18,8 @@
     const resVideos = await api.get('videos', user && user.token);
 
     if (resVideos.success) {
-      videos.update(resVideos.data);
-      videoData = resVideos.data;
+      videosData = resVideos.data;
+      videos.update(videosData);
     } else {
       this.error(
         (resVideos.data && resVideos.data.code) || resVideos.status,
@@ -27,7 +27,7 @@
       );
     }
 
-    return { usersData, videoData, ...query };
+    return { usersData, videosData, ...query };
   }
 </script>
 
@@ -35,7 +35,6 @@
   import { stores, goto } from '@sapper/app';
   import { onMount, getContext } from 'svelte';
   import { infos } from '../../stores/infoStore';
-  import { post } from 'utils';
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
   import { proxyEvent } from 'utils';
@@ -52,17 +51,17 @@
   const { getSnackbar, configSnackbar } = getContext('snackbar');
   const TAB = 'time';
 
-  export let segment; // user.id (or slug) in case we start from a specific user e.g. /users/23
+  export let segment; // slug (user.id ) in case we start from a specific user e.g. /users/23
   // from preload
-  export let usersData = [];
-  export let videoData = [];
   export let tab = TAB;
+  export let usersData = [];
+  export let videosData = [];
 
   let code;
   let currentUser;
   let username;
   let active;
-  let expires;
+  let tokenExpires;
   let hasExpired;
   let token;
   let tokenId;
@@ -83,18 +82,18 @@
 
   // from preload
   users.update(usersData);
-  videos.update(videoData);
+  videos.update(videosData);
 
   $: selectionUserId = segment;
-  $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
+  $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(selectionUserId);
   $: ((usr) => {
     username = usr && usr.name;
     active = (usr && usr.active) || false;
     token = usr && usr.token;
     tokenId = (token && token.id) || null;
     tokenVal = (token && token.token) || '';
-    expires = usr && usr.expires;
-    hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
+    tokenExpires = usr && usr.expires;
+    hasExpired = (tokenExpires && tokenExpires * 1000 < +new Date().getTime()) || false;
     magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) || '';
   })(currentUser);
   $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
@@ -127,14 +126,6 @@
       window.removeEventListener('INFO:token:Redirect', tokenRedirectHandler);
     };
   });
-
-  async function extendSession() {
-    console.log('extending session...');
-    const res = await post('auth/session', {});
-    if (res) {
-      proxyEvent('session:extend', { expires: res.expires });
-    }
-  }
 
   async function addUser() {
     await goto('users/add');

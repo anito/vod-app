@@ -2,18 +2,11 @@
   import { onMount } from 'svelte';
   import { Component } from 'components';
   import { Header } from '@sveltejs/site-kit';
-  import { post, proxyEvent } from 'utils';
+  import { extendSession } from 'utils';
 
   onMount(() => {
     extendSession();
   });
-
-  async function extendSession() {
-    const res = await post('auth/session', {});
-    if (res) {
-      proxyEvent('session:extend', { expires: res.expires });
-    }
-  }
 </script>
 
 <svelte:head>

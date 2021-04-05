@@ -6,39 +6,32 @@
   import Button, { Group, Label, Icon } from '@smui/button';
   import IconButton from '@smui/icon-button';
   import { users } from '../../stores/userStore';
-  import { post, proxyEvent } from 'utils';
+  import { proxyEvent, extendSession } from 'utils';
   import { _ } from 'svelte-i18n';
 
   const TABS = ['user', 'time'];
   const { page, session } = stores();
 
-  let expires;
+  let userExpires;
   let hasExpired;
   let tokenVal;
   let magicLink;
+  let currentUser;
 
   $: tab = ($page.query && $page.query.tab) || 'time';
   $: selectionUserId = $page.params.slug;
-  $: currentUser = ((id) => $users.filter((usr) => usr.id === id))(selectionUserId)[0];
+  $: (tab || selectionUserId) && extendSession();
+  $: currentUser = ((id) => $users.length && $users.filter((usr) => usr.id === id)[0])(selectionUserId);
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: ((user) => {
     if (!user) return;
-    expires = user.expires;
-    hasExpired = (expires && expires * 1000 < +new Date().getTime()) || false;
+    userExpires = user.expires;
+    hasExpired = (userExpires && userExpires * 1000 < +new Date().getTime()) || false;
     tokenVal = user.token && user.token.token;
-    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}`) || false;
+    magicLink = tokenVal && `http://${$page.host}/login?token=${tokenVal}`;
   })(currentUser);
 
-  onMount(() => {
-    extendSession();
-  });
-
-  async function extendSession() {
-    const res = await post('auth/session', {});
-    if (res) {
-      proxyEvent('session:extend', { expires: res.expires });
-    }
-  }
+  onMount(() => {});
 </script>
 
 <svelte:head>

@@ -7,9 +7,10 @@ export function post(req, res) {
 
   api.post(`users/login?lang=${ get(locale) }`, { ...user }).then((response) => {
     // file session receives this
-    if (response.success && response.data.user) {
+    if (response.success) {
       response.data.user && (req.session.user = response.data.user);
-      response.data.user.group.name === 'Administrator' && (req.session.groups = response.data.groups);
+      response.data.groups && response.data.user.group.name === 'Administrator' &&
+        (req.session.groups = response.data.groups);
     }
     res.setHeader('Content-Type', 'application/json');
 

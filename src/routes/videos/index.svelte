@@ -25,7 +25,7 @@
   import Button, { Group, Label, Icon } from '@smui/button';
   import { VideoManager, ImageManager, Component } from 'components';
   import { Header } from '@sveltejs/site-kit';
-  import { post, proxyEvent } from 'utils';
+  import { extendSession } from 'utils';
   import { videos } from '../../stores/videoStore';
 
   // available from preload
@@ -41,13 +41,6 @@
     $session.role === 'Administrator' && changeTab(tab);
     extendSession();
   });
-
-  async function extendSession() {
-    const res = await post('auth/session', {});
-    if (res) {
-      proxyEvent('session:extend', { expires: res.expires });
-    }
-  }
 
   async function changeTab(tab) {
     await goto(`videos?tab=${tab}`);

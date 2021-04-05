@@ -1,6 +1,7 @@
 <script>
   import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
   import { Breadcrumb, Ticker } from 'components';
+  import { proxyEvent } from 'utils';
   import { stores } from '@sapper/app';
 
   const { page } = stores();
@@ -20,7 +21,7 @@
           {/if}
         </div>
         <div class="ticker-container m-auto mr-0">
-          <Ticker />
+          <Ticker prefix="" class="" on:MDCChip:interaction={() => proxyEvent('session:extend')} />
         </div>
       </div>
       <slot />

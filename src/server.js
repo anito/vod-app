@@ -38,7 +38,7 @@ polka() // You can also use Express
           role: req.session.user && req.session.user.group.name,
           groups: req.session.groups || [],
           expires: req.session.cookie.expires,
-        },
+        }
     }),
     i18nMiddleware()
   )

@@ -15,7 +15,7 @@
   import IconButton from '@smui/icon-button';
   import Snackbar, { Actions } from '@smui/snackbar';
   import { Label } from '@smui/common';
-  import { post, createRedirectSlug, proxyEvent, recoverSession, __session__ } from 'utils';
+  import { post, createRedirectSlug, proxyEvent, recoverSession, extendSession, __session__ } from 'utils';
   import { flash } from '../stores/flashStore';
   import { ticker } from '../stores/tickerStore';
   import { Modal } from '@sveltejs/site-kit';
@@ -54,7 +54,6 @@
   $: snackbarLifetime = action ? 6000 : snackbarLifetimeDefault;
   $: $session.user &&
     (loggedInButtonTextSecondLine = $_('text.logged-in-button-second-line', { values: { name: $session.user.name } }));
-  // $: $session.expires && ticker.init($session.expires);
 
   onMount(() => {
     root = document.documentElement;
@@ -62,6 +61,7 @@
     window.addEventListener('introend', handleIntroEndHandler);
     window.addEventListener('session:started', sessionStartedHandler);
     window.addEventListener('session:extend', sessionExtendHandler);
+    window.addEventListener('session:extended', sessionExtendedHandler);
     window.addEventListener('session:ended', sessionEndedHandler);
     isMobileDevice && root.classList.add('ismobile');
 
@@ -72,6 +72,7 @@
       window.removeEventListener('introend', handleIntroEndHandler);
       window.removeEventListener('session:started', sessionStartedHandler);
       window.removeEventListener('session:extend', sessionExtendHandler);
+      window.removeEventListener('session:extended', sessionExtendedHandler);
       window.removeEventListener('session:ended', sessionEndedHandler);
     };
   });
@@ -122,15 +123,19 @@
 
   function sessionStartedHandler() {
     if (__session__.started) return;
-    ticker.init($session.expires);
+    ticker.start($session.expires);
     unsubscribeTicker = ticker.subscribe((val) => {
       val === 0 && proxyEvent('session:ended', { redirect: 'login' });
     });
   }
 
   function sessionExtendHandler(e) {
+    extendSession();
+  }
+
+  function sessionExtendedHandler(e) {
     $session.expires = e.detail.expires;
-    ticker.init($session.expires);
+    ticker.start($session.expires);
   }
 
   function sessionEndedHandler(e) {
