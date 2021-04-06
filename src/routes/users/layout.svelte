@@ -2,7 +2,7 @@
   import { stores } from '@sapper/app';
   import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
   import { proxyEvent } from 'utils';
-  import { Breadcrumb, Ticker } from 'components';
+  import { Breadcrumb, SessionTicker } from 'components';
 
   export let stretch = false;
   export let sidebar = false;
@@ -15,14 +15,20 @@
 <LayoutGrid {segment} {stretch} {sidebar}>
   <GridItem name="content" let:inner>
     <div class={inner}>
-      <div class="page-bar flex justify-between">
+      <div class="page-bar">
         <div class="breadcrumb-container m-auto ml-0">
           {#if segment}
             <Breadcrumb {segment} />
           {/if}
         </div>
         <div class="ticker-container m-auto mr-0">
-          <Ticker prefix="" class="" on:MDCChip:interaction={() => proxyEvent('session:extend')} />
+          <SessionTicker
+            class="light"
+            warning="180"
+            warningOnly
+            forceOnExtend="2"
+            on:MDCChip:interaction={() => proxyEvent('session:extend')}
+          />
         </div>
       </div>
       <slot />

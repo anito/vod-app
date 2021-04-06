@@ -211,8 +211,8 @@
     <slot />
   {/if}
 </Modal>
-<LoadingModal backgroundColor="#ffffff" opacity=".45">
-  <Jumper size="60" color="var(--flash)" unit="px" />
+<LoadingModal backgroundColor="#ffffff" opacity=".45" wait="400">
+  <Jumper size="200" color="var(--flash)" unit="px" />
 </LoadingModal>
 
 <Snackbar
