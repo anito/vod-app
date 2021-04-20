@@ -10,3 +10,4 @@ yarn-error.log
 /.sessions/
 package-lock.json
 src/request.rest
+.vscode/settings.json

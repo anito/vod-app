@@ -8,5 +8,9 @@ export function post(req, res) {
 
 	res.setHeader('Content-Type', 'application/json');
 
-	res.end(JSON.stringify({ ...data, expires: req.session.cookie.expires }));
+	res.end(JSON.stringify({
+		user: data.user,
+		groups: data.groups,
+		expires: req.session.cookie.expires
+	}));
 }

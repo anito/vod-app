@@ -18,6 +18,7 @@
   import { post, createRedirectSlug, proxyEvent, recoverSession, extendSession, __session__ } from 'utils';
   import { flash } from '../stores/flashStore';
   import { ticker } from '../stores/tickerStore';
+  import { fabs } from '../stores/fabStore';
   import { Modal } from '@sveltejs/site-kit';
   import { Jumper } from 'svelte-loading-spinners';
   import { UserGraphic, LoadingModal, LocaleSwitcher } from 'components';
@@ -47,6 +48,11 @@
   setContext('snackbar', {
     getSnackbar: () => snackbar,
     configSnackbar,
+  });
+
+  setContext('fab', {
+    setFab: (fab) => fabs.update(fab),
+    restoreFab: () => fabs.restore(),
   });
 
   $: root && ((user) => root.classList.toggle('loggedin', user))(!!$session.user);

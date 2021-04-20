@@ -54,10 +54,22 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
       svelte({
-        dev,
-        hydratable: true,
+        compilerOptions: {
+          // By default, the client-side compiler is used. You
+          // can also use the server-side rendering compiler
+          // generate: 'ssr', // -> this is set in server
+
+          // ensure that extra attributes are added to head
+          // elements for hydration (used with generate: 'ssr')
+          hydratable: true,
+
+          // You can optionally set 'customElement' to 'true' to compile
+          // your components to custom elements (aka web elements)
+          customElement: false,
+          dev,
+          css: true,
+        },
         emitCss: false,
-        css: true,
         preprocess: sveltePreprocess(),
       }),
       resolve({
@@ -112,8 +124,10 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
       svelte({
-        generate: 'ssr',
-        dev,
+        compilerOptions: {
+          generate: 'ssr',
+          dev,
+        },
         preprocess: sveltePreprocess(),
       }),
       resolve({

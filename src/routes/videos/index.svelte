@@ -27,6 +27,7 @@
   import { Header } from '@sveltejs/site-kit';
   import { extendSession } from 'utils';
   import { videos } from '../../stores/videoStore';
+  import { _ } from 'svelte-i18n';
 
   // available from preload
   export let tabs = TABS;
@@ -90,7 +91,7 @@
     <div slot="header">
       <div class="flex justify-between">
         <span class="self-center">
-          <Header h="6" mdc class="m-2 lg:m-5">Die folgenden Online-Videokurse stehen für Sie bereit:</Header>
+          <Header h="6" mdc class="m-2 lg:m-5">{$_('text.your-classes')}</Header>
         </span>
         <span class="self-center">
           <Header h="5" mdc>

@@ -71,6 +71,12 @@
     // token login success
     if (success && data.user) {
       flash.update({ type: 'success', ...data });
+      /**
+       * especially the user object returned from the Apache Server which will here
+       * passed to node may not exceed a certain payload size in order to avoid errors
+       * this can be achieved by populating the user with only the minimal necessary assotiations:
+       * Groups, Avatar, Token, Videos
+       */
       saveSession();
     } else if (success === false && data) {
       // token login failed

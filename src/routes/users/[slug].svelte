@@ -1,7 +1,7 @@
 <script>
   import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
-  import { UserManager, TimeManager } from 'components';
+  import { UserManager, TimeManager, MailManager } from 'components';
   import { Header } from '@sveltejs/site-kit';
   import Button, { Group, Label, Icon } from '@smui/button';
   import IconButton from '@smui/icon-button';
@@ -9,7 +9,7 @@
   import { proxyEvent, extendSession } from 'utils';
   import { _ } from 'svelte-i18n';
 
-  const TABS = ['user', 'time'];
+  const TABS = ['user', 'time', 'mail'];
   const { page, session } = stores();
 
   let userExpires;
@@ -62,6 +62,15 @@
           <Icon class="material-icons">account_circle</Icon>
           <Label>{$_('text.user-profil')}</Label>
         </Button>
+        <Button
+          class="focus:outline-none focus:shadow-outline"
+          rel="prefetch"
+          href="users/{selectionUserId}?tab=mail"
+          variant={tab === TABS[2] ? 'unelevated' : 'outlined'}
+        >
+          <Icon class="material-icons">mail</Icon>
+          <Label>{$_('text.mail')}</Label>
+        </Button>
       </Group>
       <div class="flex">
         {#if magicLink}
@@ -92,6 +101,9 @@
         selectedMode="edit"
       />
     {/if}
+    {#if tab === TABS[2]}
+      <MailManager {selectionUserId} />
+    {/if}
   </div>
 {:else}
   <UserManager {selectionUserId} selectedMode="edit" />
@@ -115,6 +127,13 @@
     grid-template-areas:
       'toolbar toolbar'
       'one two';
+    grid-template-columns: 4fr 4fr;
+    align-items: initial;
+  }
+  :global(.mail).grid {
+    grid-template-areas:
+      'toolbar toolbar'
+      'one one';
     grid-template-columns: 4fr 4fr;
     align-items: initial;
   }

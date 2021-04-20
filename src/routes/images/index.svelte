@@ -16,13 +16,14 @@
 
 <script>
   import { stores, goto } from '@sapper/app';
-  import { getContext } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import { fly } from 'svelte/transition';
   import Fab, { Icon } from '@smui/fab';
   import { Label } from '@smui/common';
   import Paper, { Title, Subtitle, Content } from '@smui/paper';
   import { Info, ImageCard, MediaUploader } from 'components';
   import { Header } from '@sveltejs/site-kit';
+  import { fabs } from '../../stores/fabStore';
   import { images } from '../../stores/imageStore';
   import { currentVideo } from '../../stores/currentVideoStore';
   import { _ } from 'svelte-i18n';
@@ -33,6 +34,11 @@
 
   const { session } = stores();
   const { open } = getContext('simple-modal');
+  const { setFab, restoreFab } = getContext('fab');
+
+  onMount(() => {
+    if ($session.user) setFab('upload-image');
+  });
 
   let openUploader = (type) => {
     open(
@@ -81,10 +87,6 @@
         </Paper>
       </div>
     {/if}
-    <Fab class="floating-fab" color="primary" on:click={() => openUploader('image')} extended>
-      <Label>{$_('text.new-poster')}</Label>
-      <Icon class="material-icons">add</Icon>
-    </Fab>
   {:else}
     <div class="paper-container flex justify-center m-8">
       <Info title="Unauthorized" let:href>
@@ -93,6 +95,12 @@
     </div>
   {/if}
 </div>
+{#if $fabs === 'upload-image'}
+  <Fab class="floating-fab" color="primary" on:click={() => openUploader('image')} extended>
+    <Label>{$_('text.new-poster')}</Label>
+    <Icon class="material-icons">add</Icon>
+  </Fab>
+{/if}
 
 <style>
 </style>

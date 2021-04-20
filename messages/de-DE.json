@@ -121,7 +121,45 @@
     "new-class": "Neuer Kurs",
     "sign-in-now": "Jetzt anmelden",
     "no-content-available": "Keine Inhalte verfügbar",
-    "no-description": "keine Beschreibung"
+    "no-description": "keine Beschreibung",
+    "contact-admin": "Haben Sie Probleme bei der Anmeldung?",
+    "your-classes": "Die folgenden Online-Videokurse stehen für Sie bereit:",
+    "mail": "E-Mail",
+    "templates": "Vorlagen",
+    "email-templates": "Email Vorlagen",
+    "general": "Allgemein",
+    "inbox": "Posteingang",
+    "sent-mail": "Gesendet",
+    "send-mail": "Senden",
+    "template-duplicate": "Vorlage duplizieren",
+    "template-add": "Neue Vorlage",
+    "empty-selection": "Keine Auswahl",
+    "empty-email-selection": "Keine Email ausgewählt",
+    "empty-template-selection": "Keine Vorlage ausgewählt",
+    "template-remove": "Vorlage entfernen",
+    "confirm-save-changes": "Möchten Sie die Änderungen speichern? ",
+    "save-changes": "Änderungen speichern",
+    "discard-changes": "Änderungen verwerfen",
+    "unsaved-changes": "Ungesicherte Änderungen",
+    "template-removed": "Vorlage entfernt",
+    "template-could-not-be-removed": "Vorlage konnte nicht entfernt werden",
+    "template-duplicated": "Vorlage dupliziert",
+    "template-duplicated-failed": "Varlage konnte nicht dupliziert werden",
+    "template-saved": "Vorlage gespeichert",
+    "template-save-failed": "Vorlage konnte nicht gesichert werden",
+    "general-information": "Allgemeine Information",
+    "subject": "Betreff",
+    "before-content": "Vor Inhalt",
+    "content": "Inhalt",
+    "after-content": "Nach Inhalt",
+    "before-sitename": "Vor Webseitenname",
+    "after-sitename": "Nach Webseitenname",
+    "before-footer": "Vor Fußzeile",
+    "footer": "Fußzeile",
+    "after-footer": "Nach Fußzeile",
+    "message-sent-failed": "Nachricht konnte nicht gesendet werden",
+    "message-sent-success": "Nachricht erfolgreich gesendet",
+    "missing-data": "Fehlende Daten"
   },
   "summary": {
     "copy-link": {
@@ -129,7 +167,7 @@
       "text": "Benutzen Sie den Button <i>Kopieren</i> um den Link in der Zwischenablage zu speichern. Sie können ihn nun z.B. in eine E-Mail einfügen und versenden."
     },
     "send-link": {
-      "text": "Abhängig von der Konfiguration Ihres Browsers, wird eine Email generiert, bereit zum Versenden an den Benutzer."
+      "text": "Zum Versenden des Zugangslinks nutzen Sie am besten den integrierten Email Manager."
     },
     "next-steps": {
       "text": "Weitere Schritte"
@@ -194,7 +232,9 @@
     "misusage": "Was tun bei Verdacht auf Missbrauch des Tokens?",
     "generate-a-new-token": "Generieren Sie in diesem Fall über den Button <i class=\"button\">{button}</i> einen neuen Token. Alle zuvor generierten Token werden dadurch unbrauchbar.",
     "use-remove-token-button": "Verwenden Sie den Button <i class=\"button\">{button}</i>, um das Konto zu deaktivieren. Alternativ können Sie auch <i>Deactivate User</i> anklicken. In beiden Fällen ist eine Anmeldung nicht mehr möglich.",
-    "what-is-the-token-used-for": "Der Token wird zur Authentifizierung verwendet. D.h. das übliche fehlerbehaftete Eintippen von Benutzernamen/Passwort entfällt und es kann sofort losgelegt werden. Der Token beinhaltet verschlüsselte Parameter wie Gültigkeitsdauer und Benutzername. Kann am Server eine Zuordnung stattfinden, wird der entsprechende Benutzer angemeldet."
+    "what-is-the-token-used-for": "Der Token wird zur Authentifizierung verwendet. D.h. das übliche fehlerbehaftete Eintippen von Benutzernamen/Passwort entfällt und es kann sofort losgelegt werden. Der Token beinhaltet verschlüsselte Parameter wie Gültigkeitsdauer und Benutzername. Kann am Server eine Zuordnung stattfinden, wird der entsprechende Benutzer angemeldet.",
+    "should-contact-admin": "<p>Bitte kontaktieren Sie uns, falls Sie Ihren Token oder Ihre Zugangsdaten verloren haben.</p><p>Wir kümmern uns darum.</p>",
+    "you-have-unsaved-changes": "Sie haben Änderungen an der Email Vorlage vorgenommen.\nSollen die Änderungen jetzt gesichert werden?"
   },
   "languages": {
     "en": "English",
@@ -207,5 +247,8 @@
     "expiredToken": "Token abgelaufen"
   },
   "direction": "ltr",
-  "message": {}
+  "message": {},
+  "test": {
+    "empty-mail-selection": "Keine Email ausgewählt"
+  }
 }

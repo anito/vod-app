@@ -9,18 +9,20 @@ function createStore() {
     }
 
     return {
-        subscribe,
-        add: ( val ) => update( ( items ) => {
-            return findIndexById( val.id, items ) == -1 && [ ...items, val ] || items;
-        } ),
-        put: (val) => update(items => {
-            const index = findIndexById( val.id, items )
-            return [...items.slice(0, index), { ...items[index], ...val }, ...items.slice(index + 1)]
-        } ),
-        del: ( id ) => update(items => items.filter( ( itm ) => itm.id !== id )),
-        update: (val) => update(items => val),
-        set
-    }
+      subscribe,
+      add: (val) =>
+        update((items) => {
+          return (findIndexById(val.id, items) == -1 && [...items, val]) || items;
+        }),
+      put: (val) =>
+        update((items) => {
+          const index = findIndexById(val.id, items);
+          return [...items.slice(0, index), { ...items[index], ...val }, ...items.slice(index + 1)];
+        }),
+      del: (id) => update((items) => items.filter((itm) => itm.id !== id)),
+      update: (val) => update((items) => val),
+      set,
+    };
 
 }
 

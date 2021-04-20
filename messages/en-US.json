@@ -121,7 +121,45 @@
     "new-class": "New Class",
     "sign-in-now": "Sign in now",
     "no-content-available": "No content available",
-    "no-description": "no description"
+    "no-description": "no description",
+    "contact-admin": "Are you having trouble logging in?",
+    "your-classes": "The following online classes are available for you:",
+    "mail": "Mail",
+    "templates": "Templates",
+    "email-templates": "Email Templates",
+    "general": "General",
+    "inbox": "Inbox",
+    "sent-mail": "Sent Mail",
+    "send-mail": "Send",
+    "template-duplicate": "Duplicate Template",
+    "template-add": "New Template",
+    "empty-selection": "No Selection",
+    "empty-email-selection": "No Email selected",
+    "empty-template-selection": "No template selected",
+    "template-remove": "Remove Template",
+    "confirm-save-changes": "Do you want to save your changes?",
+    "save-changes": "Save changes",
+    "discard-changes": "Discard changes",
+    "unsaved-changes": "Unsaved changes",
+    "template-removed": "Template removed",
+    "template-could-not-be-removed": "Template could not be removed",
+    "template-duplicated": "Template duplicated",
+    "template-duplicated-failed": "Template could not be duplicated",
+    "template-saved": "Template saved",
+    "template-save-failed": "Template could not be saved",
+    "general-information": "General Information",
+    "subject": "Subject",
+    "before-content": "Before Content",
+    "content": "Content",
+    "after-content": "After Content",
+    "before-sitename": "Before Sitename",
+    "after-sitename": "After Sitename",
+    "before-footer": "Before Footer",
+    "footer": "Footer",
+    "after-footer": "After Footer",
+    "message-sent-failed": "Message could not be sent",
+    "message-sent-success": "Message sent successfully",
+    "missing-data": "Missing Data"
   },
   "summary": {
     "copy-link": {
@@ -129,7 +167,7 @@
       "text": "Use the <i> Copy </i> button to save the link to the clipboard. You can than paste the Link into an email."
     },
     "send-link": {
-      "text": "Depending on the configuration of your browser, an email is generated, ready to be sent to the user."
+      "text": "It is best to use the integrated email manager to send the access link."
     },
     "next-steps": {
       "text": "Weitere Schritte"
@@ -194,7 +232,9 @@
     "misusage": "What should I do if I suspect that the token has been misused?",
     "generate-a-new-token": "In this case, generate a new token using the <i class = \"button\"> {button} </i> button. \nAll previously generated tokens will become useless as a result.",
     "use-remove-token-button": "Use the <i class = \"button\">{button}</i> button to lock the account. \nAlternatively, you can also click on <i> Deactivate User </i>. \nIn both cases, registration is no longer possible.",
-    "what-is-the-token-used-for": "The token is used for user authentication. \nThis means that the usual erroneous typing of the user name / password is no longer necessary and you can start immediately. \nThe token contains encrypted parameters such as the period of validity or user name. \nIf an assignment can take place server-side, the corresponding user will be logged in."
+    "what-is-the-token-used-for": "The token is used for user authentication. \nThis means that the usual erroneous typing of the user name / password is no longer necessary and you can start immediately. \nThe token contains encrypted parameters such as the period of validity or user name. \nIf an assignment can take place server-side, the corresponding user will be logged in.",
+    "should-contact-admin": "<p>Please contact us if you have lost your token or your credentials.</p>\n<p>We'll take care of it.</p>",
+    "you-have-unsaved-changes": "You have made changes to the email template.\n\nDo you want to save the changes now?"
   },
   "languages": {
     "en": "English",
@@ -208,7 +248,8 @@
   },
   "direction": "ltr",
   "test": {
-    "issues-fixed": ""
+    "issues-fixed": "",
+    "empty-mail-selection": "No email selected"
   },
   "message": {}
 }

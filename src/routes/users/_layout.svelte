@@ -35,6 +35,7 @@
   import { stores, goto } from '@sapper/app';
   import { onMount, getContext } from 'svelte';
   import { infos } from '../../stores/infoStore';
+  import { fabs } from '../../stores/fabStore';
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
   import { proxyEvent } from 'utils';
@@ -57,6 +58,9 @@
   export let usersData = [];
   export let videosData = [];
 
+  users.update(usersData);
+  videos.update(videosData);
+
   let code;
   let currentUser;
   let username;
@@ -67,7 +71,6 @@
   let tokenId;
   let tokenVal;
   let magicLink;
-  let selectionIndex;
   let search = '';
   let snackbar;
   let message;
@@ -80,9 +83,7 @@
   let redirectDialog;
   let user = $session.user;
 
-  // from preload
-  users.update(usersData);
-  videos.update(videosData);
+  const { setFab } = getContext('fab');
 
   $: selectionUserId = segment;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(selectionUserId);
@@ -103,6 +104,11 @@
 
   onMount(() => {
     snackbar = getSnackbar();
+
+    if ($session.role === 'Administrator') {
+      setFab('add-user');
+    }
+
     let renewed;
     if ((renewed = localStorage.getItem('renewed')) && renewed == ($session.user && $session.user.id)) {
       renewedTokenDialog.open();
@@ -207,31 +213,31 @@
     infoDialog.open();
   }
 
-  async function resolveAllDialogCloseHandler(e) {
+  function resolveAllDialogCloseHandler(e) {
     if (e.detail.action === 'approved') {
       resolveAll();
     }
   }
 
-  async function activateUserDialogCloseHandler(e) {
+  function activateUserDialogCloseHandler(e) {
     if (e.detail.action === 'approved') {
       activateUser({ active: true });
     }
   }
 
-  async function generateTokenDialogCloseHandler(e) {
+  function generateTokenDialogCloseHandler(e) {
     if (e.detail.action === 'approved') {
       generateToken();
     }
   }
 
-  async function removeTokenDialogCloseHandler(e) {
+  function removeTokenDialogCloseHandler(e) {
     if (e.detail.action === 'approved') {
       removeToken();
     }
   }
 
-  async function renewTokenDialogCloseHandler(e) {
+  function renewTokenDialogCloseHandler(e) {
     if (e.detail.action === 'approved') {
       localStorage.removeItem('renewed');
     }
@@ -266,7 +272,7 @@
       <HelperText id="helper-text">{$_('text.type-something')}</HelperText>
     </div>
     {#if $users.length}
-      <List class="users-list" twoLine avatarList singleSelection bind:selectedIndex={selectionIndex}>
+      <List class="users-list" twoLine avatarList singleSelection>
         {#each filteredUsers as user (user.id)}
           <a rel="prefetch" href="users/{user.id}?tab={tab}">
             <SimpleUserCard class="flex" {selectionUserId} {user} />
@@ -493,7 +499,7 @@
     </Button>
   </Actions>
 </Dialog>
-{#if $session.role === 'Administrator'}
+{#if $fabs === 'add-user'}
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
       <Label>{$_('text.new-user')}</Label>
@@ -520,13 +526,6 @@
   }
   h4 {
     margin: revert;
-  }
-  pre {
-    padding: 1.5rem 2rem;
-    margin: 0.8rem 0 2.4rem;
-    border-radius: var(--border-r);
-    box-shadow: 1px 1px 1px rgba(68, 68, 68, 0.12) inset;
-    background: var(--background);
   }
   .reasons > :global(*) {
     display: block;
