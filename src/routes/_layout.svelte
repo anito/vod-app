@@ -15,7 +15,15 @@
   import IconButton from '@smui/icon-button';
   import Snackbar, { Actions } from '@smui/snackbar';
   import { Label } from '@smui/common';
-  import { post, createRedirectSlug, proxyEvent, recoverSession, extendSession, __session__ } from 'utils';
+  import {
+    post,
+    createRedirectSlug,
+    proxyEvent,
+    recoverSession,
+    extendSession,
+    __session__,
+    locationSearch,
+  } from 'utils';
   import { flash } from '../stores/flashStore';
   import { ticker } from '../stores/tickerStore';
   import { fabs } from '../stores/fabStore';
@@ -64,6 +72,7 @@
   $: snackbarLifetime = action ? 6000 : snackbarLifetimeDefault;
   $: $session.user &&
     (loggedInButtonTextSecondLine = $_('text.logged-in-button-second-line', { values: { name: $session.user.name } }));
+  $: location = locationSearch($page);
 
   onMount(() => {
     root = document.documentElement;
@@ -187,7 +196,7 @@
             </Button>
           </NavItem>
         {:else}
-          <NavItem segment="login" let:active>
+          <NavItem segment="login{location}" let:active>
             <Button color="secondary" variant="raised" class="button-login">
               <Label>{$_('nav.login')}</Label>
             </Button>
