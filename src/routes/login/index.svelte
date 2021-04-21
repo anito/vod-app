@@ -15,9 +15,8 @@
 
 <script>
   import { onMount, getContext } from 'svelte';
-  import { stores } from '@sapper/app';
+  import { stores, goto } from '@sapper/app';
   import { ListMessages, ListErrors, LoginForm } from 'components';
-  import { Header } from '@sveltejs/site-kit';
   import { flash } from '../../stores/flashStore';
   import { fly } from 'svelte/transition';
   import { post, windowSize, redirectPath, proxyEvent } from 'utils';
@@ -49,10 +48,9 @@
   export let success = false;
 
   $: flyTransitionParams = { ...transitionParams, x: -80 };
-  $: statusMessage = ((sessionUser) => {
+  $: message = ((loggedIn) => {
     return {
-      text:
-        (!sessionUser && $_('text.login-text')) || $_('text.welcome-message', { values: { name: $session.user.name } }),
+      text: (loggedIn && $_('text.welcome-message', { values: { name: loggedIn.name } })) || $_('text.login-text'),
       type: 'success',
     };
   })($session.user);
@@ -66,31 +64,42 @@
 
     snackbar = getSnackbar();
 
-    // init intro
-
-    // token login success
-    if (success && data.user) {
-      flash.update({ type: 'success', ...data });
+    /**
+     * As for displaying the result message: there are two steps:
+     * The flashStore handles the (wait) time the servers result message should stay visible.
+     * After that (amount of time) the message will be set empty and will therefore be unmounted.
+     * As a result a second message is triggered to fly in.
+     * This second message will be either a welcome message (on success) or
+     * a default message (on first appearance)
+     *
+     * Handle Token login
+     */
+    if (!data) {
       /**
-       * especially the user object returned from the Apache Server which will here
-       * passed to node may not exceed a certain payload size in order to avoid errors
-       * this can be achieved by populating the user with only the minimal necessary assotiations:
-       * Groups, Avatar, Token, Videos
+       * The initial screen
        */
-      saveSession();
-    } else if (success === false && data) {
-      // token login failed
-      // wait until snackbar is ready
-      setTimeout(() => {
-        flash.update({ type: 'warning', ...data, delayed: 4000 });
-        configSnackbar(data.message);
-        snackbar.open();
-      }, 500);
+      flash.update({ message: message.text, wait: -1 });
     } else {
-      setTimeout(() => {
-        flash.update({ message: statusMessage.text, keep: true });
-      }, 500); // should be the same as defined in flashStore to avoid clashing
+      if (success) {
+        /**
+         * Token Login succeeded
+         * especially the user object returned from the Apache Server which will here
+         * passed to node may not exceed a certain payload size in order to avoid errors
+         * this can be achieved by populating the user with only the minimal necessary assotiations:
+         * Groups, Avatar, Token, Videos
+         */
+        flash.update({ type: 'success', ...data });
+        saveSession();
+      } else {
+        /**
+         * Token login failed
+         */
+        flash.update({ type: 'warning', ...data, wait: -1 });
+      }
+      configSnackbar(data.message);
+      snackbar.open();
     }
+
     return () => {
       window.removeEventListener('resize', setViewportSize);
       root.classList.remove('is-login-page');
@@ -101,12 +110,9 @@
     viewportSize = windowSize();
   }
 
-  function dispatchCustomEvent(e) {
+  function redirectAfterIntroEnd(e) {
     if ($session.user) {
-      let detail = {
-        path: redirectPath($page, $session),
-      };
-      setTimeout(() => window.dispatchEvent(new CustomEvent(e.type, { detail })), 500);
+      goto(redirectPath($page, $session));
     }
   }
 
@@ -143,20 +149,20 @@
             on:outrostart={(e) => (flashOutroEnded = false)}
             on:outroend={(e) => (flashOutroEnded = true)}
           >
-            <Header h="5" mdc class="m-2" style="max-width: 400px;">
+            <h5 class="m-2 mdc-typography--headline5 headline">
               {$flash.message}
-            </Header>
+            </h5>
           </div>
         {:else if flashOutroEnded}
           <div
             bind:this={statusEl}
-            class="flex justify-center message {statusMessage.type}"
+            class="flex justify-center message {message.type}"
             in:fly={flyTransitionParams}
-            on:introend={(e) => dispatchCustomEvent(e)}
+            on:introend={(e) => redirectAfterIntroEnd(e)}
           >
-            <Header h="5" mdc class="m-2" style="max-width: 400px;">
-              {statusMessage.text}
-            </Header>
+            <h5 class="m-2 mdc-typography--headline5 headline">
+              {message.text}
+            </h5>
           </div>
         {/if}
       </div>
@@ -179,6 +185,15 @@
     height: 50px;
     overflow: hidden;
     position: relative;
+  }
+  .message {
+    margin: 0 auto;
+  }
+  .message .headline {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   :global(.error).message {
     color: var(--error);

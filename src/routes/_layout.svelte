@@ -68,7 +68,6 @@
   onMount(() => {
     root = document.documentElement;
 
-    window.addEventListener('introend', handleIntroEndHandler);
     window.addEventListener('session:started', sessionStartedHandler);
     window.addEventListener('session:extend', sessionExtendHandler);
     window.addEventListener('session:extended', sessionExtendedHandler);
@@ -79,7 +78,6 @@
 
     return () => {
       root.classList.remove('ismobile');
-      window.removeEventListener('introend', handleIntroEndHandler);
       window.removeEventListener('session:started', sessionStartedHandler);
       window.removeEventListener('session:extend', sessionExtendHandler);
       window.removeEventListener('session:extended', sessionExtendedHandler);
@@ -90,7 +88,7 @@
   async function submit(e) {
     if ($session.user) {
       loggedInButtonTextSecondLine = $_('text.one-moment');
-      const res = await post(`auth/logout`);
+      const res = await post(`auth/logout?lang=${$locale}`);
       if (res && res.success) {
         message = res.message;
         proxyEvent('session:ended', { redirect: '/' });
@@ -103,7 +101,9 @@
   }
 
   function configSnackbar(msg, link) {
-    snackbar.close();
+    try {
+      snackbar.close();
+    } catch (e) {}
     configureAction(msg, link);
   }
 
@@ -125,11 +125,6 @@
   }
 
   function handleClosed() {}
-
-  function handleIntroEndHandler(e) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout((o) => o.path && goto(o.path), redirectDelay, e.detail);
-  }
 
   function sessionStartedHandler() {
     if (__session__.started) return;
