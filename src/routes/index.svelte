@@ -2,6 +2,9 @@
   import { stores } from '@sapper/app';
   import { Blurb, Hero } from '@sveltejs/site-kit';
   import Layout from './layout.svelte';
+  import FormField from '@smui/form-field';
+  import Textfield from '@smui/textfield';
+  import Checkbox from '@smui/checkbox';
   import { _ } from 'svelte-i18n';
 
   let { session } = stores();
@@ -19,14 +22,14 @@
   <Hero title="Physio Dips" tagline="" outline="logo.svg" logotype="logo-type.svg" />
 
   <Blurb>
-    <a href="." slot="one">
-      <h2>{$_('blocks.p1.header')}</h2>
-      <p>
-        {$_('blocks.p1.text1')}
-      </p>
-
-      <span class="blocks.p1.text2">...</span>
-    </a>
+    <div class="" slot="one">
+      <a href=".">
+        <h2>{$_('blocks.p1.header')}</h2>
+        <p>
+          {$_('blocks.p1.text1')}
+        </p>
+      </a>
+    </div>
 
     <a href="/{continueWith.url}" slot="two">
       <h2>{$_('blocks.p2.header')}</h2>

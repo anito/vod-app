@@ -159,7 +159,13 @@
     "after-footer": "Nach Fußzeile",
     "message-sent-failed": "Nachricht konnte nicht gesendet werden",
     "message-sent-success": "Nachricht erfolgreich gesendet",
-    "missing-data": "Fehlende Daten"
+    "missing-data": "Fehlende Daten",
+    "template-created": "Vorlage erstellt",
+    "template-create-failed": "Vorlage konnte nicht erstellt werden",
+    "template-renamed": "Vorlage umbenannt",
+    "template-could-not-be-renamed": "Vorlage konnte nicht umbenannt werden",
+    "new-copy-label": " Kopie",
+    "new": "Neu"
   },
   "summary": {
     "copy-link": {

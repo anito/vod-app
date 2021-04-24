@@ -159,7 +159,13 @@
     "after-footer": "After Footer",
     "message-sent-failed": "Message could not be sent",
     "message-sent-success": "Message sent successfully",
-    "missing-data": "Missing Data"
+    "missing-data": "Missing Data",
+    "template-created": "Template created",
+    "template-create-failed": "Template could not be created",
+    "template-renamed": "Template renamed",
+    "template-could-not-be-renamed": "Renaming template failed ",
+    "new-copy-label": " Copy",
+    "new": "New"
   },
   "summary": {
     "copy-link": {
