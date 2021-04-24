@@ -275,7 +275,7 @@
     {#if $users.length}
       <List class="users-list" twoLine avatarList singleSelection>
         {#each filteredUsers as user (user.id)}
-          <a rel="prefetch" href={`users/${user.id}${locationSearch($page)}`}>
+          <a rel="prefetch" href={`/users/${user.id}${locationSearch($page)}`}>
             <SimpleUserCard class="flex" {selectionUserId} {user} />
           </a>
         {/each}
