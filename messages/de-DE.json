@@ -129,7 +129,6 @@
     "email-templates": "Email Vorlagen",
     "general": "Allgemein",
     "inbox": "Posteingang",
-    "sent-mail": "Gesendet",
     "send-mail": "Senden",
     "template-duplicate": "Vorlage duplizieren",
     "template-add": "Neue Vorlage",
@@ -165,7 +164,8 @@
     "template-renamed": "Vorlage umbenannt",
     "template-could-not-be-renamed": "Vorlage konnte nicht umbenannt werden",
     "new-copy-label": " Kopie",
-    "new": "Neu"
+    "new": "Neu",
+    "sent": "Gesendet"
   },
   "summary": {
     "copy-link": {

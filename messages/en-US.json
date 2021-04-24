@@ -129,7 +129,6 @@
     "email-templates": "Email Templates",
     "general": "General",
     "inbox": "Inbox",
-    "sent-mail": "Sent Mail",
     "send-mail": "Send",
     "template-duplicate": "Duplicate Template",
     "template-add": "New Template",
@@ -165,7 +164,8 @@
     "template-renamed": "Template renamed",
     "template-could-not-be-renamed": "Renaming template failed ",
     "new-copy-label": " Copy",
-    "new": "New"
+    "new": "New",
+    "sent": "Sent"
   },
   "summary": {
     "copy-link": {
