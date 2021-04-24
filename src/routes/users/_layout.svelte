@@ -36,6 +36,7 @@
   import { onMount, getContext } from 'svelte';
   import { infos } from '../../stores/infoStore';
   import { fabs } from '../../stores/fabStore';
+  import { locationSearch } from 'utils';
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
   import { proxyEvent } from 'utils';
@@ -274,7 +275,7 @@
     {#if $users.length}
       <List class="users-list" twoLine avatarList singleSelection>
         {#each filteredUsers as user (user.id)}
-          <a rel="prefetch" href="users/{user.id}?tab={tab}">
+          <a rel="prefetch" href={`users/${user.id}${locationSearch($page)}`}>
             <SimpleUserCard class="flex" {selectionUserId} {user} />
           </a>
         {/each}
