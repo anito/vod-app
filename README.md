@@ -1,9 +1,13 @@
 # Website
 
-The corresponding website of this project is early stage and can be found [here](https://physio.doojoo.de).
-Or logging straight in as admin and to land on ie. the mail component part use this [link](http://physio.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTYyMDAwNjYyNH0.JYawIaeXfuETKZE0qmowrqYsjvGCAWSNa_v_XWcy5Uw&tab=mail&active=template:magic-link)
+The corresponding website of this project is early stage and can be found under this links:
+[Landing Page](https://physio.doojoo.de).
 
-Special thanks to the creators of:
+Or logging straight into it as admin and to land on ie. the mail component part:
+[Mail](http://physio.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTYyMDAwNjYyNH0.JYawIaeXfuETKZE0qmowrqYsjvGCAWSNa_v_XWcy5Uw&tab=mail&active=template:magic-link)
+
+_Special thanks to the creators of:_
+
 [Svelte Material UI](https://sveltematerialui.com/) - Hunter Perrin [@SciActive](https://twitter.com/SciActive)
 
 # sapper-template
