@@ -165,7 +165,18 @@
     "template-could-not-be-renamed": "Renaming template failed ",
     "new-copy-label": " Copy",
     "new": "New",
-    "sent": "Sent"
+    "sent": "Sent",
+    "change-avatar": "Change avatar",
+    "remove-avatar": "Remove avatar",
+    "add-avatar": "Add Avatar",
+    "are-you-interested": "Interested?",
+    "choose-option": "Choose your option",
+    "your-name": "Your name",
+    "your-email": "Your email",
+    "message-from-user": "Message from {user}",
+    "request-more-information": "Request further information",
+    "user-message": "Send a message",
+    "thank-you-for-your-message": "Thank you for your message"
   },
   "summary": {
     "copy-link": {
@@ -210,6 +221,9 @@
     "p5": {
       "header": "",
       "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi."
+    },
+    "p7": {
+      "text": "We would love to hear from you."
     }
   },
   "nav": {

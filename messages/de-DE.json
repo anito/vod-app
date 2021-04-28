@@ -165,7 +165,18 @@
     "template-could-not-be-renamed": "Vorlage konnte nicht umbenannt werden",
     "new-copy-label": " Kopie",
     "new": "Neu",
-    "sent": "Gesendet"
+    "sent": "Gesendet",
+    "change-avatar": "Avatar ändern",
+    "remove-avatar": "Avatar entfernen",
+    "add-avatar": "Avatar hinzufügen",
+    "are-you-interested": "Interesse geweckt?",
+    "choose-option": "Wähle eine Option",
+    "your-name": "Ihr Name",
+    "your-email": "Ihre Email Adresse",
+    "message-from-user": "Nachricht von {user}",
+    "request-more-information": "Bitte um weitere Informationen",
+    "user-message": "Mitteilung senden",
+    "thank-you-for-your-message": "Danke für Ihre Mitteilung"
   },
   "summary": {
     "copy-link": {
@@ -210,6 +221,9 @@
     "p5": {
       "header": "",
       "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi."
+    },
+    "p7": {
+      "text": "Wir freuen uns von Ihnen zu hören."
     }
   },
   "nav": {

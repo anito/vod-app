@@ -1,3 +1,4 @@
+@import './variables';
 /*
  * MDC Theme
  **/
@@ -7,12 +8,6 @@ $mdc-typography-styles-headline5: (
 );
 
 @import '@material/typography/mdc-typography';
-
-$primary: #8c1f76;
-$secondary: #40b3ff;
-$background: #ffffff;
-$surface: #ffffff;
-$error: #ff3e00;
 
 .theme-default {
   --prime: #{$primary};
