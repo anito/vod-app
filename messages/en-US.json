@@ -4,7 +4,7 @@
   "Manager": "Manager",
   "Guest": "Guest",
   "text": {
-    "password-hint": "The password must consist of at least 8 characters",
+    "password-hint": "The password must have at least 8 characters",
     "invalid-password": "Passwords do not match",
     "invalid-email": "Not a valid email-address.",
     "copy": "Copy",
