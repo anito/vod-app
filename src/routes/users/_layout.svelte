@@ -40,13 +40,13 @@
   import Layout from './layout.svelte';
   import { InfoChips, SimpleUserCard } from 'components';
   import { proxyEvent } from 'utils';
-  import Button, { Icon } from '@smui/button';
-  import Fab, { Label } from '@smui/fab';
-  import Textfield from '@smui/textfield';
-  import { Icon as TextfieldIcon } from '@smui/textfield/icon';
-  import HelperText from '@smui/textfield/helper-text';
-  import List from '@smui/list';
-  import Dialog, { Title as DialogTitle, Content, Actions, InitialFocus } from '@smui/dialog';
+  import Button, { Icon as Icon_ } from '@smui/button/styled';
+  import Fab, { Label } from '@smui/fab/styled';
+  import Textfield from '@smui/textfield/styled';
+  import Icon from '@smui/textfield/icon';
+  import HelperText from '@smui/textfield/helper-text/styled';
+  import List from '@smui/list/styled';
+  import Dialog, { Title as DialogTitle, Content, Actions, InitialFocus } from '@smui/dialog/styled';
   import { _, locale } from 'svelte-i18n';
 
   const { page, session } = stores();
@@ -112,7 +112,7 @@
 
     let renewed;
     if ((renewed = localStorage.getItem('renewed')) && renewed == ($session.user && $session.user.id)) {
-      renewedTokenDialog.open();
+      renewedTokenDialog.setOpen(true);
     }
 
     // window.addEventListener('MDCChip:interaction', chipInteractionHandler);
@@ -191,27 +191,27 @@
   }
 
   function resolveAllHandler(e) {
-    resolveAllDialog.open();
+    resolveAllDialog.setOpen(true);
   }
 
   function activateUserHandler(e) {
-    (e.detail.silent && activateUser({ active: true })) || activateUserDialog.open();
+    (e.detail.silent && activateUser({ active: true })) || activateUserDialog.setOpen(true);
   }
 
   function generateTokenHandler(e) {
-    (e.detail.silent && generateToken()) || generateTokenDialog.open();
+    (e.detail.silent && generateToken()) || generateTokenDialog.setOpen(true);
   }
 
   function removeTokenHandler(e) {
-    removeTokenDialog.open();
+    removeTokenDialog.setOpen(true);
   }
 
   function tokenRedirectHandler(e) {
-    redirectDialog.open();
+    redirectDialog.setOpen(true);
   }
 
   function infoDialogHandler(e) {
-    infoDialog.open();
+    infoDialog.setOpen(true);
   }
 
   function resolveAllDialogCloseHandler(e) {
@@ -259,18 +259,20 @@
   <div class="sidebar" slot="side" style="flex: 1;">
     <div class="flex flex-col p-2">
       <Textfield
+        class="search"
         variant="filled"
-        withTrailingIcon
         bind:value={search}
         label={$_('text.search-user')}
         input$aria-controls="helper-text"
         input$aria-describedby="helper-text"
       >
-        <TextfieldIcon tabindex="1" class="material-icons" on:click={() => (search = '')}
-          >{search.length && 'close'}</TextfieldIcon
+        <Icon
+          role="button"
+          class="material-icons-outlined cancel-search"
+          slot="trailingIcon"
+          on:click={() => (search = '')}>{search.length && 'cancel'}</Icon
         >
       </Textfield>
-      <HelperText id="helper-text">{$_('text.type-something')}</HelperText>
     </div>
     {#if $users.length}
       <List class="users-list" twoLine avatarList singleSelection>
@@ -319,7 +321,7 @@
     </div>
     <div class="item">
       <h4>{$_('text.transfer-to-third-parties')}</h4>
-      <Icon class="material-icons leading">warning</Icon>
+      <Icon_ class="material-icons leading">warning</Icon_>
       <p>
         {$_('messages.every-token-owner')}
       </p>
@@ -409,7 +411,7 @@
   <Content id="info-content">
     <div class="item">
       {#if token && !hasExpired}
-        <Icon class="material-icons leading">warning</Icon>
+        <Icon_ class="material-icons leading">warning</Icon_>
         <p>{$_('messages.previous-token-will-be-discarted')}</p>
       {/if}
       <p>{@html $_('messages.transfer-token-reminder', { values: { name: username } })}</p>
@@ -432,7 +434,7 @@
 >
   <DialogTitle id="info-title">{$_('text.delete-token')}</DialogTitle>
   <Content id="info-content">
-    <Icon class="material-icons leading">warning</Icon>
+    <Icon_ class="material-icons leading">warning</Icon_>
     <div class="item">{$_('messages.deactivating-token-locks-account')}</div>
   </Content>
   <Actions>
@@ -504,7 +506,7 @@
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
       <Label>{$_('text.new-user')}</Label>
-      <Icon class="material-icons">person_add</Icon>
+      <Icon_ class="material-icons">person_add</Icon_>
     </Fab>
   </div>
 {/if}
@@ -527,6 +529,9 @@
   }
   h4 {
     margin: revert;
+  }
+  :global(.cancel-search) {
+    cursor: pointer;
   }
   .reasons > :global(*) {
     display: block;

@@ -1,13 +1,13 @@
 <script>
-  import 'components/landing-form-controls.scss';
+  import './_form.scss';
   import * as api from 'api';
   import { onMount, getContext } from 'svelte';
   import { stores } from '@sapper/app';
   import { Blurb, Hero } from '@sveltejs/site-kit';
   import Layout from './layout.svelte';
-  import Textfield from '@smui/textfield';
-  import Select, { Option } from '@smui/select';
-  import Button, { Icon } from '@smui/button';
+  import Textfield from '@smui/textfield/styled';
+  import Select, { Option } from '@smui/select/styled';
+  import Button, { Icon } from '@smui/button/styled';
   import { _, locale } from 'svelte-i18n';
 
   const { session } = stores();
@@ -97,7 +97,7 @@
             <Textfield class="user-message" textarea bind:value={message} style="width:100%;  " />
           {/if}
           <div class="user-info flex justify-between" style="width: 100%;">
-            <Textfield bind:value={name} label="" style="flex: 0.49">
+            <Textfield bind:value={name} disabled={!!$session.user} label="" style="flex: 0.49">
               <span slot="label">
                 <Icon class="material-icons" style="font-size: 1em; line-height: normal; vertical-align: middle;"
                   >person</Icon
@@ -108,6 +108,7 @@
             <Textfield
               bind:value={email}
               bind:invalid={invalidEmail}
+              disabled={!!$session.user}
               type="email"
               label=""
               updateInvalid

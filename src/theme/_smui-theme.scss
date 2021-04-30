@@ -1,8 +1,22 @@
-@import './variables';
-/*
- * MDC Theme
- **/
+@use 'sass:color';
+@use '@material/theme/color-palette';
+
+// Svelte Colors! (Dark Theme)
+@use '@material/theme/index' as theme with (
+  $primary: #8c1f76,
+  $secondary: #40b3ff,
+  $surface: #ffffff,
+  $background: #ffffff,
+  $error: #ff3e00,
+  $on-primary: #ffeaf6,
+  $on-secondary: #eff9ff,
+  $on-surface: #181818,
+  // $on-background: #181818,
+  $on-error: #fdf2ee,
+);
+
 $mdc-typography-font-family: var(--font, 'sans-serif');
+$mdc-typography-caption-font-family: var(--caption-font);
 $mdc-typography-styles-headline5: (
   font-weight: 700,
 );
@@ -10,16 +24,9 @@ $mdc-typography-styles-headline5: (
 @import '@material/typography/mdc-typography';
 
 .theme-default {
-  --prime: #{$primary};
-  --second: #{$secondary};
-  --surface: #{$surface};
-  --back-white: #{$background};
-  --error: #{$error};
+  --prime: #{theme.$primary};
+  --second: #{theme.$secondary};
+  --surface: #{theme.$surface};
+  --back-white: #{theme.$background};
+  --error: #{theme.$error};
 }
-
-$mdc-theme-primary: $primary;
-$mdc-theme-secondary: $secondary;
-$mdc-theme-on-secondary: $surface;
-$mdc-theme-surface: $surface;
-$mdc-theme-background: $background;
-$mdc-theme-error: $error;

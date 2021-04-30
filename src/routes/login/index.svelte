@@ -20,7 +20,7 @@
   import { flash } from '../../stores/flashStore';
   import { fly } from 'svelte/transition';
   import { post, windowSize, redirectPath, proxyEvent } from 'utils';
-  import Paper, { Title, Subtitle, Content } from '@smui/paper';
+  import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
   import { _ } from 'svelte-i18n';
 
   const { getSnackbar, configSnackbar } = getContext('snackbar');

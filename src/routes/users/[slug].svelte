@@ -3,8 +3,8 @@
   import { onMount } from 'svelte';
   import { UserManager, TimeManager, MailManager } from 'components';
   import { Header } from '@sveltejs/site-kit';
-  import Button, { Group, Label, Icon } from '@smui/button';
-  import IconButton from '@smui/icon-button';
+  import Button, { Group, Label, Icon } from '@smui/button/styled';
+  import IconButton from '@smui/icon-button/styled';
   import { users } from '../../stores/userStore';
   import { proxyEvent, extendSession } from 'utils';
   import { _ } from 'svelte-i18n';
@@ -74,13 +74,11 @@
       </Group>
       <div class="flex">
         {#if magicLink}
-          <Button on:click={() => proxyEvent('INFO:token:Redirect')}>
-            <IconButton>
-              <Icon class="material-icons">
-                {(hasExpired && 'link_off') || 'link'}
-              </Icon>
-            </IconButton>
-          </Button>
+          <IconButton on:click={() => proxyEvent('INFO:token:Redirect')}>
+            <Icon class="material-icons">
+              {(hasExpired && 'link_off') || 'link'}
+            </Icon>
+          </IconButton>
         {:else}
           <Icon class="material-icons" style="align-self: center; margin-right: 10px;">link_off</Icon>
         {/if}

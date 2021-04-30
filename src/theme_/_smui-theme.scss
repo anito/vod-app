@@ -1,0 +1,25 @@
+@import './variables';
+/*
+ * MDC Theme
+ **/
+$mdc-typography-font-family: var(--font, 'sans-serif');
+$mdc-typography-styles-headline5: (
+  font-weight: 700,
+);
+
+@import '@material/typography/mdc-typography';
+
+.theme-default {
+  --prime: #{$primary};
+  --second: #{$secondary};
+  --surface: #{$surface};
+  --back-white: #{$background};
+  --error: #{$error};
+}
+
+$mdc-theme-primary: $primary;
+$mdc-theme-secondary: $secondary;
+$mdc-theme-on-secondary: $surface;
+$mdc-theme-surface: $surface;
+$mdc-theme-background: $background;
+$mdc-theme-error: $error;

@@ -22,7 +22,7 @@
 <script>
   import { goto, stores } from '@sapper/app';
   import { onMount } from 'svelte';
-  import Button, { Group, Label, Icon } from '@smui/button';
+  import Button, { Group, Label, Icon } from '@smui/button/styled';
   import { VideoManager, ImageManager, Component } from 'components';
   import { Header } from '@sveltejs/site-kit';
   import { extendSession } from 'utils';

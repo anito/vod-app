@@ -18,9 +18,9 @@
   import { stores, goto } from '@sapper/app';
   import { onMount, getContext } from 'svelte';
   import { fly } from 'svelte/transition';
-  import Fab, { Icon } from '@smui/fab';
-  import { Label } from '@smui/common';
-  import Paper, { Title, Subtitle, Content } from '@smui/paper';
+  import Fab, { Icon } from '@smui/fab/styled';
+  import { Label } from '@smui/common/styled';
+  import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
   import { Info, ImageCard, MediaUploader } from 'components';
   import { Header } from '@sveltejs/site-kit';
   import { fabs } from '../../stores/fabStore';

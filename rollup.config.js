@@ -9,37 +9,37 @@ import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
-import sveltePreprocess from "svelte-preprocess";
+import sveltePreprocess from 'svelte-preprocess';
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 const onwarn = (warning, onwarn) =>
-  (warning.code === 'THIS_IS_UNDEFINED') ||
+  warning.code === 'THIS_IS_UNDEFINED' ||
   (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
   (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
   onwarn(warning);
 const aliases = () => ({
-	resolve: ['.svelte', '.js', '.scss', '.css']
+  resolve: ['.svelte', '.js', '.scss', '.css'],
 });
-const postcssOptions = () => {
-	return {
-		config: {
-			path: "./postcss.config.js",
-		},
-		extensions: ['.scss', '.sass'],
-		extract: false,
-		minimize: true,
-		use: [
-			['sass', {
-				includePaths: [
-					'./src/theme',
-					'./node_modules'
-				],
-			}]
-		]
-	}
+const postcssOptions = (extract) => {
+  return {
+    config: {
+      path: './postcss.config.js',
+    },
+    extensions: ['.scss', '.sass'],
+    extract: extract ? 'smui.css' : false,
+    minimize: true,
+    use: [
+      [
+        'sass',
+        {
+          includePaths: ['./src/theme', './node_modules'],
+        },
+      ],
+    ],
+  };
 };
 
 export default {
@@ -77,7 +77,7 @@ export default {
         dedupe: ['svelte'],
       }),
       commonjs(),
-      postcss(postcssOptions()),
+      postcss(postcssOptions(true)),
 
       legacy &&
         babel({
