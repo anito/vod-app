@@ -176,7 +176,8 @@
     "message-from-user": "Nachricht von {user}",
     "request-more-information": "Bitte um weitere Informationen",
     "user-message": "Mitteilung senden",
-    "thank-you-for-your-message": "Danke für Ihre Mitteilung"
+    "thank-you-for-your-message": "Danke für Ihre Mitteilung",
+    "your-password": "Ihr Passwort"
   },
   "summary": {
     "copy-link": {
