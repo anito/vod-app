@@ -20,7 +20,8 @@
   let value;
   let snackbar;
 
-  $: user = $session.user ? { name: $session.user.name, email: $session.user.email } : { user: { name, email } };
+  $: isAdmin = $session.user && $session.user.group.name === 'Administrator';
+  $: user = isAdmin ? { name: $session.user.name, email: $session.user.email } : { user: { name, email } };
   $: ((user) => {
     name = (user && user.name) || name;
     email = (user && user.email) || email;
@@ -48,7 +49,7 @@
   async function submit(e) {
     let res, data;
     data = { ...user, subject: options.find((option) => option.key === value).label, content };
-    res = await api.post(`sents/add?lang=${$locale}`, data, $session.user && $session.user.token);
+    res = await api.post(`sents/add?lang=${$locale}`, data, isAdmin && $session.user.token);
     if (res.success) {
       configSnackbar($_('text.thank-you-for-your-message'));
       reset();
