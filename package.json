@@ -29,7 +29,7 @@
     "sass": "^1.30.0",
     "session-file-store": "^1.4.0",
     "sirv": "^0.4.6",
-    "svelte-i18n": "^3.3.9"
+    "autoprefixer": "^10.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
@@ -90,6 +90,7 @@
     "serve": "^11.3.0",
     "smui-theme": "^4.1.0",
     "svelte": "~3.37.0",
+    "svelte-i18n": "^3.3.9",
     "svelte-loader": "^2.13.6",
     "svelte-loading-spinners": "^0.1.1",
     "svelte-material-ui": "^4.1.0",
