@@ -20,7 +20,7 @@
     "setup:build": "pnpm run build "
   },
   "dependencies": {
-    "@anito/site-kit": "github:anito/site-kit",
+    "autoprefixer": "^10.2.5",
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
     "express-session": "1.17.1",
@@ -29,10 +29,10 @@
     "polka": "next",
     "sass": "^1.30.0",
     "session-file-store": "^1.4.0",
-    "sirv": "^0.4.6",
-    "autoprefixer": "^10.2.5"
+    "sirv": "^0.4.6"
   },
   "devDependencies": {
+    "@anito/site-kit": "github:anito/site-kit",
     "@babel/core": "^7.11.5",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.11.5",
