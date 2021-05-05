@@ -14,12 +14,13 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "svelte-kit": "npm uninstall @sveltejs/site-kit && npm install anito/site-kit --save-dev",
+    "svelte-kit": "npm uninstall @anito/site-kit && npm install anito/site-kit --save-dev",
     "setup": "npm run setup:install && npm run setup:build",
     "setup:install": "pnpm install",
     "setup:build": "pnpm run build "
   },
   "dependencies": {
+    "@anito/site-kit": "github:anito/site-kit",
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
     "express-session": "1.17.1",

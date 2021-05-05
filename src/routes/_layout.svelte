@@ -10,7 +10,7 @@
   import { stores, goto } from '@sapper/app';
   import isMobile from 'ismobilejs';
   import { onMount, setContext } from 'svelte';
-  import { Nav, NavItem } from '@sveltejs/site-kit';
+  import { Nav, NavItem } from '@anito/site-kit';
   import Button, { Icon } from '@smui/button/styled';
   import IconButton from '@smui/icon-button/styled';
   import Snackbar, { Actions } from '@smui/snackbar/styled';
@@ -27,7 +27,7 @@
   import { flash } from '../stores/flashStore';
   import { ticker } from '../stores/tickerStore';
   import { fabs } from '../stores/fabStore';
-  import { Modal } from '@sveltejs/site-kit';
+  import { Modal } from '@anito/site-kit';
   import { Jumper } from 'svelte-loading-spinners';
   import { UserGraphic, LoadingModal, LocaleSwitcher } from 'components';
   import { _, locale } from 'svelte-i18n';

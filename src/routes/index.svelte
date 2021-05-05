@@ -3,7 +3,7 @@
   import * as api from 'api';
   import { onMount, getContext } from 'svelte';
   import { stores } from '@sapper/app';
-  import { Blurb, Hero } from '@sveltejs/site-kit';
+  import { Blurb, Hero } from '@anito/site-kit';
   import Layout from './layout.svelte';
   import Textfield from '@smui/textfield/styled';
   import Select, { Option } from '@smui/select/styled';

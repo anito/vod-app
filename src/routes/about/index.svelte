@@ -1,6 +1,6 @@
 <script>
-  import { Header } from "@sveltejs/site-kit";
-  import { Table } from "components";
+  import { Header } from '@anito/site-kit';
+  import { Table } from 'components';
 </script>
 
 <svelte:head>

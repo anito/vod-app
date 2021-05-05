@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { Component } from 'components';
-  import { Header } from '@sveltejs/site-kit';
+  import { Header } from '@anito/site-kit';
   import { extendSession } from 'utils';
 
   onMount(() => {

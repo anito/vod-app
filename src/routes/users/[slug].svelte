@@ -2,7 +2,7 @@
   import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
   import { UserManager, TimeManager, MailManager } from 'components';
-  import { Header } from '@sveltejs/site-kit';
+  import { Header } from '@anito/site-kit';
   import Button, { Group, Label, Icon } from '@smui/button/styled';
   import IconButton from '@smui/icon-button/styled';
   import { users } from '../../stores/userStore';

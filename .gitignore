@@ -1,7 +1,10 @@
 .DS_Store
 
-/node_modules/*
-!/node_modules/@sveltejs
+node_modules/*
+!node_modules/@anito/
+node_modules/@anito/*
+!node_modules/@anito/site-kit
+
 /static/index.css
 /src/node_modules/@sapper/
 yarn-error.log

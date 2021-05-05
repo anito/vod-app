@@ -24,7 +24,7 @@
   import { onMount } from 'svelte';
   import Button, { Group, Label, Icon } from '@smui/button/styled';
   import { VideoManager, ImageManager, Component } from 'components';
-  import { Header } from '@sveltejs/site-kit';
+  import { Header } from '@anito/site-kit';
   import { extendSession } from 'utils';
   import { videos } from '../../stores/videoStore';
   import { _ } from 'svelte-i18n';

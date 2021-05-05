@@ -22,7 +22,7 @@
   import { Label } from '@smui/common/styled';
   import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
   import { Info, ImageCard, MediaUploader } from 'components';
-  import { Header } from '@sveltejs/site-kit';
+  import { Header } from '@anito/site-kit';
   import { fabs } from '../../stores/fabStore';
   import { images } from '../../stores/imageStore';
   import { currentVideo } from '../../stores/currentVideoStore';

@@ -1,5 +1,5 @@
 <script>
-  import { GridItem, LayoutGrid } from '@sveltejs/site-kit';
+  import { GridItem, LayoutGrid } from '@anito/site-kit';
   import { Breadcrumb, SessionTicker } from 'components';
   import { proxyEvent } from 'utils';
   import { stores } from '@sapper/app';

@@ -1,6 +1,6 @@
 <script>
-  import { stores } from "@sapper/app";
-  import { GridItem, LayoutGrid } from "@sveltejs/site-kit";
+  import { stores } from '@sapper/app';
+  import { GridItem, LayoutGrid } from '@anito/site-kit';
 
   const { page } = stores();
 
