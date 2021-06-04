@@ -10,7 +10,7 @@
   import { stores, goto } from '@sapper/app';
   import isMobile from 'ismobilejs';
   import { onMount, setContext } from 'svelte';
-  import { Nav, NavItem } from '@anito/site-kit';
+  import { Nav, NavItem, Icons, Icon as ExternalIcon } from '@anito/site-kit';
   import Button, { Icon } from '@smui/button/styled';
   import IconButton from '@smui/icon-button/styled';
   import Snackbar, { Actions } from '@smui/snackbar/styled';
@@ -164,6 +164,8 @@
   }
 </script>
 
+<Icons />
+
 <Modal>
   {#if $locale}
     <form class="main-menu" on:submit|stopPropagation|preventDefault={submit} method="post">
@@ -216,6 +218,10 @@
         <li class="locale-switcher">
           <LocaleSwitcher />
         </li>
+
+        <NavItem external="https://github.com/anito/physio-dips-app" blank title="GitHub Repo">
+          <ExternalIcon name="github" />
+        </NavItem>
       </Nav>
     </form>
     <slot />
