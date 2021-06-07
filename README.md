@@ -4,7 +4,7 @@ The corresponding website of this project is early stage and can be found under 
 [Landing Page](https://physio.doojoo.de).
 
 Or logging straight into it as admin and to land on ie. the mail component part:
-[Mail](http://physio.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTYyMDAwNjYyNH0.JYawIaeXfuETKZE0qmowrqYsjvGCAWSNa_v_XWcy5Uw&tab=mail&active=template:magic-link)
+[Mail](http://physio.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link)
 
 _Special thanks to the creators of:_
 
