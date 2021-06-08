@@ -3,7 +3,7 @@
 The corresponding website of this project is early stage and can be found under this links:
 [Landing Page](https://physio.doojoo.de).
 
-Or logging straight into it as admin and to land on ie. the mail component part:
+Or you can log into the mail component part of the app here:
 [Mail](http://physio.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link)
 
 _Special thanks to the creators of:_
