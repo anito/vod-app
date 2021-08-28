@@ -1,28 +1,28 @@
 <script>
-  import { onMount } from 'svelte';
-  import { goto, stores } from '@sapper/app';
-  import { flash } from '../stores/flashStore';
-  import { post, createRedirectSlug } from 'utils';
-  import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
-  import { _ } from 'svelte-i18n';
+  import { onMount } from "svelte";
+  import { goto, stores } from "@sapper/app";
+  import { flash } from "../stores/flashStore";
+  import { post, createRedirectSlug } from "utils";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper/styled";
+  import { _ } from "svelte-i18n";
 
-  const dev = process.env.NODE_ENV === 'development';
+  const dev = process.env.NODE_ENV === "development";
   const { page, session } = stores();
 
   export let status;
   export let error;
 
-  $: status === 401 && (error.message = $_('error.error401'));
-  $: status === 403 && (error.message = $_('error.error403'));
-  $: status === 404 && (error.message = $_('error.error404'));
+  $: status === 401 && (error.message = $_("error.error401"));
+  $: status === 403 && (error.message = $_("error.error403"));
+  $: status === 404 && (error.message = $_("error.error404"));
 
   onMount(async () => {
     flash.update({
-      type: 'error',
+      type: "error",
       message: error.message || error,
       status,
     });
-    if (error.message && error.message.toLowerCase() === 'expired token') {
+    if (error.message && error.message.toLowerCase() === "expired token") {
       status = 401;
     }
     if ($session.user && 401 === status) {
@@ -39,8 +39,8 @@
   });
 
   async function gotoLogin() {
-    let redirectSlug = status === 404 ? '' : createRedirectSlug($page);
-    goto(`login${redirectSlug}`);
+    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
+    // goto(`login${redirectSlug}`);
   }
 </script>
 

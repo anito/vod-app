@@ -1,21 +1,24 @@
 <script context="module">
-  import * as api from 'api';
-  import { users } from '../../stores/userStore';
-  import { videos } from '../../stores/videoStore';
+  import * as api from "api";
+  import { users } from "../../stores/userStore";
+  import { videos } from "../../stores/videoStore";
 
   export async function preload({ query }, { user }) {
     let usersData = [],
       videosData = [];
-    const resUsers = await api.get('users', user && user.token);
+    const resUsers = await api.get("users", user && user.token);
 
     if (resUsers.success) {
       usersData = resUsers.data;
       users.update(usersData);
     } else {
-      this.error((resUsers.data && resUsers.data.code) || resUsers.status, resUsers.message || resUsers.responseText);
+      this.error(
+        (resUsers.data && resUsers.data.code) || resUsers.status,
+        resUsers.message || resUsers.responseText
+      );
     }
 
-    const resVideos = await api.get('videos', user && user.token);
+    const resVideos = await api.get("videos", user && user.token);
 
     if (resVideos.success) {
       videosData = resVideos.data;
@@ -32,26 +35,31 @@
 </script>
 
 <script>
-  import { stores, goto } from '@sapper/app';
-  import { onMount, getContext } from 'svelte';
-  import { infos } from '../../stores/infoStore';
-  import { fabs } from '../../stores/fabStore';
-  import { locationSearch } from 'utils';
-  import Layout from './layout.svelte';
-  import { InfoChips, SimpleUserCard } from 'components';
-  import { proxyEvent } from 'utils';
-  import Button, { Icon as Icon_ } from '@smui/button/styled';
-  import Fab, { Label } from '@smui/fab/styled';
-  import Textfield from '@smui/textfield/styled';
-  import Icon from '@smui/textfield/icon';
-  import HelperText from '@smui/textfield/helper-text/styled';
-  import List from '@smui/list/styled';
-  import Dialog, { Title as DialogTitle, Content, Actions, InitialFocus } from '@smui/dialog/styled';
-  import { _, locale } from 'svelte-i18n';
+  import { stores, goto } from "@sapper/app";
+  import { onMount, getContext } from "svelte";
+  import { infos } from "../../stores/infoStore";
+  import { fabs } from "../../stores/fabStore";
+  import { locationSearch } from "utils";
+  import Layout from "./layout.svelte";
+  import { InfoChips, SimpleUserCard } from "components";
+  import { proxyEvent } from "utils";
+  import Button, { Icon as Icon_ } from "@smui/button/styled";
+  import Fab, { Label } from "@smui/fab/styled";
+  import Textfield from "@smui/textfield/styled";
+  import Icon from "@smui/textfield/icon";
+  import HelperText from "@smui/textfield/helper-text/styled";
+  import List from "@smui/list/styled";
+  import Dialog, {
+    Title as DialogTitle,
+    Content,
+    Actions,
+    InitialFocus,
+  } from "@smui/dialog/styled";
+  import { _, locale } from "svelte-i18n";
 
   const { page, session } = stores();
-  const { getSnackbar, configSnackbar } = getContext('snackbar');
-  const TAB = 'time';
+  const { getSnackbar, configSnackbar } = getContext("snackbar");
+  const TAB = "time";
 
   export let segment; // slug (user.id ) in case we start from a specific user e.g. /users/23
   // from preload
@@ -72,7 +80,7 @@
   let tokenId;
   let tokenVal;
   let magicLink;
-  let search = '';
+  let search = "";
   let snackbar;
   let message;
   let infoDialog;
@@ -84,62 +92,81 @@
   let redirectDialog;
   let user = $session.user;
 
-  const { setFab } = getContext('fab');
+  const { setFab } = getContext("fab");
 
   $: selectionUserId = segment;
-  $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(selectionUserId);
+  $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(
+    selectionUserId
+  );
   $: ((usr) => {
     username = usr && usr.name;
     active = (usr && usr.active) || false;
     token = usr && usr.token;
     tokenId = (token && token.id) || null;
-    tokenVal = (token && token.token) || '';
+    tokenVal = (token && token.token) || "";
     tokenExpires = usr && usr.expires;
-    hasExpired = (tokenExpires && tokenExpires * 1000 < +new Date().getTime()) || false;
-    magicLink = (tokenVal && `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) || '';
+    hasExpired =
+      (tokenExpires && tokenExpires * 1000 < +new Date().getTime()) || false;
+    magicLink =
+      (tokenVal &&
+        `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) ||
+      "";
   })(currentUser);
-  $: filteredUsers = $users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+  $: filteredUsers = $users.filter(
+    (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+  );
   $: tab = ((t) => (!t && TAB) || t)(tab);
-  $: userInfos = ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
-  $: userIssues = userInfos.filter((info) => info.type === 'issue');
+  $: userInfos =
+    ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
+  $: userIssues = userInfos.filter((info) => info.type === "issue");
 
   onMount(() => {
     snackbar = getSnackbar();
 
-    if ($session.role === 'Administrator') {
-      setFab('add-user');
+    if ($session.role === "Administrator") {
+      setFab("add-user");
     }
 
     let renewed;
-    if ((renewed = localStorage.getItem('renewed')) && renewed == ($session.user && $session.user.id)) {
+    if (
+      (renewed = localStorage.getItem("renewed")) &&
+      renewed == ($session.user && $session.user.id)
+    ) {
       renewedTokenDialog.setOpen(true);
     }
 
     // window.addEventListener('MDCChip:interaction', chipInteractionHandler);
-    window.addEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
-    window.addEventListener('INFO:open:InfoDialog', infoDialogHandler);
-    window.addEventListener('INFO:user:Activate', activateUserHandler);
-    window.addEventListener('INFO:token:Remove', removeTokenHandler);
-    window.addEventListener('INFO:token:Generate', generateTokenHandler);
-    window.addEventListener('INFO:token:Redirect', tokenRedirectHandler);
+    window.addEventListener("INFO:open:ResolveAllDialog", resolveAllHandler);
+    window.addEventListener("INFO:open:InfoDialog", infoDialogHandler);
+    window.addEventListener("INFO:user:Activate", activateUserHandler);
+    window.addEventListener("INFO:token:Remove", removeTokenHandler);
+    window.addEventListener("INFO:token:Generate", generateTokenHandler);
+    window.addEventListener("INFO:token:Redirect", tokenRedirectHandler);
 
     return () => {
       // window.removeEventListener('MDCChip:interaction', chipInteractionHandler);
-      window.removeEventListener('INFO:open:ResolveAllDialog', resolveAllHandler);
-      window.removeEventListener('INFO:open:InfoDialog', infoDialogHandler);
-      window.removeEventListener('INFO:user:Activate', activateUserHandler);
-      window.removeEventListener('INFO:token:Remove', removeTokenHandler);
-      window.removeEventListener('INFO:token:Generate', generateTokenHandler);
-      window.removeEventListener('INFO:token:Redirect', tokenRedirectHandler);
+      window.removeEventListener(
+        "INFO:open:ResolveAllDialog",
+        resolveAllHandler
+      );
+      window.removeEventListener("INFO:open:InfoDialog", infoDialogHandler);
+      window.removeEventListener("INFO:user:Activate", activateUserHandler);
+      window.removeEventListener("INFO:token:Remove", removeTokenHandler);
+      window.removeEventListener("INFO:token:Generate", generateTokenHandler);
+      window.removeEventListener("INFO:token:Redirect", tokenRedirectHandler);
     };
   });
 
   async function addUser() {
-    await goto('users/add');
+    await goto("users/add");
   }
 
   async function generateToken() {
-    const res = await api.post(`tokens?lang=${$locale}`, { user_id: currentUser.id }, user.token);
+    const res = await api.post(
+      `tokens?lang=${$locale}`,
+      { user_id: currentUser.id },
+      user.token
+    );
 
     let message;
     if (res.success) {
@@ -151,7 +178,8 @@
     } else {
       try {
         // validation message
-        let message = res.data.errors.token._isUnique || res.data.massage || 'Error';
+        let message =
+          res.data.errors.token._isUnique || res.data.massage || "Error";
         configSnackbar(message);
       } catch (e) {}
       snackbar.open();
@@ -162,23 +190,25 @@
     const res = await api.del(`tokens/${tokenId}?lang=${$locale}`, user.token);
     if (res.success) {
       users.put({ ...currentUser, ...res.data });
-      configSnackbar(res.message);
-      snackbar.open();
-    } else {
-      configSnackbar(res.message);
-      snackbar.open();
     }
+    configSnackbar(res.message);
+    snackbar.open();
   }
 
   async function activateUser(state = {}) {
-    let data = 'active' in state ? state : { active: !active };
-    const res = await api.put(`users/${selectionUserId}?lang=${$locale}`, data, user && user.token);
+    let data = "active" in state ? state : { active: !active };
+    const res = await api.put(
+      `users/${selectionUserId}?lang=${$locale}`,
+      data,
+      user && user.token
+    );
 
     message = res.message || res.data.message || res.statusText;
     code = (res.data && res.data.code) || res.status;
 
     if (res) {
-      (res.success && users.put({ ...currentUser, ...data })) || (active = !active);
+      (res.success && users.put({ ...currentUser, ...data })) ||
+        (active = !active);
       configSnackbar(message);
       snackbar.open();
     }
@@ -195,7 +225,8 @@
   }
 
   function activateUserHandler(e) {
-    (e.detail.silent && activateUser({ active: true })) || activateUserDialog.setOpen(true);
+    (e.detail.silent && activateUser({ active: true })) ||
+      activateUserDialog.setOpen(true);
   }
 
   function generateTokenHandler(e) {
@@ -215,42 +246,46 @@
   }
 
   function resolveAllDialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
+    if (e.detail.action === "approved") {
       resolveAll();
     }
   }
 
   function activateUserDialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
+    if (e.detail.action === "approved") {
       activateUser({ active: true });
     }
   }
 
   function generateTokenDialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
+    if (e.detail.action === "approved") {
       generateToken();
     }
   }
 
   function removeTokenDialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
+    if (e.detail.action === "approved") {
       removeToken();
     }
   }
 
   function renewTokenDialogCloseHandler(e) {
-    if (e.detail.action === 'approved') {
-      localStorage.removeItem('renewed');
+    if (e.detail.action === "approved") {
+      localStorage.removeItem("renewed");
     }
   }
 
   function redirectDialogCloseHandler(e) {
-    if (/^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i.test(e.detail.action))
+    if (
+      /^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i.test(
+        e.detail.action
+      )
+    )
       location.href = e.detail.action;
   }
 
   function chipInteractionHandler(e) {
-    console.log('chipInteractionHandler', e);
+    console.log("chipInteractionHandler", e);
   }
 </script>
 
@@ -262,7 +297,7 @@
         class="search"
         variant="filled"
         bind:value={search}
-        label={$_('text.search-user')}
+        label={$_("text.search-user")}
         input$aria-controls="helper-text"
         input$aria-describedby="helper-text"
       >
@@ -270,7 +305,7 @@
           role="button"
           class="material-icons-outlined cancel-search"
           slot="trailingIcon"
-          on:click={() => (search = '')}>{search.length && 'cancel'}</Icon
+          on:click={() => (search = "")}>{search.length && "cancel"}</Icon
         >
       </Textfield>
     </div>
@@ -284,7 +319,7 @@
       </List>
     {:else}
       <div class="paper-container flex justify-center">
-        <div>{$_('text.user-not-found')}</div>
+        <div>{$_("text.user-not-found")}</div>
       </div>
     {/if}
   </div>
@@ -294,48 +329,58 @@
     <div class="m-auto mr-0" />
   </div>
 </Layout>
-<Dialog bind:this={infoDialog} aria-labelledby="info-title" aria-describedby="info-content">
-  <DialogTitle id="info-title">{$_('text.what-is-a-token')}</DialogTitle>
+<Dialog
+  bind:this={infoDialog}
+  aria-labelledby="info-title"
+  aria-describedby="info-content"
+>
+  <DialogTitle id="info-title">{$_("text.what-is-a-token")}</DialogTitle>
   <Content id="info-content">
-    <div class="item">{$_('text.a-token-is')}</div>
+    <div class="item">{$_("text.a-token-is")}</div>
     <div class="item">
       <details>
-        <summary>{$_('text.what-is-the-token-good-for')}</summary>
+        <summary>{$_("text.what-is-the-token-good-for")}</summary>
         <p>
-          {$_('messages.what-is-the-token-used-for')}
+          {$_("messages.what-is-the-token-used-for")}
         </p>
       </details>
       <details>
-        <summary>{$_('text.how-do-i-proceed')}</summary>
-        {@html $_('messages.usage-of-the-button', { values: { button: $_('text.generate-token') } })}
+        <summary>{$_("text.how-do-i-proceed")}</summary>
+        {@html $_("messages.usage-of-the-button", {
+          values: { button: $_("text.generate-token") },
+        })}
       </details>
       <details>
-        <summary>{$_('messages.misusage')}</summary>
+        <summary>{$_("messages.misusage")}</summary>
         <p>
-          {@html $_('messages.generate-a-new-token', { values: { button: $_('text.generate-token') } })}
+          {@html $_("messages.generate-a-new-token", {
+            values: { button: $_("text.generate-token") },
+          })}
         </p>
         <p>
-          {@html $_('messages.use-remove-token-button', { values: { button: $_('text.remove-token') } })}
+          {@html $_("messages.use-remove-token-button", {
+            values: { button: $_("text.remove-token") },
+          })}
         </p>
       </details>
     </div>
     <div class="item">
-      <h4>{$_('text.transfer-to-third-parties')}</h4>
+      <h4>{$_("text.transfer-to-third-parties")}</h4>
       <Icon_ class="material-icons leading">warning</Icon_>
       <p>
-        {$_('messages.every-token-owner')}
+        {$_("messages.every-token-owner")}
       </p>
     </div>
     <div class="item">
-      <h4>{$_('text.validity')}</h4>
+      <h4>{$_("text.validity")}</h4>
       <p>
-        {$_('messages.validity-of-the-token')}
+        {$_("messages.validity-of-the-token")}
       </p>
     </div>
   </Content>
   <Actions>
     <Button action="approved" default use={[InitialFocus]}>
-      <Label>{$_('text.close')}</Label>
+      <Label>{$_("text.close")}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -346,10 +391,12 @@
   on:MDCDialog:closed={resolveAllDialogCloseHandler}
 >
   {#if userIssues.length}
-    <DialogTitle id="info-title">{$_('text.content-inaccessible')}</DialogTitle>
+    <DialogTitle id="info-title">{$_("text.content-inaccessible")}</DialogTitle>
     <Content id="info-content">
       <div class="item">
-        {@html $_('messages.content-inaccessible', { values: { name: username } })}
+        {@html $_("messages.content-inaccessible", {
+          values: { name: username },
+        })}
       </div>
       <div class="list">
         <ul class="reasons-list">
@@ -361,21 +408,26 @@
     </Content>
     <Actions>
       <Button action="none">
-        <Label>{$_('text.cancel')}</Label>
+        <Label>{$_("text.cancel")}</Label>
       </Button>
-      <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-        <Label>{$_('text.resolve-conflicts')}</Label>
+      <Button
+        action="approved"
+        variant="unelevated"
+        default
+        use={[InitialFocus]}
+      >
+        <Label>{$_("text.resolve-conflicts")}</Label>
       </Button>
     </Actions>
   {:else}
     <Content id="info-content">
       <div class="item">
-        {$_('text.issues-fixed')}
+        {$_("text.issues-fixed")}
       </div>
     </Content>
     <Actions>
       <Button action="none" variant="unelevated" default use={[InitialFocus]}>
-        <Label>{$_('text.close')}</Label>
+        <Label>{$_("text.close")}</Label>
       </Button>
     </Actions>
   {/if}
@@ -386,18 +438,22 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={activateUserDialogCloseHandler}
 >
-  <DialogTitle id="info-title">{$_('text.activate-user')}</DialogTitle>
+  <DialogTitle id="info-title">{$_("text.activate-user")}</DialogTitle>
   <Content id="info-content">
     <div class="item">
-      {@html $_('messages.should-user-be-activated', { values: { name: username } })}
+      {@html $_("messages.should-user-be-activated", {
+        values: { name: username },
+      })}
     </div>
   </Content>
   <Actions>
     <Button action="none">
-      <Label>{$_('text.cancel')}</Label>
+      <Label>{$_("text.cancel")}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>{active ? $_('text.deactivate-user') : $_('text.activate-user')}</Label>
+      <Label
+        >{active ? $_("text.deactivate-user") : $_("text.activate-user")}</Label
+      >
     </Button>
   </Actions>
 </Dialog>
@@ -407,22 +463,26 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={generateTokenDialogCloseHandler}
 >
-  <DialogTitle id="info-title">{$_('text.generate-token')}</DialogTitle>
+  <DialogTitle id="info-title">{$_("text.generate-token")}</DialogTitle>
   <Content id="info-content">
     <div class="item">
       {#if token && !hasExpired}
         <Icon_ class="material-icons leading">warning</Icon_>
-        <p>{$_('messages.previous-token-will-be-discarted')}</p>
+        <p>{$_("messages.previous-token-will-be-discarted")}</p>
       {/if}
-      <p>{@html $_('messages.transfer-token-reminder', { values: { name: username } })}</p>
+      <p>
+        {@html $_("messages.transfer-token-reminder", {
+          values: { name: username },
+        })}
+      </p>
     </div>
   </Content>
   <Actions>
     <Button action="none">
-      <Label>{$_('text.cancel')}</Label>
+      <Label>{$_("text.cancel")}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>{$_('text.generate-token')}</Label>
+      <Label>{$_("text.generate-token")}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -432,17 +492,17 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={removeTokenDialogCloseHandler}
 >
-  <DialogTitle id="info-title">{$_('text.delete-token')}</DialogTitle>
+  <DialogTitle id="info-title">{$_("text.delete-token")}</DialogTitle>
   <Content id="info-content">
     <Icon_ class="material-icons leading">warning</Icon_>
-    <div class="item">{$_('messages.deactivating-token-locks-account')}</div>
+    <div class="item">{$_("messages.deactivating-token-locks-account")}</div>
   </Content>
   <Actions>
     <Button action="none">
-      <Label>{$_('text.cancel')}</Label>
+      <Label>{$_("text.cancel")}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>{$_('text.delete-token-and-deactivate-account')}</Label>
+      <Label>{$_("text.delete-token-and-deactivate-account")}</Label>
     </Button>
   </Actions>
 </Dialog>
@@ -452,10 +512,12 @@
   aria-describedby="event-content"
   on:MDCDialog:closed={redirectDialogCloseHandler}
 >
-  <DialogTitle id="event-title">{$_('text.magic-link')}</DialogTitle>
+  <DialogTitle id="event-title">{$_("text.magic-link")}</DialogTitle>
   <Content id="event-content">
     {#if userIssues.length}
-      <p>{@html $_('messages.login-will-fail', { values: { name: username } })}</p>
+      <p>
+        {@html $_("messages.login-will-fail", { values: { name: username } })}
+      </p>
       <div class="reasons">
         {#each userIssues as issue}
           <Button
@@ -468,15 +530,17 @@
         {/each}
       </div>
     {/if}
-    <p>{$_('messages.you-will-be-logged-out')}</p>
+    <p>{$_("messages.you-will-be-logged-out")}</p>
   </Content>
   <Actions>
     <Button action="none">
-      <Label>{$_('text.cancel')}</Label>
+      <Label>{$_("text.cancel")}</Label>
     </Button>
     <Button variant="unelevated" action={magicLink} use={[InitialFocus]}>
       <Label class="token-button-label"
-        >{hasExpired || !active ? $_('text.continue-anyways') : $_('text.switch-user')}</Label
+        >{hasExpired || !active
+          ? $_("text.continue-anyways")
+          : $_("text.switch-user")}</Label
       >
     </Button>
   </Actions>
@@ -487,25 +551,25 @@
   aria-describedby="info-content"
   on:MDCDialog:closed={renewTokenDialogCloseHandler}
 >
-  <DialogTitle id="info-title">{$_('text.token-updated')}</DialogTitle>
+  <DialogTitle id="info-title">{$_("text.token-updated")}</DialogTitle>
   <Content id="info-content">
     <div class="item">
-      <p>{$_('text.token-was-renewed')}</p>
+      <p>{$_("text.token-was-renewed")}</p>
     </div>
   </Content>
   <Actions>
     <Button action="none">
-      <Label>{$_('text.close')}</Label>
+      <Label>{$_("text.close")}</Label>
     </Button>
     <Button action="approved" variant="unelevated" default use={[InitialFocus]}>
-      <Label>{$_('text.got-it')}</Label>
+      <Label>{$_("text.got-it")}</Label>
     </Button>
   </Actions>
 </Dialog>
-{#if $fabs === 'add-user'}
+{#if $fabs === "add-user"}
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
-      <Label>{$_('text.new-user')}</Label>
+      <Label>{$_("text.new-user")}</Label>
       <Icon_ class="material-icons">person_add</Icon_>
     </Fab>
   </div>
