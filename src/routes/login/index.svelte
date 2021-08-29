@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from 'api';
+  import * as api from "api";
 
   export async function preload(page) {
     let res, token;
@@ -14,16 +14,16 @@
 </script>
 
 <script>
-  import { onMount, getContext } from 'svelte';
-  import { stores, goto } from '@sapper/app';
-  import { ListMessages, ListErrors, LoginForm } from 'components';
-  import { flash } from '../../stores/flashStore';
-  import { fly } from 'svelte/transition';
-  import { post, windowSize, redirectPath, proxyEvent } from 'utils';
-  import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
-  import { _ } from 'svelte-i18n';
+  import { onMount, getContext } from "svelte";
+  import { stores, goto } from "@sapper/app";
+  import { ListMessages, ListErrors, LoginForm } from "components";
+  import { flash } from "../../stores/flashStore";
+  import { fly } from "svelte/transition";
+  import { post, windowSize, redirectPath, proxyEvent } from "utils";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper/styled";
+  import { _ } from "svelte-i18n";
 
-  const { getSnackbar, configSnackbar } = getContext('snackbar');
+  const { getSnackbar, configSnackbar } = getContext("snackbar");
 
   const { page, session } = stores();
   const transitionParams = {
@@ -33,7 +33,7 @@
 
   let errors = null;
   let viewportSize;
-  let message = '';
+  let message = "";
   let snackbar;
   let statusEl;
   let flashEl;
@@ -48,19 +48,21 @@
   export let success = false;
 
   $: flyTransitionParams = { ...transitionParams, x: -80 };
-  $: message = ((loggedIn) => {
+  $: message = ((user) => {
     return {
-      text: (loggedIn && $_('text.welcome-message', { values: { name: loggedIn.name } })) || $_('text.login-text'),
-      type: 'success',
+      text:
+        (user && $_("text.welcome-message", { values: { name: user.name } })) ||
+        $_("text.login-text"),
+      type: "success",
     };
   })($session.user);
 
   onMount(() => {
     root = document.documentElement;
-    root.classList.add('is-login-page');
+    root.classList.add("is-login-page");
 
     viewportSize = windowSize();
-    window.addEventListener('resize', setViewportSize);
+    window.addEventListener("resize", setViewportSize);
 
     snackbar = getSnackbar();
 
@@ -72,11 +74,11 @@
      * This second message will be either a welcome message (on success) or
      * a default message (on first appearance)
      *
-     * Handle Token login
+     * Handle Form or Token login
      */
     if (!data) {
       /**
-       * The initial screen
+       * Form login
        */
       flash.update({ message: message.text, wait: -1 });
     } else {
@@ -88,21 +90,22 @@
          * this can be achieved by populating the user with only the minimal necessary assotiations:
          * Groups, Avatar, Token, Videos
          */
-        flash.update({ type: 'success', ...data });
+        flash.update({ type: "success", ...data });
         saveSession();
       } else {
         /**
          * Token login failed
          */
-        flash.update({ type: 'warning', ...data, wait: -1 });
+        flash.update({ type: "warning", ...data, wait: -1 });
       }
-      configSnackbar(data.message);
+      // configSnackbar(data.message);
+      configSnackbar(message);
       snackbar.open();
     }
 
     return () => {
-      window.removeEventListener('resize', setViewportSize);
-      root.classList.remove('is-login-page');
+      window.removeEventListener("resize", setViewportSize);
+      root.classList.remove("is-login-page");
     };
   });
 
@@ -117,17 +120,21 @@
   }
 
   async function saveSession() {
-    const res = await post('auth/proxy', { ...data });
+    const res = await post("auth/proxy", { ...data });
     if (res) {
       res.user && ($session.user = res.user);
       res.groups && ($session.groups = res.groups);
       res.expires && ($session.expires = new Date(res.expires));
       $session.role = res.user.group.name;
 
-      if (res.renewed) localStorage.setItem('renewed', res.renewed);
-      proxyEvent('session:started');
+      if (res.renewed) localStorage.setItem("renewed", res.renewed);
+      proxyEvent("session:started");
 
-      configSnackbar($_('text.external-login-welcome-message', { values: { name: res.user.name } }));
+      configSnackbar(
+        $_("text.external-login-welcome-message", {
+          values: { name: res.user.name },
+        })
+      );
       snackbar.open();
     }
   }
