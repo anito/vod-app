@@ -1,0 +1,4 @@
+#ot-sdk-btn-floating .ot-floating-button__front svg,
+#ot-sdk-btn-floating .ot-floating-button__back svg {
+  display: initial;
+}
