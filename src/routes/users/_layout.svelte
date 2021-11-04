@@ -66,6 +66,7 @@
   export let tab = TAB;
   export let usersData = [];
   export let videosData = [];
+  export let active = false;
 
   users.update(usersData);
   videos.update(videosData);
@@ -73,7 +74,6 @@
   let code;
   let currentUser;
   let username;
-  let active;
   let tokenExpires;
   let hasExpired;
   let token;
