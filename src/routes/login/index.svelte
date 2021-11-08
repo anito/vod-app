@@ -49,12 +49,14 @@
 
   $: flyTransitionParams = { ...transitionParams, x: -80 };
   $: message = ((user) => {
-    return {
-      text:
-        (user && $_("text.welcome-message", { values: { name: user.name } })) ||
-        $_("text.login-text"),
-      type: "success",
-    };
+    return (
+      (user && {
+        text: $_("text.welcome-message", { values: { name: user.name } }),
+        type: "success",
+      }) || {
+        text: $_("text.login-text"),
+      }
+    );
   })($session.user);
 
   onMount(() => {
@@ -82,6 +84,9 @@
        */
       flash.update({ message: message.text, wait: -1 });
     } else {
+      /**
+       * Token login
+       */
       if (success) {
         /**
          * Token Login succeeded
@@ -96,11 +101,8 @@
         /**
          * Token login failed
          */
-        flash.update({ type: "warning", ...data, wait: -1 });
+        flash.update({ type: "warning", ...data, wait: 5000 });
       }
-      // configSnackbar(data.message);
-      configSnackbar(message);
-      snackbar.open();
     }
 
     return () => {
@@ -195,6 +197,7 @@
   }
   .message {
     margin: 0 auto;
+    color: var(--prime);
   }
   .message .headline {
     max-width: 400px;
@@ -203,15 +206,15 @@
     white-space: nowrap;
   }
   :global(.error).message {
-    color: var(--error);
+    color: var(--error) !important;
   }
   :global(.info).message {
-    color: var(--info);
+    color: var(--info) !important;
   }
   :global(.warning).message {
-    color: var(--warning);
+    color: var(--warning) !important;
   }
   :global(.success).message {
-    color: var(--success);
+    color: var(--success) !important;
   }
 </style>
