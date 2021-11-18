@@ -1,3 +1,3 @@
 [submodule "node_modules/@anito/site-kit"]
 	path = node_modules/@anito/site-kit
-	url = git@github.com:anito/site-kit.git
+	url = https://github.com/anito/site-kit.git
