@@ -30,7 +30,8 @@
     "polka": "next",
     "sass": "^1.30.0",
     "session-file-store": "^1.4.0",
-    "sirv": "^0.4.6"
+    "sirv": "^0.4.6",
+    "ua-parser-js": "^1.0.2"
   },
   "devDependencies": {
     "@anito/site-kit": "github:anito/site-kit",

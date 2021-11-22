@@ -20,7 +20,7 @@
 
     const resVideos = await api.get("videos", user && user.token);
 
-    if (resVideos.success) {
+    if (resVideos && resVideos.success) {
       videosData = resVideos.data;
       videos.update(videosData);
     } else {

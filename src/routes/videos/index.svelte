@@ -1,21 +1,35 @@
 <script context="module">
   import * as api from 'api';
+  import { users } from "../../stores/userStore";
+  import { videos } from "../../stores/videoStore";
 
   const TABS = ['videos', 'images'];
 
   export async function preload(page, { role, user }) {
     let tabs = TABS;
-    let data;
     let query = page.query;
     let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
+    let usersData = [],
+      videosData = [];
 
-    const res = await api.get('videos', user && user.token);
-    if (res && res.success) {
-      data = res.data;
-      return { data, tabs, tab };
+    const resUsers = await api.get("users", user && user.token);
+
+    if (resUsers && resUsers.success) {
+      usersData = resUsers.data;
+      users.update(usersData);
     } else {
       this.error();
     }
+
+    const resVideos = await api.get('videos', user && user.token);
+    if (resVideos && resVideos.success) {
+      videosData = resVideos.data;
+      videos.update(videosData);
+    } else {
+      this.error();
+    }
+
+    return { usersData, videosData, tabs, tab };
   }
 </script>
 
@@ -26,17 +40,18 @@
   import { VideoManager, ImageManager, Component } from 'components';
   import { Header } from '@anito/site-kit';
   import { extendSession } from 'utils';
-  import { videos } from '../../stores/videoStore';
   import { _ } from 'svelte-i18n';
 
   // available from preload
   export let tabs = TABS;
-  export let data = [];
+  export let usersData = [];
+  export let videosData = [];
   export let tab = 'videos';
 
   let { session } = stores();
 
-  $: videos.update(data);
+  users.update(usersData);
+  videos.update(videosData);
 
   onMount(() => {
     $session.role === 'Administrator' && changeTab(tab);
