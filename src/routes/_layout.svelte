@@ -60,7 +60,7 @@
   });
 
   setContext("fab", {
-    setFab: (fab) => fabs.update(fab),
+    setFab: (fab) => $session.role === "Administrator" && fabs.update(fab),
     restoreFab: () => fabs.restore(),
   });
 

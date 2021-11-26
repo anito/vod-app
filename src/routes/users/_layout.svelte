@@ -566,7 +566,7 @@
     </Button>
   </Actions>
 </Dialog>
-{#if $fabs === "add-user"}
+{#if $fabs === "add-user" }
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
       <Label>{$_("text.new-user")}</Label>

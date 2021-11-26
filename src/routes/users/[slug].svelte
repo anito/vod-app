@@ -1,15 +1,15 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-  import { UserManager, TimeManager, MailManager } from 'components';
-  import { Header } from '@anito/site-kit';
-  import Button, { Group, Label, Icon } from '@smui/button/styled';
-  import IconButton from '@smui/icon-button/styled';
-  import { users } from '../../stores/userStore';
-  import { proxyEvent, extendSession } from 'utils';
-  import { _ } from 'svelte-i18n';
+  import { stores } from "@sapper/app";
+  import { onMount } from "svelte";
+  import { UserManager, TimeManager, MailManager } from "components";
+  import { Header } from "@anito/site-kit";
+  import Button, { Group, Label, Icon } from "@smui/button/styled";
+  import IconButton from "@smui/icon-button/styled";
+  import { users } from "../../stores/userStore";
+  import { proxyEvent, extendSession } from "utils";
+  import { _ } from "svelte-i18n";
 
-  const TABS = ['user', 'time', 'mail'];
+  const TABS = ["user", "time", "mail"];
   const { page, session } = stores();
 
   let userExpires;
@@ -19,19 +19,22 @@
   let currentUser;
   let username;
 
-  $: tab = ($page.query && $page.query.tab) || 'time';
+  $: tab = ($page.query && $page.query.tab) || "time";
   $: selectionUserId = $page.params.slug;
   $: (tab || selectionUserId) && extendSession();
-  $: currentUser = ((id) => $users.length && $users.filter((usr) => usr.id === id)[0])(selectionUserId);
-  $: username = (currentUser && currentUser.name) || '';
+  $: currentUser = ((id) =>
+    $users.length && $users.filter((usr) => usr.id === id)[0])(selectionUserId);
+  $: username = (currentUser && currentUser.name) || "";
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
   $: ((user) => {
     if (!user) return;
     userExpires = user.expires;
-    hasExpired = (userExpires && userExpires * 1000 < +new Date().getTime()) || false;
+    hasExpired =
+      (userExpires && userExpires * 1000 < +new Date().getTime()) || false;
     tokenVal = user.token && user.token.token;
     magicLink = tokenVal && `http://${$page.host}/login?token=${tokenVal}`;
   })(currentUser);
+  $: hidden = $session.role === 'Administrator' ? false : true;
 
   onMount(() => {});
 </script>
@@ -40,72 +43,71 @@
   <title>Physiotherapy Online | User {username}</title>
 </svelte:head>
 
-{#if 'Administrator' === $session.role}
-  <div class="grid {tab}">
-    <div class="grid-item toolbar justify-between">
-      <Group variant="unelevated">
-        <Button
-          class="focus:outline-none focus:shadow-outline"
-          rel="prefetch"
-          href="users/{selectionUserId}?tab=time"
-          variant={tab === TABS[1] ? 'unelevated' : 'outlined'}
+<div class="grid {tab}">
+  <div class="grid-item toolbar justify-between">
+    <Group variant="unelevated">
+      <Button
+        class="focus:outline-none focus:shadow-outline"
+        rel="prefetch"
+        href="users/{selectionUserId}?tab=time"
+        variant={tab === TABS[1] ? "unelevated" : "outlined"}
+      >
+        <Icon class="material-icons">video_settings</Icon>
+        <Label>{$_("text.classes")}</Label>
+      </Button>
+      <Button
+        class="focus:outline-none focus:shadow-outline"
+        rel="prefetch"
+        href="users/{selectionUserId}?tab=user"
+        variant={tab === TABS[0] ? "unelevated" : "outlined"}
+      >
+        <Icon class="material-icons">account_circle</Icon>
+        <Label>{$_("text.user-profil")}</Label>
+      </Button>
+      <Button
+        class="focus:outline-none focus:shadow-outline"
+        rel="prefetch"
+        href="users/{selectionUserId}?tab=mail"
+        variant={tab === TABS[2] ? "unelevated" : "outlined"}
+      >
+        <Icon class="material-icons">mail</Icon>
+        <Label>{$_("text.mail")}</Label>
+      </Button>
+    </Group>
+    <div class="flex" class:hidden>
+      {#if magicLink}
+        <IconButton on:click={() => proxyEvent("INFO:token:Redirect")}>
+          <Icon class="material-icons">
+            {(hasExpired && "link_off") || "link"}
+          </Icon>
+        </IconButton>
+      {:else}
+        <Icon
+          class="material-icons"
+          style="align-self: center; margin-right: 10px;">link_off</Icon
         >
-          <Icon class="material-icons">video_settings</Icon>
-          <Label>{$_('text.classes')}</Label>
-        </Button>
-        <Button
-          class="focus:outline-none focus:shadow-outline"
-          rel="prefetch"
-          href="users/{selectionUserId}?tab=user"
-          variant={tab === TABS[0] ? 'unelevated' : 'outlined'}
-        >
-          <Icon class="material-icons">account_circle</Icon>
-          <Label>{$_('text.user-profil')}</Label>
-        </Button>
-        <Button
-          class="focus:outline-none focus:shadow-outline"
-          rel="prefetch"
-          href="users/{selectionUserId}?tab=mail"
-          variant={tab === TABS[2] ? 'unelevated' : 'outlined'}
-        >
-          <Icon class="material-icons">mail</Icon>
-          <Label>{$_('text.mail')}</Label>
-        </Button>
-      </Group>
-      <div class="flex">
-        {#if magicLink}
-          <IconButton on:click={() => proxyEvent('INFO:token:Redirect')}>
-            <Icon class="material-icons">
-              {(hasExpired && 'link_off') || 'link'}
-            </Icon>
-          </IconButton>
-        {:else}
-          <Icon class="material-icons" style="align-self: center; margin-right: 10px;">link_off</Icon>
-        {/if}
-        <Header mdc h="5" class="pr-6 hidden md:block">{username}</Header>
-      </div>
+      {/if}
+      <Header mdc h="5" class="pr-6 hidden md:block">{username}</Header>
     </div>
-    {#if tab === TABS[1]}
-      <TimeManager {selectionUserId} />
-    {/if}
-    {#if tab === TABS[0]}
-      <UserManager
-        on:user:Redirect
-        on:token:Generate
-        on:token:Remove
-        on:user:Activate
-        on:open:InfoDialog
-        {selectionUserId}
-        selectedMode="edit"
-      />
-    {/if}
-    {#if tab === TABS[2]}
-      <MailManager {selectionUserId} />
-    {/if}
   </div>
-{:else}
-  <UserManager {selectionUserId} selectedMode="edit" />
-{/if}
+  {#if tab === TABS[1]}
+    <TimeManager {selectionUserId} />
+  {/if}
+  {#if tab === TABS[0]}
+    <UserManager
+      on:user:Redirect
+      on:token:Generate
+      on:token:Remove
+      on:user:Activate
+      on:open:InfoDialog
+      {selectionUserId}
+      selectedMode="edit"
+    />
+  {/if}
+  {#if tab === TABS[2]}
+    <MailManager {selectionUserId} />
+  {/if}
+</div>
 
 <style>
   .grid {
@@ -117,21 +119,21 @@
   }
   :global(.user).grid {
     grid-template-areas:
-      'toolbar toolbar'
-      'one two';
+      "toolbar toolbar"
+      "one two";
     grid-template-columns: 1fr;
   }
   :global(.time).grid {
     grid-template-areas:
-      'toolbar toolbar'
-      'one two';
+      "toolbar toolbar"
+      "one two";
     grid-template-columns: 4fr 4fr;
     align-items: initial;
   }
   :global(.mail).grid {
     grid-template-areas:
-      'toolbar toolbar'
-      'one one';
+      "toolbar toolbar"
+      "one one";
     grid-template-columns: 4fr 4fr;
     align-items: initial;
   }
