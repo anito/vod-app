@@ -2,9 +2,9 @@
   import * as api from "api";
 
   export async function preload(page) {
-    let res, token;
-    if (page.query && (token = page.query.token)) {
-      res = await api.get(`login?token=${token}`);
+    let token = page.query.token;
+    if (token) {
+      const res = await api.get(`login/?token=${token}`);
 
       if (res) {
         return { ...res };
@@ -14,16 +14,14 @@
 </script>
 
 <script>
-  import { onMount, getContext } from "svelte";
+  import { onMount } from "svelte";
   import { stores, goto } from "@sapper/app";
   import { ListMessages, ListErrors, LoginForm } from "components";
-  import { flash } from "../../stores/flashStore";
+  import { flash } from "stores/flashStore";
   import { fly } from "svelte/transition";
-  import { post, windowSize, redirectPath, proxyEvent } from "utils";
+  import { windowSize, redirectPath, proxyEvent } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper/styled";
   import { _ } from "svelte-i18n";
-
-  const { getSnackbar, configSnackbar } = getContext("snackbar");
 
   const { page, session } = stores();
   const transitionParams = {
@@ -34,7 +32,6 @@
   let errors = null;
   let viewportSize;
   let message = "";
-  let snackbar;
   let statusEl;
   let flashEl;
   let root;
@@ -66,41 +63,31 @@
     viewportSize = windowSize();
     window.addEventListener("resize", setViewportSize);
 
-    snackbar = getSnackbar();
-
     /**
-     * As for displaying the result message: there are two steps:
-     * The flashStore handles the (wait) time the servers result message should stay visible.
-     * After that (amount of time) the message will be set empty and will therefore be unmounted.
-     * As a result a second message is triggered to fly in.
+     * DISPLAY RESULT MESSAGES
+     * There are two steps:
+     * 
+     * Message 1: The flashStore handles the "wait" time the first message should stay visible until the servers result message appears
+     * After that "wait" time) the message will be set empty and will therefore be unmounted.
+     * 
+     * Message 2: After the "wait" time a second message will be triggered by the store.
      * This second message will be either a welcome message (on success) or
      * a default message (on first appearance)
-     *
-     * Handle Form or Token login
      */
     if (!data) {
       /**
        * Form login
        */
-      flash.update({ message: message.text, wait: -1 });
+      flash.update({ message: message.text, wait: -5 });
     } else {
       /**
        * Token login
        */
       if (success) {
-        /**
-         * Token Login succeeded
-         * especially the user object returned from the Apache Server which will here
-         * passed to node may not exceed a certain payload size in order to avoid errors
-         * this can be achieved by populating the user with only the minimal necessary assotiations:
-         * Groups, Avatar, Token, Videos
-         */
+        
         flash.update({ type: "success", ...data });
-        saveSession();
+        setTimeout(scheduleStart, 100, data);
       } else {
-        /**
-         * Token login failed
-         */
         flash.update({ type: "warning", ...data, wait: 5000 });
       }
     }
@@ -111,6 +98,10 @@
     };
   });
 
+  function scheduleStart(data) {
+    proxyEvent("session:start", { data })
+  }
+
   function setViewportSize() {
     viewportSize = windowSize();
   }
@@ -120,33 +111,13 @@
       goto(redirectPath($page, $session));
     }
   }
-
-  async function saveSession() {
-    const res = await post("auth/proxy", { ...data });
-    if (res) {
-      res.user && ($session.user = res.user);
-      res.groups && ($session.groups = res.groups);
-      res.expires && ($session.expires = new Date(res.expires));
-      $session.role = res.user.group.name;
-
-      if (res.renewed) localStorage.setItem("renewed", res.renewed);
-      proxyEvent("session:started");
-
-      configSnackbar(
-        $_("text.external-login-welcome-message", {
-          values: { name: res.user.name },
-        })
-      );
-      snackbar.open();
-    }
-  }
 </script>
 
 <svelte:head>
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<div class="flex flex-1 justify-center m-8">
+<div in:fly={{x: -200, duration: 800}} out:fly={{x: 200}} class="flex flex-1 justify-center m-8">
   <div class="flex flex-col justify-center">
     <Paper elevation="20">
       <div class="flyer">

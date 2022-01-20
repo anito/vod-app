@@ -1,9 +1,9 @@
 <script>
   import { onMount } from "svelte";
-  import { goto, stores } from "@sapper/app";
-  import { flash } from "../stores/flashStore";
+  import { stores } from "@sapper/app";
+  import { flash } from "stores/flashStore";
   import { post, createRedirectSlug } from "utils";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper/styled";
+  import Paper, { Title } from "@smui/paper/styled";
   import { _ } from "svelte-i18n";
 
   const dev = process.env.NODE_ENV === "development";

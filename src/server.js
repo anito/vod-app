@@ -1,27 +1,30 @@
-import sirv from 'sirv';
-import polka from 'polka';
-import compression from 'compression';
-import bodyParser from 'body-parser';
-import session from 'express-session';
-import sessionFileStore from 'session-file-store';
-import * as sapper from '@sapper/server';
+import sirv from "sirv";
+import polka from "polka";
+import compression from "compression";
+import bodyParser from "body-parser";
+import session from "express-session";
+import sessionFileStore from "session-file-store";
+import * as sapper from "@sapper/server";
 import { i18nMiddleware } from "./i18n";
-import { INIT_OPTIONS } from 'config';
+import { INIT_OPTIONS } from "config";
+import { config } from "dotenv";
 
-const { PORT, NODE_ENV } = process.env;
-const dev = NODE_ENV === 'development';
+config();
+const { PORT, NODE_ENV, API_URI, API_DEV_URI, GOOGLE_API_URI, CLIENT_ID } = process.env;
+const dev = NODE_ENV === "development";
+const API = dev ? API_DEV_URI : API_URI;
 const FileStore = new sessionFileStore(session);
 
 // ignore "unable to verify the first certificate" error caused by self signed (root) certificate
-dev && ( process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0 );
+dev && (process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0);
 
 polka() // You can also use Express
   .use(
     bodyParser.json(),
-    sirv('static', { dev }),
+    sirv("static", { dev }),
     compression({ threshold: 0 }),
     session({
-      secret: 'kjsdlkf%$267xKLJ§j93489jksdhfuu$&§%$9usij99jj',
+      secret: "kjsdlkf%$267xKLJ§j93489jksdhfuu$&§%$9usij99jj",
       resave: false,
       saveUninitialized: true,
       cookie: {
@@ -32,16 +35,18 @@ polka() // You can also use Express
       }),
     }),
     sapper.middleware({
-      session: (req) =>
+      session: (req, res) =>
         req.session && {
           user: req.session.user,
           role: req.session.user && req.session.user.group.name,
           groups: req.session.groups || [],
           expires: req.session.cookie.expires,
-        }
+          API,
+          CLIENT_ID
+        },
     }),
     i18nMiddleware()
   )
   .listen(PORT, (err) => {
-    if (err) console.log('error', err);
+    if (err) console.log("error", err);
   });

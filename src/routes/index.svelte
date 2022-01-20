@@ -10,6 +10,8 @@
   import Button, { Icon } from "@smui/button/styled";
   import { _, locale } from "svelte-i18n";
 
+  export let segment;
+
   const { session } = stores();
   const { getSnackbar, configSnackbar } = getContext("snackbar");
 
@@ -81,7 +83,7 @@
   <title>Physiotherapy Online | Home</title>
 </svelte:head>
 
-<Layout>
+<Layout {segment}>
   <Hero
     title="Physio Dips"
     tagline=""

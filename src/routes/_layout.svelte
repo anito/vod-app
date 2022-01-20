@@ -24,21 +24,20 @@
     __session__,
     locationSearch,
   } from "utils";
-  import { flash } from "../stores/flashStore";
-  import { ticker } from "../stores/tickerStore";
-  import { fabs } from "../stores/fabStore";
+  import { flash } from "stores/flashStore";
+  import { ticker } from "stores/tickerStore";
+  import { fabs } from "stores/fabStore";
+  import { settings } from "stores/settingStore";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
   import { UserGraphic, LoadingModal, LocaleSwitcher } from "components";
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
-  // import ListErrors from 'components';
-
   const { page, session } = stores();
   const snackbarLifetimeDefault = 4000;
   const redirectDelay = 300;
-
+  
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
   let root;
@@ -51,8 +50,10 @@
   let loggedInButtonTextSecondLine;
   let unsubscribeTicker;
 
+  settings.update({ Session: $session });
+
   // load configuration data
-  serverConfig();
+  serverConfig($session.api);
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
@@ -86,6 +87,7 @@
   onMount(() => {
     root = document.documentElement;
 
+    window.addEventListener("session:start", sessionStartHandler);
     window.addEventListener("session:started", sessionStartedHandler);
     window.addEventListener("session:extend", sessionExtendHandler);
     window.addEventListener("session:extended", sessionExtendedHandler);
@@ -96,6 +98,7 @@
 
     return () => {
       root.classList.remove("ismobile");
+      window.removeEventListener("session:start", sessionStartHandler);
       window.removeEventListener("session:started", sessionStartedHandler);
       window.removeEventListener("session:extend", sessionExtendHandler);
       window.removeEventListener("session:extended", sessionExtendedHandler);
@@ -144,12 +147,38 @@
 
   function handleClosed() {}
 
-  function sessionStartedHandler() {
+  async function sessionStartHandler(e) {
+    const data = e.detail.data;
+    const res = await post("auth/proxy", { ...data });
+    if (res) {
+      const { user, groups, expires, renewed } = { ...res };
+
+      $session.user = user;
+      $session.role = user.group.name;
+      $session.groups = groups;
+      $session.expires = new Date(expires);
+
+      renewed && localStorage.setItem("renewed", renewed);
+      proxyEvent("session:started", { expires });
+
+      configSnackbar(
+        $_("text.external-login-welcome-message", {
+          values: { name: user.name },
+        })
+      );
+      snackbar.open();
+    }
+  }
+
+  function sessionStartedHandler(e) {
     if (__session__.started) return;
-    ticker.start($session.expires);
+
     unsubscribeTicker = ticker.subscribe((val) => {
-      val === 0 && proxyEvent("session:ended", { redirect: "login" });
+      if(val === 0) {
+        proxyEvent("session:ended", { redirect: "login" });
+      }
     });
+    ticker.start($session.expires);
   }
 
   function sessionExtendHandler(e) {
@@ -163,6 +192,7 @@
 
   function sessionEndedHandler(e) {
     unsubscribeTicker();
+
     setTimeout(() => {
       goto(`${e.detail.redirect}${createRedirectSlug($page)}`);
       $session.user = null;

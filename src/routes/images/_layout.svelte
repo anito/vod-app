@@ -23,23 +23,21 @@
   let { session } = stores();
 </script>
 
-<div class:segment>
-  <Layout>
-    {#if $session.role === "Administrator"}
-      <slot />
-    {:else}
-      <div class="paper-container">
-        <div class="vcentered">
-          <Info title="Unauthorized" let:href>
-            <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
-          </Info>
-        </div>
+<Layout>
+  {#if $session.role === "Administrator"}
+    <slot />
+  {:else}
+    <div class="paper-container">
+      <div class="vcentered">
+        <Info title="Unauthorized" let:href>
+          <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
+        </Info>
       </div>
-    {/if}
-    <div slot="ad" />
-    <div slot="footer" />
-  </Layout>
-</div>
+    </div>
+  {/if}
+  <div slot="ad" />
+  <div slot="footer" />
+</Layout>
 
 <style>
   .paper-container {

@@ -122,7 +122,6 @@
     "sign-in-now": "Sign in now",
     "no-content-available": "No content available",
     "no-description": "no description",
-    "contact-admin": "Are you having trouble logging in?",
     "your-classes": "The following online classes are available for you:",
     "mail": "Mail",
     "templates": "Templates",
@@ -177,7 +176,8 @@
     "request-more-information": "Request further information",
     "user-message": "Send a message",
     "thank-you-for-your-message": "Thank you for your message",
-    "your-password": "Your password"
+    "your-password": "Your password",
+    "login-issues": "Having trouble logging in?"
   },
   "summary": {
     "copy-link": {

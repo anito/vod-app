@@ -1,12 +1,12 @@
 <script>
-  import { GridItem, LayoutGrid } from '@anito/site-kit';
-  import { Breadcrumb, SessionTicker } from 'components';
-  import { proxyEvent } from 'utils';
-  import { stores } from '@sapper/app';
-
-  const { page } = stores();
+  import { GridItem, LayoutGrid } from "@anito/site-kit";
+  import { Breadcrumb, SessionTicker } from "components";
+  import { proxyEvent } from "utils";
+  import { stores } from "@sapper/app";
 
   export let stretch = false;
+  
+  const { page } = stores();
 
   let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
@@ -26,7 +26,7 @@
             warning="180"
             warningOnly
             forceOnExtend="2"
-            on:MDCChip:interaction={() => proxyEvent('session:extend')}
+            on:MDCChip:interaction={() => proxyEvent("session:extend")}
           />
         </div>
       </div>

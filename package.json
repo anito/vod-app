@@ -1,7 +1,7 @@
 {
   "name": "physio-dippoldiswalde",
   "description": "Physiotherapie Dippoldiswalde",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "dev": "run-p start:dev",
     "dev:tailwind": "postcss static/tailwind.css -o static/index.css -w",
@@ -24,6 +24,7 @@
     "body-parser": "^1.19.0",
     "caniuse-lite": "^1.0.30001282",
     "compression": "^1.7.1",
+    "dotenv": "^14.1.0",
     "express-session": "1.17.1",
     "formidable": "^1.2.2",
     "node-fetch": "^2.6.0",
@@ -90,7 +91,7 @@
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
     "sapper": "^0.28.10",
-    "serve": "^11.3.0",
+    "serve": "^13.0.2",
     "smui-theme": "^4.1.0",
     "svelte": "~3.37.0",
     "svelte-i18n": "^3.3.9",

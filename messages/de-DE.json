@@ -122,7 +122,6 @@
     "sign-in-now": "Jetzt anmelden",
     "no-content-available": "Keine Inhalte verfügbar",
     "no-description": "keine Beschreibung",
-    "contact-admin": "Haben Sie Probleme bei der Anmeldung?",
     "your-classes": "Die folgenden Online-Videokurse stehen für Sie bereit:",
     "mail": "E-Mail",
     "templates": "Vorlagen",
@@ -177,7 +176,8 @@
     "request-more-information": "Bitte um weitere Informationen",
     "user-message": "Mitteilung senden",
     "thank-you-for-your-message": "Danke für Ihre Mitteilung",
-    "your-password": "Ihr Passwort"
+    "your-password": "Ihr Passwort",
+    "login-issues": "Probleme bei der Anmeldung?"
   },
   "summary": {
     "copy-link": {

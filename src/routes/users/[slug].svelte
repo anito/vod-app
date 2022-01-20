@@ -5,7 +5,7 @@
   import { Header } from "@anito/site-kit";
   import Button, { Group, Label, Icon } from "@smui/button/styled";
   import IconButton from "@smui/icon-button/styled";
-  import { users } from "../../stores/userStore";
+  import { users } from "stores/userStore";
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";
 

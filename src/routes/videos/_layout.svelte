@@ -19,10 +19,10 @@
   import { onMount, getContext } from 'svelte';
   import Layout from './layout.svelte';
   import { stores } from '@sapper/app';
-  import { images } from '../../stores/imageStore';
-  import { videos } from '../../stores/videoStore';
-  import { urls } from '../../stores/urlStore';
-  import { videoEmitter } from '../../stores/videoEmitter';
+  import { images } from 'stores/imageStore';
+  import { videos } from 'stores/videoStore';
+  import { urls } from 'stores/urlStore';
+  import { videoEmitter } from 'stores/videoEmitter';
   import { locale, _ } from 'svelte-i18n';
 
   export let segment;
@@ -89,7 +89,7 @@
   });
 </script>
 
-<Layout class={segment}>
+<Layout>
   <slot />
   <div slot="ad" />
   <div slot="footer" class="flex justify-between">

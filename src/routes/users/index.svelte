@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '@sapper/app';
   import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
-  import { users } from '../../stores/userStore';
+  import { users } from 'stores/userStore';
   import { _ } from 'svelte-i18n';
 
   let preSelectedIndex = 0;
