@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
-  import { stores } from "@sapper/app";
+  import { writable } from "svelte/store";
+  import { goto, stores } from "@sapper/app";
   import { flash } from "stores/flashStore";
   import { post, createRedirectSlug } from "utils";
   import Paper, { Title } from "@smui/paper/styled";
@@ -8,6 +9,8 @@
 
   const dev = process.env.NODE_ENV === "development";
   const { page, session } = stores();
+  const WAIT = 10;
+  let update, timer, sec, word, unsubscribe, interval;
 
   export let status;
   export let error;
@@ -17,6 +20,8 @@
   $: status === 404 && (error.message = $_("error.error404"));
 
   onMount(async () => {
+    createTimer();
+    startTimer();
     flash.update({
       type: "error",
       message: error.message || error,
@@ -31,16 +36,36 @@
         $session.user = null;
         $session.role = null;
         $session.groups = null;
-        gotoLogin();
       }
-    } else {
-      gotoLogin();
     }
   });
 
   async function gotoLogin() {
-    let redirectSlug = status === 404 ? "" : createRedirectSlug($page);
-    // goto(`login${redirectSlug}`);
+    let redirectSlug = status >= 400 ? "" : createRedirectSlug($page);
+    goto(`login${redirectSlug}`);
+  }
+
+  function createTimer() {
+    timer = { update } = writable(WAIT, () => {
+      
+      interval = setInterval(() => {
+        update(val => --val);
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+        gotoLogin();
+      }
+    });
+
+  }
+
+  function startTimer() {
+    unsubscribe = timer.subscribe((val) => {
+      sec = val;
+      word = sec === 1 ? $_("text.second") : $_("text.seconds");
+      val === 0 && unsubscribe();
+    })
   }
 </script>
 
@@ -50,10 +75,13 @@
 
 <div class="wrapper">
   <h1>{status}</h1>
-  <Paper color="secondary" style="align-self: center;">
+  <Paper color="primary" style="align-self: center;">
     <Title style="color: var(--text-light); text-transform: uppercase;">
       {error.message}
     </Title>
+    <div class="">
+      {@html $_("text.you_will_be_redirected", { values: { sec, word } })}
+    </div>
   </Paper>
 </div>
 

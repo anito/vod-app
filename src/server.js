@@ -10,7 +10,7 @@ import { INIT_OPTIONS } from "config";
 import { config } from "dotenv";
 
 config();
-const { PORT, NODE_ENV, API_URI, API_DEV_URI, GOOGLE_API_URI, CLIENT_ID } = process.env;
+const { PORT, NODE_ENV, API_URI, API_DEV_URI, CLIENT_ID } = process.env;
 const dev = NODE_ENV === "development";
 const API = dev ? API_DEV_URI : API_URI;
 const FileStore = new sessionFileStore(session);

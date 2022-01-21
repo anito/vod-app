@@ -14,7 +14,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "svelte-kit": "npm uninstall @anito/site-kit && npm install anito/site-kit --save-dev",
+    "site-kit": "npm uninstall @anito/site-kit && npm install anito/site-kit --save-dev",
     "setup": "npm run setup:install && npm run setup:build",
     "setup:install": "pnpm install",
     "setup:build": "pnpm run build "

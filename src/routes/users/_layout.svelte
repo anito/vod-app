@@ -161,10 +161,11 @@
     await goto("users/add");
   }
 
-  async function generateToken() {
+  async function generateToken(config = {}) {
+    const { constrained } = { ...config };
     const res = await api.post(
       `tokens?lang=${$locale}`,
-      { user_id: currentUser.id },
+      { user_id: currentUser.id, constrained },
       user.token
     );
 
@@ -230,7 +231,8 @@
   }
 
   function generateTokenHandler(e) {
-    (e.detail.silent && generateToken()) || generateTokenDialog.setOpen(true);
+    (e.detail.silent && generateToken({ constrained: false })) ||
+      generateTokenDialog.setOpen(true);
   }
 
   function removeTokenHandler(e) {
@@ -259,7 +261,7 @@
 
   function generateTokenDialogCloseHandler(e) {
     if (e.detail.action === "approved") {
-      generateToken();
+      generateToken({ constrained: false });
     }
   }
 
@@ -566,7 +568,7 @@
     </Button>
   </Actions>
 </Dialog>
-{#if $fabs === "add-user" }
+{#if $fabs === "add-user"}
   <div class="fab-add-user">
     <Fab class="floating-fab" color="primary" on:click={addUser} extended>
       <Label>{$_("text.new-user")}</Label>

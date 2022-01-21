@@ -177,7 +177,10 @@
     "user-message": "Send a message",
     "thank-you-for-your-message": "Thank you for your message",
     "your-password": "Your password",
-    "login-issues": "Having trouble logging in?"
+    "login-issues": "Having trouble logging in?",
+    "you_will_be_redirected": "You will be redirected to Login page in {sec} {word}",
+    "second": "second",
+    "seconds": "seconds"
   },
   "summary": {
     "copy-link": {

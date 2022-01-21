@@ -11,7 +11,7 @@
     "copied": "Kopiert!",
     "select-mode": "Modus wählen",
     "one-moment": "Einen Moment...",
-    "welcome-message": "Willkommen {name}",
+    "welcome-message": "Hallo, {name}",
     "external-login-welcome-message": "Herzlich Willkommen {name}",
     "logged-in-button-second-line": "Hallo, {name}",
     "login-text": "Bitte loggen Sie sich ein",
@@ -177,7 +177,10 @@
     "user-message": "Mitteilung senden",
     "thank-you-for-your-message": "Danke für Ihre Mitteilung",
     "your-password": "Ihr Passwort",
-    "login-issues": "Probleme bei der Anmeldung?"
+    "login-issues": "Probleme bei der Anmeldung?",
+    "you_will_be_redirected": "Sie werden in {sec} {word} zur Anmeldeseite weitergeleitet",
+    "second": "Sekunde",
+    "seconds": "Sekunden"
   },
   "summary": {
     "copy-link": {

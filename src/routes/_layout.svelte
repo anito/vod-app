@@ -8,8 +8,8 @@
 
 <script>
   import { stores, goto } from "@sapper/app";
-  import isMobile from "ismobilejs";
   import { onMount, setContext } from "svelte";
+  import isMobile from "ismobilejs";
   import { Nav, NavItem, Icons, Icon as ExternalIcon } from "@anito/site-kit";
   import Button, { Icon } from "@smui/button/styled";
   import IconButton from "@smui/icon-button/styled";
@@ -19,10 +19,9 @@
     post,
     createRedirectSlug,
     proxyEvent,
-    recoverSession,
-    extendSession,
-    __session__,
+    extendSession as sessionExtendHandler,
     locationSearch,
+    __session__,
   } from "utils";
   import { flash } from "stores/flashStore";
   import { ticker } from "stores/tickerStore";
@@ -34,10 +33,10 @@
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
-  const { page, session } = stores();
+  const { page, session, preloading } = stores();
   const snackbarLifetimeDefault = 4000;
   const redirectDelay = 300;
-  
+
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 
   let root;
@@ -49,6 +48,7 @@
   let isMobileDevice;
   let loggedInButtonTextSecondLine;
   let unsubscribeTicker;
+  let emphasize;
 
   settings.update({ Session: $session });
 
@@ -91,10 +91,11 @@
     window.addEventListener("session:started", sessionStartedHandler);
     window.addEventListener("session:extend", sessionExtendHandler);
     window.addEventListener("session:extended", sessionExtendedHandler);
+    window.addEventListener("session:end", sessionEndHandler);
     window.addEventListener("session:ended", sessionEndedHandler);
     isMobileDevice && root.classList.add("ismobile");
 
-    if ($session.user) recoverSession($session);
+    recoverSession();
 
     return () => {
       root.classList.remove("ismobile");
@@ -102,22 +103,15 @@
       window.removeEventListener("session:started", sessionStartedHandler);
       window.removeEventListener("session:extend", sessionExtendHandler);
       window.removeEventListener("session:extended", sessionExtendedHandler);
+      window.removeEventListener("session:end", sessionEndHandler);
       window.removeEventListener("session:ended", sessionEndedHandler);
     };
   });
 
-  async function submit(e) {
+  function submit(e) {
     if ($session.user) {
       loggedInButtonTextSecondLine = $_("text.one-moment");
-      const res = await post(`auth/logout?lang=${$locale}`);
-      if (res && res.success) {
-        message = res.message;
-        proxyEvent("session:ended", { redirect: "/" });
-
-        flash.update({ message });
-        configSnackbar(message);
-        snackbar.open();
-      }
+      proxyEvent("session:end");
     }
   }
 
@@ -174,15 +168,11 @@
     if (__session__.started) return;
 
     unsubscribeTicker = ticker.subscribe((val) => {
-      if(val === 0) {
-        proxyEvent("session:ended", { redirect: "login" });
+      if (val === 0) {
+        proxyEvent("session:end", { redirect: "login" });
       }
     });
     ticker.start($session.expires);
-  }
-
-  function sessionExtendHandler(e) {
-    extendSession();
   }
 
   function sessionExtendedHandler(e) {
@@ -190,8 +180,22 @@
     ticker.start($session.expires);
   }
 
+  async function sessionEndHandler(e) {
+    if (!$session.user) return;
+
+    const res = await post(`auth/logout?lang=${$locale}`);
+    if (res && res.success) {
+      proxyEvent("session:ended", { redirect: e.detail.redirect || "/" });
+      message = res.message;
+
+      flash.update({ message });
+      configSnackbar(message);
+      snackbar.open();
+    }
+  }
+
   function sessionEndedHandler(e) {
-    unsubscribeTicker();
+    unsubscribeTicker && unsubscribeTicker();
 
     setTimeout(() => {
       goto(`${e.detail.redirect}${createRedirectSlug($page)}`);
@@ -200,6 +204,11 @@
       $session.groups = null;
       $session.expires = null;
     }, 1000);
+  }
+
+  function recoverSession() {
+    if (!$session.user || $session.expires < Date.now) return;
+    proxyEvent("session:started");
   }
 </script>
 
@@ -237,12 +246,14 @@
 
         {#if $session.user}
           <NavItem let:active>
-            <Button variant="raised" class="button-logout">
-              <span class="button-first-line">Logout</span>
-              <Label
-                class="no-break"
-                style="padding-top: 20px; font-size: 0.7rem"
+            <Button variant="raised" class="button-logout v-emph v-emph-bounce {emphasize}"
+            on:mouseenter={() => (emphasize = 'v-emph-active')}
+            on:mouseleave={() => (emphasize = '')}
+            >
+              <span class="button-first-line v-emph-primary v-emph-down"
+                >Logout</span
               >
+              <Label class="no-break v-emph-secondary v-emph-up">
                 {@html loggedInButtonTextSecondLine}
               </Label>
             </Button>
@@ -315,8 +326,6 @@
 <style>
   .button-first-line {
     position: absolute;
-    font-size: 0.46rem;
-    top: 20px;
     width: 84%;
     text-overflow: ellipsis;
     display: inline-block;
