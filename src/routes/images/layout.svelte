@@ -1,7 +1,6 @@
 <script>
   import { stores } from '@sapper/app';
   import { GridItem, LayoutGrid } from '@anito/site-kit';
-  import { Breadcrumb } from 'components';
 
   const { page } = stores();
 
@@ -9,11 +8,13 @@
 </script>
 
 <LayoutGrid {segment}>
+  <GridItem name="pagebar" let:inner>
+    <div class={inner}>
+      <slot name="pagebar" />
+    </div>
+  </GridItem>
   <GridItem name="content" let:inner>
     <div class={inner}>
-      {#if segment}
-        <Breadcrumb {segment} />
-      {/if}
       <slot />
     </div>
   </GridItem>

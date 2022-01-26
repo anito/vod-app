@@ -5,7 +5,7 @@
 </script>
 
 <div class:segment>
-  <Layout>
+  <Layout fullscreen>
     <slot />
     <div slot="ad" />
     <div slot="footer" class="flex justify-between">

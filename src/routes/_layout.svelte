@@ -33,7 +33,7 @@
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
-  const { page, session, preloading } = stores();
+  const { page, session } = stores();
   const snackbarLifetimeDefault = 4000;
   const redirectDelay = 300;
 

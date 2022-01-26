@@ -17,25 +17,25 @@
 
 <script>
   import { onMount, getContext } from 'svelte';
-  import Layout from './layout.svelte';
   import { stores } from '@sapper/app';
+  import Layout from './layout.svelte';
+  import { PageBar } from 'components';
   import { images } from 'stores/imageStore';
   import { videos } from 'stores/videoStore';
   import { urls } from 'stores/urlStore';
   import { videoEmitter } from 'stores/videoEmitter';
   import { locale, _ } from 'svelte-i18n';
 
-  export let segment;
-  export let data = [];
-
-  // hydrate images store
-  images.update(data);
-
-  const { session } = stores();
+  const { page, session } = stores();
   const { getSnackbar, configSnackbar } = getContext('snackbar');
 
-  let user = $session.user;
+  export let data = [];
+  
+  // hydrate images store
+  images.update(data);
+  
   let snackbar;
+  let user = $session.user;
 
   async function put(item) {
     const res = await api.put(`videos/${item.id}?lang=${$locale}`, item, user && user.token);
@@ -90,6 +90,9 @@
 </script>
 
 <Layout>
+  <div class="flex flex-1" slot="pagebar">
+    <PageBar />
+  </div>
   <slot />
   <div slot="ad" />
   <div slot="footer" class="flex justify-between">

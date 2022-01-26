@@ -1,7 +1,7 @@
 {
   "name": "physio-dippoldiswalde",
   "description": "Physiotherapie Dippoldiswalde",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "scripts": {
     "dev": "run-p start:dev",
     "dev:tailwind": "postcss static/tailwind.css -o static/index.css -w",

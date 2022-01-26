@@ -7,7 +7,7 @@
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
 
-<LayoutGrid {segment}>
+<LayoutGrid fullscreen {segment}>
   <GridItem name="content" let:inner>
     <div class={inner}>
       <slot />

@@ -1,7 +1,6 @@
 <script>
   import { stores } from '@sapper/app';
   import { GridItem, LayoutGrid } from '@anito/site-kit';
-  import { Breadcrumb } from 'components';
 
   export let stretch = false;
 
@@ -10,12 +9,9 @@
   let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
 
-<LayoutGrid {segment} {stretch}>
+<LayoutGrid fullscreen {segment} {stretch}>
   <GridItem name="content" let:inner>
     <div class={inner}>
-      {#if segment}
-        <Breadcrumb {segment} />
-      {/if}
       <slot />
     </div>
   </GridItem>

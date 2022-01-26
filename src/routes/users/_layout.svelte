@@ -41,7 +41,7 @@
   import { fabs } from "stores/fabStore";
   import { locationSearch } from "utils";
   import Layout from "./layout.svelte";
-  import { InfoChips, SimpleUserCard } from "components";
+  import { InfoChips, SimpleUserCard, PageBar } from "components";
   import { proxyEvent } from "utils";
   import Button, { Icon as Icon_ } from "@smui/button/styled";
   import Fab, { Label } from "@smui/fab/styled";
@@ -292,9 +292,12 @@
 </script>
 
 <Layout sidebar>
+  <div class="flex flex-1" slot="pagebar">
+    <PageBar />
+  </div>
   <slot />
   <div class="sidebar" slot="side" style="flex: 1;">
-    <div class="flex flex-col p-2">
+    <div class="flex flex-col">
       <Textfield
         class="search"
         variant="filled"
@@ -312,13 +315,18 @@
       </Textfield>
     </div>
     {#if $users.length}
-      <List class="users-list" twoLine avatarList singleSelection>
-        {#each filteredUsers as user (user.id)}
-          <a rel="prefetch" href={`/users/${user.id}${locationSearch($page)}`}>
-            <SimpleUserCard class="flex" {selectionUserId} {user} />
-          </a>
-        {/each}
-      </List>
+      <div class="overflow-hidden">
+        <List class="users-list" twoLine avatarList singleSelection>
+          {#each filteredUsers as user (user.id)}
+            <a
+              rel="prefetch"
+              href={`/users/${user.id}${locationSearch($page)}`}
+            >
+              <SimpleUserCard class="flex" {selectionUserId} {user} />
+            </a>
+          {/each}
+        </List>
+      </div>
     {:else}
       <div class="paper-container flex justify-center">
         <div>{$_("text.user-not-found")}</div>

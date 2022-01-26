@@ -1,8 +1,6 @@
 <script>
   import { stores } from '@sapper/app';
   import { GridItem, LayoutGrid } from '@anito/site-kit';
-  import { proxyEvent } from 'utils';
-  import { Breadcrumb, SessionTicker } from 'components';
 
   export let stretch = false;
   export let sidebar = false;
@@ -13,24 +11,13 @@
 </script>
 
 <LayoutGrid {segment} {stretch} {sidebar}>
+  <GridItem name="pagebar" let:inner>
+    <div class={inner}>
+      <slot name="pagebar" />
+    </div>
+  </GridItem>
   <GridItem name="content" let:inner>
     <div class={inner}>
-      <div class="page-bar">
-        <div class="breadcrumb-container m-auto ml-0">
-          {#if segment}
-            <Breadcrumb {segment} />
-          {/if}
-        </div>
-        <div class="ticker-container m-auto mr-0">
-          <SessionTicker
-            class="light"
-            warning="180"
-            warningOnly
-            forceOnExtend="2"
-            on:MDCChip:interaction={() => proxyEvent('session:extend')}
-          />
-        </div>
-      </div>
       <slot />
     </div>
   </GridItem>

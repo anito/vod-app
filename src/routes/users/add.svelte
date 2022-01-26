@@ -51,6 +51,6 @@
     grid-gap: var(--grid-gap);
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: calc(100% - var(--breadcrumb-h));
+    height: calc(100% - var(--pagebar-h));
   }
 </style>

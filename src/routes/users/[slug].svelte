@@ -43,7 +43,7 @@
   <title>Physiotherapy Online | User {username}</title>
 </svelte:head>
 
-<div class="grid {tab}">
+<div class="flex flex-1 user-grid inner-grid {tab}">
   <div class="grid-item toolbar justify-between">
     <Group variant="unelevated">
       <Button
@@ -110,34 +110,34 @@
 </div>
 
 <style>
-  .grid {
+  .user-grid {
     display: grid;
     grid-template-rows: var(--toolbar-h) auto;
     grid-gap: var(--grid-gap);
-    height: calc(100% - var(--breadcrumb-h));
     align-items: center;
+    overflow: hidden;
   }
-  :global(.user).grid {
+  :global(.user).user-grid {
     grid-template-areas:
       "toolbar toolbar"
       "one two";
     grid-template-columns: 1fr;
   }
-  :global(.time).grid {
+  :global(.time).user-grid {
     grid-template-areas:
       "toolbar toolbar"
       "one two";
     grid-template-columns: 4fr 4fr;
     align-items: initial;
   }
-  :global(.mail).grid {
+  :global(.mail).user-grid {
     grid-template-areas:
       "toolbar toolbar"
       "one one";
     grid-template-columns: 4fr 4fr;
     align-items: initial;
   }
-  :global(.loggedin) .grid {
+  :global(.loggedin) .user-grid {
     align-items: initial;
   }
   .grid-item {

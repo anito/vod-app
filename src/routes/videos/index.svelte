@@ -69,7 +69,7 @@
 </svelte:head>
 
 {#if 'Administrator' === $session.role}
-  <div class="grid {tab}">
+  <div class="videos-grid {tab}">
     <div class="grid-item one">
       <Group variant="unelevated">
         <Button
@@ -104,23 +104,25 @@
 {:else}
   <Component>
     <div slot="header">
-      <div class="flex justify-between">
-        <span class="self-center">
-          <Header h="6" mdc class="m-2 lg:m-5">{$_('text.your-classes')}</Header>
+      <div class="grid grid-cols-2">
+        <span class="ml-2">
+          <Header h="6" mdc>{$_('text.your-classes')}</Header>
         </span>
-        <span class="self-center">
+        <span class="justify-self-end mr-2">
           <Header h="5" mdc>
             {@html ($session.user && $session.user.name) || ''}
           </Header>
         </span>
       </div>
     </div>
-    <VideoManager />
+    <div class="p-8">
+      <VideoManager />
+    </div>
   </Component>
 {/if}
 
 <style>
-  .grid {
+  .videos-grid {
     display: grid;
     grid-template-areas:
       'one'
@@ -128,8 +130,8 @@
     grid-template-rows: var(--toolbar-h) auto;
     grid-template-columns: 1fr;
     grid-gap: var(--grid-gap);
-    height: calc(100% - var(--breadcrumb-h));
     align-items: initial;
+    overflow: hidden;
   }
   .grid-item {
     background: var(--back-grid-item);
