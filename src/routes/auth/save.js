@@ -1,18 +1,13 @@
 import * as api from 'api';
 import { get } from 'svelte/store';
-import { settings } from "stores/settingStore";
 import { locale } from 'svelte-i18n';
-
-// const { session } = stores();
-let base;
-settings.subscribe((val) => (base = val.api));
 
 export function post(req, res) {
 	let user = req.body.user;
 	let fields = req.body.fields;
 	fields = typeof fields === 'array' ? fields : !!fields ? [ fields ] : [];
 	
-  api.put(`${base}/users/${ user.id }?lang=${ get(locale) }`, { user }, req.session.user.token)
+  api.put(`users/${ user.id }?lang=${ get(locale) }`, { user }, req.session.user.token)
     .then((response) => {
       if (response.success && response.data) {
         fields.map((field) => (req.session.user[field] = response.data[field]));
