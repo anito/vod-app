@@ -50,8 +50,9 @@ export default {
       json(),
       alias(aliases()),
       replace({
-        'process.browser': true,
-        'process.env.NODE_ENV': JSON.stringify(mode),
+        preventAssignment: true,
+        "process.browser": true,
+        "process.env.NODE_ENV": JSON.stringify(mode),
       }),
       svelte({
         compilerOptions: {
@@ -74,28 +75,28 @@ export default {
       }),
       resolve({
         browser: true,
-        dedupe: ['svelte'],
+        dedupe: ["svelte"],
       }),
       commonjs(),
       postcss(postcssOptions(true)),
 
       legacy &&
         babel({
-          extensions: ['.js', '.mjs', '.html', '.svelte'],
-          babelHelpers: 'runtime',
-          exclude: ['node_modules/@babel/**'],
+          extensions: [".js", ".mjs", ".html", ".svelte"],
+          babelHelpers: "runtime",
+          exclude: ["node_modules/@babel/**"],
           presets: [
             [
-              '@babel/preset-env',
+              "@babel/preset-env",
               {
-                targets: '> 0.25%, not dead',
+                targets: "> 0.25%, not dead",
               },
             ],
           ],
           plugins: [
-            '@babel/plugin-syntax-dynamic-import',
+            "@babel/plugin-syntax-dynamic-import",
             [
-              '@babel/plugin-transform-runtime',
+              "@babel/plugin-transform-runtime",
               {
                 useESModules: true,
               },
@@ -120,27 +121,29 @@ export default {
       json(),
       alias(aliases()),
       replace({
-        'process.browser': false,
-        'process.env.NODE_ENV': JSON.stringify(mode),
+        preventAssignment: true,
+        "process.browser": false,
+        "process.env.NODE_ENV": JSON.stringify(mode),
       }),
       svelte({
         compilerOptions: {
-          generate: 'ssr',
+          generate: "ssr",
           dev,
         },
         preprocess: sveltePreprocess(),
       }),
       resolve({
-        dedupe: ['svelte'],
+        dedupe: ["svelte"],
       }),
       commonjs(),
       postcss(postcssOptions()),
     ],
     external: Object.keys(pkg.dependencies).concat(
-      require('module').builtinModules || Object.keys(process.binding('natives'))
+      require("module").builtinModules ||
+        Object.keys(process.binding("natives"))
     ),
 
-    preserveEntrySignatures: 'strict',
+    preserveEntrySignatures: "strict",
     onwarn,
   },
 
@@ -150,8 +153,9 @@ export default {
     plugins: [
       resolve(),
       replace({
-        'process.browser': true,
-        'process.env.NODE_ENV': JSON.stringify(mode),
+        preventAssignment: true,
+        "process.browser": true,
+        "process.env.NODE_ENV": JSON.stringify(mode),
       }),
       commonjs(),
       !dev && terser(),
