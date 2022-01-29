@@ -20,7 +20,7 @@
   import { flash } from "stores/flashStore";
   import { fly } from "svelte/transition";
   import { windowSize, redirectPath, proxyEvent } from "utils";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper/styled";
+  import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import { _ } from "svelte-i18n";
 
   const { page, session } = stores();

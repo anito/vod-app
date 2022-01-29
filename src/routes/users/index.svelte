@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { goto } from '@sapper/app';
-  import Paper, { Title, Subtitle, Content } from '@smui/paper/styled';
+  import Paper, { Title, Subtitle, Content } from '@smui/paper';
   import { users } from 'stores/userStore';
   import { _ } from 'svelte-i18n';
 

@@ -3,8 +3,8 @@
   import { onMount } from "svelte";
   import { UserManager, TimeManager, MailManager } from "components";
   import { Header } from "@anito/site-kit";
-  import Button, { Group, Label, Icon } from "@smui/button/styled";
-  import IconButton from "@smui/icon-button/styled";
+  import Button, { Group, Label, Icon } from "@smui/button";
+  import IconButton from "@smui/icon-button";
   import { users } from "stores/userStore";
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";

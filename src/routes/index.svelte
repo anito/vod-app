@@ -5,9 +5,9 @@
   import { stores } from "@sapper/app";
   import { Blurb, Hero } from "@anito/site-kit";
   import Layout from "./layout.svelte";
-  import Textfield from "@smui/textfield/styled";
-  import Select, { Option } from "@smui/select/styled";
-  import Button, { Icon } from "@smui/button/styled";
+  import Textfield from "@smui/textfield";
+  import Select, { Option } from "@smui/select";
+  import Button, { Icon } from "@smui/button";
   import { _, locale } from "svelte-i18n";
 
   export let segment;

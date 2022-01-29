@@ -7,8 +7,7 @@
   $secondary: #40b3ff,
   $surface: #ffffff,
   $background: #ffffff,
-  $error: color-palette.$red-900,
-  // $error: #ff3e00,
+  $error: #ff3e00,
   $on-primary: #ffeaf6,
   $on-secondary: #eff9ff,
   $on-surface: #181818,
@@ -16,12 +15,9 @@
   $on-error: #fdf2ee,
 );
 
-@import '@material/typography/mdc-typography';
 
-$mdc-typography-font-family: var(--font, 'sans-serif');
-$mdc-typography-styles-headline5: (
-  font-weight: 700,
-);
+
+@import '@material/typography/mdc-typography';
 
 .theme-default {
   --prime: #{theme.$primary};
@@ -30,5 +26,3 @@ $mdc-typography-styles-headline5: (
   --back-white: #{theme.$background};
   --error: #{theme.$error};
 }
-
-$error: color-palette.$red-900

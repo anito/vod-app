@@ -11,10 +11,10 @@
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
   import { Nav, NavItem, Icons, Icon as ExternalIcon } from "@anito/site-kit";
-  import Button, { Icon } from "@smui/button/styled";
-  import IconButton from "@smui/icon-button/styled";
-  import Snackbar, { Actions } from "@smui/snackbar/styled";
-  import { Label } from "@smui/common/styled";
+  import Button, { Icon } from "@smui/button";
+  import IconButton from "@smui/icon-button";
+  import Snackbar, { Actions } from "@smui/snackbar";
+  import { Label } from "@smui/common";
   import {
     post,
     createRedirectSlug,

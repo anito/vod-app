@@ -23,7 +23,7 @@
   let { session } = stores();
 </script>
 
-<Layout>
+<Layout {segment}>
   {#if $session.role === "Administrator"}
     <slot />
   {:else}

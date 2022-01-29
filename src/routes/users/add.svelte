@@ -40,7 +40,7 @@
   <title>Physiotherapy Online | Klient hinzufügen</title>
 </svelte:head>
 
-<div class="grid">
+<div class="grid flex-1">
   <UserManager selectedMode="add" />
 </div>
 
@@ -51,6 +51,5 @@
     grid-gap: var(--grid-gap);
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: calc(100% - var(--pagebar-h));
   }
 </style>

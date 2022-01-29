@@ -43,18 +43,18 @@
   import Layout from "./layout.svelte";
   import { InfoChips, SimpleUserCard, PageBar } from "components";
   import { proxyEvent } from "utils";
-  import Button, { Icon as Icon_ } from "@smui/button/styled";
-  import Fab, { Label } from "@smui/fab/styled";
-  import Textfield from "@smui/textfield/styled";
+  import Button, { Icon as Icon_ } from "@smui/button";
+  import Fab, { Label } from "@smui/fab";
+  import Textfield from "@smui/textfield";
   import Icon from "@smui/textfield/icon";
-  import HelperText from "@smui/textfield/helper-text/styled";
-  import List from "@smui/list/styled";
+  import HelperText from "@smui/textfield/helper-text";
+  import List from "@smui/list";
   import Dialog, {
     Title as DialogTitle,
     Content,
     Actions,
     InitialFocus,
-  } from "@smui/dialog/styled";
+  } from "@smui/dialog";
   import { _, locale } from "svelte-i18n";
 
   const { page, session } = stores();
