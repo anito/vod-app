@@ -21,6 +21,7 @@
     proxyEvent,
     extendSession as sessionExtendHandler,
     locationSearch,
+    svg,
     __session__,
   } from "utils";
   import { flash } from "stores/flashStore";
@@ -31,6 +32,7 @@
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
   import { UserGraphic, LoadingModal, LocaleSwitcher, Nav, NavItem } from "components";
+  import { svg_manifest } from "svg_manifest";
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
@@ -66,6 +68,7 @@
     restoreFab: () => fabs.restore(),
   });
 
+  $: logo = svg(svg_manifest['logo'], $theme.primary)
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&
@@ -228,7 +231,7 @@
       on:submit|stopPropagation|preventDefault={submit}
       method="post"
     >
-      <Nav {segment} {page} logo="logo-sticky.svg">
+      <Nav {segment} {page} {logo}>
         <NavItem href="/privacy-policy" title={$_("nav.privacy")} let:active>
           <Label>{$_("nav.privacy")}</Label>
         </NavItem>
