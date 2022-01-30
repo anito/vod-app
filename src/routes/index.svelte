@@ -6,11 +6,11 @@
   import { theme } from "stores/themeStore";
   import Layout from "./layout.svelte";
   import { Blurb, Hero } from "@anito/site-kit";
-  import Textfield from "@smui/textfield/styled";
-  import Select, { Option } from "@smui/select/styled";
-  import Button, { Icon } from "@smui/button/styled";
-  import {svg} from "utils";
-  import {svg_manifest} from "svg_manifest";
+  import Textfield from "@smui/textfield";
+  import Select, { Option } from "@smui/select";
+  import Button, { Icon } from "@smui/button";
+  import { svg } from "utils";
+  import { svg_manifest } from "svg_manifest";
   import { _, locale } from "svelte-i18n";
 
   export let segment;
@@ -47,7 +47,7 @@
     : { title: $_("text.login"), url: "login" };
   $: valid = value && name && email && !invalidEmail;
   $: valid = value === "message" ? !!message : valid;
-  $: src = svg(svg_manifest['hero'], $theme.primary);
+  $: src = svg(svg_manifest["hero"], $theme.primary);
 
   onMount(() => {
     value = options[0].key;
@@ -88,12 +88,7 @@
 </svelte:head>
 
 <Layout {segment}>
-  <Hero
-    title="Physio Dips"
-    tagline=""
-    outline={src}
-    logotype="logo-type.svg"
-  />
+  <Hero title="Physio Dips" tagline="" outline={src} logotype="logo-type.svg" />
 
   <Blurb>
     <a href="." class="" slot="one">

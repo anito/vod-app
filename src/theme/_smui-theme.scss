@@ -3,7 +3,7 @@
 
 // Svelte Colors!
 @use '@material/theme/index' as theme with (
-  $primary: #1e7b8c,
+  $primary: color-palette.$pink-800,
   $secondary: color-palette.$light-blue-400,
   $background: color-palette.$grey-300,
   $surface: color-palette.$light-blue-50,
