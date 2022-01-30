@@ -3,11 +3,14 @@
   import * as api from "api";
   import { onMount, getContext } from "svelte";
   import { stores } from "@sapper/app";
-  import { Blurb, Hero } from "@anito/site-kit";
+  import { theme } from "stores/themeStore";
   import Layout from "./layout.svelte";
-  import Textfield from "@smui/textfield";
-  import Select, { Option } from "@smui/select";
-  import Button, { Icon } from "@smui/button";
+  import { Blurb, Hero } from "@anito/site-kit";
+  import Textfield from "@smui/textfield/styled";
+  import Select, { Option } from "@smui/select/styled";
+  import Button, { Icon } from "@smui/button/styled";
+  import {svg} from "utils";
+  import {svg_manifest} from "svg_manifest";
   import { _, locale } from "svelte-i18n";
 
   export let segment;
@@ -44,6 +47,7 @@
     : { title: $_("text.login"), url: "login" };
   $: valid = value && name && email && !invalidEmail;
   $: valid = value === "message" ? !!message : valid;
+  $: src = svg(svg_manifest['hero'], $theme.primary);
 
   onMount(() => {
     value = options[0].key;
@@ -87,7 +91,7 @@
   <Hero
     title="Physio Dips"
     tagline=""
-    outline="logo.svg"
+    outline={src}
     logotype="logo-type.svg"
   />
 
