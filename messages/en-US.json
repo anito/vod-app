@@ -180,7 +180,8 @@
     "login-issues": "Having trouble logging in?",
     "you_will_be_redirected": "You will be redirected to Login page in {sec} {word}",
     "second": "second",
-    "seconds": "seconds"
+    "seconds": "seconds",
+    "custom": "custom"
   },
   "summary": {
     "copy-link": {

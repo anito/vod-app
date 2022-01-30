@@ -3,32 +3,29 @@
 
 // Svelte Colors!
 @use '@material/theme/index' as theme with (
-  $primary: #8c1f76,
-  $secondary: #40b3ff,
-  $surface: #ffffff,
-  $background: #ffffff,
-  $error: color-palette.$red-900,
-  // $error: #ff3e00,
-  $on-primary: #ffeaf6,
-  $on-secondary: #eff9ff,
+  $primary: color-palette.$pink-800,
+  $secondary: color-palette.$light-blue-400,
+  $background: color-palette.$deep-orange-50,
+  $surface: color-palette.$light-blue-50,
+  $error: color-palette.$deep-orange-400,
+  $on-primary: color-palette.$pink-50,
+  $on-secondary: color-palette.$light-blue-50,
   $on-surface: #181818,
   // $on-background: #181818,
-  $on-error: #fdf2ee,
+  $on-error: color-palette.$deep-orange-50,
 );
 
 @import '@material/typography/mdc-typography';
-
 $mdc-typography-font-family: var(--font, 'sans-serif');
-$mdc-typography-styles-headline5: (
+
+.mdc-typography--headline5, .mdc-typography--headline6 {
   font-weight: 700,
-);
+}
 
 .theme-default {
   --prime: #{theme.$primary};
   --second: #{theme.$secondary};
   --surface: #{theme.$surface};
-  --back-white: #{theme.$background};
   --error: #{theme.$error};
+  --back: #{theme.$background};
 }
-
-$error: color-palette.$red-900

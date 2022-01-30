@@ -83,7 +83,7 @@
     "1-month": "1 Monat",
     "2-months": "2 Monate",
     "3-months": "3 Monate",
-    "individually": "individuell",
+    "custom": "benutzerdefiniert",
     "user-has-no-videos": "Benutzer <strong>{name}</strong> hat keine Videokurse abonniert",
     "user-doesnt-exist": "Dieser Benutzer existiert nicht",
     "admins-have-full-access": "Admins haben vollen Zugriff",

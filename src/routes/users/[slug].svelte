@@ -34,7 +34,7 @@
     tokenVal = user.token && user.token.token;
     magicLink = tokenVal && `http://${$page.host}/login?token=${tokenVal}`;
   })(currentUser);
-  $: hidden = $session.role === 'Administrator' ? false : true;
+  $: hidden = $session.role !== 'Administrator' ? true : selectionUserId == $session.user.id ? true : false;
 
   onMount(() => {});
 </script>
@@ -74,20 +74,11 @@
         <Label>{$_("text.mail")}</Label>
       </Button>
     </Group>
-    <div class="flex" class:hidden>
-      {#if magicLink}
-        <IconButton on:click={() => proxyEvent("INFO:token:Redirect")}>
-          <Icon class="material-icons">
-            {(hasExpired && "link_off") || "link"}
-          </Icon>
-        </IconButton>
-      {:else}
-        <Icon
-          class="material-icons"
-          style="align-self: center; margin-right: 10px;">link_off</Icon
-        >
-      {/if}
-      <Header mdc h="5" class="pr-6 hidden md:block">{username}</Header>
+    <div class="flex mr-2" class:hidden>
+      <Button on:click={() => proxyEvent("INFO:token:Redirect")} disabled={!magicLink} variant="unelevated">
+        <Icon class="material-icons">{(hasExpired && "link_off") || "link"}</Icon>
+        <Label>Login</Label>
+      </Button>
     </div>
   </div>
   {#if tab === TABS[1]}

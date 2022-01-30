@@ -27,6 +27,7 @@
   import { ticker } from "stores/tickerStore";
   import { fabs } from "stores/fabStore";
   import { settings } from "stores/settingStore";
+  import { theme } from "stores/themeStore";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
   import { UserGraphic, LoadingModal, LocaleSwitcher } from "components";
@@ -96,6 +97,12 @@
     isMobileDevice && root.classList.add("ismobile");
 
     recoverSession();
+
+    let styles = window.getComputedStyle(root);
+    theme.set({
+      primary: styles.getPropertyValue("--prime"),
+      secondary: styles.getPropertyValue("--second"),
+    });
 
     return () => {
       root.classList.remove("ismobile");
@@ -246,9 +253,11 @@
 
         {#if $session.user}
           <NavItem let:active>
-            <Button variant="raised" class="button-logout v-emph v-emph-bounce {emphasize}"
-            on:mouseenter={() => (emphasize = 'v-emph-active')}
-            on:mouseleave={() => (emphasize = '')}
+            <Button
+              variant="raised"
+              class="button-logout v-emph v-emph-bounce {emphasize}"
+              on:mouseenter={() => (emphasize = "v-emph-active")}
+              on:mouseleave={() => (emphasize = "")}
             >
               <span class="button-first-line v-emph-primary v-emph-down"
                 >Logout</span
