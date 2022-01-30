@@ -10,26 +10,29 @@
   import { stores, goto } from "@sapper/app";
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
-  import { Nav, NavItem, Icons, Icon as ExternalIcon } from "@anito/site-kit";
-  import Button, { Icon } from "@smui/button/styled";
-  import IconButton from "@smui/icon-button/styled";
-  import Snackbar, { Actions } from "@smui/snackbar/styled";
-  import { Label } from "@smui/common/styled";
+  import { Icons, Icon as ExternalIcon } from "@anito/site-kit";
+  import Button, { Icon } from "@smui/button";
+  import IconButton from "@smui/icon-button";
+  import Snackbar, { Actions } from "@smui/snackbar";
+  import { Label } from "@smui/common";
   import {
     post,
     createRedirectSlug,
     proxyEvent,
     extendSession as sessionExtendHandler,
     locationSearch,
+    svg,
     __session__,
   } from "utils";
   import { flash } from "stores/flashStore";
   import { ticker } from "stores/tickerStore";
   import { fabs } from "stores/fabStore";
   import { settings } from "stores/settingStore";
+  import { theme } from "stores/themeStore";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
-  import { UserGraphic, LoadingModal, LocaleSwitcher } from "components";
+  import { UserGraphic, LoadingModal, LocaleSwitcher, Nav, NavItem } from "components";
+  import { svg_manifest } from "svg_manifest";
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
@@ -65,6 +68,7 @@
     restoreFab: () => fabs.restore(),
   });
 
+  $: logo = svg(svg_manifest['logo'], $theme.primary)
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&
@@ -96,6 +100,12 @@
     isMobileDevice && root.classList.add("ismobile");
 
     recoverSession();
+
+    let styles = window.getComputedStyle(root);
+    theme.set({
+      primary: styles.getPropertyValue("--prime"),
+      secondary: styles.getPropertyValue("--second"),
+    });
 
     return () => {
       root.classList.remove("ismobile");
@@ -221,13 +231,13 @@
       on:submit|stopPropagation|preventDefault={submit}
       method="post"
     >
-      <Nav {segment} {page} logo="logo-sticky.svg">
-        <NavItem segment="privacy-policy" title={$_("nav.privacy")} let:active>
+      <Nav {segment} {page} {logo}>
+        <NavItem href="/privacy-policy" title={$_("nav.privacy")} let:active>
           <Label>{$_("nav.privacy")}</Label>
         </NavItem>
 
         {#if $session.user}
-          <NavItem segment="videos" title="Videothek" let:active>
+          <NavItem href="/videos" title="Videothek">
             <Icon class="material-icons" style="vertical-align: middle;"
               >video_library</Icon
             >
@@ -236,7 +246,7 @@
         {/if}
 
         {#if $session.role === "Administrator"}
-          <NavItem segment="users" title="Administration" let:active>
+          <NavItem href="/users" title="Administration">
             <Icon class="material-icons" style="vertical-align: middle;"
               >settings</Icon
             >
@@ -245,10 +255,12 @@
         {/if}
 
         {#if $session.user}
-          <NavItem let:active>
-            <Button variant="raised" class="button-logout v-emph v-emph-bounce {emphasize}"
-            on:mouseenter={() => (emphasize = 'v-emph-active')}
-            on:mouseleave={() => (emphasize = '')}
+          <NavItem>
+            <Button
+              variant="raised"
+              class="button-logout v-emph v-emph-bounce {emphasize}"
+              on:mouseenter={() => (emphasize = "v-emph-active")}
+              on:mouseleave={() => (emphasize = "")}
             >
               <span class="button-first-line v-emph-primary v-emph-down"
                 >Logout</span
@@ -259,7 +271,7 @@
             </Button>
           </NavItem>
         {:else}
-          <NavItem segment="login{location}" let:active>
+          <NavItem href="/login{location}">
             <Button color="secondary" variant="raised" class="button-login">
               <Label>{$_("nav.login")}</Label>
             </Button>
@@ -267,7 +279,7 @@
         {/if}
 
         {#if $session.user}
-          <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
+          <NavItem title="Avatar" href="/users/{$session.user.id}?tab=user">
             <UserGraphic
               border="0px 0px 0px 3px var(--prime)"
               dense
@@ -293,7 +305,6 @@
 
         <NavItem
           external="https://github.com/anito/physio-dips-app"
-          blank
           title="GitHub Repo"
         >
           <ExternalIcon name="github" />
