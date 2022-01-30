@@ -10,7 +10,7 @@
   import { stores, goto } from "@sapper/app";
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
-  import { Nav, NavItem, Icons, Icon as ExternalIcon } from "@anito/site-kit";
+  import { Icons, Icon as ExternalIcon } from "@anito/site-kit";
   import Button, { Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Snackbar, { Actions } from "@smui/snackbar";
@@ -30,7 +30,7 @@
   import { theme } from "stores/themeStore";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
-  import { UserGraphic, LoadingModal, LocaleSwitcher } from "components";
+  import { UserGraphic, LoadingModal, LocaleSwitcher, Nav, NavItem } from "components";
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
 
@@ -229,12 +229,12 @@
       method="post"
     >
       <Nav {segment} {page} logo="logo-sticky.svg">
-        <NavItem segment="privacy-policy" title={$_("nav.privacy")} let:active>
+        <NavItem href="/privacy-policy" title={$_("nav.privacy")} let:active>
           <Label>{$_("nav.privacy")}</Label>
         </NavItem>
 
         {#if $session.user}
-          <NavItem segment="videos" title="Videothek" let:active>
+          <NavItem href="/videos" title="Videothek">
             <Icon class="material-icons" style="vertical-align: middle;"
               >video_library</Icon
             >
@@ -243,7 +243,7 @@
         {/if}
 
         {#if $session.role === "Administrator"}
-          <NavItem segment="users" title="Administration" let:active>
+          <NavItem href="/users" title="Administration">
             <Icon class="material-icons" style="vertical-align: middle;"
               >settings</Icon
             >
@@ -252,7 +252,7 @@
         {/if}
 
         {#if $session.user}
-          <NavItem let:active>
+          <NavItem>
             <Button
               variant="raised"
               class="button-logout v-emph v-emph-bounce {emphasize}"
@@ -268,7 +268,7 @@
             </Button>
           </NavItem>
         {:else}
-          <NavItem segment="login{location}" let:active>
+          <NavItem href="/login{location}">
             <Button color="secondary" variant="raised" class="button-login">
               <Label>{$_("nav.login")}</Label>
             </Button>
@@ -276,7 +276,7 @@
         {/if}
 
         {#if $session.user}
-          <NavItem title="Avatar" link="users/{$session.user.id}?tab=user">
+          <NavItem title="Avatar" href="/users/{$session.user.id}?tab=user">
             <UserGraphic
               border="0px 0px 0px 3px var(--prime)"
               dense
@@ -302,7 +302,6 @@
 
         <NavItem
           external="https://github.com/anito/physio-dips-app"
-          blank
           title="GitHub Repo"
         >
           <ExternalIcon name="github" />
