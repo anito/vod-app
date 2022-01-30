@@ -6,6 +6,7 @@ node_modules/@anito/*
 !node_modules/@anito/site-kit
 
 /static/index.css
+/static/smui.css
 /src/node_modules/@sapper/
 yarn-error.log
 /cypress/screenshots/
