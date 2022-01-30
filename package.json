@@ -97,7 +97,7 @@
     "sapper": "^0.28.10",
     "serve": "^13.0.2",
     "smui-theme": "^6.0.0-beta.13",
-    "svelte": "^3.37.0",
+    "svelte": "^3.46.3",
     "svelte-i18n": "^3.3.9",
     "svelte-loader": "^2.13.6",
     "svelte-loading-spinners": "^0.1.1",
