@@ -6,11 +6,18 @@
     <meta name="theme-color" content="#333333" />
 
     <!-- Google SignIn API -->
-    <script id="gapi" src="https://accounts.google.com/gsi/client" async defer></script>
+    <script
+      id="gapi"
+      src="https://accounts.google.com/gsi/client"
+      async
+      defer
+    ></script>
 
     <!-- CookiePro Cookie-Einwilligungshinweis – Anfang für doojoo.de -->
+
     <script
       src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"
+      data-document-language="true"
       type="text/javascript"
       charset="UTF-8"
       data-domain-script="96d83ad7-4e38-4648-a464-21b40633c4d3-test"
@@ -18,11 +25,11 @@
     <script type="text/javascript">
       function OptanonWrapper() {}
     </script>
-    
-    <link rel="stylesheet" href="/consent-pro/styles.css" />
+    <!-- CookiePro-Cookie-Einwilligungshinweis – Ende für doojoo.de -->
 
     %sapper.base%
 
+    <link rel="stylesheet" href="/consent-pro/styles.css" />
     <link rel="stylesheet" href="smui.css" />
     <link rel="stylesheet" href="client/smui.css" />
     <link rel="stylesheet" href="index.css" />
