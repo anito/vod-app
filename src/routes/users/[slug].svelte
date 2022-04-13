@@ -17,13 +17,13 @@
   let currentUser;
   let username;
 
-  $: tab = ($page.query && $page.query.tab) || "time";
+  $: selected_tab = ($page.query && $page.query.tab) || "time";
   $: selectionUserId = $page.params.slug;
-  $: (tab || selectionUserId) && extendSession();
+  $: (selected_tab || selectionUserId) && extendSession();
   $: currentUser = ((id) =>
     $users.length && $users.filter((usr) => usr.id === id)[0])(selectionUserId);
   $: username = (currentUser && currentUser.name) || "";
-  $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(tab);
+  $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[1])(selected_tab);
   $: ((user) => {
     if (!user) return;
     userExpires = user.expires;
@@ -32,7 +32,12 @@
     tokenVal = user.token && user.token.token;
     magicLink = tokenVal && `http://${$page.host}/login?token=${tokenVal}`;
   })(currentUser);
-  $: hidden = $session.role !== 'Administrator' ? true : selectionUserId == $session.user.id ? true : false;
+  $: hidden =
+    $session.role !== "Administrator"
+      ? true
+      : selectionUserId == $session.user.id
+      ? true
+      : false;
 
   onMount(() => {});
 </script>
@@ -73,8 +78,14 @@
       </Button>
     </Group>
     <div class="flex mr-2" class:hidden>
-      <Button on:click={() => proxyEvent("INFO:token:Redirect")} disabled={!magicLink} variant="unelevated">
-        <Icon class="material-icons">{(hasExpired && "link_off") || "link"}</Icon>
+      <Button
+        on:click={() => proxyEvent("INFO:token:Redirect")}
+        disabled={!magicLink}
+        variant="unelevated"
+      >
+        <Icon class="material-icons"
+          >{(hasExpired && "link_off") || "link"}</Icon
+        >
         <Label>Login</Label>
       </Button>
     </div>

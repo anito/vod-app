@@ -47,17 +47,15 @@
 
   function createTimer() {
     timer = { update } = writable(WAIT, () => {
-      
       interval = setInterval(() => {
-        update(val => --val);
+        update((val) => --val);
       }, 1000);
 
       return () => {
         clearInterval(interval);
         gotoLogin();
-      }
+      };
     });
-
   }
 
   function startTimer() {
@@ -65,7 +63,7 @@
       sec = val;
       word = sec === 1 ? $_("text.second") : $_("text.seconds");
       val === 0 && unsubscribe();
-    })
+    });
   }
 </script>
 

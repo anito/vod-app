@@ -31,7 +31,13 @@
   import { theme } from "stores/themeStore";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
-  import { UserGraphic, LoadingModal, LocaleSwitcher, Nav, NavItem } from "components";
+  import {
+    UserGraphic,
+    LoadingModal,
+    LocaleSwitcher,
+    Nav,
+    NavItem,
+  } from "components";
   import { svg_manifest } from "svg_manifest";
   import { _, locale } from "svelte-i18n";
   import { serverConfig } from "config";
@@ -68,7 +74,7 @@
     restoreFab: () => fabs.restore(),
   });
 
-  $: logo = svg(svg_manifest['logo'], $theme.primary)
+  $: logo = svg(svg_manifest["logo"], $theme.primary);
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&
@@ -179,7 +185,8 @@
 
     unsubscribeTicker = ticker.subscribe((val) => {
       if (val === 0) {
-        proxyEvent("session:end", { redirect: "login" });
+        console.log("Session abandoned!");
+        // proxyEvent("session:end", { redirect: "login" });
       }
     });
     ticker.start($session.expires);
