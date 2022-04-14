@@ -8,7 +8,7 @@ settings.subscribe((val) => {
 });
 
 export function get(req, res) {
-  let expires = new Date(Date.now() + lifetime * 1000);
+  let expires = new Date(new Date().getTime() + parseInt(lifetime));
   res.setHeader("Content-Type", "application/json");
   req.session.cookie.expires = expires;
   res.end(JSON.stringify({ expires }));

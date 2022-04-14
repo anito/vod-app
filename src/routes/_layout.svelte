@@ -105,6 +105,7 @@
     window.addEventListener("session:ended", sessionEndedHandler);
     isMobileDevice && root.classList.add("ismobile");
 
+    maybeEndSession();
     recoverSession();
 
     let styles = window.getComputedStyle(root);
@@ -166,7 +167,7 @@
       $session.user = user;
       $session.role = user.group.name;
       $session.groups = groups;
-      $session.expires = new Date(expires);
+      $session.expires = expires;
 
       renewed && localStorage.setItem("renewed", renewed);
       proxyEvent("session:started", { expires });
@@ -185,8 +186,7 @@
 
     unsubscribeTicker = ticker.subscribe((val) => {
       if (val === 0) {
-        console.log("Session abandoned!");
-        // proxyEvent("session:end", { redirect: "login" });
+        proxyEvent("session:end", { redirect: "login" });
       }
     });
     ticker.start($session.expires);
@@ -226,6 +226,11 @@
   function recoverSession() {
     if (!$session.user || $session.expires < Date.now) return;
     proxyEvent("session:started");
+  }
+
+  function maybeEndSession() {
+    let isLoginPage = root.classList.contains("is-login-page");
+    isLoginPage && proxyEvent("session:end");
   }
 </script>
 
