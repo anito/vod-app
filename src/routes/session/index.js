@@ -1,14 +1,13 @@
 import { settings } from "stores/settingStore";
 import { INIT_OPTIONS } from "config";
 
-let lifetime;
+let expires;
 settings.subscribe((val) => {
   const { Session } = { ...INIT_OPTIONS, ...val };
-  lifetime = Session.lifetime;
+  expires = new Date(new Date().getTime() + parseInt(Session.lifetime));
 });
 
 export function get(req, res) {
-  let expires = new Date(new Date().getTime() + parseInt(lifetime));
   res.setHeader("Content-Type", "application/json");
   req.session.cookie.expires = expires;
   res.end(JSON.stringify({ expires }));
