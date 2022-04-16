@@ -1,14 +1,15 @@
 import { settings } from "stores/settingStore";
 import { INIT_OPTIONS } from "config";
 
-let expires;
+let lifetime;
 settings.subscribe((val) => {
   const { Session } = { ...INIT_OPTIONS, ...val };
-  expires = new Date(new Date().getTime() + parseInt(Session.lifetime));
+  lifetime = Session.lifetime;
 });
 
 export function post(req, res) {
   const { user, groups } = { ...req.body };
+  const expires = new Date(Date.now() + parseInt(lifetime));
 
   // saved in file session
   req.session.user = user;

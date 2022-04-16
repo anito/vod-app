@@ -184,12 +184,13 @@
   function sessionStartedHandler(e) {
     if (__session__.started) return;
 
+    ticker.start($session.expires);
+
     unsubscribeTicker = ticker.subscribe((val) => {
       if (val === 0) {
-        proxyEvent("session:end", { redirect: "login" });
+        proxyEvent("session:end", { path: "/login" });
       }
     });
-    ticker.start($session.expires);
   }
 
   function sessionExtendedHandler(e) {
@@ -200,9 +201,11 @@
   async function sessionEndHandler(e) {
     if (!$session.user) return;
 
+    // logout from backend
     const res = await post(`auth/logout?lang=${$locale}`);
     if (res && res.success) {
-      proxyEvent("session:ended", { redirect: e.detail.redirect || "/" });
+      // logout from node session
+      proxyEvent("session:ended", { path: e.detail.path || "/" });
       message = res.message;
 
       flash.update({ message });
@@ -215,7 +218,11 @@
     unsubscribeTicker && unsubscribeTicker();
 
     setTimeout(() => {
-      goto(`${e.detail.redirect}${createRedirectSlug($page)}`);
+      let origin = window.location.origin,
+        href = window.location.href,
+        path = href.replace(origin, ""),
+        redirect_path = `?redirect=${path}`;
+      goto(`${e.detail.path}${redirect_path}`);
       $session.user = null;
       $session.role = null;
       $session.groups = null;

@@ -41,7 +41,7 @@
   });
 
   async function gotoLogin() {
-    let redirectSlug = status >= 400 ? "" : createRedirectSlug($page);
+    let redirectSlug = createRedirectSlug();
     goto(`login${redirectSlug}`);
   }
 
