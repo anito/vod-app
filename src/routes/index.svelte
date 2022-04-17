@@ -22,7 +22,7 @@
   let email = "";
   let message = "";
   let invalidEmail = true;
-  let value;
+  let selected;
   let snackbar;
 
   $: isAdmin = $session.user && $session.user.group.name === "Administrator";
@@ -41,16 +41,15 @@
       label: $_("text.user-message"),
     },
   ];
-  $: content = value === "message" ? message : "";
+  $: content = selected === "message" ? message : "";
   $: continueWith = $session.user
     ? { title: $_("text.yourCourses"), url: "videos" }
     : { title: $_("text.login"), url: "login" };
-  $: valid = value && name && email && !invalidEmail;
-  $: valid = value === "message" ? !!message : valid;
+  $: valid_1 = selected && name && email && !invalidEmail;
+  $: valid = selected === "message" ? message !== "" : valid_1;
   $: src = svg(svg_manifest["hero"], $theme.primary);
 
   onMount(() => {
-    value = options[0].key;
     snackbar = getSnackbar();
   });
 
@@ -58,7 +57,7 @@
     let res, data;
     data = {
       ...user,
-      subject: options.find((option) => option.key === value).label,
+      subject: options.find((option) => option.key === selected).label,
       content,
     };
     res = await api.post(
@@ -76,7 +75,7 @@
   }
 
   function reset() {
-    value = options[0].key;
+    selected = options[0].key;
     message = "";
     name = "";
     email = "";
@@ -88,7 +87,12 @@
 </svelte:head>
 
 <Layout {segment}>
-  <Hero title="Physio Dips" tagline="" outline={src} logotype="logo-type.svg" />
+  <Hero
+    title="Immersive Studio"
+    tagline=""
+    outline={src}
+    logotype="logo-type.svg"
+  />
 
   <Blurb>
     <a href="." class="" slot="one">
@@ -101,7 +105,7 @@
     <div class="flex flex-col flex-1 justify-between" slot="two">
       <h2>{$_("blocks.p2.header")}</h2>
       <div class="flex-1">
-        {#if !value}
+        {#if !selected}
           <p>{$_("blocks.p2.text")}</p>
           <a href="/{continueWith.url}" class="learn-more"
             >{continueWith.title}</a
@@ -115,8 +119,8 @@
         on:submit|preventDefault={submit}
         class="user-info-form flex-col justify-between"
       >
-        {#if value}
-          {#if value && value === "message"}
+        {#if selected}
+          {#if selected && selected === "message"}
             <Textfield
               class="user-message"
               textarea
@@ -164,7 +168,7 @@
         <div class="" style="width: 100%;">
           <Select
             class="info-select"
-            bind:value
+            bind:value={selected}
             label={$_("text.are-you-interested")}
           >
             {#each options as option (option.key)}
