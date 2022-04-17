@@ -1,6 +1,6 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { GridItem, LayoutGrid } from '@anito/site-kit';
+  import { stores } from "@sapper/app";
+  import { GridItem, LayoutGrid } from "@anito/site-kit";
 
   export let stretch = false;
 
@@ -9,7 +9,7 @@
   export let segment = $page.path.match(/\/([a-z_-]*)/)[1];
 </script>
 
-<LayoutGrid fullscreen {segment} {stretch}>
+<LayoutGrid {segment} {stretch} class="no-pagebar">
   <GridItem name="content" let:inner>
     <div class={inner}>
       <slot />
@@ -20,7 +20,7 @@
       <slot name="footer">Footer</slot>
     </div>
   </GridItem>
-  <GridItem vcenter name="ad" let:inner>
+  <GridItem vcenter hcenter name="ad" let:inner>
     <div class={inner}>
       <slot name="ad">Advertisement</slot>
     </div>

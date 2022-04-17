@@ -1,6 +1,7 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { GridItem, LayoutGrid } from '@anito/site-kit';
+  import { stores } from "@sapper/app";
+  import { GridItem, LayoutGrid } from "@anito/site-kit";
+  import { Legal } from "components";
 
   const { page } = stores();
 

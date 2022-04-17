@@ -15,7 +15,7 @@
 
 <script>
   import Layout from "./layout.svelte";
-  import { Info } from "components";
+  import { Info, Legal } from "components";
   import { stores, goto } from "@sapper/app";
 
   export let segment;
@@ -35,7 +35,9 @@
       </div>
     </div>
   {/if}
-  <div slot="ad" />
+  <div slot="ad">
+    <div class="m-auto ml-0"><Legal /></div>
+  </div>
   <div slot="footer" />
 </Layout>
 

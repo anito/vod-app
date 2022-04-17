@@ -1,6 +1,7 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { GridItem, LayoutGrid } from '@anito/site-kit';
+  import { stores } from "@sapper/app";
+  import { GridItem, LayoutGrid } from "@anito/site-kit";
+  import { Legal } from "components";
 
   const { page } = stores();
 
@@ -25,7 +26,7 @@
   </GridItem>
   <GridItem vcenter name="ad" let:inner>
     <div class={inner}>
-      <slot name="ad">Advertisement</slot>
+      <slot name="ad"><Legal /></slot>
     </div>
   </GridItem>
 </LayoutGrid>

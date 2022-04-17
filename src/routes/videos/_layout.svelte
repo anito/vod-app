@@ -22,7 +22,7 @@
   import { onMount, getContext } from "svelte";
   import { stores } from "@sapper/app";
   import Layout from "./layout.svelte";
-  import { PageBar } from "components";
+  import { Legal, PageBar } from "components";
   import { images } from "stores/imageStore";
   import { videos } from "stores/videoStore";
   import { urls } from "stores/urlStore";
@@ -104,7 +104,7 @@
     <PageBar />
   </div>
   <slot />
-  <div slot="ad" />
+  <div slot="ad"><Legal /></div>
   <div slot="footer" class="flex justify-between">
     <div class="m-auto ml-0" />
     <div class="m-auto mr-0" />

@@ -254,10 +254,6 @@
       method="post"
     >
       <Nav {segment} {page} {logo}>
-        <NavItem href="/privacy-policy" title={$_("nav.privacy")} let:active>
-          <Label>{$_("nav.privacy")}</Label>
-        </NavItem>
-
         {#if $session.user}
           <NavItem href="/videos" title="Videothek">
             <Icon class="material-icons" style="vertical-align: middle;"

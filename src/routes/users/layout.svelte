@@ -1,6 +1,7 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { GridItem, LayoutGrid } from '@anito/site-kit';
+  import { stores } from "@sapper/app";
+  import { GridItem, LayoutGrid } from "@anito/site-kit";
+  import { Legal } from "components";
 
   export let stretch = false;
   export let sidebar = false;
@@ -31,8 +32,8 @@
       <slot name="footer">Footer</slot>
     </div>
   </GridItem>
-  <GridItem vcenter name="ad" let:inner>
-    <div class="{inner} ml-1">
+  <GridItem vcenter hcenter name="ad" let:inner>
+    <div class={inner}>
       <slot name="ad">Advertisement</slot>
     </div>
   </GridItem>

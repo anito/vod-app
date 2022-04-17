@@ -3,7 +3,7 @@
   import { stores } from "@sapper/app";
 
   export let stretch = false;
-  
+
   const { page } = stores();
 
   let segment = $page.path.match(/\/([a-z_-]*)/)[1];
@@ -25,8 +25,8 @@
       <slot name="footer">Footer</slot>
     </div>
   </GridItem>
-  <GridItem vcenter name="ad" let:inner>
-    <div class="inner {inner}">
+  <GridItem vcenter hcenter name="ad" let:inner>
+    <div class={inner}>
       <slot name="ad">Advertisement</slot>
     </div>
   </GridItem>

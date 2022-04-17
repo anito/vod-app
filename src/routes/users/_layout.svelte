@@ -41,7 +41,7 @@
   import { fabs } from "stores/fabStore";
   import { locationSearch } from "utils";
   import Layout from "./layout.svelte";
-  import { InfoChips, SimpleUserCard, PageBar } from "components";
+  import { InfoChips, Legal, SimpleUserCard, PageBar } from "components";
   import { proxyEvent } from "utils";
   import Button, { Icon as Icon_ } from "@smui/button";
   import Fab, { Label } from "@smui/fab";
@@ -333,7 +333,9 @@
       </div>
     {/if}
   </div>
-  <div slot="ad" />
+  <div slot="ad">
+    <div class="m-auto ml-0"><Legal /></div>
+  </div>
   <div slot="footer" class="flex justify-between">
     <div class="m-auto ml-0"><InfoChips staggered {selectionUserId} /></div>
     <div class="m-auto mr-0" />
