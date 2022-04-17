@@ -38,8 +38,8 @@
   let flashOutroEnded = false;
 
   /**
-   * For token logins
-   * from preload
+   * For token logins:
+   * preload function has received data from backend server
    */
   export let data = null;
   export let success = false;
@@ -66,11 +66,11 @@
     /**
      * DISPLAY RESULT MESSAGES
      * There are two steps:
-     * 
-     * Message 1: The flashStore handles the "wait" time the first message should stay visible until the servers result message appears
-     * After that "wait" time) the message will be set empty and will therefore be unmounted.
-     * 
-     * Message 2: After the "wait" time a second message will be triggered by the store.
+     *
+     * Message 1: The flashStore handles the timeout time the first message should stay visible until the servers result message appears
+     * after the timeout the message will be reset empty and will therefore be unmounted.
+     *
+     * Message 2: After specified timeout a second message will be triggered by the store.
      * This second message will be either a welcome message (on success) or
      * a default message (on first appearance)
      */
@@ -78,28 +78,28 @@
       /**
        * Form login
        */
-      flash.update({ message: message.text, wait: -5 });
+      flash.update({ message: message.text, timeout: -5 });
     } else {
       /**
        * Token login
        */
       if (success) {
-        
+        root.classList.add("is-token-login");
         flash.update({ type: "success", ...data });
-        setTimeout(scheduleStart, 100, data);
+        setTimeout(scheduleSessionStart, 100, data);
       } else {
-        flash.update({ type: "warning", ...data, wait: 5000 });
+        flash.update({ type: "warning", ...data, timeout: 5000 });
       }
     }
 
     return () => {
       window.removeEventListener("resize", setViewportSize);
-      root.classList.remove("is-login-page");
+      root.classList.remove("is-login-page", "is-token-login");
     };
   });
 
-  function scheduleStart(data) {
-    proxyEvent("session:start", { data })
+  function scheduleSessionStart(data) {
+    proxyEvent("session:start", { data });
   }
 
   function setViewportSize() {
@@ -117,7 +117,11 @@
   <title>Physiotherapy Online | Login</title>
 </svelte:head>
 
-<div in:fly={{x: -200, duration: 800}} out:fly={{x: 200}} class="flex flex-1 justify-center m-8">
+<div
+  in:fly={{ x: -200, duration: 800 }}
+  out:fly={{ x: 200 }}
+  class="flex flex-1 justify-center m-8"
+>
   <div class="flex flex-col justify-center">
     <Paper elevation="20">
       <div class="flyer">

@@ -103,10 +103,10 @@
     window.addEventListener("session:extended", sessionExtendedHandler);
     window.addEventListener("session:end", sessionEndHandler);
     window.addEventListener("session:ended", sessionEndedHandler);
+    window.addEventListener("session:recover", sessionRecoverHandler);
     isMobileDevice && root.classList.add("ismobile");
 
-    maybeEndSession();
-    recoverSession();
+    checkSession();
 
     let styles = window.getComputedStyle(root);
     theme.set({
@@ -122,6 +122,7 @@
       window.removeEventListener("session:extended", sessionExtendedHandler);
       window.removeEventListener("session:end", sessionEndHandler);
       window.removeEventListener("session:ended", sessionEndedHandler);
+      window.removeEventListener("session:recover", sessionRecoverHandler);
     };
   });
 
@@ -218,11 +219,7 @@
     unsubscribeTicker && unsubscribeTicker();
 
     setTimeout(() => {
-      let origin = window.location.origin,
-        href = window.location.href,
-        path = href.replace(origin, ""),
-        redirect_path = `?redirect=${path}`;
-      goto(`${e.detail.path}${redirect_path}`);
+      goto(`${e.detail.path}${createRedirectSlug($page)}`);
       $session.user = null;
       $session.role = null;
       $session.groups = null;
@@ -230,14 +227,20 @@
     }, 1000);
   }
 
-  function recoverSession() {
+  function sessionRecoverHandler() {
     if (!$session.user || $session.expires < Date.now) return;
     proxyEvent("session:started");
   }
 
-  function maybeEndSession() {
+  function checkSession() {
     let isLoginPage = root.classList.contains("is-login-page");
-    isLoginPage && proxyEvent("session:end");
+    let isTokenLogin = root.classList.contains("is-token-login");
+
+    if (isLoginPage) {
+      !isTokenLogin && proxyEvent("session:end");
+    } else {
+      proxyEvent("session:recover");
+    }
   }
 </script>
 

@@ -41,7 +41,7 @@
   });
 
   async function gotoLogin() {
-    let redirectSlug = createRedirectSlug();
+    let redirectSlug = createRedirectSlug($page);
     goto(`login${redirectSlug}`);
   }
 

@@ -86,7 +86,7 @@
         <Icon class="material-icons"
           >{(hasExpired && "link_off") || "link"}</Icon
         >
-        <Label>Login</Label>
+        <Label>Magic Link</Label>
       </Button>
     </div>
   </div>
