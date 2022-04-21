@@ -61,13 +61,15 @@
 
   settings.update({ Session: $session });
 
-  // load configuration data
-  serverConfig($session.api);
+  // load configuration from server
+  serverConfig();
 
   setContext("snackbar", {
     getSnackbar: () => snackbar,
     configSnackbar,
   });
+
+  setContext("settings", settings);
 
   setContext("fab", {
     setFab: (fab) => $session.role === "Administrator" && fabs.update(fab),
@@ -322,7 +324,7 @@
         </li>
 
         <NavItem
-          external="https://github.com/anito/physio-dips-app"
+          external="https://github.com/anito/vod-app"
           title="GitHub Repo"
         >
           <ExternalIcon name="github" />

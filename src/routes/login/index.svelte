@@ -14,10 +14,11 @@
 </script>
 
 <script>
-  import { onMount } from "svelte";
   import { stores, goto } from "@sapper/app";
+  import { onMount } from "svelte";
   import { ListMessages, ListErrors, LoginForm } from "components";
   import { flash } from "stores/flashStore";
+  import { sitename } from "stores/sitenameStore";
   import { fly } from "svelte/transition";
   import { windowSize, redirectPath, proxyEvent } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
@@ -114,7 +115,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | Login</title>
+  <title>{$sitename} | Login</title>
 </svelte:head>
 
 <div

@@ -18,13 +18,13 @@
 
 <script>
   import { onMount } from "svelte";
+  import { sitename } from "stores/sitenameStore";
   import { UserManager } from "components";
-
-  const TABS = ["time", "user"];
 
   export let tab = "time";
 
-  let selectionUserId = "add";
+  const TABS = ["time", "user"];
+
   let root;
 
   $: tab = ((t) => TABS.find((itm) => itm === t) || TABS[0])(tab);
@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | Klient hinzufügen</title>
+  <title>{$sitename} | Klient hinzufügen</title>
 </svelte:head>
 
 <div class="grid flex-1">

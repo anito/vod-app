@@ -27,6 +27,7 @@
   import { Info, ImageCard, MediaUploader } from "components";
   import { Header } from "@anito/site-kit";
   import { fabs } from "stores/fabStore";
+  import { sitename } from "stores/sitenameStore";
   import { images } from "stores/imageStore";
   import { currentVideo } from "stores/currentVideoStore";
   import { _ } from "svelte-i18n";
@@ -65,7 +66,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | Posters</title>
+  <title>{$sitename} | Posters</title>
 </svelte:head>
 
 <Header h="2" mdc class="m-2 lg:m-5">Posters</Header>

@@ -4,6 +4,7 @@
   import { UserManager, TimeManager, MailManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
   import { users } from "stores/userStore";
+  import { sitename } from "stores/sitenameStore";
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";
 
@@ -43,7 +44,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | User {username}</title>
+  <title>{$sitename} | User {username}</title>
 </svelte:head>
 
 <div class="flex flex-1 user-grid inner-grid {tab}">

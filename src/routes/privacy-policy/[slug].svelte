@@ -14,14 +14,14 @@
 </script>
 
 <script>
-  import { Component } from 'components';
-  import { Header } from '@anito/site-kit';
+  import { Component } from "components";
+  import { sitename } from "stores/sitenameStore";
 
   export let post;
 </script>
 
 <svelte:head>
-  <title>{post.title}</title>
+  <title>{$sitename} | {post.title}</title>
 </svelte:head>
 
 <Component extended>

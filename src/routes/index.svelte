@@ -1,9 +1,10 @@
 <script>
   import "./_form.scss";
   import * as api from "api";
-  import { onMount, getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { stores } from "@sapper/app";
   import { theme } from "stores/themeStore";
+  import { sitename } from "stores/sitenameStore";
   import Layout from "./layout.svelte";
   import { Blurb, Hero } from "@anito/site-kit";
   import Textfield from "@smui/textfield";
@@ -83,7 +84,7 @@
 </script>
 
 <svelte:head>
-  <title>Physiotherapy Online | Home</title>
+  <title>{$sitename} | Home</title>
 </svelte:head>
 
 <Layout {segment}>
