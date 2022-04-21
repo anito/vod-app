@@ -12,7 +12,7 @@ _Special thanks to the creators of:_
 
 # Backend
 
-The backend logic uses CakePhp and is published [here](https://github.com/anito/physio-dips).
+The backend logic uses CakePhp and is published [here](https://github.com/anito/vod-backend).
 
 # sapper-template
 
