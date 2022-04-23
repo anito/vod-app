@@ -15,3 +15,4 @@ package-lock.json
 src/request.rest
 .vscode
 client_secret*
+.env

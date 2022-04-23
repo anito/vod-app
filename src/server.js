@@ -12,7 +12,6 @@ import { config } from "dotenv";
 config();
 const { PORT, NODE_ENV, API_URI, API_URI_DEV, CLIENT_ID } = process.env;
 const dev = NODE_ENV === "development";
-const API = dev ? API_URI_DEV : API_URI;
 const FileStore = new sessionFileStore(session);
 
 // ignore "unable to verify the first certificate" error caused by self signed (root) certificate
@@ -41,7 +40,6 @@ polka() // You can also use Express
           role: req.session.user && req.session.user.group.name,
           groups: req.session.groups || [],
           expires: req.session.cookie.expires,
-          API,
           CLIENT_ID
         },
     }),
