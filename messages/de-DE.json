@@ -180,7 +180,8 @@
     "login-issues": "Probleme bei der Anmeldung?",
     "you_will_be_redirected": "Sie werden in {sec} {word} zur Anmeldeseite weitergeleitet",
     "second": "Sekunde",
-    "seconds": "Sekunden"
+    "seconds": "Sekunden",
+    "welcome-link-label": "Ihr Zugangslink"
   },
   "summary": {
     "copy-link": {

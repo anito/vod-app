@@ -181,7 +181,8 @@
     "you_will_be_redirected": "You will be redirected to Login page in {sec} {word}",
     "second": "second",
     "seconds": "seconds",
-    "custom": "custom"
+    "custom": "custom",
+    "welcome-link-label": "Link to your account"
   },
   "summary": {
     "copy-link": {
