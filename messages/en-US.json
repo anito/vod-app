@@ -157,7 +157,7 @@
     "after-footer": "After Footer",
     "message-sent-failed": "Message could not be sent",
     "message-sent-success": "Message sent successfully",
-    "missing-data": "Missing Data",
+    "missing-data": "Invalid Data",
     "template-created": "Template created",
     "template-create-failed": "Template could not be created",
     "template-renamed": "Template renamed",

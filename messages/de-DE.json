@@ -157,7 +157,7 @@
     "after-footer": "Nach Fußzeile",
     "message-sent-failed": "Nachricht konnte nicht gesendet werden",
     "message-sent-success": "Nachricht erfolgreich gesendet",
-    "missing-data": "Fehlende Daten",
+    "missing-data": "Ungültige Daten",
     "template-created": "Vorlage erstellt",
     "template-create-failed": "Vorlage konnte nicht erstellt werden",
     "template-renamed": "Vorlage umbenannt",
