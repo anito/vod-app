@@ -85,22 +85,22 @@
        * Token login
        */
       if (success) {
-        root.classList.add("is-token-login");
         flash.update({ type: "success", ...data });
-        setTimeout(scheduleSessionStart, 100, data);
+        setTimeout(scheduleSession, 100, "start", data);
       } else {
+        setTimeout(scheduleSession, 100, "end", { path: "/login" });
         flash.update({ type: "warning", ...data, timeout: 5000 });
       }
     }
 
     return () => {
       window.removeEventListener("resize", setViewportSize);
-      root.classList.remove("is-login-page", "is-token-login");
+      root.classList.remove("is-login-page", "token-success");
     };
   });
 
-  function scheduleSessionStart(data) {
-    proxyEvent("session:start", { data });
+  function scheduleSession(type, data) {
+    proxyEvent(`session:${type}`, { data });
   }
 
   function setViewportSize() {

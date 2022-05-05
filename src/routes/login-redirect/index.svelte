@@ -5,18 +5,18 @@
     let token = page.query.token;
     if (token) {
       return {
-        token
+        token,
       };
     }
   }
 </script>
 
 <script>
-  import {onMount} from "svelte";
+  import { onMount } from "svelte";
 
   export let token;
 
   onMount(() => {
-    goto(`login/?token=${token}`)
-  })
+    goto(`login/?token=${token}`);
+  });
 </script>

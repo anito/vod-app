@@ -162,7 +162,8 @@
   function handleClosed() {}
 
   async function sessionStartHandler(e) {
-    const data = e.detail.data;
+    console.log(e.detail);
+    const { data } = e.detail;
     const res = await post("auth/proxy", { ...data });
     if (res) {
       const { user, groups, expires, renewed } = { ...res };
@@ -203,15 +204,13 @@
 
   async function sessionEndHandler(e) {
     if (!$session.user) return;
-
     // logout from backend
     const res = await post(`auth/logout?lang=${$locale}`);
     if (res && res.success) {
       // logout from node session
-      proxyEvent("session:ended", { path: e.detail.path || "/" });
+      proxyEvent("session:ended", { ...e.detail.data });
       message = res.message;
 
-      flash.update({ message });
       configSnackbar(message);
       snackbar.open();
     }
@@ -220,13 +219,18 @@
   function sessionEndedHandler(e) {
     unsubscribeTicker && unsubscribeTicker();
 
-    setTimeout(() => {
-      goto(`${e.detail.path}${createRedirectSlug($page)}`);
-      $session.user = null;
-      $session.role = null;
-      $session.groups = null;
-      $session.expires = null;
-    }, 1000);
+    $session.user = null;
+    $session.role = null;
+    $session.groups = null;
+    $session.expires = null;
+
+    setTimeout(
+      (path) => {
+        goto(`${path}${createRedirectSlug($page)}`);
+      },
+      1000,
+      e.detail.path || "/"
+    );
   }
 
   function sessionRecoverHandler() {
@@ -235,14 +239,7 @@
   }
 
   function checkSession() {
-    let isLoginPage = root.classList.contains("is-login-page");
-    let isTokenLogin = root.classList.contains("is-token-login");
-
-    if (isLoginPage) {
-      !isTokenLogin && proxyEvent("session:end");
-    } else {
-      proxyEvent("session:recover");
-    }
+    proxyEvent("session:recover");
   }
 </script>
 
