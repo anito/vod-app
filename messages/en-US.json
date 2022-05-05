@@ -182,7 +182,8 @@
     "second": "second",
     "seconds": "seconds",
     "custom": "custom",
-    "welcome-link-label": "Link to your account"
+    "welcome-link-label": "Link to your account",
+    "authentication-required": "Please sign in to view this area"
   },
   "summary": {
     "copy-link": {

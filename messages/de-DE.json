@@ -181,7 +181,8 @@
     "you_will_be_redirected": "Sie werden in {sec} {word} zur Anmeldeseite weitergeleitet",
     "second": "Sekunde",
     "seconds": "Sekunden",
-    "welcome-link-label": "Ihr Zugangslink"
+    "welcome-link-label": "Ihr Zugangslink",
+    "authentication-required": "Um diesen Bereich zu sehen, musst du angemeldet sein"
   },
   "summary": {
     "copy-link": {

@@ -29,6 +29,7 @@
     delay: 0,
     duration: 200,
   };
+  const flyTransitionParams = { ...transitionParams, x: -80 };
 
   let errors = null;
   let viewportSize;
@@ -45,7 +46,6 @@
   export let data = null;
   export let success = false;
 
-  $: flyTransitionParams = { ...transitionParams, x: -80 };
   $: message = ((user) => {
     return (
       (user && {
