@@ -1,10 +1,17 @@
 <script>
   import { goto } from "@sapper/app";
   import { onMount } from "svelte";
+  import { fly } from "svelte/transition";
   import { sitename } from "stores/sitenameStore";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
+  import { Info } from "components";
   import { users } from "stores/userStore";
   import { _ } from "svelte-i18n";
+
+  const transitionParams = {
+    delay: 0,
+    duration: 200,
+  };
+  const flyTransitionParams = { ...transitionParams, x: -80 };
 
   let preSelectedIndex = 0;
 
@@ -23,19 +30,11 @@
   <title>{$sitename} | Users</title>
 </svelte:head>
 
-<div class="no-user">
-  <div class="content">
-    <Paper color="secondary">
-      <Title style="color: var(--text-light)">{$_("text.loading-users")}</Title>
-    </Paper>
+<div class="flex justify-center items-center flex-1">
+  <div class="flyer" transition:fly={flyTransitionParams}>
+    <Info title={$_("text.loading-users")} />
   </div>
 </div>
 
 <style>
-  .no-user {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-  }
 </style>

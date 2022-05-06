@@ -162,7 +162,6 @@
   function handleClosed() {}
 
   async function sessionStartHandler(e) {
-    console.log(e.detail);
     const { data } = e.detail;
     const res = await post("auth/proxy", { ...data });
     if (res) {
