@@ -15,7 +15,7 @@
 
 <script>
   import { Component } from "components";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
 
   export let post;
 </script>

@@ -24,11 +24,7 @@
     svg,
     __session__,
   } from "utils";
-  import { flash } from "stores/flashStore";
-  import { ticker } from "stores/tickerStore";
-  import { fabs } from "stores/fabStore";
-  import { settings } from "stores/settingStore";
-  import { theme } from "stores/themeStore";
+  import { ticker, fabs, settings, theme } from "stores";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
   import {

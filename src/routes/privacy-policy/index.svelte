@@ -3,7 +3,7 @@
   import { Component } from "components";
   import { Header } from "@anito/site-kit";
   import { extendSession } from "utils";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
 
   onMount(() => {
     extendSession();

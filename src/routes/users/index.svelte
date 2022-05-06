@@ -2,9 +2,9 @@
   import { goto } from "@sapper/app";
   import { onMount } from "svelte";
   import { fly } from "svelte/transition";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
   import { Info } from "components";
-  import { users } from "stores/userStore";
+  import { users } from "stores";
   import { _ } from "svelte-i18n";
 
   const transitionParams = {

@@ -1,6 +1,6 @@
 import * as api from 'api.js';
 import { get } from 'svelte/store';
-import { settings } from "stores/settingStore";
+import { settings } from "stores";
 import { locale } from 'svelte-i18n';
 
 // const { session } = stores();

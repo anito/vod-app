@@ -1,7 +1,7 @@
 <script>
   import { Header } from "@anito/site-kit";
   import { Table } from "components";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
 </script>
 
 <svelte:head>

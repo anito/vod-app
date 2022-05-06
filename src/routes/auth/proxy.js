@@ -1,4 +1,4 @@
-import { settings } from "stores/settingStore";
+import { settings } from "stores";
 import { INIT_OPTIONS } from "config";
 
 let lifetime;

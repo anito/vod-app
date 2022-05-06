@@ -26,10 +26,7 @@
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import { Info, ImageCard, MediaUploader } from "components";
   import { Header } from "@anito/site-kit";
-  import { fabs } from "stores/fabStore";
-  import { sitename } from "stores/sitenameStore";
-  import { images } from "stores/imageStore";
-  import { currentVideo } from "stores/currentVideoStore";
+  import { fabs, sitename, images, currentVideo } from "stores";
   import { _ } from "svelte-i18n";
 
   // available from preload
@@ -38,7 +35,7 @@
 
   const { session } = stores();
   const { open } = getContext("simple-modal");
-  const { setFab, restoreFab } = getContext("fab");
+  const { setFab } = getContext("fab");
 
   onMount(() => {
     if ($session.user) setFab("upload-image");

@@ -17,8 +17,8 @@
   import { stores, goto } from "@sapper/app";
   import { onMount } from "svelte";
   import { ListMessages, ListErrors, LoginForm } from "components";
-  import { flash } from "stores/flashStore";
-  import { sitename } from "stores/sitenameStore";
+  import { flash } from "stores";
+  import { sitename } from "stores";
   import { fly } from "svelte/transition";
   import { windowSize, redirectPath, proxyEvent } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";

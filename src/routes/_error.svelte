@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import { goto, stores } from "@sapper/app";
-  import { flash } from "stores/flashStore";
+  import { flash } from "stores";
   import { post, createRedirectSlug } from "utils";
   import Paper, { Title } from "@smui/paper";
   import { _ } from "svelte-i18n";

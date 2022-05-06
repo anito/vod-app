@@ -23,10 +23,7 @@
   import { stores } from "@sapper/app";
   import Layout from "./layout.svelte";
   import { Legal, PageBar } from "components";
-  import { images } from "stores/imageStore";
-  import { videos } from "stores/videoStore";
-  import { urls } from "stores/urlStore";
-  import { videoEmitter } from "stores/videoEmitter";
+  import { images, videos, urls, videoEmitter } from "stores";
   import { locale, _ } from "svelte-i18n";
 
   const { page, session } = stores();

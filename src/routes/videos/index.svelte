@@ -1,7 +1,6 @@
 <script context="module">
   import * as api from "api";
-  import { users } from "stores/userStore";
-  import { videos } from "stores/videoStore";
+  import { users, videos } from "stores";
 
   const TABS = ["videos", "images"];
 
@@ -36,7 +35,7 @@
 <script>
   import { goto, stores } from "@sapper/app";
   import { onMount } from "svelte";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
   import Button, { Group, Label, Icon } from "@smui/button";
   import { VideoManager, ImageManager, Component } from "components";
   import { Header } from "@anito/site-kit";

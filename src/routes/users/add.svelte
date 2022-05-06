@@ -18,7 +18,7 @@
 
 <script>
   import { onMount } from "svelte";
-  import { sitename } from "stores/sitenameStore";
+  import { sitename } from "stores";
   import { UserManager } from "components";
 
   export let tab = "time";

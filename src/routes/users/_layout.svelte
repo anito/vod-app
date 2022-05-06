@@ -1,7 +1,6 @@
 <script context="module">
   import * as api from "api";
-  import { users } from "stores/userStore";
-  import { videos } from "stores/videoStore";
+  import { users, videos } from "stores";
 
   export async function preload({ query }, { user }) {
     let usersData = [],
@@ -37,8 +36,7 @@
 <script>
   import { stores, goto } from "@sapper/app";
   import { onMount, getContext } from "svelte";
-  import { infos } from "stores/infoStore";
-  import { fabs } from "stores/fabStore";
+  import { infos, fabs } from "stores";
   import { locationSearch } from "utils";
   import Layout from "./layout.svelte";
   import { InfoChips, Legal, SimpleUserCard, PageBar } from "components";
@@ -47,7 +45,6 @@
   import Fab, { Label } from "@smui/fab";
   import Textfield from "@smui/textfield";
   import Icon from "@smui/textfield/icon";
-  import HelperText from "@smui/textfield/helper-text";
   import List from "@smui/list";
   import Dialog, {
     Title as DialogTitle,
@@ -116,16 +113,18 @@
     (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
   );
   $: tab = ((t) => (!t && TAB) || t)(tab);
+  $: ((t) => {
+    if ($session.role !== "Administrator") return;
+    t === "time" && setFab("add-user");
+    t === "user" && setFab("add-user");
+    t === "mail" && setFab();
+  })(tab);
   $: userInfos =
     ($infos.has(selectionUserId) && $infos.get(selectionUserId).params) || [];
   $: userIssues = userInfos.filter((info) => info.type === "issue");
 
   onMount(() => {
     snackbar = getSnackbar();
-
-    if ($session.role === "Administrator") {
-      setFab("add-user");
-    }
 
     let renewed;
     if (
