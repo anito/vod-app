@@ -66,7 +66,7 @@
     "not-scheduled": "Nicht geplant",
     "uploaded-on": "Hochgeladen: {date}",
     "no-poster": "Kein Poster",
-    "until-date": "<small>noch bis</small><br />{date}",
+    "until-date": "{date}",
     "more-options": "Mehr Optionen",
     "delete-video": "Video löschen",
     "delete-poster": "Poster löschen",
@@ -182,7 +182,9 @@
     "second": "Sekunde",
     "seconds": "Sekunden",
     "welcome-link-label": "Ihr Zugangslink",
-    "authentication-required": "Um diesen Bereich zu sehen, musst du angemeldet sein"
+    "authentication-required": "Um diesen Bereich zu sehen, musst du angemeldet sein",
+    "empty_title": "Kein Titel",
+    "empty_description": "Keine Beschreibung"
   },
   "summary": {
     "copy-link": {
@@ -243,7 +245,7 @@
   "messages": {
     "error": "Error: {status}",
     "permanently-remove-user": "{name} wird dauerhaft gelöscht. Bestätigen Sie mit OK",
-    "video-available-until": "Dieser Online-Videokurs steht für Sie bis einschl. <strong>{date}</strong> bereit.",
+    "video-available-until": "gültig bis",
     "transfer-token-reminder": "Denken Sie daran, dem Benutzer <strong>{name}</strong> den neuen Token zu übermitteln.",
     "you-will-be-logged-out": "Wenn Sie fortfahren, werden Sie von Ihrer aktuellen Sitzung abgemeldet.",
     "login-will-fail": "Die Anmeldung als <strong>{name}</strong> wird fehlschlagen. Die folgende Aktionen müssen erst durchgeführt werden: ",

@@ -24,9 +24,18 @@
     svg,
     __session__,
   } from "utils";
-  import { ticker, fabs, settings, theme } from "stores";
+  import {
+    fabs,
+    settings,
+    theme,
+    ticker,
+    urls,
+    videos,
+    videoEmitter,
+  } from "stores";
   import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
+  import * as api from "api";
   import {
     UserGraphic,
     LoadingModal,
@@ -54,6 +63,7 @@
   let loggedInButtonTextSecondLine;
   let unsubscribeTicker;
   let emphasize;
+  let user = $session.user;
 
   settings.update({ Session: $session });
 
@@ -122,6 +132,63 @@
       window.removeEventListener("session:ended", sessionEndedHandler);
       window.removeEventListener("session:recover", sessionRecoverHandler);
     };
+  });
+
+  /**
+   * Saves changes on video
+   * @param item
+   */
+  async function put(item) {
+    const res = await api.put(
+      `videos/${item.id}?lang=${$locale}`,
+      item,
+      user && user.token
+    );
+    if (res && res.success) {
+      let message = res.message || res.data.message;
+      snackbar.isOpen && snackbar.close();
+      configSnackbar(message);
+      snackbar.open();
+      videos.put(item);
+    }
+  }
+
+  async function get() {
+    const res = await api.get("videos", user && user.token);
+    if (res && res.success) {
+      videos.update(res.data);
+    }
+  }
+
+  async function del(item) {
+    const res = await api.del(
+      `videos/${item.id}?lang=${$locale}`,
+      user && user.token
+    );
+    if (res && res.success) {
+      let message = res.message || res.data.message;
+      snackbar.isOpen && snackbar.close();
+      configSnackbar(message);
+      snackbar.open();
+
+      urls.del(item.id);
+      videos.del(item.id);
+    }
+  }
+
+  videoEmitter.subscribe((t) => {
+    if ("post" === t.method) {
+      post(t.data);
+    }
+    if ("put" === t.method) {
+      put(t.data);
+    }
+    if ("get" === t.method) {
+      get(t.data);
+    }
+    if ("del" === t.method) {
+      del(t.data);
+    }
   });
 
   function submit(e) {

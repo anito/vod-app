@@ -66,7 +66,7 @@
     "not-scheduled": "not scheduled",
     "uploaded-on": "Uploaded: {date}",
     "no-poster": "No poster",
-    "until-date": "<small>valid until</small><br />{date}",
+    "until-date": "{date}",
     "more-options": "More options",
     "delete-video": "Delete Video",
     "delete-poster": "Delete Poster",
@@ -183,7 +183,9 @@
     "seconds": "seconds",
     "custom": "custom",
     "welcome-link-label": "Link to your account",
-    "authentication-required": "Please sign in to view this area"
+    "authentication-required": "Please sign in to view this area",
+    "empty_title": "Here your title",
+    "empty_description": "Here your description"
   },
   "summary": {
     "copy-link": {
@@ -244,7 +246,7 @@
   "messages": {
     "error": "Error: {status}",
     "permanently-remove-user": "{name} will be permanently removed. Confirm pressing OK",
-    "video-available-until": "This class will be available for you until <strong>{date}</strong>",
+    "video-available-until": "valid until",
     "transfer-token-reminder": "Remember to send the new token to the user <strong> {name} </strong>.",
     "you-will-be-logged-out": "If you continue, you will be logged out of your current session.",
     "login-will-fail": "Logging in as <strong> {name} </strong> will fail. \nThe following actions must first be carried out:",
