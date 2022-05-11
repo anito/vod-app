@@ -185,7 +185,10 @@
     "welcome-link-label": "Link to your account",
     "authentication-required": "Please sign in to view this area",
     "empty_title": "Here your title",
-    "empty_description": "Here your description"
+    "empty_description": "Here your description",
+    "upload_type": "Upload {type}",
+    "max_file_count": "{count} max.",
+    "file_queue": "Queue {count}"
   },
   "summary": {
     "copy-link": {

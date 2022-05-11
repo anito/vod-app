@@ -184,7 +184,10 @@
     "welcome-link-label": "Ihr Zugangslink",
     "authentication-required": "Um diesen Bereich zu sehen, musst du angemeldet sein",
     "empty_title": "Kein Titel",
-    "empty_description": "Keine Beschreibung"
+    "empty_description": "Keine Beschreibung",
+    "upload_type": "{type} hochladen",
+    "max_file_count": "max. {count}",
+    "file_queue": "Warteschlange {count}"
   },
   "summary": {
     "copy-link": {
