@@ -20,9 +20,6 @@ module.exports = {
     },
     // screens: {} // custom breakpoints
   },
-  variants: {
-    // backgroundColor: [ 'responsive', 'hover', 'focus', 'active']
-  },
   plugins: [],
   future: {
     removeDeprecatedGapUtilities: true,

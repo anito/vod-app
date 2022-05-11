@@ -63,7 +63,6 @@
   let loggedInButtonTextSecondLine;
   let unsubscribeTicker;
   let emphasize;
-  let user = $session.user;
 
   settings.update({ Session: $session });
 
@@ -82,6 +81,7 @@
     restoreFab: () => fabs.restore(),
   });
 
+  $: user = $session.user;
   $: logo = svg(svg_manifest["logo"], $theme.primary);
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
