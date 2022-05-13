@@ -78,7 +78,7 @@
         {/each}
       </div>
     {:else}
-      <div class="paper-container flex justify-center">
+      <div class="flex justify-center">
         <Paper color="primary">
           <Title style="color: var(--text-light)">No Images available</Title>
           <Content>
@@ -92,7 +92,7 @@
       </div>
     {/if}
   {:else}
-    <div class="paper-container flex justify-center m-8">
+    <div class="flex justify-center m-8">
       <Info title="Unauthorized" let:href>
         <a {href} on:click|preventDefault={() => goto(href)}>Login</a>
       </Info>

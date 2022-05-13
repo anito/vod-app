@@ -64,9 +64,9 @@
     "got-it": "Got it",
     "time-slot-updated": "Time slot updated",
     "not-scheduled": "not scheduled",
-    "uploaded-on": "Uploaded: {date}",
+    "uploaded-on": "{date}",
     "no-poster": "No poster",
-    "until-date": "{date}",
+    "until-date": "until {date}",
     "more-options": "More options",
     "delete-video": "Delete Video",
     "delete-poster": "Delete Poster",
@@ -184,11 +184,13 @@
     "custom": "custom",
     "welcome-link-label": "Link to your account",
     "authentication-required": "Please sign in to view this area",
-    "empty_title": "Here your title",
-    "empty_description": "Here your description",
+    "empty_title": "Title",
+    "empty_description": "Description",
     "upload_type": "Upload {type}",
     "max_file_count": "{count} max.",
-    "file_queue": "Queue {count}"
+    "file_queue": "Queue {count}",
+    "no-videos": "No Videos available",
+    "title": "Title"
   },
   "summary": {
     "copy-link": {

@@ -64,9 +64,9 @@
     "got-it": "Ok, verstanden",
     "time-slot-updated": "Zeitrahmen aktualisiert",
     "not-scheduled": "Nicht geplant",
-    "uploaded-on": "Hochgeladen: {date}",
+    "uploaded-on": "{date}",
     "no-poster": "Kein Poster",
-    "until-date": "{date}",
+    "until-date": "bis {date}",
     "more-options": "Mehr Optionen",
     "delete-video": "Video löschen",
     "delete-poster": "Poster löschen",
@@ -183,11 +183,13 @@
     "seconds": "Sekunden",
     "welcome-link-label": "Ihr Zugangslink",
     "authentication-required": "Um diesen Bereich zu sehen, musst du angemeldet sein",
-    "empty_title": "Kein Titel",
-    "empty_description": "Keine Beschreibung",
+    "empty_title": "Titel",
+    "empty_description": "Beschreibung",
     "upload_type": "{type} hochladen",
     "max_file_count": "max. {count}",
-    "file_queue": "Warteschlange {count}"
+    "file_queue": "Warteschlange {count}",
+    "no-videos": "Keine Videos verfügbar",
+    "title": "Titel"
   },
   "summary": {
     "copy-link": {

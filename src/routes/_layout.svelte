@@ -82,7 +82,8 @@
   });
 
   $: user = $session.user;
-  $: logo = svg(svg_manifest["logo"], $theme.primary);
+  $: person = svg(svg_manifest.person, $theme.primary);
+  $: logo = svg(svg_manifest.logo, $theme.primary);
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&
@@ -351,20 +352,24 @@
         {#if $session.user}
           <NavItem title="Avatar" href="/users/{$session.user.id}?tab=user">
             <UserGraphic
-              border="0px 0px 0px 3px var(--prime)"
+              borderSize="3"
+              borderColor="--prime"
               dense
               width="40"
               height="40"
               user={$session.user}
+              fallbackImage={person}
             />
           </NavItem>
         {:else}
           <NavItem title="Avatar">
             <UserGraphic
-              border="0px 0px 0px 3px var(--prime)"
+              borderSize="3"
+              borderColor="--prime"
               dense
               width="40"
               height="40"
+              fallbackImage={person}
             />
           </NavItem>
         {/if}

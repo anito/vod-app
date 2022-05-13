@@ -1,39 +1,93 @@
 <script context="module">
+  import { images, videos, users } from "stores";
   import * as api from "api";
 
   export async function preload(page, { user }) {
-    let data;
+    let usersData = [],
+      videosData = [],
+      imagesData = [];
 
-    const res = await api.get("images", user && user.token);
-
-    if (res && res.success) {
-      data = res.data;
-      return { data };
+    const resUsers = await api.get("users", user && user.token);
+    if (resUsers && resUsers.success) {
+      usersData = resUsers.data;
+      users.update(usersData);
     } else {
-      this.error(
-        (res.data && res.data.code) || res.status,
-        res.message || res.responseText
-      );
+      this.error();
+    }
+
+    const resVideos = await api.get("videos", user && user.token);
+    if (resVideos && resVideos.success) {
+      videosData = resVideos.data;
+      videos.update(videosData);
+    } else {
+      this.error();
+    }
+
+    const resImages = await api.get("images", user && user.token);
+    if (resImages && resImages.success) {
+      imagesData = resImages.data;
+      images.update(imagesData);
+    } else {
+      this.error();
     }
   }
 </script>
 
 <script>
+  import { goto, stores } from "@sapper/app";
   import Layout from "./layout.svelte";
-  import { Legal, PageBar } from "components";
-  import { images } from "stores";
+  import List, { Item, Graphic, Separator, Text } from "@smui/list";
+  import Button, { Label, Icon as ButtonIcon } from "@smui/button";
+  import IconButton, { Icon } from "@smui/icon-button";
+  import { Legal, PageBar, SimpleVideoCard } from "components";
+  import { _, locale } from "svelte-i18n";
 
-  export let data = [];
+  const { page, session } = stores();
 
-  // hydrate images store
-  images.update(data);
+  let selectedIndex;
+
+  $: sidebar = !!$page.params.slug;
+  $: selectionVideoId = $page.params.slug;
+  $: dateFormat = $locale.indexOf("de") != -1 ? "dd. MMM yyyy" : "yyyy-MM-dd";
+
+  function itemSelectedHandler(e) {
+    let { video } = e.detail;
+
+    if (video.id != selectionVideoId) {
+      goto(`videos/${video.id}`);
+    }
+  }
 </script>
 
-<Layout>
+<Layout {sidebar}>
   <div class="flex flex-1" slot="pagebar">
     <PageBar />
   </div>
   <slot />
+  <div class="sidebar" slot="side" style="flex: 1;">
+    <List
+      class="video-list"
+      twoLine
+      avatarList
+      singleSelection
+      bind:selectedIndex
+    >
+      {#if $videos.length}
+        {#each $videos as video (video.id)}
+          <SimpleVideoCard
+            class="video"
+            selected={selectionVideoId === video.id}
+            on:itemSelected={itemSelectedHandler}
+            {video}
+          />
+        {/each}
+      {:else}
+        <li class="flex flex-1 flex-col self-center text-center">
+          <div class="m-5">{$_("text.no-videos")}</div>
+        </li>
+      {/if}
+    </List>
+  </div>
   <div slot="ad"><Legal /></div>
   <div slot="footer" class="flex justify-between">
     <div class="m-auto ml-0" />

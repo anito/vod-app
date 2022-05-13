@@ -25,6 +25,7 @@
   let selected;
   let snackbar;
 
+  $: src = svg(svg_manifest.hero, $theme.primary);
   $: isAdmin = $session.user && $session.user.group.name === "Administrator";
   $: user = isAdmin
     ? { name: $session.user.name, email: $session.user.email }
@@ -47,7 +48,6 @@
     : { title: $_("text.login"), url: "login" };
   $: valid_1 = selected && name && email && !invalidEmail;
   $: valid = selected === "message" ? message !== "" : valid_1;
-  $: src = svg(svg_manifest["hero"], $theme.primary);
 
   onMount(() => {
     snackbar = getSnackbar();

@@ -1,37 +1,3 @@
-<script context="module">
-  import * as api from "api";
-  import { users, videos } from "stores";
-
-  const TABS = ["videos", "images"];
-
-  export async function preload(page, { role, user }) {
-    let tabs = TABS;
-    let query = page.query;
-    let tab = (query.tab && tabs.find((itm) => itm === query.tab)) || tabs[0];
-    let usersData = [],
-      videosData = [];
-
-    const resUsers = await api.get("users", user && user.token);
-
-    if (resUsers && resUsers.success) {
-      usersData = resUsers.data;
-      users.update(usersData);
-    } else {
-      this.error();
-    }
-
-    const resVideos = await api.get("videos", user && user.token);
-    if (resVideos && resVideos.success) {
-      videosData = resVideos.data;
-      videos.update(videosData);
-    } else {
-      this.error();
-    }
-
-    return { usersData, videosData, tabs, tab };
-  }
-</script>
-
 <script>
   import { goto, stores } from "@sapper/app";
   import { onMount } from "svelte";
@@ -42,16 +8,13 @@
   import { extendSession } from "utils";
   import { _ } from "svelte-i18n";
 
-  // available from preload
-  export let tabs = TABS;
-  export let usersData = [];
-  export let videosData = [];
-  export let tab = "videos";
+  const TABS = ["videos", "images"];
 
-  let { session } = stores();
-
-  users.update(usersData);
-  videos.update(videosData);
+  let { page, session } = stores();
+  $: tab =
+    ((query) => query.tab && TABS.find((itm) => itm === $page.query.tab))(
+      $page.query
+    ) || TABS[0];
 
   onMount(() => {
     $session.role === "Administrator" && changeTab(tab);
@@ -74,8 +37,8 @@
       <Group variant="unelevated">
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(tabs[0])}
-          variant={tab === tabs[0] ? "unelevated" : ""}
+          on:click={() => changeTab(TABS[0])}
+          variant={tab === TABS[0] ? "unelevated" : ""}
         >
           <Icon class="material-icons">video_settings</Icon>
           <Label>Videos</Label>
@@ -83,8 +46,8 @@
 
         <Button
           class="focus:outline-none focus:shadow-outline"
-          on:click={() => changeTab(tabs[1])}
-          variant={tab === tabs[1] ? "unelevated" : ""}
+          on:click={() => changeTab(TABS[1])}
+          variant={tab === TABS[1] ? "unelevated" : ""}
         >
           <Icon class="material-icons">collections</Icon>
           <Label>Posters</Label>
@@ -93,10 +56,10 @@
     </div>
 
     <div class="grid-item two">
-      {#if tab === tabs[0]}
+      {#if tab === TABS[0]}
         <VideoManager />
       {/if}
-      {#if tab === tabs[1]}
+      {#if tab === TABS[1]}
         <ImageManager />
       {/if}
     </div>
