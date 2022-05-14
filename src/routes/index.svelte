@@ -25,7 +25,7 @@
   let selected;
   let snackbar;
 
-  $: src = svg(svg_manifest.hero, $theme.primary);
+  $: src = svg(svg_manifest.logo_hero_vod);
   $: isAdmin = $session.user && $session.user.group.name === "Administrator";
   $: user = isAdmin
     ? { name: $session.user.name, email: $session.user.email }
@@ -91,7 +91,7 @@
     title="Immersive Studio"
     tagline=""
     outline={src}
-    logotype="logo-type.svg"
+    logotype="logo-type-vod.svg"
   />
 
   <Blurb>

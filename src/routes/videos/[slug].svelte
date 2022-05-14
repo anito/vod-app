@@ -1,8 +1,8 @@
 <script>
-  import { stores } from "@sapper/app";
+  import * as api from "api";
+  import { stores, goto } from "@sapper/app";
   import { onMount } from "svelte";
   import { videos, users, videoEmitter } from "stores";
-  import { Info, Display } from "components";
   import { VideoPlayer } from "components/Video";
   import { getMediaImage, getMediaVideo } from "utils";
   import { _, locale } from "svelte-i18n";
@@ -13,7 +13,6 @@
   let poster = "";
   let src = "";
   let joinData;
-  let vid;
   let playhead;
   let canPlay = false;
   let timeoutId;
@@ -22,16 +21,22 @@
   $: currentUser = $users.find((user) => user.id == $session.user.id);
   $: token = currentUser.token.token;
   $: isAdmin = $session.role === "Administrator";
-  $: joinData =
-    currentUser &&
-    (vid = currentUser.videos.find((v) => v.id == video.id)) &&
-    vid._joinData;
-  $: ((id) => getMediaImage(id, $session.user).then((v) => (poster = v)))(
-    video.image_id
-  );
-  $: ((id) => getMediaVideo(id, $session.user).then((v) => (src = v)))(
-    video.id
-  );
+  $: ((vid) => {
+    if (!vid) return;
+    /**
+     * get users joinData
+     * this is used for handle assotiated data, like the users playhed, avatar...
+     */
+    joinData =
+      currentUser &&
+      (vid = currentUser.videos.find((v) => video.id == v.id)) &&
+      vid._joinData;
+
+    // get encryptet poster url
+    getMediaImage(video.image_id, $session.user).then((v) => (poster = v));
+    // get encrypted video url
+    getMediaVideo(video.id, $session.user).then((v) => (src = v));
+  })(video);
   $: ((time) => {
     if (!paused || !canPlay) return;
     let savedTime = time;
@@ -149,12 +154,22 @@
     />
   </div>
 {:else}
-  <div class="flex justify-center m-8">
-    <Info title="No Video found" />
+  <div class="empty-selection">
+    <span style="text-align: center;">{$_("text.empty-video-selection")}</span>
   </div>
 {/if}
 
 <style>
+  .empty-selection {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 2em;
+    font-weight: 600;
+    color: #d8d8d8;
+  }
   .single-player {
     --player-w: 100vw;
     --curtain-lh-title: 4rem;

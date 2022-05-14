@@ -83,7 +83,7 @@
 
   $: user = $session.user;
   $: person = svg(svg_manifest.person, $theme.primary);
-  $: logo = svg(svg_manifest.logo, $theme.primary);
+  $: logo = svg(svg_manifest.logo_vod, $theme.primary);
   $: root &&
     ((user) => root.classList.toggle("loggedin", user))(!!$session.user);
   $: root &&

@@ -190,7 +190,9 @@
     "max_file_count": "{count} max.",
     "file_queue": "Queue {count}",
     "no-videos": "No Videos available",
-    "title": "Title"
+    "title": "Title",
+    "empty-video-selection": "No Video Selected",
+    "watch_movie": "Watch"
   },
   "summary": {
     "copy-link": {
