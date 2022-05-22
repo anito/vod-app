@@ -7,7 +7,7 @@
     "dev:tailwind": "postcss static/tailwind.css -o static/index.css -w",
     "prepare": "smui-theme compile static/smui.css -i src/theme",
     "start": "node __sapper__/build",
-    "start:dev": "sapper dev",
+    "start:dev": "sapper dev --port 3001",
     "build": "npm run build:tailwind && sapper build --legacy",
     "build:tailwind": "NODE_ENV=production postcss static/tailwind.css -o static/index.css",
     "build:no-tailwind": "sapper build --legacy",

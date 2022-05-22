@@ -10,7 +10,7 @@
   import { stores, goto } from "@sapper/app";
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
-  import { Icons, Icon as ExternalIcon } from "@anito/site-kit";
+  import { Icons, Icon as ExternalIcon, Modal } from "@anito/site-kit";
   import Button, { Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Snackbar, { Actions } from "@smui/snackbar";
@@ -33,7 +33,6 @@
     videos,
     videoEmitter,
   } from "stores";
-  import { Modal } from "@anito/site-kit";
   import { Jumper } from "svelte-loading-spinners";
   import * as api from "api";
   import {
@@ -145,7 +144,7 @@
       item,
       user && user.token
     );
-    if (res && res.success) {
+    if (res?.success) {
       if (snack) {
         let message = res.message || res.data.message;
         snackbar.isOpen && snackbar.close();
@@ -161,7 +160,7 @@
       `videos/${item.id}?lang=${$locale}`,
       user && user.token
     );
-    if (res && res.success) {
+    if (res?.success) {
       if (snack) {
         let message = res.message || res.data.message;
         snackbar.isOpen && snackbar.close();
@@ -260,7 +259,7 @@
     if (!$session.user) return;
     // logout from backend
     const res = await post(`auth/logout?lang=${$locale}`);
-    if (res && res.success) {
+    if (res?.success) {
       // logout from node session
       proxyEvent("session:ended", { ...e.detail.data });
       message = res.message;
