@@ -16,10 +16,12 @@
   let playhead;
   let canPlay = false;
   let timeoutId;
+  let currentUser;
 
   $: video = $videos.find((v) => v.id === $page.params.slug);
-  $: currentUser = $users.find((user) => user.id == $session.user.id);
-  $: token = currentUser.token.token;
+  $: loggedInUser = $users.find((user) => user.id == $session.user?.id);
+  $: loggedInUser && setCurrentUser(loggedInUser);
+  $: token = currentUser?.token.token;
   $: isAdmin = $session.role === "Administrator";
   $: ((vid) => {
     if (!vid) return;
@@ -51,6 +53,10 @@
   onMount(() => {
     return () => !paused && savePlayhead();
   });
+
+  function setCurrentUser(user) {
+    currentUser = user;
+  }
 
   // set playhead to the last saved position when the video is ready to play
   function handleCanPlay(e) {
@@ -106,7 +112,7 @@
         method: "put",
         data: { ...video, playhead },
       });
-    } else {
+    } else if (video) {
       let joinData,
         data,
         id = video.id,
