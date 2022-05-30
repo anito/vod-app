@@ -37,18 +37,21 @@
   import { goto, stores } from "@sapper/app";
   import Layout from "./layout.svelte";
   import List, { Item, Graphic, Separator, Text } from "@smui/list";
-  import Button, { Label, Icon as ButtonIcon } from "@smui/button";
-  import IconButton, { Icon } from "@smui/icon-button";
+  import Textfield from "@smui/textfield";
+  import { Icon } from "@smui/icon-button";
   import { Legal, PageBar, SimpleVideoCard } from "components";
   import { _, locale } from "svelte-i18n";
 
   const { page, session } = stores();
 
   let selectedIndex;
+  let search = "";
 
   $: sidebar = !!$page.params.slug;
   $: selectionVideoId = $page.params.slug;
-  $: dateFormat = $locale.indexOf("de") != -1 ? "dd. MMM yyyy" : "yyyy-MM-dd";
+  $: filteredVideos = $videos.filter(
+    (video) => video.title?.toLowerCase().indexOf(search.toLowerCase()) !== -1
+  );
 
   function itemSelectedHandler(e) {
     let { video } = e.detail;
@@ -65,6 +68,23 @@
   </div>
   <slot />
   <div class="sidebar" slot="side" style="flex: 1;">
+    <div class="flex flex-col">
+      <Textfield
+        class="search"
+        variant="filled"
+        bind:value={search}
+        label={$_("text.search-video")}
+        input$aria-controls="helper-text"
+        input$aria-describedby="helper-text"
+      >
+        <Icon
+          role="button"
+          class="material-icons-outlined cancel-search"
+          slot="trailingIcon"
+          on:click={() => (search = "")}>{search.length && "cancel"}</Icon
+        >
+      </Textfield>
+    </div>
     <List
       class="video-list"
       twoLine
@@ -72,8 +92,8 @@
       singleSelection
       bind:selectedIndex
     >
-      {#if $videos.length}
-        {#each $videos as video (video.id)}
+      {#if filteredVideos.length}
+        {#each filteredVideos as video (video.id)}
           <SimpleVideoCard
             class="video"
             selected={selectionVideoId === video.id}
@@ -94,3 +114,9 @@
     <div class="m-auto mr-0" />
   </div>
 </Layout>
+
+<style>
+  :global(.cancel-search) {
+    cursor: pointer;
+  }
+</style>

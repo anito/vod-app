@@ -406,6 +406,9 @@
 </Snackbar>
 
 <style>
+  :global(.grid-item .sidebar) {
+    max-width: var(--sidebar-w);
+  }
   .button-first-line {
     position: absolute;
     width: 84%;
