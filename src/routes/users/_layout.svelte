@@ -2,38 +2,24 @@
   import * as api from "api";
   import { users, videos, videosAll } from "stores";
 
-  export async function preload({ query }, { user, role }) {
+  export async function preload({ query }, { user }) {
     let usersData = [],
-      videosData = [];
-    const resUsers = await api.get("users", user?.token);
+      videosData = [],
+      videosAllData = [];
 
-    if (resUsers?.success) {
-      usersData = resUsers.data;
-    } else {
-      this.error(
-        (resUsers.data && resUsers.data.code) || resUsers.status,
-        resUsers.message || resUsers.responseText
-      );
-    }
+    await api.get("users", user?.token).then((res) => {
+      res.success && (usersData = res.data);
+    });
 
-    const resVideos = await api.get("videos", user?.token);
+    const resVideos = await api.get("videos", user?.token).then((res) => {
+      res.success && (videosData = res.data);
+    });
 
-    if (resVideos?.success) {
-      videosData = resVideos.data;
-    } else {
-      this.error(
-        (resVideos.data && resVideos.data.code) || resVideos.status,
-        resVideos.message || resVideos.responseText
-      );
-    }
+    await api.get("videos/all").then((res) => {
+      res.success && (videosAllData = res.data);
+    });
 
-    if (role !== "Administrator") {
-      await api.get("videos/all").then((res) => {
-        res.success && videosAll.update(res.data);
-      });
-    }
-
-    return { usersData, videosData, ...query };
+    return { usersData, videosData, videosAllData, ...query };
   }
 </script>
 
@@ -68,6 +54,7 @@
   export let active = false;
   export let usersData = [];
   export let videosData = [];
+  export let videosAllData = [];
 
   let code;
   let currentUser;
@@ -94,6 +81,7 @@
   $: user = $session.user;
   $: users.update(usersData);
   $: videos.update(videosData);
+  $: videosAll.update(videosAllData);
   $: selectionUserId = segment;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(
     selectionUserId
