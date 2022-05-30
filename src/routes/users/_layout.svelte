@@ -1,6 +1,5 @@
 <script context="module">
   import * as api from "api";
-  import { users, videos, videosAll } from "stores";
 
   export async function preload({ query }, { user }) {
     let usersData = [],
@@ -11,7 +10,7 @@
       res.success && (usersData = res.data);
     });
 
-    const resVideos = await api.get("videos", user?.token).then((res) => {
+    await api.get("videos", user?.token).then((res) => {
       res.success && (videosData = res.data);
     });
 
@@ -26,8 +25,8 @@
 <script>
   import { stores, goto } from "@sapper/app";
   import { onMount, getContext } from "svelte";
-  import { infos, fabs } from "stores";
-  import { locationSearch } from "utils";
+  import { infos, fabs, users, videos, videosAll } from "stores";
+  import { locationSearch, sortByName } from "utils";
   import Layout from "./layout.svelte";
   import { InfoChips, Legal, SimpleUserCard, PageBar } from "components";
   import { proxyEvent } from "utils";
@@ -100,9 +99,11 @@
         `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) ||
       "";
   })(currentUser);
-  $: filteredUsers = $users.filter(
-    (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-  );
+  $: filteredUsers = $users
+    .filter(
+      (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    )
+    .sort(sortByName);
   $: tab = ((t) => (!t && TAB) || t)(tab);
   $: ((t) => {
     if ($session.role !== "Administrator") return;

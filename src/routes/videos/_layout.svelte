@@ -40,7 +40,8 @@
   import Textfield from "@smui/textfield";
   import { Icon } from "@smui/icon-button";
   import { Legal, PageBar, SimpleVideoCard } from "components";
-  import { _, locale } from "svelte-i18n";
+  import { sortByTitle } from "utils";
+  import { _ } from "svelte-i18n";
 
   const { page, session } = stores();
 
@@ -49,9 +50,11 @@
 
   $: sidebar = !!$page.params.slug;
   $: selectionVideoId = $page.params.slug;
-  $: filteredVideos = $videos.filter(
-    (video) => video.title?.toLowerCase().indexOf(search.toLowerCase()) !== -1
-  );
+  $: filteredVideos = $videos
+    .filter(
+      (video) => video.title?.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    )
+    .sort(sortByTitle);
 
   function itemSelectedHandler(e) {
     let { video } = e.detail;
