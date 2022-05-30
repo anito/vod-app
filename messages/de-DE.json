@@ -191,7 +191,8 @@
     "no-videos": "Keine Videos verfügbar",
     "title": "Titel",
     "empty-video-selection": "Kein Video ausgewählt",
-    "watch_movie": "Ansehen"
+    "watch_movie": "Ansehen",
+    "empty-user-selection": "Kein Benutzer ausgewählt"
   },
   "summary": {
     "copy-link": {

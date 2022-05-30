@@ -1,7 +1,5 @@
 <script context="module">
   import * as api from "api";
-  import { writable } from "svelte/store";
-
   import { users, videos, videosAll } from "stores";
 
   export async function preload({ query }, { user, role }) {
@@ -11,7 +9,6 @@
 
     if (resUsers?.success) {
       usersData = resUsers.data;
-      users.update(usersData);
     } else {
       this.error(
         (resUsers.data && resUsers.data.code) || resUsers.status,
@@ -23,7 +20,6 @@
 
     if (resVideos?.success) {
       videosData = resVideos.data;
-      videos.update(videosData);
     } else {
       this.error(
         (resVideos.data && resVideos.data.code) || resVideos.status,
@@ -37,7 +33,7 @@
       });
     }
 
-    return { ...query };
+    return { usersData, videosData, ...query };
   }
 </script>
 
@@ -70,6 +66,8 @@
   // from preload
   export let tab = TAB;
   export let active = false;
+  export let usersData = [];
+  export let videosData = [];
 
   let code;
   let currentUser;
@@ -94,6 +92,8 @@
   const { setFab } = getContext("fab");
 
   $: user = $session.user;
+  $: users.update(usersData);
+  $: videos.update(videosData);
   $: selectionUserId = segment;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(
     selectionUserId
