@@ -7,7 +7,7 @@
       videosData = [],
       imagesData = [];
 
-    const resUsers = await api.get("users", user && user.token);
+    const resUsers = await api.get("users", user?.token);
     if (resUsers && resUsers.success) {
       usersData = resUsers.data;
       users.update(usersData);
@@ -15,7 +15,7 @@
       this.error();
     }
 
-    const resVideos = await api.get("videos", user && user.token);
+    const resVideos = await api.get("videos", user?.token);
     if (resVideos && resVideos.success) {
       videosData = resVideos.data;
       videos.update(videosData);
@@ -23,7 +23,7 @@
       this.error();
     }
 
-    const resImages = await api.get("images", user && user.token);
+    const resImages = await api.get("images", user?.token);
     if (resImages && resImages.success) {
       imagesData = resImages.data;
       images.update(imagesData);

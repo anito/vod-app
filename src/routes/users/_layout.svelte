@@ -1,13 +1,15 @@
 <script context="module">
   import * as api from "api";
-  import { users, videos } from "stores";
+  import { writable } from "svelte/store";
 
-  export async function preload({ query }, { user }) {
+  import { users, videos, videosAll } from "stores";
+
+  export async function preload({ query }, { user, role }) {
     let usersData = [],
       videosData = [];
-    const resUsers = await api.get("users", user && user.token);
+    const resUsers = await api.get("users", user?.token);
 
-    if (resUsers.success) {
+    if (resUsers?.success) {
       usersData = resUsers.data;
       users.update(usersData);
     } else {
@@ -17,9 +19,9 @@
       );
     }
 
-    const resVideos = await api.get("videos", user && user.token);
+    const resVideos = await api.get("videos", user?.token);
 
-    if (resVideos && resVideos.success) {
+    if (resVideos?.success) {
       videosData = resVideos.data;
       videos.update(videosData);
     } else {
@@ -29,7 +31,13 @@
       );
     }
 
-    return { usersData, videosData, ...query };
+    if (role !== "Administrator") {
+      await api.get("videos/all").then((res) => {
+        res.success && videosAll.update(res.data);
+      });
+    }
+
+    return { ...query };
   }
 </script>
 
@@ -61,12 +69,7 @@
   export let segment; // slug (user.id ) in case we start from a specific user e.g. /users/23
   // from preload
   export let tab = TAB;
-  export let usersData = [];
-  export let videosData = [];
   export let active = false;
-
-  users.update(usersData);
-  videos.update(videosData);
 
   let code;
   let currentUser;
@@ -87,10 +90,10 @@
   let renewedTokenDialog;
   let removeTokenDialog;
   let redirectDialog;
-  let user = $session.user;
 
   const { setFab } = getContext("fab");
 
+  $: user = $session.user;
   $: selectionUserId = segment;
   $: currentUser = ((id) => $users.filter((usr) => usr.id === id)[0])(
     selectionUserId
@@ -200,7 +203,7 @@
     const res = await api.put(
       `users/${selectionUserId}?lang=${$locale}`,
       data,
-      user && user.token
+      user?.token
     );
 
     message = res.message || res.data.message || res.statusText;

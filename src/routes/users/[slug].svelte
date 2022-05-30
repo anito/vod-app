@@ -1,6 +1,6 @@
 <script>
-  import { stores } from "@sapper/app";
   import { onMount } from "svelte";
+  import { stores } from "@sapper/app";
   import { UserManager, TimeManager, MailManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
   import { users, sitename } from "stores";

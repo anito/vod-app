@@ -2,7 +2,7 @@
   import * as api from "api";
 
   export async function preload(page, { user }) {
-    const res = await api.get("images", user && user.token);
+    const res = await api.get("images", user?.token);
 
     if (!res || !res.success) {
       this.error(
