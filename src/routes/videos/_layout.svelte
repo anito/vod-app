@@ -7,29 +7,28 @@
       videosData = [],
       imagesData = [];
 
-    const resUsers = await api.get("users", user?.token);
-    if (resUsers && resUsers.success) {
-      usersData = resUsers.data;
-      users.update(usersData);
-    } else {
-      this.error();
-    }
+    await api
+      .get("users", user?.token)
+      .then((res) => {
+        res.success && (usersData = res.data);
+      })
+      .catch(() => this.error());
 
-    const resVideos = await api.get("videos", user?.token);
-    if (resVideos && resVideos.success) {
-      videosData = resVideos.data;
-      videos.update(videosData);
-    } else {
-      this.error();
-    }
+    await api
+      .get("videos", user?.token)
+      .then((res) => {
+        res.success && (videosData = res.data);
+      })
+      .catch(() => this.error());
 
-    const resImages = await api.get("images", user?.token);
-    if (resImages && resImages.success) {
-      imagesData = resImages.data;
-      images.update(imagesData);
-    } else {
-      this.error();
-    }
+    await api
+      .get("images", user?.token)
+      .then((res) => {
+        res.success && (imagesData = res.data);
+      })
+      .catch(() => this.error());
+
+    return { usersData, videosData, imagesData };
   }
 </script>
 
@@ -45,9 +44,16 @@
 
   const { page, session } = stores();
 
+  export let usersData = [];
+  export let videosData = [];
+  export let imagesData = [];
+
   let selectedIndex;
   let search = "";
 
+  $: users.update(usersData);
+  $: videos.update(videosData);
+  $: images.update(imagesData);
   $: sidebar = !!$page.params.slug;
   $: selectionVideoId = $page.params.slug;
   $: filteredVideos = $videos
