@@ -1,6 +1,6 @@
 <script>
   import * as api from "api";
-  import { stores, goto } from "@sapper/app";
+  import { stores } from "@sapper/app";
   import { onMount } from "svelte";
   import { videos, users, videoEmitter } from "stores";
   import { VideoPlayer } from "components/Video";

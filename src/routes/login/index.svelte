@@ -37,7 +37,7 @@
   let statusEl;
   let flashEl;
   let root;
-  let flashOutroEnded = false;
+  let outroended = false;
 
   /**
    * For token logins:
@@ -86,9 +86,9 @@
        */
       if (success) {
         flash.update({ type: "success", ...data });
-        setTimeout(scheduleSession, 100, "start", data);
+        setTimeout(dispatcher, 100, { type: "start", data });
       } else {
-        setTimeout(scheduleSession, 100, "end", { path: "/login" });
+        setTimeout(dispatcher, 100, { type: "end", data: { path: "/login" } });
         flash.update({ type: "warning", ...data, timeout: 5000 });
       }
     }
@@ -99,15 +99,15 @@
     };
   });
 
-  function scheduleSession(type, data) {
-    proxyEvent(`session:${type}`, { data });
+  function dispatcher({ type, data }) {
+    proxyEvent(`session:${type}`, { ...data });
   }
 
   function setViewportSize() {
     viewportSize = windowSize();
   }
 
-  function redirectAfterIntroEnd(e) {
+  function introendHandler(e) {
     if ($session.user) {
       goto(redirectPath($page, $session));
     }
@@ -131,19 +131,19 @@
             bind:this={flashEl}
             class="flex justify-center message {$flash.type}"
             transition:fly={flyTransitionParams}
-            on:outrostart={(e) => (flashOutroEnded = false)}
-            on:outroend={(e) => (flashOutroEnded = true)}
+            on:outrostart={(e) => (outroended = false)}
+            on:outroend={(e) => (outroended = true)}
           >
             <h5 class="m-2 mdc-typography--headline5 headline">
               {$flash.message}
             </h5>
           </div>
-        {:else if flashOutroEnded}
+        {:else if outroended}
           <div
             bind:this={statusEl}
             class="flex justify-center message {message.type}"
             in:fly={flyTransitionParams}
-            on:introend={(e) => redirectAfterIntroEnd(e)}
+            on:introend={(e) => introendHandler(e)}
           >
             <h5 class="m-2 mdc-typography--headline5 headline">
               {message.text}

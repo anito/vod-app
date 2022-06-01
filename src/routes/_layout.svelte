@@ -213,9 +213,7 @@
   function handleClosed() {}
 
   async function sessionStartHandler(e) {
-    const { data } = e.detail;
-    const res = await post("auth/proxy", { ...data });
-    if (res) {
+    await post("auth/proxy", { ...e.detail }).then((res) => {
       const { user, groups, expires, renewed } = { ...res };
 
       $session.user = user;
@@ -232,7 +230,7 @@
         })
       );
       snackbar.open();
-    }
+    });
   }
 
   function sessionStartedHandler(e) {
