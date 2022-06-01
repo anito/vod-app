@@ -268,13 +268,15 @@
     }
   }
 
-  function redirectDialogCloseHandler(e) {
+  async function redirectMagicLinkDialogCloseHandler(e) {
     if (
-      /^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i.test(
-        e.detail.action
+      "redirect" === e.detail.action &&
+      /^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-&]+\.?)+(\/[^\s]*)?$/i.test(
+        magicLink
       )
-    )
-      location.href = e.detail.action;
+    ) {
+      await goto(magicLink);
+    }
   }
 
   function chipInteractionHandler(e) {
@@ -513,7 +515,7 @@
   bind:this={redirectDialog}
   aria-labelledby="event-title"
   aria-describedby="event-content"
-  on:MDCDialog:closed={redirectDialogCloseHandler}
+  on:MDCDialog:closed={redirectMagicLinkDialogCloseHandler}
 >
   <DialogTitle id="event-title">{$_("text.magic-link")}</DialogTitle>
   <Content id="event-content">

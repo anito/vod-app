@@ -1,7 +1,8 @@
 {
-  "name": "physio-dippoldiswalde",
-  "description": "Physiotherapie Dippoldiswalde",
+  "name": "vod-manager",
+  "description": "VoD Manager",
   "version": "2.1.1",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "run-p start:dev",
     "dev:tailwind": "postcss static/tailwind.css -o static/index.css -w",

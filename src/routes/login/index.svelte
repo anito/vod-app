@@ -149,6 +149,16 @@
               {message.text}
             </h5>
           </div>
+        {:else}
+          <div
+            class="flex justify-center message success"
+            in:fly={{ duration: 200, x: -20, delay: 300 }}
+            out:fly={{ duration: 200, x: 20 }}
+          >
+            <h5 class="m-2 mdc-typography--headline5 headline">
+              {$_("text.hallo")}
+            </h5>
+          </div>
         {/if}
       </div>
       <Paper elevation="0">
