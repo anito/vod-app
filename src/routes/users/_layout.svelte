@@ -269,12 +269,11 @@
   }
 
   async function redirectMagicLinkDialogCloseHandler(e) {
-    if (
-      "redirect" === e.detail.action &&
+    const test =
       /^(https?|ftp|torrent|image|irc):\/\/(-\.)?([^\s\/?\.#-&]+\.?)+(\/[^\s]*)?$/i.test(
         magicLink
-      )
-    ) {
+      );
+    if ("redirect" === e.detail.action && test) {
       await goto(magicLink);
     }
   }
@@ -541,7 +540,7 @@
     <Button action="none">
       <Label>{$_("text.cancel")}</Label>
     </Button>
-    <Button variant="unelevated" action={magicLink} use={[InitialFocus]}>
+    <Button variant="unelevated" action="redirect" use={[InitialFocus]}>
       <Label class="token-button-label"
         >{hasExpired || !active
           ? $_("text.continue-anyways")
