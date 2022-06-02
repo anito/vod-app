@@ -1,5 +1,4 @@
 <script context="module">
-  import { images, videos, users } from "stores";
   import * as api from "api";
 
   export async function preload(page, { user }) {
@@ -39,6 +38,7 @@
   import Textfield from "@smui/textfield";
   import { Icon } from "@smui/icon-button";
   import { Legal, PageBar, SimpleVideoCard } from "components";
+  import { images, videos, users } from "stores";
   import { sortByTitle } from "utils";
   import { _ } from "svelte-i18n";
 
