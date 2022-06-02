@@ -10,7 +10,7 @@
   import { stores, goto } from "@sapper/app";
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
-  import { Icons, Icon as ExternalIcon, Modal } from "@anito/site-kit";
+  import { Icons, Icon as ExternalIcon, Modal } from "components";
   import Button, { Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Snackbar, { Actions } from "@smui/snackbar";
@@ -39,6 +39,7 @@
     UserGraphic,
     LoadingModal,
     LocaleSwitcher,
+    FrameworkSwitcher,
     Nav,
     NavItem,
   } from "components";
@@ -370,6 +371,10 @@
 
         <li class="locale-switcher">
           <LocaleSwitcher />
+        </li>
+
+        <li class="">
+          <FrameworkSwitcher />
         </li>
 
         <NavItem
