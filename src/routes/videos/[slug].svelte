@@ -12,7 +12,6 @@
   let paused;
   let poster = "";
   let src = "";
-  let joinData;
   let playhead;
   let canPlay = false;
   let timeoutId;
@@ -20,38 +19,25 @@
   $: video = $videos.find((v) => v.id === $page.params.slug);
   $: loggedInUser = $users.find((user) => user.id == $session.user?.id);
   $: currentUser = loggedInUser || currentUser;
+  $: joinData = currentUser?.videos.find((v) => video.id == v.id)?._joinData;
   $: token = currentUser?.token.token;
   $: isAdmin = currentUser?.group.name === "Administrator";
-  $: video && reactiveVideo(video);
-  $: joinData = currentUser?.videos.find((v) => video.id == v.id)?._joinData;
-  $: reactivePlayhead(playhead);
-  $: $preloading && reactiveCleanUp();
-
-  onMount(() => {});
-
-  function reactiveCleanUp() {
-    paused = true;
-    src = "";
-    savePlayhead();
-  }
-
-  function reactiveVideo(video) {
-    // get encryptet poster url
-    getMediaImage(video.image_id, $session.user).then((v) => (poster = v));
-    // get encrypted video src
-    getMediaVideo(video.id, $session.user).then((v) => (src = v));
-  }
-
-  function reactivePlayhead(time) {
+  $: ((time) => {
     if (!paused || !canPlay) return;
-    let savedTime = time;
+    let pauseTime = time;
     clearTimeout(timeoutId);
     timeoutId = setTimeout(
       (saved) => saved === playhead && savePlayhead(),
       500,
-      savedTime
+      pauseTime
     );
-  }
+  })(playhead);
+  $: video &&
+    getMediaImage(video.image_id, $session.user).then((v) => (poster = v));
+  $: video && getMediaVideo(video.id, $session.user).then((v) => (src = v));
+  $: $preloading && ((paused = true), (src = ""), savePlayhead());
+
+  onMount(() => {});
 
   // set playhead to the last saved position when the video is ready to play
   function handleCanPlay(e) {
