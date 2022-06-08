@@ -26,6 +26,7 @@
   } from "utils";
   import {
     fabs,
+    frameworks,
     settings,
     theme,
     ticker,
@@ -369,18 +370,15 @@
           </NavItem>
         {/if}
 
-        <li class="locale-switcher">
+        <NavItem title="Choose Locale">
           <LocaleSwitcher />
-        </li>
+        </NavItem>
 
-        <li class="">
+        <NavItem title="Choose Framework">
           <FrameworkSwitcher />
-        </li>
+        </NavItem>
 
-        <NavItem
-          external="https://github.com/anito/vod-app"
-          title="GitHub Repo"
-        >
+        <NavItem external={$frameworks.git} title="GitHub Repo">
           <ExternalIcon name="github" />
         </NavItem>
       </Nav>
