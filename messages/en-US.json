@@ -195,7 +195,9 @@
     "watch_movie": "Watch",
     "empty-user-selection": "No user selected",
     "search-video": "Search",
-    "hallo": "..."
+    "hallo": "...",
+    "choose-locale": "Choose Language",
+    "choose-framework": "Choose Framework"
   },
   "summary": {
     "copy-link": {

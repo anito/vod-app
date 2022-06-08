@@ -10,7 +10,7 @@
   import { stores, goto } from "@sapper/app";
   import { onMount, setContext } from "svelte";
   import isMobile from "ismobilejs";
-  import { Icons, Icon as ExternalIcon, Modal } from "components";
+  import { Icons, Modal } from "components";
   import Button, { Icon } from "@smui/button";
   import IconButton from "@smui/icon-button";
   import Snackbar, { Actions } from "@smui/snackbar";
@@ -304,7 +304,7 @@
     >
       <Nav {segment} {page} {logo}>
         {#if $session.user}
-          <NavItem href="/videos" title="Videothek">
+          <NavItem href="/videos" title="Videothek" segment="videos">
             <Icon class="material-icons" style="vertical-align: middle;"
               >video_library</Icon
             >
@@ -313,7 +313,7 @@
         {/if}
 
         {#if $session.role === "Administrator"}
-          <NavItem href="/users" title="Administration">
+          <NavItem href="/users" title="Administration" segment="users">
             <Icon class="material-icons" style="vertical-align: middle;"
               >settings</Icon
             >
@@ -322,10 +322,10 @@
         {/if}
 
         {#if $session.user}
-          <NavItem>
+          <NavItem segment="login">
             <Button
               variant="raised"
-              class="button-logout v-emph v-emph-bounce {emphasize}"
+              class="sign-in-out button-logout v-emph v-emph-bounce {emphasize}"
               on:mouseenter={() => (emphasize = "v-emph-active")}
               on:mouseleave={() => (emphasize = "")}
             >
@@ -339,7 +339,11 @@
           </NavItem>
         {:else}
           <NavItem href="/login{location}">
-            <Button color="secondary" variant="raised" class="button-login">
+            <Button
+              color="secondary"
+              variant="raised"
+              class="sign-in-out button-login"
+            >
               <Label>{$_("nav.login")}</Label>
             </Button>
           </NavItem>
@@ -370,16 +374,15 @@
           </NavItem>
         {/if}
 
-        <NavItem title="Choose Locale">
+        <NavItem title={$_("text.choose-locale")}>
           <LocaleSwitcher />
         </NavItem>
 
-        <NavItem title="Choose Framework">
+        <NavItem
+          title={$_("text.choose-framework")}
+          style="vertical-align: sub;"
+        >
           <FrameworkSwitcher />
-        </NavItem>
-
-        <NavItem external={$frameworks.git} title="GitHub Repo">
-          <ExternalIcon name="github" />
         </NavItem>
       </Nav>
     </form>
@@ -407,9 +410,6 @@
 </Snackbar>
 
 <style>
-  :global(.grid-item .sidebar) {
-    max-width: var(--sidebar-w);
-  }
   .button-first-line {
     position: absolute;
     width: 84%;
@@ -418,19 +418,19 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  :global(.is-login-page) .main-menu :global(button) {
-    transform: translateY(-60px);
-    transition: all 0.4s ease-out;
-  }
-  .main-menu :global(button) {
-    transform: translateY(0px);
-    transition: all 0.4s ease-in;
-  }
-  .main-menu :global(button) {
+  .main-menu :global(button.sign-in-out) {
     height: 74px;
     width: 130px;
   }
-  .main-menu :global(button .no-break) {
+  :global(.is-login-page) .main-menu :global(button.sign-in-out) {
+    transform: translateY(-60px);
+    transition: all 0.4s ease-out;
+  }
+  .main-menu :global(button.sign-in-out) {
+    transform: translateY(0px);
+    transition: all 0.4s ease-in;
+  }
+  .main-menu :global(button.sign-in-out .no-break) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
