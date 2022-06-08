@@ -8,7 +8,7 @@ Dive into the [Mail](http://vod.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOi
 
 # SvelteKit
 
-A SvelteKit port of this application can be found here: [SvelteKit](github.com/anito/vod-app-svelte-kit).
+A SvelteKit port of this application can be found here: [SvelteKit](https://github.com/anito/vod-app-svelte-kit).
 
 _Special thanks to the creators of:_
 
