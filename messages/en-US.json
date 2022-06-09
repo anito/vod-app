@@ -197,7 +197,8 @@
     "search-video": "Search",
     "hallo": "...",
     "choose-locale": "Choose Language",
-    "choose-framework": "Choose Framework"
+    "choose-framework": "Choose Framework",
+    "goto-github": "Go to GitHub"
   },
   "summary": {
     "copy-link": {
