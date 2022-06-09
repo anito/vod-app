@@ -1,5 +1,5 @@
 <script>
-  import { GridItem, LayoutGrid } from "@anito/site-kit";
+  import { GridItem, LayoutGrid } from "components";
   import { stores } from "@sapper/app";
 
   export let stretch = false;
