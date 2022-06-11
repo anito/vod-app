@@ -24,8 +24,7 @@
   import Fab, { Icon } from "@smui/fab";
   import { Label } from "@smui/common";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import { Info, ImageCard, MediaUploader } from "components";
-  import { Header } from "@anito/site-kit";
+  import { Header, Info, ImageCard, MediaUploader } from "components";
   import { fabs, sitename, images, currentVideo } from "stores";
   import { _ } from "svelte-i18n";
 

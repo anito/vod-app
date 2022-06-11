@@ -14,8 +14,7 @@
 </script>
 
 <script>
-  import { Component } from 'components';
-  import { Header } from '@anito/site-kit';
+  import { Header, Component } from "components";
 
   export let post;
 </script>

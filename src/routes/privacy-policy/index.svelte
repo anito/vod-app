@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { Component } from "components";
-  import { Header } from "@anito/site-kit";
+  import { Component, Header } from "components";
   import { extendSession } from "utils";
   import { sitename } from "stores";
 

@@ -4,7 +4,7 @@
   import { sitename } from "stores";
   import Button, { Group, Label, Icon } from "@smui/button";
   import { VideoManager, ImageManager, Component } from "components";
-  import { Header } from "@anito/site-kit";
+  import { Header } from "components";
   import { extendSession } from "utils";
   import { _ } from "svelte-i18n";
 

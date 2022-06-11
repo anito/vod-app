@@ -9,8 +9,7 @@
 </script>
 
 <script>
-  import { Component } from 'components';
-  import { Header } from '@anito/site-kit';
+  import { Component, Header } from "components";
 
   export let posts;
 </script>
