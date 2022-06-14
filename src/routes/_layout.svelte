@@ -142,7 +142,7 @@
    */
   async function put(item, snack) {
     const res = await api.put(
-      `videos/${item.id}?lang=${$locale}`,
+      `videos/${item.id}?locale=${$locale}`,
       item,
       user?.token
     );
@@ -158,7 +158,10 @@
   }
 
   async function del(item, snack) {
-    const res = await api.del(`videos/${item.id}?lang=${$locale}`, user?.token);
+    const res = await api.del(
+      `videos/${item.id}?locale=${$locale}`,
+      user?.token
+    );
     if (res?.success) {
       if (snack) {
         let message = res.message || res.data.message;
@@ -255,7 +258,7 @@
   async function sessionEndHandler(e) {
     if (!$session.user) return;
     // logout from backend
-    const res = await post(`auth/logout?lang=${$locale}`);
+    const res = await post(`auth/logout?locale=${$locale}`);
     if (res?.success) {
       // logout from node session
       proxyEvent("session:ended", { ...e.detail.data });

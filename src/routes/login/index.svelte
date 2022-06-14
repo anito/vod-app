@@ -20,7 +20,7 @@
   import { flash } from "stores";
   import { sitename } from "stores";
   import { fly } from "svelte/transition";
-  import { windowSize, redirectPath, proxyEvent } from "utils";
+  import { windowSize, processRedirect, proxyEvent } from "utils";
   import Paper, { Title, Subtitle, Content } from "@smui/paper";
   import { _ } from "svelte-i18n";
 
@@ -107,9 +107,9 @@
     viewportSize = windowSize();
   }
 
-  function introendHandler(e) {
+  function introendHandler() {
     if ($session.user) {
-      goto(redirectPath($page, $session));
+      setTimeout(() => goto(processRedirect($page, $session)), 1500);
     }
   }
 </script>
@@ -131,8 +131,8 @@
             bind:this={flashEl}
             class="flex justify-center message {$flash.type}"
             transition:fly={flyTransitionParams}
-            on:outrostart={(e) => (outroended = false)}
-            on:outroend={(e) => (outroended = true)}
+            on:outrostart={() => (outroended = false)}
+            on:outroend={() => (outroended = true)}
           >
             <h5 class="m-2 mdc-typography--headline5 headline">
               {$flash.message}
@@ -143,7 +143,7 @@
             bind:this={statusEl}
             class="flex justify-center message {message.type}"
             in:fly={flyTransitionParams}
-            on:introend={(e) => introendHandler(e)}
+            on:introend={() => introendHandler()}
           >
             <h5 class="m-2 mdc-typography--headline5 headline">
               {message.text}

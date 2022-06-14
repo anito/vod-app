@@ -1,22 +1,22 @@
-import * as api from 'api.js';
-import { get } from 'svelte/store';
+import * as api from "api.js";
+import { get } from "svelte/store";
 import { settings } from "stores";
-import { locale } from 'svelte-i18n';
+import { locale } from "svelte-i18n";
 
 // const { session } = stores();
 let base;
 settings.subscribe((val) => (base = val.api));
 
 export function post(req, res) {
-	const user = req.body;
+  const user = req.body;
 
-	api.post(`${base}/users?lang=${get(locale)}`, { user }).then(response => {
-		if (response.user) {
-			req.session.user = response.user;
-		}
+  api.post(`${base}/users?locale=${get(locale)}`, { user }).then((response) => {
+    if (response.user) {
+      req.session.user = response.user;
+    }
 
-		res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Content-Type", "application/json");
 
-		res.end(JSON.stringify(response));
-	});
+    res.end(JSON.stringify(response));
+  });
 }

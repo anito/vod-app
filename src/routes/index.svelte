@@ -61,7 +61,7 @@
       content,
     };
     res = await api.post(
-      `sents/add?lang=${$locale}`,
+      `sents/add?locale=${$locale}`,
       data,
       isAdmin && $session.user.token
     );

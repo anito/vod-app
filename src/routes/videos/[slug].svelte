@@ -123,7 +123,7 @@
 
   async function saveUser(data) {
     await api
-      .put(`users/${currentUser.id}?lang=${$locale}`, data, token)
+      .put(`users/${currentUser.id}?locale=${$locale}`, data, token)
       .then((res) => {
         res.success && users.put(res.data);
       });
