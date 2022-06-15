@@ -29,7 +29,7 @@
   $: isAdmin = $session.user && $session.user.group.name === "Administrator";
   $: user = isAdmin
     ? { name: $session.user.name, email: $session.user.email }
-    : { user: { name, email } };
+    : { name, email };
   $: ((user) => {
     name = (user && user.name) || name;
     email = (user && user.email) || email;
@@ -46,34 +46,34 @@
   $: continueWith = $session.user
     ? { title: $_("text.yourCourses"), url: "videos" }
     : { title: $_("text.login"), url: "login" };
-  $: valid_1 = selected && name && email && !invalidEmail;
-  $: valid = selected === "message" ? message !== "" : valid_1;
+  $: filled = selected && name && email && !invalidEmail;
+  $: canSend = selected === "message" ? message !== "" : filled;
 
   onMount(() => {
     snackbar = getSnackbar();
   });
 
   async function submit(e) {
-    let res, data;
-    data = {
-      ...user,
-      subject: options.find((option) => option.key === selected).label,
-      content,
-    };
-    res = await api.post(
-      `sents/add?locale=${$locale}`,
-      data,
-      isAdmin && $session.user.token
-    );
-    if (res.success) {
-      configSnackbar($_("text.thank-you-for-your-message"));
-      reset();
-    } else {
-      configSnackbar($_("text.message-sent-failed"));
-    }
-    snackbar.open();
+    await api
+      .post(
+        "sents/add",
+        {
+          user,
+          subject: options.find((option) => option.key === selected).label,
+          content,
+        },
+        isAdmin && $session.user?.token
+      )
+      .then((res) => {
+        if (res?.success) {
+          configSnackbar($_("text.thank-you-for-your-message"));
+          reset();
+        } else {
+          configSnackbar($_("text.message-sent-failed"));
+        }
+        snackbar.open();
+      });
   }
-
   function reset() {
     selected = options[0].key;
     message = "";
@@ -120,7 +120,7 @@
         class="user-info-form flex-col justify-between"
       >
         {#if selected}
-          {#if selected && selected === "message"}
+          {#if selected === "message"}
             <Textfield
               class="user-message"
               textarea
@@ -175,7 +175,7 @@
               <Option value={option.key}>{option.label}</Option>
             {/each}
           </Select>
-          <Button class="submit" disabled={!valid}>
+          <Button class="submit" disabled={!canSend}>
             <Icon class="material-icons">send</Icon>
           </Button>
         </div>
