@@ -6,11 +6,11 @@
       videosData = [],
       videosAllData = [];
 
-    await api.get("users", user?.token).then((res) => {
+    await api.get("users", user?.jwt).then((res) => {
       res.success && (usersData = res.data);
     });
 
-    await api.get("videos", user?.token).then((res) => {
+    await api.get("videos", user?.jwt).then((res) => {
       res.success && (videosData = res.data);
     });
 
@@ -62,7 +62,6 @@
   let hasExpired;
   let token;
   let tokenId;
-  let tokenVal;
   let magicLink;
   let search = "";
   let snackbar;
@@ -88,15 +87,14 @@
   $: ((usr) => {
     username = usr && usr.name;
     active = (usr && usr.active) || false;
-    token = usr && usr.token;
-    tokenId = (token && token.id) || null;
-    tokenVal = (token && token.token) || "";
+    token = usr?.jwt || "";
+    tokenId = usr?.token_id || null;
     tokenExpires = usr && usr.expires;
     hasExpired =
       (tokenExpires && tokenExpires * 1000 < +new Date().getTime()) || false;
     magicLink =
-      (tokenVal &&
-        `http://${$page.host}/login?token=${tokenVal}&lang=${$locale}`) ||
+      (token &&
+        `http://${$page.host}/login?token=${token}&locale=${$locale}`) ||
       "";
   })(currentUser);
   $: filteredUsers = $users
@@ -157,7 +155,7 @@
     const res = await api.post(
       `tokens?locale=${$locale}`,
       { user_id: currentUser.id, constrained },
-      user.token
+      user.jwt
     );
 
     let message;
@@ -179,10 +177,7 @@
   }
 
   async function removeToken() {
-    const res = await api.del(
-      `tokens/${tokenId}?locale=${$locale}`,
-      user.token
-    );
+    const res = await api.del(`tokens/${tokenId}?locale=${$locale}`, user.jwt);
     if (res.success) {
       users.put({ ...currentUser, ...res.data });
     }
@@ -195,7 +190,7 @@
     const res = await api.put(
       `users/${selectionUserId}?locale=${$locale}`,
       data,
-      user?.token
+      user?.jwt
     );
 
     message = res.message || res.data.message || res.statusText;
@@ -323,7 +318,7 @@
         </List>
       </div>
     {:else}
-      <div class="paper-container flex justify-center">
+      <div class="mt-5 flex justify-center">
         <div>{$_("text.user-not-found")}</div>
       </div>
     {/if}
@@ -583,11 +578,6 @@
 {/if}
 
 <style>
-  .paper-container {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-  }
   .fab-add-user {
     position: absolute;
   }

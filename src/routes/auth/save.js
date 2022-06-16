@@ -11,7 +11,7 @@ export function post(req, res) {
     .put(
       `users/${user.id}?locale=${get(locale)}`,
       { user },
-      req.session.user.token
+      req.session.user.jwt
     )
     .then((response) => {
       if (response.success && response.data) {

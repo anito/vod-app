@@ -144,7 +144,7 @@
     const res = await api.put(
       `videos/${item.id}?locale=${$locale}`,
       item,
-      user?.token
+      user?.jwt
     );
     if (res?.success) {
       if (snack) {
@@ -158,10 +158,7 @@
   }
 
   async function del(item, snack) {
-    const res = await api.del(
-      `videos/${item.id}?locale=${$locale}`,
-      user?.token
-    );
+    const res = await api.del(`videos/${item.id}?locale=${$locale}`, user?.jwt);
     if (res?.success) {
       if (snack) {
         let message = res.message || res.data.message;

@@ -2,7 +2,7 @@
   import * as api from "api";
 
   export async function preload_({ params, query }, { user }) {
-    const res = await api.get(`users/${params.slug}`, user?.token);
+    const res = await api.get(`users/${params.slug}`, user?.jwt);
 
     if (res && res.success) {
       const { id, name } = { ...res.data };

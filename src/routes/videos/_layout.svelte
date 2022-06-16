@@ -7,21 +7,21 @@
       imagesData = [];
 
     await api
-      .get("users", user?.token)
+      .get("users", user?.jwt)
       .then((res) => {
         res.success && (usersData = res.data);
       })
       .catch(() => this.error());
 
     await api
-      .get("videos", user?.token)
+      .get("videos", user?.jwt)
       .then((res) => {
         res.success && (videosData = res.data);
       })
       .catch(() => this.error());
 
     await api
-      .get("images", user?.token)
+      .get("images", user?.jwt)
       .then((res) => {
         res.success && (imagesData = res.data);
       })

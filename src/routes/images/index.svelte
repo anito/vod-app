@@ -3,7 +3,7 @@
 
   export async function preload({ path }, { user }) {
     let data;
-    const res = await api.get("images", user?.token);
+    const res = await api.get("images", user?.jwt);
 
     if (res && res.success) {
       data = res.data;

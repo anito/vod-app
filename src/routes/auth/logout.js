@@ -1,7 +1,7 @@
 import * as api from "api.js";
 
 export async function post(req, res) {
-  const token = req.session.user?.token;
+  const token = req.session.user?.jwt;
   const locale = req.query.locale;
   await api
     .post(`users/logout?token=${token}&locale=${locale}`, {})
