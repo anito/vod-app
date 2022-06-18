@@ -1,3 +1,25 @@
+<script context="module">
+  import * as api from "api";
+
+  export async function preload({ params, query }, { user }) {
+    let inboxData = [];
+    let sentData = [];
+
+    if (query["tab"] === "mail") {
+      const id = params["slug"];
+
+      await api.get(`sents/get/${id}`, user?.jwt).then((res) => {
+        res.success && (sentData = res.data);
+      });
+
+      await api.get(`inboxes/get/${id}`, user?.jwt).then((res) => {
+        res.success && (inboxData = res.data);
+      });
+    }
+    return { inboxData, sentData };
+  }
+</script>
+
 <script>
   import { onMount } from "svelte";
   import { stores } from "@sapper/app";
@@ -6,6 +28,9 @@
   import { users, sitename } from "stores";
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";
+
+  export let sentsData;
+  export let inboxData;
 
   const TABS = ["user", "time", "mail"];
   const { page, session } = stores();
@@ -105,7 +130,7 @@
     />
   {/if}
   {#if tab === TABS[2]}
-    <MailManager {selectionUserId} />
+    <MailManager {selectionUserId} {sentsData} {inboxData} />
   {/if}
 </div>
 
