@@ -40,7 +40,7 @@
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";
 
-  export let sentsData;
+  export let sentData;
   export let inboxData;
   export let slimData;
 
@@ -146,7 +146,7 @@
     />
   {/if}
   {#if tab === TABS[2]}
-    <MailManager {selectionUserId} {sentsData} {inboxData} />
+    <MailManager {selectionUserId} {sentData} {inboxData} />
   {/if}
 </div>
 

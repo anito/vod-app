@@ -355,10 +355,14 @@
               borderSize="3"
               borderColor="--prime"
               dense
-              width="40"
-              height="40"
+              size="40"
               user={$session.user}
-              fallbackImage={person}
+              badge={{
+                icon: "settings",
+                color: "--prime",
+                size: "small",
+                position: "BOTTOM_RIGHT",
+              }}
             />
           </NavItem>
         {:else}
@@ -367,9 +371,8 @@
               borderSize="3"
               borderColor="--prime"
               dense
-              width="40"
-              height="40"
-              fallbackImage={person}
+              size="40"
+              fallback={person}
             />
           </NavItem>
         {/if}
