@@ -1,9 +1,11 @@
 <script context="module">
   import * as api from "api";
 
+  let slimLoaded = false;
   export async function preload({ params, query }, { user }) {
     let inboxData = [];
     let sentData = [];
+    let slimData = [];
 
     if (query["tab"] === "mail") {
       const id = params["slug"];
@@ -15,8 +17,17 @@
       await api.get(`inboxes/get/${id}`, user?.jwt).then((res) => {
         res.success && (inboxData = res.data);
       });
+      if (!slimLoaded) {
+        await api
+          .get(`users/simpleindex`, user?.jwt)
+          .then((res) => {
+            res.success && (slimData = res.data);
+            slimLoaded = true;
+          })
+          .catch(() => {});
+      }
     }
-    return { inboxData, sentData };
+    return { inboxData, sentData, slimData };
   }
 </script>
 
@@ -25,12 +36,13 @@
   import { stores } from "@sapper/app";
   import { UserManager, TimeManager, MailManager } from "components";
   import Button, { Group, Label, Icon } from "@smui/button";
-  import { users, sitename } from "stores";
+  import { users, sitename, slim } from "stores";
   import { proxyEvent, extendSession } from "utils";
   import { _ } from "svelte-i18n";
 
   export let sentsData;
   export let inboxData;
+  export let slimData;
 
   const TABS = ["user", "time", "mail"];
   const { page, session } = stores();
@@ -41,6 +53,10 @@
   let magicLink;
   let currentUser;
   let username;
+
+  if (slimData.length) {
+    slim.update(slimData);
+  }
 
   $: selected_tab = ($page.query && $page.query.tab) || "time";
   $: selectionUserId = $page.params.slug;
