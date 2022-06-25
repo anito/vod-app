@@ -16,3 +16,4 @@ src/request.rest
 .vscode
 client_secret*
 .env
+.prettierrc
