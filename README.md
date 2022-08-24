@@ -1,4 +1,4 @@
-# Video On Demand Manager (Made with Sapper - deprecated)
+# Video On Demand Manager (Sapper) ~ deprecated
 
 [Landing Page](https://doojoo.de)
 
