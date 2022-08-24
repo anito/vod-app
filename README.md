@@ -1,10 +1,8 @@
-# Video On Demand Manager (Sapper)
+# Video On Demand Manager (Made with Sapper - deprecated)
 
-The corresponding web application of this project is early stage.
+[Landing Page](https://doojoo.de)
 
-[Landing Page](https://vod.doojoo.de)
-
-Dive into the [Mail](http://vod.doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link) part of the application using an Admin Authentication.
+Dive into the [Mail](http://doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link) part of the application using an Admin Authentication.
 
 # SvelteKit
 
