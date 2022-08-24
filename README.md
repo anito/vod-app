@@ -1,17 +1,19 @@
 # Video On Demand Manager (Sapper) ~ deprecated
 
+*This Project is NOT under active development anymore. See the [SvelteKit](https://github.com/anito/vod-app-svelte-kit/) Version instead*
+
+Manage videos on a per user basis.
+Create time frames limiting access to booked video content.
+Create and send tokens (sign-in link) to simplify the login process using build-in Email Manager and a basic Mail-Template creation tool.
+
 [Landing Page](https://doojoo.de)
 
-Dive into the [Mail](http://doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link) part of the application using an Admin Authentication.
-
-# SvelteKit
-
-A SvelteKit port of this application can be found here: [SvelteKit](https://github.com/anito/vod-app-svelte-kit).
+[Access Sample Administrators Mail](http://doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=template:magic-link)
 
 _Special thanks to the creators of:_
 
 [Svelte Material UI](https://sveltematerialui.com/) - Hunter Perrin [@SciActive](https://twitter.com/SciActive)
 
-# Backend
+# API
 
-The API this application heavily relies on was implemented with [CakePHP](https://cakephp.org). Here is the [Repo](https://github.com/anito/vod-backend).
+The [API](https://github.com/anito/vod-backend) for this application was made with [CakePHP](https://cakephp.org)
