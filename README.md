@@ -1,6 +1,6 @@
 # Video On Demand Manager (Sapper) ~ deprecated
 
-*This Project is NOT under active development anymore. See the [SvelteKit](https://github.com/anito/vod-app-svelte-kit/) Version instead*
+*This Project is NOT under active development anymore. See this [SvelteKit Version](https://github.com/anito/vod-app-svelte-kit/) instead*
 
 Manage videos on a per user basis.
 Create time frames limiting access to booked video content.
