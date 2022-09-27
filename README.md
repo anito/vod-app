@@ -8,7 +8,7 @@ Create and send tokens (sign-in link) to simplify the login process using build-
 
 [Landing Page](https://doojoo.de)
 
-[Access Sample Administrators Mailbox](http://doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&tab=mail&active=inboxes)
+[Access Sample Administrators Mailbox](http://doojoo.de/login?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsImV4cCI6MTg3OTE0NDIzMn0.--X1nVW58hZgWarXOFGvssNnvYz8Fmr2003HfTdn8jc&redirect=/users/24%3Ftab%3Dmail%26active%3Dinboxes)
 
 _Special thanks to the creators of:_
 
