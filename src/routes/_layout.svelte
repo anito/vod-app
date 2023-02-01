@@ -40,6 +40,7 @@
   import { serverConfig } from 'config';
   import { writable } from 'svelte/store';
 
+  const dev = process.env.NODE_ENV === 'development';
   const { page, session } = stores();
   const snackbarLifetimeDefault = 4000;
   const redirectDelay = 300;
@@ -360,7 +361,23 @@
         </NavItem>
 
         <NavItem button title="{$_('text.choose-framework')}x">
-          <FrameworkSwitcher />
+          <FrameworkSwitcher
+            defaultIndex="0"
+            db={[
+              {
+                name: 'Sapper',
+                icon: 'sapper-icon',
+                git: 'https://github.com/anito/vod-app',
+                host: dev ? 'http://localhost:3001' : 'https://vod-app.vercel.app/'
+              },
+              {
+                name: 'SvelteKit',
+                icon: 'svelte-kit-icon',
+                git: 'https://github.com/anito/vod-app-svelte-kit',
+                host: dev ? 'https://localhost:3000' : 'https://vod-app-svelte-kit.vercel.app/'
+              }
+            ]}
+          />
         </NavItem>
       </Nav>
     </form>
