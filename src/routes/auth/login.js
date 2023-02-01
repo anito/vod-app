@@ -4,7 +4,6 @@ export function post(req, res) {
   const { email, password } = { ...req.body };
   const { expires } = { ...req.session.cookie };
 
-  console.log({ ...req.session });
   api.post(`users/login${req.search}`, { email, password }).then((response) => {
 
     if (response.success) {
