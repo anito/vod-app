@@ -4,7 +4,6 @@ import { INIT_OPTIONS } from "config";
 let lifetime;
 settings.subscribe((val) => {
 	const { Session } = { ...INIT_OPTIONS, ...val };
-	console.log(Session);
 	lifetime = Session.lifetime;
 });
 
