@@ -14,7 +14,7 @@
       res.success && (videosData = res.data);
     });
 
-    await api.get("videos/all").then((res) => {
+    await api.get("videos/all", user?.jwt).then((res) => {
       res.success && (videosAllData = res.data);
     });
 

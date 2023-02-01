@@ -238,7 +238,7 @@
   function sessionStartedHandler(e) {
     if (__session__.started) return;
 
-    ticker.start($session.expires);
+    // ticker.start($session.expires);
 
     unsubscribeTicker = ticker.subscribe((val) => {
       if (val === 0) {
@@ -377,13 +377,12 @@
           </NavItem>
         {/if}
 
-        <NavItem title={$_("text.choose-locale")}>
+        <NavItem button title={$_("text.choose-locale")}>
           <LocaleSwitcher />
         </NavItem>
 
-        <NavItem
-          title={$_("text.choose-framework")}
-          style="vertical-align: sub;"
+        <NavItem button
+          title={$_("text.choose-framework")}x
         >
           <FrameworkSwitcher />
         </NavItem>
