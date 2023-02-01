@@ -30,7 +30,7 @@ export default polka() // You can also use Express
         maxAge: INIT_OPTIONS.Session.lifetime
       },
       store: new FileStore({
-        path: `./sessions/.sessions`
+        path: `./tmp/.sessions`
       })
     }),
     sapper.middleware({

@@ -16,4 +16,4 @@ src/request.rest
 client_secret*
 .env
 .prettierrc
-sessions/*
+/tmp/.sessions
