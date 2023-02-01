@@ -10,8 +10,7 @@ import { INIT_OPTIONS } from 'config';
 import { config } from 'dotenv';
 
 config();
-const { PORT, NODE_ENV, API_URI, API_URI_DEV, CLIENT_ID } = process.env;
-console.log(process.env);
+const { PORT = 3000, NODE_ENV, CLIENT_ID } = process.env;
 const dev = NODE_ENV === 'development';
 const FileStore = new sessionFileStore(session);
 
