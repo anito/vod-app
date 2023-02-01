@@ -10,10 +10,10 @@ node_modules/@anito/*
 yarn-error.log
 /cypress/screenshots/
 /__sapper__/
-/.sessions/
 package-lock.json
 src/request.rest
 .vscode
 client_secret*
 .env
 .prettierrc
+sessions/*
