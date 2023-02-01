@@ -1,115 +1,81 @@
 <script context="module">
-  import * as api from "api";
-
-  export async function preload(page) {
+  export async function preload(page, session) {
     let token = page.query.token;
     if (token) {
-      const res = await api.get(`login/?token=${token}`);
-
-      if (res) {
-        return { ...res };
-      }
+      return await this.fetch(`auth/login/?token=${token}`)
+        .then(async (res) => res.json())
+        .then((res) => {
+          return {
+            data: {
+              ...res,
+              fromToken: true
+            }
+          };
+        });
     }
   }
 </script>
 
 <script>
-  import { stores, goto } from "@sapper/app";
-  import { onMount } from "svelte";
-  import { ListMessages, ListErrors, LoginForm } from "components";
-  import { flash } from "stores";
-  import { sitename } from "stores";
-  import { fly } from "svelte/transition";
-  import { windowSize, processRedirect, proxyEvent } from "utils";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import { _ } from "svelte-i18n";
+  import { stores, goto } from '@sapper/app';
+  import { getContext, onMount } from 'svelte';
+  import { ListMessages, ListErrors, LoginForm } from 'components';
+  import { flash } from 'stores';
+  import { sitename } from 'stores';
+  import { fly } from 'svelte/transition';
+  import { processRedirect, proxyEvent } from 'utils';
+  import Paper, { Content } from '@smui/paper';
+  import { _ } from 'svelte-i18n';
 
   const { page, session } = stores();
-  const transitionParams = {
-    delay: 0,
-    duration: 200,
-  };
-  const flyTransitionParams = { ...transitionParams, x: -80 };
 
   let errors = null;
-  let viewportSize;
-  let message = "";
-  let statusEl;
-  let flashEl;
-  let root;
-  let outroended = false;
+  let message = '';
 
-  /**
-   * For token logins:
-   * preload function has received data from backend server
-   */
-  export let data = null;
-  export let success = false;
+  export let data;
 
-  $: message = ((user) => {
-    return (
-      (user && {
-        text: $_("text.welcome-message", { values: { name: user.name } }),
-        type: "success",
-      }) || {
-        text: $_("text.login-text"),
+  const { mounted } = getContext('mounted');
+
+  $: $mounted && init();
+  $: loggedin = !!$session.user;
+  $: ({ message, type } = $session.user
+    ? {
+        message: $_('text.welcome-message', { values: { name: $session.user.name } }),
+        type: 'success'
       }
-    );
-  })($session.user);
-
-  onMount(() => {
-    root = document.documentElement;
-    root.classList.add("is-login-page");
-
-    viewportSize = windowSize();
-    window.addEventListener("resize", setViewportSize);
-
-    /**
-     * DISPLAY RESULT MESSAGES
-     * There are two steps:
-     *
-     * Message 1: The flashStore handles the timeout time the first message should stay visible until the servers result message appears
-     * after the timeout the message will be reset empty and will therefore be unmounted.
-     *
-     * Message 2: After specified timeout a second message will be triggered by the store.
-     * This second message will be either a welcome message (on success) or
-     * a default message (on first appearance)
-     */
-    if (!data) {
-      /**
-       * Form login
-       */
-      flash.update({ message: message.text, timeout: -5 });
-    } else {
-      /**
-       * Token login
-       */
-      if (success) {
-        flash.update({ type: "success", ...data });
-        setTimeout(dispatcher, 100, { type: "start", data });
-      } else {
-        setTimeout(dispatcher, 100, { type: "end", data: { path: "/login" } });
-        flash.update({ type: "warning", ...data, timeout: 5000 });
+    : $page.query.token
+    ? {
+        message: $_('text.authenticating'),
+        type: 'success'
       }
+    : {
+        message: $_('text.login-text'),
+        type: 'success'
+      });
+
+  onMount(() => {});
+
+  // listeners are ready
+  function init() {
+    if (data?.fromToken) {
+      loginFromToken();
     }
-
-    return () => {
-      window.removeEventListener("resize", setViewportSize);
-      root.classList.remove("is-login-page", "token-success");
-    };
-  });
-
-  function dispatcher({ type, data }) {
-    proxyEvent(`session:${type}`, { ...data });
   }
 
-  function setViewportSize() {
-    viewportSize = windowSize();
-  }
-
-  function introendHandler() {
+  async function introendHandler() {
     if ($session.user) {
-      setTimeout(() => goto(processRedirect($page, $session)), 1500);
+      const redirect = processRedirect($page, $session);
+      setTimeout(() => goto(redirect), 1000);
+    }
+  }
+
+  async function loginFromToken() {
+    if (data.success) {
+      proxyEvent('session:start', {
+        ...data.data
+      });
+    } else {
+      proxyEvent('session:end', { ...data.data, redirect: '/login' });
     }
   }
 </script>
@@ -128,44 +94,30 @@
       <div class="flyer">
         {#if $flash.message}
           <div
-            bind:this={flashEl}
-            class="flex justify-center message {$flash.type}"
-            transition:fly={flyTransitionParams}
-            on:outrostart={() => (outroended = false)}
-            on:outroend={() => (outroended = true)}
+            class="flex justify-center items-center message {$flash.type}"
+            in:fly={{ delay: 0, duration: 200, x: -80 }}
           >
             <h5 class="m-2 mdc-typography--headline5 headline">
               {$flash.message}
             </h5>
           </div>
-        {:else if outroended}
-          <div
-            bind:this={statusEl}
-            class="flex justify-center message {message.type}"
-            in:fly={flyTransitionParams}
-            on:introend={() => introendHandler()}
-          >
-            <h5 class="m-2 mdc-typography--headline5 headline">
-              {message.text}
-            </h5>
-          </div>
         {:else}
           <div
-            class="flex justify-center message success"
-            in:fly={{ duration: 200, x: -20, delay: 300 }}
-            out:fly={{ duration: 200, x: 20 }}
+            class="flex justify-center items-center message {type}"
+            in:fly={{ delay: 0, duration: 200, x: -80 }}
+            on:introend={introendHandler}
           >
-            <h5 class="m-2 mdc-typography--headline5 headline">
-              {$_("text.hallo")}
-            </h5>
+            <h5 class="m-2 mdc-typography--headline5 headline">{message}</h5>
           </div>
         {/if}
       </div>
-      <Paper elevation="0">
-        <Content>
-          <LoginForm />
-        </Content>
-      </Paper>
+      <div class="login-form loggedin" class:loggedin>
+        <Paper elevation="0">
+          <Content>
+            <LoginForm />
+          </Content>
+        </Paper>
+      </div>
     </Paper>
   </div>
 </div>
@@ -176,19 +128,29 @@
 </div>
 
 <style>
+  .login-form {
+    transition: opacity 0.4s ease-in;
+    opacity: 1;
+  }
+  .login-form.loggedin {
+    transition: opacity 0.4s ease-in;
+    opacity: 0.5;
+    pointer-events: none;
+  }
   .flyer {
-    height: 50px;
+    height: 100px;
     overflow: hidden;
     position: relative;
   }
   .message {
     margin: 0 auto;
-    color: var(--prime);
+    color: var(--primary);
   }
   .message .headline {
     max-width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
     white-space: nowrap;
   }
   :global(.error).message {
@@ -202,5 +164,16 @@
   }
   :global(.success).message {
     color: var(--success) !important;
+  }
+  @media (min-width: 768px) {
+    .wrapper {
+      width: 600px;
+    }
+    .message .headline {
+      max-width: 100%;
+      overflow: auto;
+      white-space: normal;
+      text-align: center;
+    }
   }
 </style>

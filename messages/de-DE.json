@@ -197,7 +197,8 @@
     "hallo": "...",
     "choose-locale": "Wähle Sprache",
     "choose-framework": "Wähle Framework",
-    "goto-github": "Gehe zu GitHub"
+    "goto-github": "Gehe zu GitHub",
+    "authenticating": "Authentifiziere"
   },
   "summary": {
     "copy-link": {
@@ -224,23 +225,19 @@
   "blocks": {
     "p1": {
       "header": "Hol dir einen fesselnden Film noch heute nach Hause",
-      "text1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti.",
-      "text2": ""
+      "text1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti."
     },
     "p2": {
       "header": "Dein Erlebnis Studio",
       "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta assumenda dolor harum autem accusantium quam deleniti voluptatum suscipit numquam non! Quas deserunt voluptatem autem quisquam tempore natus sint laborum deleniti."
     },
     "p3": {
-      "header": "",
       "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
     },
     "p4": {
-      "header": "",
       "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ullam provident quo adipisci voluptatum corporis iusto deserunt, commodi autem, temporibus dicta quis voluptatibus, praesentium ratione quisquam molestias a quidem aspernatur."
     },
     "p5": {
-      "header": "",
       "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique libero ut, ad quidem eos architecto laborum illum nesciunt eius quis quos inventore accusamus excepturi aperiam consectetur, qui, dolorum possimus sequi."
     },
     "p7": {
@@ -289,7 +286,5 @@
   },
   "direction": "ltr",
   "message": {},
-  "test": {
-    "empty-mail-selection": "Keine Email ausgewählt"
-  }
+  "test": {}
 }

@@ -6,15 +6,15 @@
       videosData = [],
       videosAllData = [];
 
-    await api.get("users", user?.jwt).then((res) => {
+    await api.get("users?limit=100", user?.jwt).then((res) => {
       res.success && (usersData = res.data);
     });
 
-    await api.get("videos", user?.jwt).then((res) => {
+    await api.get("videos?limit=100", user?.jwt).then((res) => {
       res.success && (videosData = res.data);
     });
 
-    await api.get("videos/all", user?.jwt).then((res) => {
+    await api.get("videos/all?limit=100", user?.jwt).then((res) => {
       res.success && (videosAllData = res.data);
     });
 
