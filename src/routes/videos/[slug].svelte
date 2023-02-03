@@ -166,8 +166,6 @@
   }
   .single-player {
     --player-w: 100vw;
-    --curtain-lh-title: 4rem;
-    --curtain-lh-descr: 2rem;
     --curtain-fs-title: 4rem;
     --curtain-fs-descr: 2rem;
     --curtain-p: 3rem;
