@@ -71,7 +71,7 @@
     {#if $images.length}
       <div class="flex flex-wrap flex-row justify-center lg:justify-start">
         {#each $images as image (image.id)}
-          <div class="flex m-1">
+          <div class="flex flex-1 m-1">
             <ImageCard {image} user={$session.user} />
           </div>
         {/each}
