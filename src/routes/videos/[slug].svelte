@@ -131,9 +131,9 @@
 </script>
 
 {#if video}
-  <div class="single-player flex bg-black">
+  <div class="single-player flex flex-1 bg-black">
     <VideoPlayer
-      class="video-player flex single-player"
+      class="video-player flex flex-1"
       bind:paused
       bind:playhead
       on:player:canplay={handleCanPlay}
