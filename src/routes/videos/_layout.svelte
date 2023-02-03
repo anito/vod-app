@@ -1,5 +1,5 @@
 <script context="module">
-  import * as api from "api";
+  import * as api from 'api';
 
   export async function preload(page, { user }) {
     let usersData = [],
@@ -7,21 +7,21 @@
       imagesData = [];
 
     await api
-      .get("users", user?.jwt)
+      .get('users?limit=100', user?.jwt)
       .then((res) => {
         res.success && (usersData = res.data);
       })
       .catch(() => this.error());
 
     await api
-      .get("videos", user?.jwt)
+      .get('videos?limit=100', user?.jwt)
       .then((res) => {
         res.success && (videosData = res.data);
       })
       .catch(() => this.error());
 
     await api
-      .get("images", user?.jwt)
+      .get('images?limit=100', user?.jwt)
       .then((res) => {
         res.success && (imagesData = res.data);
       })
@@ -32,15 +32,15 @@
 </script>
 
 <script>
-  import { goto, stores } from "@sapper/app";
-  import Layout from "./layout.svelte";
-  import List, { Item, Graphic, Separator, Text } from "@smui/list";
-  import Textfield from "@smui/textfield";
-  import { Icon } from "@smui/icon-button";
-  import { Legal, PageBar, SimpleVideoCard } from "components";
-  import { images, videos, users } from "stores";
-  import { sortByTitle } from "utils";
-  import { _ } from "svelte-i18n";
+  import { goto, stores } from '@sapper/app';
+  import Layout from './layout.svelte';
+  import List, { Item, Graphic, Separator, Text } from '@smui/list';
+  import Textfield from '@smui/textfield';
+  import { Icon } from '@smui/icon-button';
+  import { Legal, PageBar, SimpleVideoCard } from 'components';
+  import { images, videos, users } from 'stores';
+  import { sortByTitle } from 'utils';
+  import { _ } from 'svelte-i18n';
 
   const { page, session } = stores();
 
@@ -49,7 +49,7 @@
   export let imagesData = [];
 
   let selectedIndex;
-  let search = "";
+  let search = '';
 
   $: users.update(usersData);
   $: videos.update(videosData);
@@ -57,9 +57,7 @@
   $: sidebar = !!$page.params.slug;
   $: selectionVideoId = $page.params.slug;
   $: filteredVideos = $videos
-    .filter(
-      (video) => video.title?.toLowerCase().indexOf(search.toLowerCase()) !== -1
-    )
+    .filter((video) => video.title?.toLowerCase().indexOf(search.toLowerCase()) !== -1)
     .sort(sortByTitle);
 
   function itemSelectedHandler(e) {
@@ -82,7 +80,7 @@
         class="search"
         variant="filled"
         bind:value={search}
-        label={$_("text.search-video")}
+        label={$_('text.search-video')}
         input$aria-controls="helper-text"
         input$aria-describedby="helper-text"
       >
@@ -90,17 +88,11 @@
           role="button"
           class="material-icons-outlined cancel-search"
           slot="trailingIcon"
-          on:click={() => (search = "")}>{search.length && "cancel"}</Icon
+          on:click={() => (search = '')}>{search.length && 'cancel'}</Icon
         >
       </Textfield>
     </div>
-    <List
-      class="video-list"
-      twoLine
-      avatarList
-      singleSelection
-      bind:selectedIndex
-    >
+    <List class="video-list" twoLine avatarList singleSelection bind:selectedIndex>
       {#if filteredVideos.length}
         {#each filteredVideos as video (video.id)}
           <SimpleVideoCard
@@ -112,7 +104,7 @@
         {/each}
       {:else}
         <li class="flex flex-1 flex-col self-center text-center">
-          <div class="m-5">{$_("text.no-videos")}</div>
+          <div class="m-5">{$_('text.no-videos')}</div>
         </li>
       {/if}
     </List>

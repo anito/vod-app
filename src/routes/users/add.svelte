@@ -1,21 +1,3 @@
-<script context="module">
-  import * as api from "api";
-
-  export async function preload_({ params, query }, { user }) {
-    const res = await api.get(`users/${params.slug}`, user?.jwt);
-
-    if (res && res.success) {
-      const { id, name } = { ...res.data };
-      return { id, name, ...query };
-    } else {
-      this.error(
-        (res.data && res.data.code) || res.status,
-        res.message || res.responseText
-      );
-    }
-  }
-</script>
-
 <script>
   import { onMount } from "svelte";
   import { sitename } from "stores";

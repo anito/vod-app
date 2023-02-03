@@ -78,6 +78,7 @@
 
   $: user = $session.user;
   $: users.update(usersData);
+  $: console.log($users.length)
   $: videos.update(videosData);
   $: videosAll.update(videosAllData);
   $: selectionUserId = segment;
