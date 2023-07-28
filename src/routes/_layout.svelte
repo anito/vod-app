@@ -35,6 +35,7 @@
     Nav,
     NavItem
   } from 'components';
+  import { inject } from '@vercel/analytics';
   import { svg_manifest } from 'svg_manifest';
   import { _, locale } from 'svelte-i18n';
   import { serverConfig } from 'config';
@@ -59,6 +60,8 @@
   let emphasize;
   let isMounted = false;
 
+  inject({ mode: dev ? 'development' : 'production' });
+  
   settings.update({ Session: $session });
 
   // load configuration from server
