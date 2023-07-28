@@ -374,7 +374,7 @@
                 name: 'SvelteKit',
                 icon: 'svelte-kit-icon',
                 git: 'https://github.com/anito/vod-app-svelte-kit',
-                host: dev ? 'https://localhost:3000' : 'https://vod-app-svelte-kit.vercel.app/'
+                host: dev ? 'https://localhost:5173' : 'https://vod-app-svelte-kit.vercel.app/'
               }
             ]}
           />
