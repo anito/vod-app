@@ -17,3 +17,4 @@ client_secret*
 .env
 .prettierrc
 /tmp/.sessions/*.json
+.sessions/*
